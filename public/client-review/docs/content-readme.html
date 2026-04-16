@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Content README - Real Wealth Client Review</title>
+  <meta name="description" content="How copy is edited in the content folder and validated before shipping.">
+  <link rel="stylesheet" href="../site.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="logo-link" href="../index.html" aria-label="Real Wealth client review home">
+      <img src="/real-wealth-logo-wordmark.svg" alt="Real Wealth">
+    </a>
+    <nav class="site-nav" aria-label="Primary navigation">
+      <a href="../index.html#service">Service</a>
+      <a href="../index.html#question-flow">Question flow</a>
+      <a href="../index.html#delivery">Delivery</a>
+      <a href="../index.html#documents">Docs</a>
+      <a class="service-link" href="/">Open service</a>
+    </nav>
+  </header>
+  
+<main class="doc-page">
+  <a class="back-link" href="../index.html#documents">Back to review library</a>
+  <article class="doc-article">
+    <header class="doc-hero">
+      <p class="eyebrow">Source document</p>
+      <h1>Content README</h1>
+      <p>How copy is edited in the content folder and validated before shipping.</p>
+    </header>
+    <div class="doc-body"><h2>Content — Real Wealth Wealth Conversation</h2>
+<p><em>This folder holds every piece of copy the app shows to a user. One file per content entry, so changes are small, reviewable, and easy to compare. Edit these files directly, commit, and the site rebuilds.</em></p>
+<p>---</p>
+<h3>How to edit</h3>
+<p>The short version:</p>
+<ol>
+<li>Open the file for the piece of copy you want to change. The folder names tell you what you&#039;re looking at (<code>provocations/</code>, <code>awareness-checks/</code>, <code>screens/</code>, <code>segments/</code>, <code>pages/</code>, <code>microcopy/</code>).</li>
+<li>Edit the text on the right-hand side of the <code>---</code> line.</li>
+<li>Save. Commit. That&#039;s it.</li>
+</ol>
+<p>Every file has two parts:</p>
+<pre><code>---
+id: pitfall.iht_2m_cliff
+trigger: &quot;estate &gt;= 2_000_000&quot;
+compliance_status: draft
+---
+
+# Headline
+The £2m cliff.
+
+# Body
+Above £2 million of total estate, the residence nil-rate band starts tapering away —
+£1 of relief lost for every £2 over.
+
+# Close
+Worth a conversation.</code></pre>
+<ul>
+<li>The block between the two <code>---</code> lines is <strong>frontmatter</strong> — structured data the app needs (the id, what triggers it, compliance status, etc.). Change values cautiously — the app won&#039;t build if you break the structure.</li>
+<li>The block below the second <code>---</code> is <strong>the copy</strong>. Each <code># Heading</code> starts a named section. Edit freely — the app will pick up the change.</li>
+</ul>
+<h3>Folders</h3>
+<div class="doc-table-wrap"><table><thead><tr><th>Folder</th><th>What&#039;s in here</th><th>When to edit</th></tr></thead><tbody><tr><td><code>pages/</code></td><td>Homepage, data-capture, summary-page structure</td><td>When the structure or top-level copy of a page changes</td></tr><tr><td><code>screens/</code></td><td>The questionnaire screens, one file per screen</td><td>When a question wording, option, or helper needs to change</td></tr><tr><td><code>awareness-checks/</code></td><td>The 20 &quot;something worth noticing&quot; moments</td><td>When the stem or the three-body response copy changes</td></tr><tr><td><code>provocations/</code></td><td>The 24 quiet callouts triggered by answers</td><td>When a provocation headline/body needs a rewrite. <strong>CFP + Compliance sign-off required before <code>compliance_status</code> can flip to <code>approved_to_ship</code>.</strong></td></tr><tr><td><code>segments/</code></td><td>The 9 summary-page CTAs + 2 overlays</td><td>When a segment&#039;s closing call-to-action changes</td></tr><tr><td><code>microcopy/</code></td><td>Errors, toasts, modals, meta, ARIA, emails</td><td>When small interstitial strings change</td></tr></tbody></table></div>
+<h3>The compiled master doc</h3>
+<p>Prefer reading the whole thing in one document? Run:</p>
+<pre><code>npm run content:compile</code></pre>
+<p>This regenerates <code>Content Brief — Compiled.md</code> in the project root. It&#039;s a read-only artefact of everything in this folder concatenated into a single review document — same shape as the original content brief, always in sync with the files.</p>
+<p>If you&#039;d rather edit the compiled document and hand it back to the developer, that&#039;s fine too — the developer runs a script that splits it back into the per-file structure.</p>
+<h3>Compliance workflow for provocations</h3>
+<p>Every file in <code>provocations/</code> has a <code>compliance_status</code> field. The app honours it at runtime:</p>
+<div class="doc-table-wrap"><table><thead><tr><th>Status</th><th>Rendered where</th></tr></thead><tbody><tr><td><code>draft</code></td><td>Development previews only (not production)</td></tr><tr><td><code>cfp_signed</code></td><td>Staging previews only</td></tr><tr><td><code>compliance_signed</code></td><td>Staging + production, with a <em>&quot;Pending final approval&quot;</em> prefix</td></tr><tr><td><code>approved_to_ship</code></td><td>Freely rendered in production</td></tr></tbody></table></div>
+<p>A Chartered Financial Planner reviews, then sets <code>compliance_status: cfp_signed</code> and fills <code>cfp_signoff_date</code>. Compliance reviews next, sets <code>compliance_status: approved_to_ship</code> and fills <code>compliance_signoff_date</code>. Both reviews happen as pull requests against this folder — every review has an auditable diff.</p>
+<h3>Running the build</h3>
+<p>From the project root:</p>
+<pre><code>npm run content:check     # validates every file, prints errors, does not write
+npm run content:build     # validates and writes typed catalogues for the app
+npm run content:compile   # regenerates Content Brief — Compiled.md</code></pre>
+<p><code>npm run build</code> runs <code>content:build</code> automatically first. If anything is malformed, the build fails and tells you which file is wrong.</p>
+<h3>What happens when a file is wrong</h3>
+<p>Example error:</p>
+<pre><code>✗ content/provocations/iht-2m-cliff.md
+    · compliance_status must be one of: draft | cfp_signed | compliance_signed | approved_to_ship
+    · headline body section missing</code></pre>
+<p>Fix what it points at, rebuild.</p>
+<h3>If the structure needs to change</h3>
+<p>The structure is defined in <code>content/schema.ts</code>. Adding a new field to any content type is a small dev change; the schema is the conversation between client and engineering. Flag it in a pull request comment and the developer will extend the schema.</p></div>
+  </article>
+</main>
+  <footer class="site-footer">
+    <div>
+      <img src="/real-wealth-logo-wordmark.svg" alt="Real Wealth">
+      <p>Manchester / Taunton | 0161 768 7722 | hello@realwealth.co.uk</p>
+    </div>
+    <p>This client review website is for internal review only. Public launch requires final compliance sign-off and production data integrations.</p>
+  </footer>
+</body>
+</html>

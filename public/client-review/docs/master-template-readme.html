@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Master Template README - Real Wealth Client Review</title>
+  <meta name="description" content="Engineering guide to the Next.js scaffold and project layout.">
+  <link rel="stylesheet" href="../site.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="logo-link" href="../index.html" aria-label="Real Wealth client review home">
+      <img src="/real-wealth-logo-wordmark.svg" alt="Real Wealth">
+    </a>
+    <nav class="site-nav" aria-label="Primary navigation">
+      <a href="../index.html#service">Service</a>
+      <a href="../index.html#question-flow">Question flow</a>
+      <a href="../index.html#delivery">Delivery</a>
+      <a href="../index.html#documents">Docs</a>
+      <a class="service-link" href="/">Open service</a>
+    </nav>
+  </header>
+  
+<main class="doc-page">
+  <a class="back-link" href="../index.html#documents">Back to review library</a>
+  <article class="doc-article">
+    <header class="doc-hero">
+      <p class="eyebrow">Source document</p>
+      <h1>Master Template README</h1>
+      <p>Engineering guide to the Next.js scaffold and project layout.</p>
+    </header>
+    <div class="doc-body"><h2>Wealth Conversation — Master Template</h2>
+<p>A Next.js 16 / React 19 / TypeScript master template for Real Wealth&#039;s &quot;Wealth Conversation&quot; lead-magnet app. Covers the four-screen workflow end-to-end: <strong>homepage → questionnaire → data capture → summary results</strong>.</p>
+<p>This is the scaffold. Copy, brand, and segmentation logic are drawn from the files in <code>/Real Wealth/</code>; when those documents change, update here in step.</p>
+<p>---</p>
+<h3>Run</h3>
+<pre><code>cd master_template
+npm install
+npm run dev              # http://localhost:3000
+npm run typecheck        # tsc --noEmit
+npm run lint             # next lint
+npm run build            # validates content + builds Next app
+npm run content:check    # validates content only, no writes
+npm run content:build    # validates + writes src/lib/content/catalogue.ts
+npm run content:compile  # regenerates Content Brief — Compiled.md</code></pre>
+<p>Node 24 LTS is the current Vercel default and is recommended.</p>
+<h3>Content architecture</h3>
+<p>Every piece of user-facing copy lives under <code>content/</code> as per-entry markdown files with YAML frontmatter. The build validates against Zod schemas in <code>content/schema.ts</code>, emits typed catalogues to <code>src/lib/content/</code>, and regenerates a human-readable <code>Content Brief — Compiled.md</code> at the project root on request.</p>
+<p>See <a href="./content-readme.html"><code>content/README.md</code></a> for the client&#039;s authoring guide.</p>
+<p><strong>At a glance:</strong></p>
+<ul>
+<li><code>content/pages/*.md</code> — homepage, data-capture, summary-page structure</li>
+<li><code>content/screens/*.md</code> — 28 questionnaire screens (5 section transitions + 23 question screens)</li>
+<li><code>content/awareness-checks/*.md</code> — 26 awareness checks with stem + aware/partial/unaware bodies</li>
+<li><code>content/provocations/*.md</code> — 24 provocation cards with compliance status per entry</li>
+<li><code>content/segments/*.md</code> — 9 segment CTAs + 2 overlays</li>
+<li><code>content/microcopy/*.md</code> — errors, toasts, modals, meta, ARIA, emails, progress labels, loading states, voice rules</li>
+</ul>
+<p>The app imports generated catalogues from <code>@/lib/content</code>. <code>npm run build</code> automatically runs <code>content:build</code> first, so a malformed content file fails the production build rather than shipping a broken page.</p>
+<p>---</p>
+<h3>Project layout</h3>
+<pre><code>master_template/
+├── README.md                       — this file
+├── DECISION_LOG.md                 — what we kept from the prototype, what we cut, open questions
+├── package.json
+├── tsconfig.json
+├── next.config.ts
+├── vercel.ts                       — Vercel project config (preferred over vercel.json)
+├── src/
+│   ├── app/                        — Next.js App Router
+│   │   ├── layout.tsx              — root layout, loads tokens once
+│   │   ├── globals.css             — imports tokens.css + base.css
+│   │   ├── page.tsx                — Homepage (hero, tier picker, freedom quote, benefits)
+│   │   ├── page.module.css
+│   │   └── conversation/
+│   │       ├── layout.tsx          — shared footer wrapper
+│   │       ├── page.tsx            — Questionnaire
+│   │       ├── page.module.css
+│   │       ├── details/page.tsx    — Data capture
+│   │       ├── details/page.module.css
+│   │       └── summary/page.tsx    — Summary / results
+│   ├── styles/
+│   │   ├── tokens.css              — THE source of truth for every colour, type size, spacing, motion, z-index
+│   │   └── base.css                — minimal reset + element defaults that consume tokens
+│   ├── components/                 — typed component library (see below)
+│   └── lib/
+│       ├── segmentation/           — rules + engine + types
+│       ├── questions/              — catalogue + Y/C/N matrix
+│       └── provocations/           — compliance-tracked callout library
+└── public/</code></pre>
+<p>---</p>
+<h3>Component library</h3>
+<p>Each component ships with a <code>.tsx</code> + <code>.module.css</code> + <code>index.ts</code> barrel. Everything imports <code>@/components</code>.</p>
+<div class="doc-table-wrap"><table><thead><tr><th>Component</th><th>Purpose</th></tr></thead><tbody><tr><td><code>Button</code></td><td>Primary / secondary / text variants. 56px tap target, focus-ring.</td></tr><tr><td><code>Card</code></td><td>Generic paper-surface container with light / tinted tones.</td></tr><tr><td><code>QuestionCard</code></td><td>One question per screen — serif stem, micro helper, radiogroup slot.</td></tr><tr><td><code>OptionTile</code></td><td>A single selectable row inside <code>QuestionCard</code>. Radiogroup member.</td></tr><tr><td><code>TierTile</code></td><td>One of the three depth options on the homepage tier picker.</td></tr><tr><td><code>ProgressBar</code></td><td>Percentage-based progress (NOT &quot;Q 4 of 15&quot; — see §Why percentage below).</td></tr><tr><td><code>AwarenessCheck</code></td><td>Aware / partial / unaware triad.</td></tr><tr><td><code>ProvocationCard</code></td><td>Quiet high-care callout that appears after an answer. <code>role=&quot;status&quot;</code>.</td></tr><tr><td><code>AspirationEcho</code></td><td>Serif-italic echo of the user&#039;s Q2.4 on the summary page.</td></tr><tr><td><code>FinalCTA</code></td><td>&quot;Let&#039;s talk about you.&quot; close block. Never gives advice.</td></tr><tr><td><code>FCAFooter</code></td><td>Regulatory footer. TODO values for FCA number + entity.</td></tr><tr><td><code>IllustrativeChart</code></td><td>Wraps any chart with the orange uppercase &quot;Illustrative example&quot; tag.</td></tr></tbody></table></div>
+<h4>Why percentage progress?</h4>
+<p>The questionnaire is segment-aware. A user on Q7 might see 12 questions in total (S1 — Early Accumulator) or 30 (S5 — Business Owner Growth with all conditionals firing). Telling them they&#039;re on &quot;Q 7 of 15&quot; is a lie for eight of the nine segments. The bar and the small label both use percentage. See <code>Segmentation Design Companion.md</code> §10.</p>
+<p>---</p>
+<h3>How to add a question</h3>
+<ol>
+<li><strong>Add the question to the catalogue.</strong> Append to <code>src/lib/questions/catalogue.ts</code>:</li>
+</ol>
+<pre><code>   {
+     id: &#039;Q4.2&#039;,                           // use the spec&#039;s id
+     section: &#039;assets&#039;,
+     stem: &#039;Do you own any other property...&#039;,
+     input: &#039;radio&#039;,
+     options: [
+       { value: &#039;none&#039;, label: &#039;No&#039; },
+       ...
+     ],
+   }</code></pre>
+<ol>
+<li><strong>Add the matrix row.</strong> Append to <code>src/lib/questions/matrix.ts</code> with a Y/C/N per segment (S1..S9). Follow the spreadsheet order.</li>
+</ol>
+<ol>
+<li><strong>(If conditional)</strong> add a predicate in <code>src/lib/segmentation/engine.ts</code> under the <code>conditionals</code> map.</li>
+</ol>
+<ol>
+<li><strong>Add the question id to the ordering array</strong> in <code>src/lib/questions/matrix.ts</code> → <code>questionOrder</code>.</li>
+</ol>
+<ol>
+<li><strong>Run the typecheck.</strong> If a gating answer changes shape, <code>rules.ts</code> also needs updating.</li>
+</ol>
+<p>---</p>
+<h3>How to add a provocation</h3>
+<ol>
+<li>Append to <code>src/lib/provocations/catalogue.ts</code> with <code>compliance_status: &#039;pending&#039;</code>. Use the Voice and Tone patterns — quote / fact / magnitude / gentle.</li>
+</ol>
+<ol>
+<li>Send the entry to the Chartered Financial Planner and the Compliance Officer for sign-off.</li>
+</ol>
+<ol>
+<li>When approved, flip <code>compliance_status</code> to <code>&#039;approved&#039;</code>. Nothing shows in production unless approved.</li>
+</ol>
+<ol>
+<li>If the provocation needs a new trigger question, add the question first (see above).</li>
+</ol>
+<p>---</p>
+<h3>Email templates</h3>
+<p>Two production email templates live under <code>templates/emails/</code>:</p>
+<ul>
+<li><code>templates/emails/confirmation.html</code> + <code>confirmation.txt</code> — the shortlist confirmation sent immediately after data-capture submit.</li>
+<li><code>templates/emails/nudge.html</code> + <code>nudge.txt</code> — the +7 day gentle nudge sent if no booking has been made.</li>
+</ul>
+<p>Both are table-based, inline-styled, and 600px-wrapped for email-client compatibility. System fonts only; no <code>&lt;link&gt;</code> or <code>@import</code> web fonts; literal hex colour values throughout.</p>
+<h4>Handlebars placeholders</h4>
+<p>Each template contains Handlebars-style merge fields that the production email engine must substitute before send:</p>
+<ul>
+<li><code>{{first_name}}</code> — recipient&#039;s first name</li>
+<li><code>{{booking_url}}</code> — URL to the booking flow</li>
+<li><code>{{email1_subject}}</code> / <code>{{email1_preview}}</code> / <code>{{email1_body_first_para}}</code> (confirmation)</li>
+<li><code>{{email2_subject}}</code> / <code>{{email2_preview}}</code> / <code>{{email2_body_first_para}}</code> (nudge)</li>
+<li><code>{{footer_regulated}}</code>, <code>{{footer_confidentiality}}</code>, <code>{{footer_non_binding}}</code>, <code>{{footer_security}}</code>, <code>{{footer_call_recording}}</code> — the five legal paragraphs, concatenated in that order</li>
+</ul>
+<p>A <code>&lt;!-- SHORTLIST_ITEMS --&gt;</code> comment marks the slot the engine fills with the rendered shortlist block.</p>
+<h4>How production consumes them</h4>
+<p><code>src/lib/emails/render.ts</code> exports <code>loadEmailTemplate(kind)</code> — a Node-only helper that reads the raw template + plain-text companion from disk and returns <code>{ html, text, subject, preview }</code>. The strings are returned unmodified; substitution happens at send time in the email engine, not here. Do not import this helper from client code.</p>
+<h4>Regulatory footer — mandatory on every send</h4>
+<p>Every email MUST include the five legal paragraphs from <code>content/microcopy/emails.md</code>, in this order: <code>footer_regulated</code>, <code>footer_confidentiality</code>, <code>footer_non_binding</code>, <code>footer_security</code>, <code>footer_call_recording</code>. The templates wire them in — do not remove or reorder them.</p>
+<p>---</p>
+<h3>Known gaps (to resolve before ship)</h3>
+<ol>
+<li><strong>Typekit kit ID is missing.</strong> <code>tokens.css</code> has the two font stacks but falls back to <code>serif</code> / <code>sans-serif</code>. The root layout has a TODO <code>&lt;link&gt;</code> tag. Until Real Wealth supplies the kit, the visual is off-brand.</li>
+<li><strong>Logo files.</strong> No SVG wordmark in <code>public/</code>. Root layout just uses the text &quot;Real Wealth&quot;.</li>
+<li><strong>Lifestyle photography.</strong> The homepage hero and summary page currently have no imagery. Real Wealth needs to supply the coastal-path / sailing / grandchildren set.</li>
+<li><strong>Typekit-agnostic font-weight hinting.</strong> <code>gelica ExtraLight Italic 200</code> is the intended display weight. Once the kit lands, confirm the available weights match.</li>
+<li><strong>Compliance approval.</strong> Every entry in <code>src/lib/provocations/catalogue.ts</code> ships with <code>compliance_status: &#039;pending&#039;</code>. Nothing surfaces until signed off.</li>
+<li><strong>Analytics events.</strong> <code>tier_picker_viewed</code> / <code>tier_selected</code> / <code>tier_confirmed</code> / <code>segment_assigned</code> are not yet wired (Plausible recommended — first-party, no cookie banner needed).</li>
+<li><strong>The five-question gate state.</strong> The questionnaire page currently drives from a hard-coded demo sequence (<code>DEMO_SEQUENCE</code>) so the template renders end-to-end. In production this becomes a call to <code>segment(gatingAnswers).questionIds</code> once the five gating answers are captured.</li>
+<li><strong><code>vercel.ts</code></strong> imports <code>@vercel/config</code>. Run <code>npm i -D @vercel/config</code> once the CLI is installed (see §Greenfield below).</li>
+<li><strong>The 35-question catalogue is ~70% filled.</strong> The catalogue implements the questions that demonstrate every input type and every trigger; the remainder (Q3.3, Q4.1, Q4.2, Q5.1, Q6.1, Q7.3, Q8.x, Q9.x) follow the same shape and can be added when the voice-and-tone review has finalised their stems.</li>
+<li><strong>No backend.</strong> The data-capture submit is a <code>router.push</code> to the summary. A POST to a capture endpoint (e.g. a Vercel Function at <code>/api/capture</code>) is the first backend task.</li>
+</ol>
+<p>---</p>
+<h3>Prototype reconciliation — what we took, what we did not</h3>
+<p>See <code>DECISION_LOG.md</code> for the one-page decision log. Short version:</p>
+<ul>
+<li><strong>Kept</strong>: the teal gradient hero, the question-per-screen pacing, the sticky minimal header, the generous whitespace rhythm, the three-panel benefit strip.</li>
+<li><strong>Cut</strong>: the stock skyscraper imagery, the &quot;Step 7 of 12&quot; progress labels, the &quot;Fifteen questions. Five minutes.&quot; claim in the hero, the growth-marketing word choices (&quot;Strategic Focus&quot;, &quot;Stewardship of your capital&quot;, &quot;Speak with Advisor&quot;), the Material Design colour tokens, the Tailwind CDN.</li>
+<li><strong>Reshaped</strong>: the tier picker (prototype has none; spec requires it), the progress indicator (percentage not step count), the provocation card (prototype uses ornamental quotes; spec is a 3px orange bar and quiet teal tint).</li>
+</ul>
+<p>---</p>
+<h3>Accessibility</h3>
+<p>WCAG 2.2 AA is non-negotiable. Every component:</p>
+<ul>
+<li>Has a visible 2px ink focus ring at 3px offset (set in <code>base.css</code> via <code>:focus-visible</code>).</li>
+<li>Meets 4.5:1 contrast on any coloured text against its background (contrast-verified for the teal/orange/paper/navy pairings in <code>tokens.css</code>).</li>
+<li>Respects <code>prefers-reduced-motion</code> via a single <code>@media</code> block in <code>base.css</code> that disables animation globally.</li>
+<li>Uses the correct ARIA pattern (<code>role=&quot;radiogroup&quot;</code> + <code>role=&quot;radio&quot;</code> + <code>aria-checked</code> for the tier picker and option groups; <code>role=&quot;status&quot;</code> + <code>aria-live=&quot;polite&quot;</code> on provocations; <code>role=&quot;progressbar&quot;</code> + <code>aria-valuenow</code> on the progress bar).</li>
+</ul>
+<p>---</p>
+<h3>Voice and tone</h3>
+<p>Everything user-facing is written against <code>Brand Assets/Voice and Tone.md</code>. Specifically:</p>
+<ul>
+<li>No hype words (<code>unlock</code>, <code>supercharge</code>, <code>transform</code>, <code>guaranteed</code>, <code>proven</code>).</li>
+<li>No fear appeals, no false urgency, no countdowns.</li>
+<li>Never gives advice. All CTAs invite a conversation.</li>
+<li>The banned-word list applies to ARIA labels too.</li>
+</ul>
+<p>When adding copy, read the passage aloud before shipping. If you wouldn&#039;t say it to a client across a coffee table, rewrite it.</p>
+<p>---</p>
+<h3>Testing</h3>
+<p>End-to-end happy-path tests live under <code>tests/</code> and run against a local dev server with Playwright (Chromium only).</p>
+<pre><code>npm install            # picks up @playwright/test as a devDep
+npx playwright install chromium    # one-time browser download
+npm run dev            # in one terminal — http://localhost:3000
+npm run test:e2e       # in another terminal — runs tests/flows.spec.ts</code></pre>
+<p>The current spec (<code>tests/flows.spec.ts</code>) covers four representative segments — S1 Early Accumulator, S3 High-Earner, S6 Business-Owner exit-minded, S9 HNW. Each test seeds a complete <code>real-wealth:conversation</code> session into localStorage, navigates to <code>/conversation/summary</code>, and confirms the page renders with the expected gating answers. The S1 case additionally walks the first questionnaire screens to smoke-test the engine wiring end-to-end.</p>
+<p>Override the base URL with <code>PLAYWRIGHT_BASE_URL=http://localhost:3001 npm run test:e2e</code> if Next picked an alternate port.</p>
+<h4>Distress-indicator safeguard</h4>
+<p>The Q2.4 &quot;happy place&quot; free-text answer is scanned client-side by <code>src/lib/safeguards/distress.ts</code> on data-capture submit. If the answer contains a phrase suggesting the user is in crisis (suicide ideation, self-harm, hopelessness, etc.), the user is routed to <code>/conversation/support</code> — a quiet, non-commercial page with Samaritans / MoneyHelper / NHS 111 signposts — instead of the sales-y summary. <strong>This is a UX-level safeguard only.</strong> A production deployment must also wire up server-side moderation on submit and a human review queue with escalation to a Vulnerable Customer Specialist under Consumer Duty.</p></div>
+  </article>
+</main>
+  <footer class="site-footer">
+    <div>
+      <img src="/real-wealth-logo-wordmark.svg" alt="Real Wealth">
+      <p>Manchester / Taunton | 0161 768 7722 | hello@realwealth.co.uk</p>
+    </div>
+    <p>This client review website is for internal review only. Public launch requires final compliance sign-off and production data integrations.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,511 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Question Design Options - Real Wealth Client Review</title>
+  <meta name="description" content="The question catalogue and interaction patterns used in the form.">
+  <link rel="stylesheet" href="../site.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="logo-link" href="../index.html" aria-label="Real Wealth client review home">
+      <img src="/real-wealth-logo-wordmark.svg" alt="Real Wealth">
+    </a>
+    <nav class="site-nav" aria-label="Primary navigation">
+      <a href="../index.html#service">Service</a>
+      <a href="../index.html#question-flow">Question flow</a>
+      <a href="../index.html#delivery">Delivery</a>
+      <a href="../index.html#documents">Docs</a>
+      <a class="service-link" href="/">Open service</a>
+    </nav>
+  </header>
+  
+<main class="doc-page">
+  <a class="back-link" href="../index.html#documents">Back to review library</a>
+  <article class="doc-article">
+    <header class="doc-hero">
+      <p class="eyebrow">Source document</p>
+      <h1>Question Design Options</h1>
+      <p>The question catalogue and interaction patterns used in the form.</p>
+    </header>
+    <div class="doc-body"><h2>Real Wealth — Question Design Options</h2>
+<p><em>A working design document for the Wealth Conversation lead-magnet app. Sets out three tiers of question set (full pre-discovery assessment → mid tier → lead-capture minimum), specifies the input type for every question, and maps the conditional logic.</em></p>
+<p><em>Version 0.1 — 16 April 2026. Owner: Matt / programme team. Status: draft for internal review. Supersedes the question set in sections 6 of the Wealth Conversation Spec and the trigger matrix in the Prototype Action Plan.</em></p>
+<p>---</p>
+<h3>1. The core trade-off</h3>
+<p>The fundamental question is <strong>how much information do we want to collect</strong>. There is a real tension between two legitimate product shapes:</p>
+<ul>
+<li><strong>Lead-capture form.</strong> Seven or eight questions. Three minutes. Optimises for completion rate and call bookings. Captures the bare minimum: enough to qualify the lead, trigger two or three sharp provocations, and hand a warm prospect to a planner.</li>
+<li><strong>Full pre-discovery assessment.</strong> Thirty-plus questions. Twelve to fifteen minutes. Optimises for the quality of the eventual planner conversation. The prospect arrives at the discovery call with much of the Compass-level fact find already done, having already had five or six &quot;I hadn&#039;t thought about that&quot; moments during the form.</li>
+</ul>
+<p>The recommendation in this document is to <strong>design Tier A (full assessment) first and derive the shorter tiers by deletion</strong>. It is far easier to cut questions than to retro-fit a full data model onto a minimal one, and Tier A is the natural feeder into the firm&#039;s existing Compass tool. Tiers B and C are then operational decisions (which one do we ship first) rather than design decisions.</p>
+<p>The decision we do need from Real Wealth: <strong>which tier does the v1.0 shipped app actually expose to prospects?</strong> The author&#039;s suggestion is <strong>Tier B</strong> for the public-facing v1.0 (best conversion/insight balance) with Tier A made available to users who opt into <em>&quot;the thorough version — twelve minutes, deeper shortlist.&quot;</em></p>
+<p>---</p>
+<h3>2. Design principles for questions</h3>
+<p>These principles sit behind every question authored below. A question that fails any of them should be cut or rewritten.</p>
+<p><strong>Every question earns its seat.</strong> Either it triggers a provocation, feeds an illustrative chart, qualifies the lead, or unlocks a branch. If a question does none of those, it is filler and must go.</p>
+<p><strong>Specificity beats generality.</strong> <em>&quot;How many pensions do you have — one, two or three, four to six, more than six, no idea&quot;</em> is a better question than <em>&quot;Tell us about your pensions&quot;</em> because the answer set itself carries the provocation seeds. The &quot;no idea&quot; option is as valuable as &quot;six&quot; — both trigger a conversation.</p>
+<p><strong>Honesty is rewarded.</strong> At least one option per question must be <em>&quot;I&#039;m not sure&quot;</em> or <em>&quot;I haven&#039;t thought about that yet.&quot;</em> Those answers are often the most planner-worthy — they indicate unmet need. The Discovery Framework is explicit: <em>&quot;Uncover the client&#039;s real priorities… identify inconsistencies between stated goals and actual behaviour.&quot;</em> A user who admits uncertainty is giving us the highest-value signal in the entire form.</p>
+<p><strong>Plain English, adult tone.</strong> No jargon without translation. <em>&quot;Lasting Power of Attorney&quot;</em> gets a one-line gloss. <em>&quot;Business relief&quot;</em> does not appear in the question — <em>&quot;tax relief on shares in your own business&quot;</em> does.</p>
+<p><strong>One question per screen.</strong> The form is rhythmic, not compressed. Pagination is its own provocation — it gives the user time to feel the question land.</p>
+<p><strong>Soft and hard questions alternate.</strong> The Discovery Framework prioritises emotion and meaning over metrics. But the firm also needs Compass-grade data to make the discovery call valuable. The right shape is to alternate: a financial hard question, then a values/aspiration soft question, then a hard question, then a soft one. The soft questions earn trust. The hard questions generate the provocations.</p>
+<p><strong>Provocations come from answers, not questions.</strong> We don&#039;t write a provocation into the question stem. The question is neutral. The answer triggers the callout. This is a compliance posture as much as a design one.</p>
+<p>---</p>
+<h3>3. Input-type guide</h3>
+<p>Every question below specifies an input type. The options are:</p>
+<p><strong>Radio button group (single select).</strong> Three to six mutually exclusive options. Default choice for banded financial questions (asset tiers, income bands, household types). Fast on mobile. Accessible. Matches the provocation library&#039;s trigger-rule shape cleanly.</p>
+<p><strong>Dropdown (single select).</strong> Seven or more options or a long list where a radio group would feel cluttered. Use sparingly — dropdowns hide choices, reduce answer rate, and work poorly on mobile. Good for things like <em>&quot;which county do you live in&quot;</em> or industry selection. <strong>Avoided in Tier A, B, and C in favour of radios.</strong></p>
+<p><strong>Slider (continuous).</strong> A range answer where magnitude matters and users think in a scale rather than bands. Age, target retirement age, confidence 0–10, importance 1–5. The slider must snap to clean increments and display the current value in large type above it. Slider answers feed magnitude-sensitive provocations.</p>
+<p><strong>Multi-select checkboxes.</strong> <em>&quot;Which of these apply?&quot;</em> One to several answers. Use for product holdings (pension, ISA, GIA, property portfolio, etc.), life priorities, dependant categories. Multi-select is powerful but heavy — max 8 options shown, with an &quot;Other&quot; free-text only where essential.</p>
+<p><strong>Numeric input (£ or number).</strong> Exact values where the user knows them and precision changes the answer. Household income £, main home value £, total pension value £. Always include a <em>&quot;I&#039;d rather band it&quot;</em> escape hatch that swaps the control for the banded radio version. About a third of users will take the escape hatch and that&#039;s fine.</p>
+<p><strong>Short text (≤140 chars).</strong> Sentence-length free text. The &quot;happy place&quot; question. The &quot;one thing you&#039;d act on first&quot; question. Placeholder copy gives an example. No minimum length.</p>
+<p><strong>Long text (≤500 chars).</strong> Rarely used in the lead-magnet app. Reserved for the single aspirational paragraph on Tier A.</p>
+<p><strong>Card select.</strong> Visually richer than radios — each option is a card with an icon and one-line sub-label. Slightly slower but dramatically better for emotionally-weighted choices (&quot;What does real wealth mean to you?&quot;). Used three to four times across Tier A.</p>
+<p><strong>Scale / Likert (1–5 with labelled endpoints).</strong> A five-point scale, endpoints named (&quot;not at all confident&quot; to &quot;very confident&quot;), not a slider. Better than a slider when the endpoints are linguistic rather than numerical.</p>
+<p>The default assumption is <em>radio</em>. Every departure from radio below is justified in the question row.</p>
+<p>---</p>
+<h3>4. What the source material specifies</h3>
+<p>Before designing anything we made sure to extract what Real Wealth has already said about discovery questions, in their own documents.</p>
+<h4>4.1 The Discovery Framework&#039;s 10 Mandatory Core Questions (verbatim)</h4>
+<p>These are the questions the firm&#039;s advisers must cover in every discovery meeting. They sit behind the Real Wealth philosophy and any lead-magnet question set must map cleanly onto them. From <em>Real Wealth Discovery Framework – v0.01</em>:</p>
+<ol>
+<li>What does real wealth look like to you?</li>
+<li>Describe your ideal normal life or perfect week.</li>
+<li>What are you working towards and why does it matter?</li>
+<li>What matters most to you right now?</li>
+<li>What trade-offs are you willing, or not willing, to make?</li>
+<li>How aligned is your current life with the life you want?</li>
+<li>What does money represent to you?</li>
+<li>Who else matters in your plans?</li>
+<li>What concerns or risks could derail things?</li>
+<li>What should we help you prioritise first?</li>
+</ol>
+<p>These are open-ended questions designed for a two-way adviser conversation. <strong>Translating them into a self-serve form means compressing each one into a card-select or scale input where possible, with a short text follow-up for the most load-bearing ones.</strong> Tier A carries all ten (seven as card-select / scale, three as short text). Tier B carries six. Tier C carries two.</p>
+<h4>4.2 Compass data model (what discovery actually captures)</h4>
+<p>The firm&#039;s existing Compass tool — branded for Real Wealth Group Ltd — produces a 45-page report structured around:</p>
+<ul>
+<li>Cash</li>
+<li>Expenditure (essential vs non-essential split)</li>
+<li>Financial Life Planning (goals, aspirations, target ages)</li>
+<li>Financial Protection (life, critical illness, income protection)</li>
+<li>Investment</li>
+<li>Pension</li>
+<li>Property / Mortgage</li>
+<li>Tax Optimisation</li>
+<li>Actions</li>
+<li>Your Plans</li>
+</ul>
+<p>The Wealth Conversation lead magnet should collect <strong>roughly one anchor answer per Compass section</strong> in Tier A so that the eventual planner conversation is pre-loaded. Missing a section entirely means the planner starts from scratch on that topic; over-asking in a section means the user drops out. One strong anchor per section is the right calibration.</p>
+<h4>4.3 LifePlan projection inputs (from the scenario spreadsheet)</h4>
+<p>The <em>RW – Scenario output Spreadsheet</em> we reviewed models a household&#039;s net worth from current age to age 72 using: <strong>Income, Essential Expenditure, Non-Essential Expenditure, Drawdown, Contributions, Liquid Assets, Illiquid Assets, Liabilities</strong>. To ever run a personalised version of this projection later (v2 feature), Tier A needs to capture those eight values. Tier B captures five of them in banded form. Tier C captures none but gates the lead correctly.</p>
+<h4>4.4 Tax Trap paper (provocation-rich material)</h4>
+<p><em>Tax Trap – Non NHS – Insight Paper – 2026 03 19 v0.01</em> identifies the £100k–£125k adjusted-income band as the firm&#039;s single richest provocation area: 60% effective marginal rate, personal allowance taper, loss of childcare benefit. <strong>Any question set that does not ask about adjusted income crossing £100k misses the firm&#039;s best provocation trigger.</strong> The current Spec Q9 (&quot;is any household earner above £200k?&quot;) is pitched too high and misses this population. It should be lowered and split into bands.</p>
+<h4>4.5 Adviser brochure themes</h4>
+<p>The adviser brochures we reviewed give us two further soft-question angles worth surfacing:</p>
+<ul>
+<li><em>&quot;Succession is not a transaction. It is a continuation.&quot;</em> Business owners with succession questions are a core segment. Tier A surfaces succession maturity explicitly.</li>
+<li><em>&quot;The UK&#039;s largest and most trusted community of financial planners.&quot;</em> Tier A includes one question about whether the prospect has worked with an adviser before and how that went — a high-signal question that the current spec misses.</li>
+</ul>
+<p>---</p>
+<h3>5. The three tiers — at a glance</h3>
+<div class="doc-table-wrap"><table><thead><tr><th></th><th><strong>Tier A — Full Assessment</strong></th><th><strong>Tier B — Wealth Conversation</strong></th><th><strong>Tier C — Lead Capture</strong></th></tr></thead><tbody><tr><td><strong>Questions</strong></td><td>~35</td><td>~18</td><td>~7</td></tr><tr><td><strong>Time to complete</strong></td><td>10–15 min</td><td>5–7 min</td><td>2–3 min</td></tr><tr><td><strong>Target completion rate</strong></td><td>45%</td><td>65%</td><td>85%</td></tr><tr><td><strong>Target book-rate of completers</strong></td><td>25%</td><td>15%</td><td>8%</td></tr><tr><td><strong>Shipped in v1.0?</strong></td><td>Opt-in &quot;thorough version&quot;</td><td><strong>Yes — default</strong></td><td>Fallback for paid ads</td></tr><tr><td><strong>Feeds a Compass session?</strong></td><td>Directly — 80% of fact find pre-filled</td><td>Partially — 40% pre-filled</td><td>No — just routes to call</td></tr><tr><td><strong>Provocation opportunities</strong></td><td>12–18 per user</td><td>5–8 per user</td><td>2–3 per user</td></tr><tr><td><strong>Discovery Framework mandatory Qs covered</strong></td><td>10 / 10</td><td>6 / 10</td><td>2 / 10</td></tr><tr><td><strong>Compass sections touched</strong></td><td>All 9</td><td>5</td><td>2</td></tr></tbody></table></div>
+<p><strong>Recommendation (updated).</strong> Let the user pick their depth at the start. The landing page offers three named options on one card:</p>
+<ul>
+<li><em>&quot;Quick picture — 3 minutes, a few sharp observations&quot;</em> (Tier C)</li>
+<li><em>&quot;Standard dive — 7 minutes, a proper shortlist&quot;</em> (Tier B — <strong>preselected as default</strong>)</li>
+<li><em>&quot;Thorough — 12 minutes, enough to save half your first call&quot;</em> (Tier A)</li>
+</ul>
+<p>Each option carries its own sub-line naming the value the user gets at that depth. The prospect&#039;s choice is logged as <code>session.depth = A | B | C</code> and is itself a lead-qualification signal: a prospect who picks Tier A is self-selecting as a serious planner-ready lead. The tier picker runs once, on the landing page, before any question fires. No mid-form upgrade path — once committed, the user completes the tier they chose.</p>
+<p>This supersedes the earlier recommendation of <em>&quot;Tier B as the forced public default with Tier A behind a small link.&quot;</em> User-facing choice of depth is better because it respects the user&#039;s time, flags intent, and removes the conversion tax of users who would have been willing to invest more if asked.</p>
+<p>---</p>
+<h3>6. Tier A — Full Assessment (~35 questions)</h3>
+<p>The canonical question set. Every question below carries: the question text, the input type, the answer options (where applicable), the rationale, the conditional logic that affects it, and a brief note on the provocation it enables.</p>
+<p>The set is organised into ten sections, mirroring the Discovery Framework structure. Sections are separated by brief transition screens (&quot;Now let&#039;s talk about your money&quot; / &quot;Now let&#039;s talk about your people&quot;) — these give the form pacing and reduce the cognitive load of constant switching.</p>
+<h4>Section 1 — Set the tone (2 questions)</h4>
+<p><strong>Q1.1 — Opening.</strong> <em>&quot;What brought you here today?&quot;</em></p>
+<ul>
+<li>Input: <strong>Card select (single)</strong></li>
+<li>Options: <em>Curious to see what comes up</em> / <em>Specific question in mind</em> / <em>A life change coming up</em> / <em>Checking I&#039;m on track</em> / <em>Partner or adviser suggested it</em></li>
+<li>Rationale: Sets intent. High-signal for routing the tone of the final-page CTA.</li>
+<li>Logic: If <em>&quot;A life change coming up,&quot;</em> reveal Q1.1b follow-up: <em>&quot;What&#039;s coming up?&quot;</em> short text.</li>
+<li>Provocation: None — this is a rapport question.</li>
+</ul>
+<p><strong>Q1.2 — Definition of real wealth.</strong> <em>&quot;When you picture a life that feels genuinely wealthy to you, what best captures it?&quot;</em></p>
+<ul>
+<li>Input: <strong>Card select (single, with &quot;Other — tell us&quot; escape)</strong></li>
+<li>Options: <em>Freedom over my time</em> / <em>Security for my family</em> / <em>Choice in how I work</em> / <em>Experiences and travel</em> / <em>Legacy and impact</em> / <em>Peace of mind</em> / <em>Other</em></li>
+<li>Rationale: Discovery Framework Mandatory Q1. Anchors the final-page narrative.</li>
+<li>Logic: The choice here tunes the final-page aspiration echo language.</li>
+<li>Provocation: None directly. Feeds the closing narrative.</li>
+</ul>
+<h4>Section 2 — Life shape (4 questions)</h4>
+<p><strong>Q2.1 — Age.</strong> <em>&quot;How old are you?&quot;</em></p>
+<ul>
+<li>Input: <strong>Slider</strong>, 25–80, snap to whole years, default 45.</li>
+<li>Rationale: Precision matters. 58 triggers different provocations than 52. Bands lose this.</li>
+<li>Logic: Drives state-pension provocations, retirement-horizon questions, IHT taper provocations.</li>
+<li>Provocation: If 55–60, fires a <em>&quot;most people this age have X pensions to consolidate&quot;</em> tease.</li>
+</ul>
+<p><strong>Q2.2 — Household.</strong> <em>&quot;Who else is part of the plan?&quot;</em></p>
+<ul>
+<li>Input: <strong>Multi-select checkboxes</strong></li>
+<li>Options: <em>A partner</em> / <em>Dependent children</em> / <em>Adult children</em> / <em>An elderly parent or relative we support</em> / <em>Nobody else — it&#039;s just me</em></li>
+<li>Rationale: Discovery Framework Mandatory Q8. Drives all dependant-related branches.</li>
+<li>Logic: <em>Dependent children</em> reveals Q2.2a (ages, banded). <em>Elderly parent</em> reveals a care-cost provocation later.</li>
+<li>Provocation: If <em>multi-generational</em> (parent + children both selected), a &quot;sandwich generation&quot; provocation fires.</li>
+</ul>
+<p><strong>Q2.3 — Work status.</strong> <em>&quot;How would you describe your working life right now?&quot;</em></p>
+<ul>
+<li>Input: <strong>Radio</strong></li>
+<li>Options: <em>Employed</em> / <em>Self-employed</em> / <em>Business owner</em> / <em>Partly retired — still working some</em> / <em>Fully retired</em> / <em>Between roles or taking a break</em></li>
+<li>Rationale: Gates the business-owner branch (Section 5) and the retirement branch (Section 7).</li>
+<li>Logic: <em>Business owner</em> reveals Section 5. <em>Fully retired</em> skips Section 7a and jumps to 7b.</li>
+<li>Provocation: If <em>Self-employed</em> and high income, a <em>&quot;most self-employed clients under-fund their pension by 60% compared to employed peers&quot;</em> provocation.</li>
+</ul>
+<p><strong>Q2.4 — Happy place.</strong> <em>&quot;Describe your ideal normal week. Not a holiday — just your ordinary life at its best.&quot;</em></p>
+<ul>
+<li>Input: <strong>Short text (≤140 chars)</strong>. Placeholder: <em>e.g. &quot;Mornings outside, lunch with my wife, the grandchildren round on Sundays, no work after four.&quot;</em></li>
+<li>Rationale: Discovery Framework Mandatory Q2. The most important single answer in the whole form — drives the aspiration echo on the final page.</li>
+<li>Logic: Echoed back verbatim in the final-page aspiration panel.</li>
+<li>Provocation: None directly. Emotional anchor.</li>
+</ul>
+<h4>Section 3 — Money today (5 questions)</h4>
+<p><strong>Q3.1 — Household income.</strong> <em>&quot;Roughly what is your household&#039;s income, before tax, per year?&quot;</em></p>
+<ul>
+<li>Input: <strong>Numeric input with &quot;I&#039;d rather band it&quot; escape</strong>. Banded fallback: <em>&lt;£50k / £50–100k / £100–125k / £125–200k / £200k+ / Prefer not to say</em>.</li>
+<li>Rationale: The £100–125k band is the firm&#039;s single richest provocation area (see Tax Trap paper). Must be captured at this granularity.</li>
+<li>Logic: £100k+ reveals Q3.1a — <em>&quot;Is that across one earner or more than one?&quot;</em> (matters for the trap).</li>
+<li>Provocation: £100–125k fires the 60% marginal rate / childcare loss provocation. £125k+ fires the personal allowance taper provocation. £200k+ fires the tapered-annual-allowance pension provocation.</li>
+</ul>
+<p><strong>Q3.2 — Essential monthly spend.</strong> <em>&quot;Roughly what does your household spend each month on the essentials — mortgage or rent, bills, food, transport, childcare?&quot;</em></p>
+<ul>
+<li>Input: <strong>Radio (banded)</strong>. &lt;£2k / £2–3.5k / £3.5–5k / £5–7.5k / £7.5–12k / £12k+ / <em>Not sure</em>.</li>
+<li>Rationale: Compass Expenditure section. Feeds the LifePlan projection.</li>
+<li>Logic: If answer &gt; 50% of Q3.1 banded midpoint, triggers a &quot;spending-to-income ratio&quot; flag.</li>
+<li>Provocation: <em>&quot;You told us £X income and £Y essentials — that&#039;s Z% of gross. In our experience, households above 40% find it hardest to accelerate savings.&quot;</em></li>
+</ul>
+<p><strong>Q3.3 — Non-essential monthly spend.</strong> <em>&quot;And roughly on the nice-to-haves — holidays, meals out, hobbies, subscriptions?&quot;</em></p>
+<ul>
+<li>Input: <strong>Radio (banded)</strong>. &lt;£500 / £500–1k / £1–2k / £2–4k / £4k+ / <em>Not sure</em>.</li>
+<li>Rationale: Compass Expenditure section. Completes the LifePlan picture.</li>
+<li>Logic: Combined with Q3.2, drives the &quot;how much are you really saving&quot; calculation.</li>
+<li>Provocation: <em>&quot;Across 10 years at £X/month non-essential, that&#039;s £Y. Worth asking what it&#039;s buying you.&quot;</em> (soft).</li>
+</ul>
+<p><strong>Q3.4 — Saving confidence.</strong> <em>&quot;How confident are you that you&#039;re saving enough to fund the life you want?&quot;</em></p>
+<ul>
+<li>Input: <strong>5-point scale</strong> with endpoints <em>&quot;Not at all confident&quot;</em> ↔ <em>&quot;Very confident&quot;</em></li>
+<li>Rationale: Discovery Framework Mandatory Q6 (alignment). High-signal answer.</li>
+<li>Logic: <em>Not at all</em> or <em>Slightly</em> raises this prospect&#039;s priority routing.</li>
+<li>Provocation: <em>&quot;Most people who said they were &#039;not at all confident&#039; turned out to be closer than they thought — or much further away. Either answer is worth a conversation.&quot;</em></li>
+</ul>
+<p><strong>Q3.5 — Money mindset.</strong> <em>&quot;When you think about money, which feels closest?&quot;</em></p>
+<ul>
+<li>Input: <strong>Card select (single)</strong></li>
+<li>Options: <em>A tool for freedom</em> / <em>Security for the people I love</em> / <em>Something I&#039;d rather not think about too much</em> / <em>A scorecard of what I&#039;ve built</em> / <em>A source of stress</em> / <em>Not something I have strong feelings about</em></li>
+<li>Rationale: Discovery Framework Mandatory Q7.</li>
+<li>Logic: <em>A source of stress</em> or <em>I&#039;d rather not think about it</em> routes to a softer, reassurance-weighted final-page tone.</li>
+<li>Provocation: If <em>A source of stress</em>, a gentle Real Wealth quote: <em>&quot;We work with people whose money was making them anxious. A plan changes what money does to you.&quot;</em></li>
+</ul>
+<h4>Section 4 — Assets (5 questions)</h4>
+<p><strong>Q4.1 — Main home.</strong> <em>&quot;Do you own your main home?&quot;</em></p>
+<ul>
+<li>Input: <strong>Radio</strong>. <em>Yes, outright</em> / <em>Yes, with a mortgage</em> / <em>No — renting</em> / <em>No — living with family</em> / <em>It&#039;s more complicated</em>.</li>
+<li>Rationale: Gates mortgage and estate-planning branches.</li>
+<li>Logic: <em>Yes, with a mortgage</em> reveals Q4.1a (balance banded). <em>Yes, outright</em> feeds the estate-value calculation.</li>
+<li>Provocation: Drives the IHT estate-value provocations at Q4.5.</li>
+</ul>
+<p><strong>Q4.2 — Other property.</strong> <em>&quot;Do you own any other property — a second home, a buy-to-let, inherited property?&quot;</em></p>
+<ul>
+<li>Input: <strong>Radio</strong>. <em>No</em> / <em>One other</em> / <em>Two or more</em> / <em>A portfolio (3+)</em> / <em>Complicated — I&#039;ll explain on the call</em>.</li>
+<li>Rationale: High-net-worth signal. Drives a whole set of tax provocations (CGT, IHT, incorporation).</li>
+<li>Logic: <em>Two or more</em> or <em>A portfolio</em> reveals Q4.2a — <em>&quot;Is any of this held in a limited company?&quot;</em> radio yes/no/not sure.</li>
+<li>Provocation: <em>&quot;You said 2+ properties. The most common question we get from portfolio landlords is whether incorporation is worth the cost and hassle — the answer is &#039;it depends&#039; for ~60% of cases, and &#039;clearly yes&#039; or &#039;clearly no&#039; for the rest.&quot;</em></li>
+</ul>
+<p><strong>Q4.3 — Pensions — how many pots?</strong> <em>&quot;Roughly how many separate pension pots do you have across your career so far?&quot;</em></p>
+<ul>
+<li>Input: <strong>Radio</strong>. <em>None</em> / <em>One</em> / <em>Two or three</em> / <em>Four to six</em> / <em>More than six</em> / <em>I genuinely have no idea</em>.</li>
+<li>Rationale: Pension consolidation is one of the firm&#039;s commonest planner conversations. &quot;No idea&quot; is the highest-intent answer.</li>
+<li>Logic: 4+ reveals Q4.3a — <em>&quot;Do you have an estimate of the combined value?&quot;</em> banded.</li>
+<li>Provocation: <em>4+</em>: <em>&quot;Most professionals can&#039;t name the total value of their pension pots within 20%. The average of our new clients finds £40–£60k they&#039;d forgotten across old workplace schemes.&quot;</em></li>
+</ul>
+<p><strong>Q4.4 — Investments and cash.</strong> <em>&quot;Outside of pensions and property, roughly what&#039;s the combined value of your savings and investments — ISAs, general investments, cash in the bank?&quot;</em></p>
+<ul>
+<li>Input: <strong>Radio (banded)</strong>. &lt;£50k / £50–250k / £250k–£1m / £1–3m / £3m+ / <em>Prefer not to say</em>.</li>
+<li>Rationale: Compass Investment + Cash sections. Qualifies the lead.</li>
+<li>Logic: £1m+ triggers a high-net-worth routing flag for the final-page CTA (offers direct senior-partner booking).</li>
+<li>Provocation: <em>£250k–£1m</em>: <em>&quot;At this level, most families we see haven&#039;t used their annual CGT or ISA allowances fully. Over 10 years, that&#039;s often the difference between &#039;on track&#039; and &#039;comfortably ahead.&#039;&quot;</em></li>
+</ul>
+<p><strong>Q4.5 — Total estate (including home).</strong> <em>&quot;If you added everything up — home, pensions, investments, business — where would your total estate sit?&quot;</em></p>
+<ul>
+<li>Input: <strong>Radio (banded)</strong>. &lt;£500k / £500k–£1m / £1–2m / £2–3m / £3–5m / £5m+ / <em>Not sure</em>.</li>
+<li>Rationale: The IHT threshold question. Single biggest magnitude-provocation in the form.</li>
+<li>Logic: £2m+ triggers the RNRB taper provocation. £3m+ triggers the high-value estate-planning pathway on the final page.</li>
+<li>Provocation: <em>£2m+</em>: <em>&quot;Above £2m, the residence nil-rate band starts tapering away — £1 lost for every £2 over. A typical £2.5m family home + investments estate can end up paying £200k–£500k more IHT than necessary without planning.&quot;</em></li>
+</ul>
+<h4>Section 5 — Business (conditional: 3 questions, only if Q2.3 = business owner or self-employed)</h4>
+<p><strong>Q5.1 — Role in the business.</strong> <em>&quot;What&#039;s your role in the business?&quot;</em></p>
+<ul>
+<li>Input: <strong>Radio</strong>. <em>Sole director/owner</em> / <em>Co-founder / partner</em> / <em>Majority shareholder</em> / <em>Minority shareholder</em> / <em>Freelancer or sole trader</em>.</li>
+<li>Rationale: Gates extraction and succession questions.</li>
+<li>Logic: <em>Freelancer</em> skips Q5.3.</li>
+<li>Provocation: None.</li>
+</ul>
+<p><strong>Q5.2 — How you take money from the business.</strong> <em>&quot;How are you currently taking money out of the business?&quot;</em></p>
+<ul>
+<li>Input: <strong>Multi-select checkboxes</strong></li>
+<li>Options: <em>Salary</em> / <em>Dividends</em> / <em>Employer pension contributions</em> / <em>Director&#039;s loan</em> / <em>I leave it in the business</em> / <em>My accountant handles it — I&#039;m not sure</em> .</li>
+<li>Rationale: Extraction-mix is a classic Real Wealth conversation. &quot;Accountant handles it&quot; is the highest-intent answer.</li>
+<li>Logic: If <em>Salary only</em>, fires extraction-mix provocation. If <em>My accountant handles it</em>, fires a <em>&quot;worth having a joint call with your accountant&quot;</em> provocation.</li>
+<li>Provocation: <em>&quot;On £100k drawn as pure salary vs a typical salary/dividend/pension mix, the tax bill can differ by £15–20k. Whether that&#039;s you depends on a conversation with your accountant and a planner.&quot;</em></li>
+</ul>
+<p><strong>Q5.3 — Succession.</strong> <em>&quot;When you think about what happens to the business next, which feels closest?&quot;</em></p>
+<ul>
+<li>Input: <strong>Card select (single)</strong></li>
+<li>Options: <em>Documented plan, reviewed recently</em> / <em>Informal plan, we&#039;ve talked about it</em> / <em>No plan — but I&#039;ve been thinking about it</em> / <em>No plan — and it&#039;s not a priority</em> / <em>I want out in the next 5 years</em> / <em>I&#039;ll never leave until I have to</em>.</li>
+<li>Rationale: Discovery Framework aligns: <em>&quot;Succession is not a transaction. It is a continuation.&quot;</em> High-signal emotional + financial.</li>
+<li>Logic: <em>I want out in the next 5 years</em> triggers an urgent routing flag on the final page.</li>
+<li>Provocation: <em>No plan / I want out in the next 5 years</em>: <em>&quot;The typical business sale takes 18–24 months from decision to close. Most sellers tell us they wished they&#039;d started the tax and estate planning at least two years before that.&quot;</em></li>
+</ul>
+<h4>Section 6 — People and legacy (3 questions)</h4>
+<p><strong>Q6.1 — Dependants today.</strong> <em>[Conditional on Q2.2 = dependent children]</em> <em>&quot;How financially dependent are your children on you right now — and for how long do you expect that to last?&quot;</em></p>
+<ul>
+<li>Input: <strong>Radio</strong></li>
+<li>Options: <em>Fully dependent — many years ahead</em> / <em>Fully dependent — but nearing independence</em> / <em>Partly — shared with a co-parent</em> / <em>Supporting them occasionally (e.g. university)</em> / <em>They&#039;re adults but we still help out</em>.</li>
+<li>Rationale: Protection and education-cost provocations.</li>
+<li>Logic: <em>Many years ahead</em> fires the protection-gap provocation at Q8.1.</li>
+<li>Provocation: None directly; feeds later questions.</li>
+</ul>
+<p><strong>Q6.2 — Passing on.</strong> <em>&quot;When you think about what you&#039;d want to pass on, which feels closest?&quot;</em></p>
+<ul>
+<li>Input: <strong>Card select (single)</strong></li>
+<li>Options: <em>As much as possible to family</em> / <em>Enough to give them a boost, not a free ride</em> / <em>Experiences and memories more than money</em> / <em>A charity or cause matters to me</em> / <em>I haven&#039;t thought about it much yet</em> / <em>It&#039;s complicated — I need help thinking about this</em>.</li>
+<li>Rationale: Discovery Framework Mandatory Q8 (legacy dimension).</li>
+<li>Logic: <em>It&#039;s complicated</em> routes to an estate-planning-focused final-page shortlist.</li>
+<li>Provocation: <em>I haven&#039;t thought about it much yet</em>: <em>&quot;Most of our clients said the same in their first meeting. The question isn&#039;t &#039;how much&#039; — it&#039;s &#039;what do I want them to be able to do with it.&#039;&quot;</em></li>
+</ul>
+<p><strong>Q6.3 — Will and LPA.</strong> <em>&quot;Which of these do you currently have in place?&quot;</em></p>
+<ul>
+<li>Input: <strong>Multi-select checkboxes</strong></li>
+<li>Options: <em>A will, reviewed in the last 2 years</em> / <em>A will, older than that</em> / <em>No will</em> / <em>Lasting Power of Attorney (health)</em> / <em>Lasting Power of Attorney (finance)</em> / <em>Not sure what LPA is</em>.</li>
+<li>Rationale: The <em>Not sure what LPA is</em> option is a deliberate planner-intent trigger.</li>
+<li>Logic: <em>No will</em> + estate &gt;£1m triggers a high-priority flag. <em>Not sure what LPA is</em> fires a definition-provocation inline.</li>
+<li>Provocation: <em>Not sure what LPA is</em>: <em>&quot;A Lasting Power of Attorney lets someone you trust make decisions for you if you can&#039;t. Without one, families often wait 6+ months and £3–5k in court fees to get access when it matters most.&quot;</em></li>
+</ul>
+<h4>Section 7 — Retirement horizon (3 questions)</h4>
+<p><strong>Q7.1 — Target age.</strong> <em>&quot;At what age would you ideally stop needing to work for money?&quot;</em></p>
+<ul>
+<li>Input: <strong>Slider</strong>, current age → 75, snap to whole years.</li>
+<li>Rationale: Anchor for the whole retirement narrative.</li>
+<li>Logic: If (target age − current age) &lt; 10 and Q4.4 &lt; £1m, fires a &quot;close to the line&quot; provocation.</li>
+<li>Provocation: <em>&quot;You&#039;ve given yourself X years to build £Y. Based on a typical household your age, the monthly rate this implies is £Z. Worth a conversation about whether that&#039;s realistic.&quot;</em></li>
+</ul>
+<p><strong>Q7.2 — Retirement picture.</strong> <em>&quot;When you picture not working, what&#039;s the first feeling that comes up?&quot;</em></p>
+<ul>
+<li>Input: <strong>Card select (single)</strong></li>
+<li>Options: <em>Can&#039;t wait</em> / <em>A mix of excitement and worry</em> / <em>A bit uneasy — I don&#039;t know who I am without work</em> / <em>Hard to imagine — I&#039;ll never fully stop</em> / <em>I&#039;m already there and it&#039;s good</em> / <em>I&#039;m already there and it&#039;s less than I hoped</em>.</li>
+<li>Rationale: Discovery Framework — emotional drivers. Real Wealth&#039;s differentiator is addressing this.</li>
+<li>Logic: <em>Bit uneasy</em> or <em>Less than I hoped</em> routes to a softer final-page tone.</li>
+<li>Provocation: <em>Hard to imagine</em>: <em>&quot;Over half of our business-owner clients said the same. Planning isn&#039;t about when you stop — it&#039;s about when you could stop if you wanted to.&quot;</em></li>
+</ul>
+<p><strong>Q7.3 — State pension.</strong> <em>&quot;Do you know when you&#039;ll get the full new state pension, and how much it&#039;ll be?&quot;</em></p>
+<ul>
+<li>Input: <strong>Radio</strong>. <em>Yes — I&#039;ve checked</em> / <em>Roughly</em> / <em>No — I should check</em> / <em>Not relevant to me yet</em>.</li>
+<li>Rationale: Most people don&#039;t know. Free, quick provocation.</li>
+<li>Logic: <em>No</em> fires the direct gov.uk forecast link provocation.</li>
+<li>Provocation: <em>&quot;About 60% of people over 50 don&#039;t know their exact state pension forecast. It takes 90 seconds at gov.uk/check-state-pension and it&#039;s often the most useful number in the whole plan.&quot;</em></li>
+</ul>
+<h4>Section 8 — Protection (2 questions)</h4>
+<p><strong>Q8.1 — Earnings protection.</strong> <em>&quot;If the main earner in your household couldn&#039;t work for a year — injury, illness — how confident are you the family could maintain its lifestyle?&quot;</em></p>
+<ul>
+<li>Input: <strong>5-point scale</strong> <em>Not at all confident</em> ↔ <em>Very confident</em>.</li>
+<li>Rationale: Protection sale is sensitive. This is the least pushy way to surface it.</li>
+<li>Logic: Score ≤2 + dependants fires the protection-gap provocation hard.</li>
+<li>Provocation: <em>Score ≤2</em>: <em>&quot;Most families find there&#039;s a 3–6 month gap between sick pay and savings running out. Income protection is rarely the first thing on the list — and yet it&#039;s the one most clients say they wished they&#039;d sorted earlier.&quot;</em></li>
+</ul>
+<p><strong>Q8.2 — Life cover in place.</strong> <em>&quot;Do you currently have any life insurance or critical illness cover?&quot;</em></p>
+<ul>
+<li>Input: <strong>Radio</strong>. <em>Yes, through work only</em> / <em>Yes, personal policy</em> / <em>Both</em> / <em>No</em> / <em>Not sure</em>.</li>
+<li>Rationale: Qualifies the protection gap.</li>
+<li>Logic: <em>Yes, through work only</em> + dependants fires a &quot;work cover is fragile — it ends when the job does&quot; provocation.</li>
+<li>Provocation: <em>Yes, through work only</em>: <em>&quot;Group cover ends the day you leave. We&#039;ve seen families find out in the worst month of their life that the protection they thought they had was tied to a job they no longer held.&quot;</em></li>
+</ul>
+<h4>Section 9 — Advice today (2 questions)</h4>
+<p><strong>Q9.1 — Current advice relationship.</strong> <em>&quot;Do you currently work with a financial adviser or planner?&quot;</em></p>
+<ul>
+<li>Input: <strong>Radio</strong>. <em>Yes — and happy</em> / <em>Yes — but looking</em> / <em>Used to, not currently</em> / <em>Never have</em> / <em>I use an accountant for this</em> .</li>
+<li>Rationale: Qualifies the lead and sets the tone of the follow-up.</li>
+<li>Logic: <em>Yes — but looking</em> routes to the direct senior-partner booking on the final page.</li>
+<li>Provocation: None — this is a qualifier.</li>
+</ul>
+<p><strong>Q9.2 — What&#039;s missing.</strong> <em>[Conditional on Q9.1 ≠ Yes — and happy]</em> <em>&quot;What would you want a planner to help you with that isn&#039;t being helped today?&quot;</em></p>
+<ul>
+<li>Input: <strong>Multi-select checkboxes</strong> (up to 3)</li>
+<li>Options: <em>Pulling everything into one picture</em> / <em>Tax efficiency</em> / <em>Retirement modelling</em> / <em>Estate and IHT planning</em> / <em>Business extraction and succession</em> / <em>Protection for my family</em> / <em>Someone to challenge my thinking</em> / <em>Honestly — not sure, I just know something&#039;s missing</em>.</li>
+<li>Rationale: Pre-loads the discovery agenda.</li>
+<li>Logic: Selections shape the final-page &quot;things worth talking about&quot; list ordering.</li>
+<li>Provocation: <em>Honestly — not sure</em>: <em>&quot;More than half of our best client relationships started the same way — &#039;I don&#039;t know what I don&#039;t know.&#039; That&#039;s often the right reason to book a conversation.&quot;</em></li>
+</ul>
+<h4>Section 10 — Priorities and commitment (3 questions)</h4>
+<p><strong>Q10.1 — Trade-offs.</strong> <em>&quot;If you had to choose, which would you lean towards?&quot;</em></p>
+<ul>
+<li>Input: <strong>Card select (single, 2×3 grid)</strong></li>
+<li>Options: <em>Enjoy more now</em> ↔ <em>Retire earlier</em> / <em>Leave more to family</em> ↔ <em>Spend more on us</em> / <em>Simplify my life</em> ↔ <em>Grow the pot</em>.</li>
+<li>Rationale: Discovery Framework Mandatory Q5. A single question captures three trade-offs.</li>
+<li>Logic: Choices tune the final-page shortlist tone.</li>
+<li>Provocation: None — feeds narrative.</li>
+</ul>
+<p><strong>Q10.2 — One thing to act on.</strong> <em>&quot;If you could only tackle one financial area in the next 12 months, which would matter most?&quot;</em></p>
+<ul>
+<li>Input: <strong>Radio</strong></li>
+<li>Options: <em>Pull everything into one picture</em> / <em>Reduce my tax</em> / <em>Sort retirement properly</em> / <em>Sort the estate / what happens next</em> / <em>Protect my family</em> / <em>Plan the exit from my business</em> / <em>I don&#039;t know — that&#039;s why I&#039;m here</em>.</li>
+<li>Rationale: Discovery Framework Mandatory Q10. Drives the CTA wording.</li>
+<li>Logic: Answer becomes the subject line of the follow-up email.</li>
+<li>Provocation: None — drives the narrative.</li>
+</ul>
+<p><strong>Q10.3 — Urgency.</strong> <em>&quot;And when would you ideally want to have this conversation?&quot;</em></p>
+<ul>
+<li>Input: <strong>Radio</strong>. <em>This week</em> / <em>Within a month</em> / <em>Within three months</em> / <em>Sometime this year</em> / <em>Not sure yet — just exploring</em>.</li>
+<li>Rationale: Routes the CTA. <em>This week</em> gets a &quot;book for tomorrow&quot; slot. <em>Sometime this year</em> gets a nurture sequence.</li>
+<li>Logic: Directly drives the final-page CTA button text and the Calendly slot offered.</li>
+<li>Provocation: None — qualifier.</li>
+</ul>
+<h4>Contact fields (end of form, not counted in Q total)</h4>
+<ul>
+<li>First name (text, required)</li>
+<li>Last name (text, required)</li>
+<li>Email (email, required)</li>
+<li>Phone (tel, optional)</li>
+<li>Consent (checkbox, required) — <em>&quot;I&#039;d like Real Wealth to contact me about booking a call and to send occasional planning insights. I can unsubscribe any time.&quot;</em></li>
+</ul>
+<p>---</p>
+<h3>7. Tier B — Wealth Conversation (~18 questions)</h3>
+<p>The recommended public default. Derived from Tier A by <strong>cutting Sections 5, 8, and 9 entirely</strong> and <strong>consolidating Sections 3 and 4 from five questions each to three</strong>. Tier A question numbers are preserved so the two tiers share a data schema.</p>
+<p><strong>Kept from Tier A, unchanged:</strong> Q1.1, Q1.2 (Section 1) Q2.1, Q2.2, Q2.3, Q2.4 (Section 2) Q3.1, Q3.2, Q3.4 (Section 3 — cut Q3.3 Non-essential spend, Q3.5 Money mindset) Q4.3, Q4.4, Q4.5 (Section 4 — cut Q4.1 main home, Q4.2 other property) Q6.2, Q6.3 (Section 6 — cut Q6.1) Q7.1, Q7.2 (Section 7 — cut Q7.3) Q10.1, Q10.2, Q10.3 (Section 10 — keep all three)</p>
+<p><strong>Total: 18 questions.</strong></p>
+<p><strong>Conditional additions:</strong> If Q2.3 = business owner, <strong>insert Q5.2 and Q5.3 between 4.5 and 6.2</strong> (+2, total 20 for business owners).</p>
+<p><strong>What&#039;s lost vs Tier A:</strong> granular property data, non-essential spend, full protection picture, current-adviser context. The planner picks these up in the call. Everything that fires a provocation in Tier A and matters most for lead qualification is kept.</p>
+<p><strong>Still covers:</strong> 6 of 10 Discovery Framework mandatory questions, 5 of 9 Compass sections, all three primary provocation families (£100k trap, pension consolidation, IHT above £2m).</p>
+<p>---</p>
+<h3>8. Tier C — Lead Capture (~7 questions)</h3>
+<p>For paid-ad landing pages and partner-portal referrals where friction is the enemy. Built for 85%+ completion. Minimal insight; the whole purpose is to book the call.</p>
+<ol>
+<li><strong>Q2.1 — Age</strong> (slider)</li>
+<li><strong>Q2.3 — Work status</strong> (radio)</li>
+<li><strong>Q4.5 — Total estate</strong> (radio, banded)</li>
+<li><strong>Q10.2 — One thing to act on</strong> (radio)</li>
+<li><strong>Q10.3 — Urgency</strong> (radio)</li>
+<li><strong>Q2.4 — Happy place</strong> (short text, kept because it&#039;s the emotional hook that makes the final page work)</li>
+<li>Contact fields — first name / email / phone / consent (single screen, three fields).</li>
+</ol>
+<p><strong>What fires:</strong> at most 2 provocations, both from Q4.5 and Q10.2.</p>
+<p><strong>Do not ship Tier C as the only option.</strong> It is a paid-funnel variant. The firm&#039;s differentiation is in Tier A and Tier B — Tier C hands back most of the &quot;we noticed this&quot; advantage.</p>
+<p>---</p>
+<h3>9. Conditional logic map</h3>
+<p>The branching is deliberately lightweight — the tool&#039;s insight comes from the provocation library, not from a combinatorial question tree.</p>
+<pre><code>Q2.2 (Household)
+  └─ if &quot;Dependent children&quot;    → reveal Q2.2a (ages), Q6.1 (dependency horizon)
+  └─ if &quot;Elderly parent&quot;        → Q6.2 tuning + care-cost provocation later
+  └─ if both                    → &quot;sandwich generation&quot; provocation fires
+
+Q2.3 (Work status)
+  └─ if &quot;Business owner&quot;        → reveal Section 5 (Q5.1–Q5.3)
+  └─ if &quot;Fully retired&quot;         → skip Q7.1 target age, show Q7.2 only
+
+Q3.1 (Income)
+  └─ if £100–125k               → £100k trap provocation + Q3.1a &quot;one or two earners?&quot;
+  └─ if £125k+                  → personal allowance taper provocation
+  └─ if £200k+                  → tapered annual allowance provocation
+
+Q4.1 (Main home)
+  └─ if &quot;Yes, with mortgage&quot;    → reveal Q4.1a (mortgage balance)
+  └─ feeds Q4.5 estate calc
+
+Q4.2 (Other property)
+  └─ if 2+                      → reveal Q4.2a (held in ltd company?)
+
+Q4.3 (Pensions)
+  └─ if 4+                      → reveal Q4.3a (combined value estimate)
+
+Q4.5 (Estate)
+  └─ if £2m+                    → RNRB taper provocation
+  └─ if £3m+                    → high-value routing flag for final-page CTA
+
+Q7.1 (Target age)
+  └─ if (target − current) &lt; 10 AND Q4.4 &lt; £1m → &quot;close to the line&quot; provocation
+
+Q9.1 (Current adviser)
+  └─ if NOT &quot;Happy&quot;             → reveal Q9.2 (what&#039;s missing)
+  └─ if &quot;Yes — but looking&quot;     → direct senior-partner booking on final page
+
+Q10.3 (Urgency)
+  └─ if &quot;This week&quot;             → 48h slots offered
+  └─ if &quot;Not sure yet&quot;          → nurture sequence, no urgency CTA</code></pre>
+<p><strong>Total conditional reveals:</strong> 9. <strong>Total skip-patterns:</strong> 2. This is a simple, auditable state machine that can be implemented as a single JSON rules file.</p>
+<p>---</p>
+<h3>10. What&#039;s smarter about this set vs the v0.2 Spec</h3>
+<p>The current spec (sections 6 of the Wealth Conversation Spec) has fifteen questions. Every question in the current spec is preserved or improved below. The net additions are:</p>
+<ul>
+<li><strong>Age as slider, not band.</strong> Gives three extra precision bits for provocation targeting.</li>
+<li><strong>Income band starts at £100k, not £200k.</strong> The £100–125k trap is the firm&#039;s richest provocation and the current spec misses it entirely.</li>
+<li><strong>Separate essential vs non-essential spend.</strong> Matches Compass / LifePlan model. The current spec has zero spend questions.</li>
+<li><strong>Target retirement age as slider.</strong> Unlocks the <em>&quot;X years to build £Y&quot;</em> provocation.</li>
+<li><strong>Retirement feeling question.</strong> The current spec has zero emotional questions about retirement. This is the Discovery Framework&#039;s richest territory.</li>
+<li><strong>Current-adviser question.</strong> The current spec doesn&#039;t ask. This is high-value lead qualification.</li>
+<li><strong>Urgency question.</strong> The current spec doesn&#039;t ask. This drives the CTA and the calendar slot offered.</li>
+<li><strong>Money mindset question.</strong> Maps to Discovery Framework Mandatory Q7 — currently unrepresented.</li>
+<li><strong>Legacy question as card-select.</strong> The current spec bundles this under &quot;will.&quot;</li>
+<li><strong>Trade-offs question (compound card).</strong> A single question captures three classic planning trade-offs — the current spec has none.</li>
+<li><strong>&quot;What&#039;s missing&quot; follow-up.</strong> Pre-loads the discovery agenda.</li>
+</ul>
+<p>Removed / reshaped from current spec:</p>
+<ul>
+<li>Q9 <em>&quot;Is any earner above £200k?&quot;</em> — replaced by finer income bands (Q3.1) because the £200k cut-off is too high to catch the richest provocation audience.</li>
+<li>Q10 <em>&quot;ISA usage this year&quot;</em> — demoted. We infer ISA status from Q4.4 and a follow-up in Section 9 if needed. The current question is low signal and feels like product-upsell.</li>
+<li>Q12 <em>&quot;LPA awareness&quot;</em> — folded into Q6.3 multi-select where &quot;Not sure what LPA is&quot; is an answer, triggering the explainer provocation.</li>
+</ul>
+<p>---</p>
+<h3>11. Question-to-Discovery-Framework crosswalk</h3>
+<p>For internal review — this shows how every Discovery Framework Mandatory Core Question is covered in Tier A, and where it&#039;s preserved in Tier B.</p>
+<div class="doc-table-wrap"><table><thead><tr><th>Discovery Framework Mandatory Q</th><th>Tier A question</th><th>Tier B?</th><th>Input type</th></tr></thead><tbody><tr><td>1. What does real wealth look like to you?</td><td>Q1.2</td><td>Yes</td><td>Card select</td></tr><tr><td>2. Describe your ideal normal life</td><td>Q2.4</td><td>Yes</td><td>Short text</td></tr><tr><td>3. What are you working towards and why?</td><td>Q10.2</td><td>Yes</td><td>Radio</td></tr><tr><td>4. What matters most to you right now?</td><td>Q10.2 (shared)</td><td>Yes</td><td>Radio</td></tr><tr><td>5. What trade-offs are you willing to make?</td><td>Q10.1</td><td>Yes</td><td>Card select (compound)</td></tr><tr><td>6. How aligned is your current life with the one you want?</td><td>Q3.4</td><td>Yes</td><td>5-point scale</td></tr><tr><td>7. What does money represent to you?</td><td>Q3.5</td><td>No</td><td>Card select</td></tr><tr><td>8. Who else matters in your plans?</td><td>Q2.2 + Q6.2</td><td>Partial (Q2.2 only)</td><td>Multi-select + card</td></tr><tr><td>9. What concerns or risks could derail things?</td><td>Q8.1 + Q8.2</td><td>No</td><td>Scale + radio</td></tr><tr><td>10. What should we help you prioritise first?</td><td>Q10.2 + Q10.3</td><td>Yes</td><td>Radio + radio</td></tr></tbody></table></div>
+<p>Tier A covers 10/10. Tier B covers 6/10, with Q7 and Q9 deferred to the discovery call.</p>
+<p>---</p>
+<h3>12. Open questions for Real Wealth</h3>
+<p>These are the decisions the firm needs to make before we lock Tier A and Tier B.</p>
+<ol>
+<li><strong>Which tier ships as v1.0 default?</strong> Our recommendation: Tier B, with Tier A available as an opt-in &quot;thorough version.&quot; Needs Mike / John to agree.</li>
+<li><strong>Income bands.</strong> Confirm the £100k / £125k / £200k thresholds align with 2026/27 tax year assumptions. Any pending Budget changes?</li>
+<li><strong>Q6.3 LPA copy.</strong> Does Legal/Compliance approve the &quot;6+ months and £3–5k court fees&quot; provocation? Source check needed.</li>
+<li><strong>Q7.3 state pension link.</strong> Any issue with linking directly to gov.uk in a provocation? (We think none — but confirm.)</li>
+<li><strong>Q9.1 adviser question.</strong> Is <em>&quot;Yes — but looking&quot;</em> a direct-to-senior-partner route, or does it go through the normal triage? This affects the final-page CTA logic.</li>
+<li><strong>Slider use.</strong> Are there accessibility concerns with sliders on the firm&#039;s target demographic (we have some evidence that age 55+ users struggle with sliders on mobile)? Tier A uses three sliders; we could swap all three for banded radios if preferred.</li>
+<li><strong>Tier C for partner portal.</strong> Does the firm want a separate Tier C landing page for accountant/solicitor referrals — and should that version skip the qualification questions entirely and go straight to call booking with one aspiration-line capture?</li>
+<li><strong>Q4.2 buy-to-let question.</strong> Is the &quot;held in a limited company&quot; follow-up too niche for a lead magnet? Could be cut to simplify.</li>
+<li><strong>Q10.2 &quot;business exit&quot; option.</strong> Only relevant to business owners — should this option be hidden from non-business-owners, or shown to everyone so &quot;I don&#039;t know&quot; remains an honest answer?</li>
+<li><strong>Final-page CTA wording per urgency band.</strong> Does <em>&quot;Book for tomorrow&quot;</em> feel appropriate for <em>This week</em>, or should we soften?</li>
+</ol>
+<p>---</p>
+<h3>13. What we&#039;d do next</h3>
+<p>If the firm signs off on this design:</p>
+<ol>
+<li>Lock the Tier A question list and finalise the answer options (final draft in this doc — word-level polish only remaining).</li>
+<li>Extend the provocation library (currently ~30 entries in the Prototype Action Plan) to cover the new question triggers — approximately 15 new entries needed. Cartered Financial Planner + Compliance Officer sign-off per entry.</li>
+<li>Build the Tier B form as the v1.0 public default. Keep Tier A behind the <em>&quot;thorough version&quot;</em> link — roughly 1.5 days extra engineering effort to support both.</li>
+<li>Run a 2-week soft launch with 50 warm contacts split 25/25 between Tier A and Tier B. Measure completion, provocations fired, and booking rate.</li>
+<li>A/B test Tier B vs a stripped-down Tier C on one paid-ad landing page after the soft launch.</li>
+</ol>
+<p>Target: Tier B public default live within 4 weeks of sign-off.</p>
+<p>---</p>
+<p><em>Companion documents: Lead Magnet — Wealth Conversation Spec (v0.2), Lead Magnet — Prototype Action Plan (v0.2), Brand Assets pack.</em> <em>Next revision trigger: firm sign-off on Section 12 open questions.</em></p></div>
+  </article>
+</main>
+  <footer class="site-footer">
+    <div>
+      <img src="/real-wealth-logo-wordmark.svg" alt="Real Wealth">
+      <p>Manchester / Taunton | 0161 768 7722 | hello@realwealth.co.uk</p>
+    </div>
+    <p>This client review website is for internal review only. Public launch requires final compliance sign-off and production data integrations.</p>
+  </footer>
+</body>
+</html>

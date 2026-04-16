@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>App Build Prompt - Real Wealth Client Review</title>
+  <meta name="description" content="The prompt used to scaffold the demo from the master template.">
+  <link rel="stylesheet" href="../site.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="logo-link" href="../index.html" aria-label="Real Wealth client review home">
+      <img src="/real-wealth-logo-wordmark.svg" alt="Real Wealth">
+    </a>
+    <nav class="site-nav" aria-label="Primary navigation">
+      <a href="../index.html#service">Service</a>
+      <a href="../index.html#question-flow">Question flow</a>
+      <a href="../index.html#delivery">Delivery</a>
+      <a href="../index.html#documents">Docs</a>
+      <a class="service-link" href="/">Open service</a>
+    </nav>
+  </header>
+  
+<main class="doc-page">
+  <a class="back-link" href="../index.html#documents">Back to review library</a>
+  <article class="doc-article">
+    <header class="doc-hero">
+      <p class="eyebrow">Source document</p>
+      <h1>App Build Prompt</h1>
+      <p>The prompt used to scaffold the demo from the master template.</p>
+    </header>
+    <div class="doc-body"><h2>App Build — Claude Code Prompt</h2>
+<p><em>Paste-ready prompt for Claude Code. Takes the master template and produces a clickable demo of the Wealth Conversation lead magnet on Next.js + Vercel. Scope is a demo, not production.</em></p>
+<p>---</p>
+<h3>Task</h3>
+<p>Take the master template and turn it into a working end-to-end demo of the Wealth Conversation lead magnet, deployable on Vercel. Four screens — homepage, questionnaire, data capture, summary — wired with real copy and real segmentation logic, but no backend database, no HubSpot integration, no email sending, no live analytics.</p>
+<h3>Paths</h3>
+<ul>
+<li><strong>Input:</strong> <code>C:\Users\matty\Real Wealth\Real Wealth\master_template\</code></li>
+<li><strong>Output:</strong> <code>C:\Users\matty\Real Wealth\Real Wealth\wealth_conversation_app\</code></li>
+<li><strong>Project reference files:</strong> <code>C:\Users\matty\Real Wealth\Real Wealth\</code> (brand, voice, question catalogue, segmentation, design prompts)</li>
+</ul>
+<h3>Stack</h3>
+<ul>
+<li>Next.js (App Router) + TypeScript</li>
+<li>Styling matches whatever the master template uses (Tailwind or CSS modules)</li>
+<li>Deploy target: Vercel — environment already provisioned</li>
+<li>No database, no API routes for persistence. Session state lives in React context plus localStorage only.</li>
+</ul>
+<h3>Read before you start</h3>
+<ol>
+<li><code>master_template/README.md</code> — the starting point</li>
+<li><code>Brand Assets/Voice and Tone.md</code></li>
+<li><code>Question Design Options.md</code> — the 35-question catalogue</li>
+<li><code>Segmentation Design Companion.md</code> and <code>Question Segment Master.xlsx</code> — nine segments, the five-question gate, and the Y/C/— matrix</li>
+<li><code>Design Agent Prompt - Wealth Conversation.md</code> — awareness-check, provocation, and final-page templates</li>
+<li><code>Pitfall Awareness Library.md</code> — the 20 awareness checks and their copy</li>
+</ol>
+<h3>Scope — demo, not production</h3>
+<p><strong>Do:</strong> wire all four screens end-to-end, load the real 35-question catalogue, run the segment-assignment rules live, skip irrelevant questions per the matrix, show real provocations, land on a segment-tailored summary page.</p>
+<p><strong>Don&#039;t:</strong> build a HubSpot integration (client undecided), fire GA4 events (future), persist to a database, send emails, implement auth. Stub these behind clearly-commented interfaces so the production build can drop in the real implementations later.</p>
+<h3>What must work</h3>
+<p><strong>Homepage</strong> — hero, tier picker, brand-freedom quote, benefit cards, footer. Tier selection drives question set size. Standard preselected.</p>
+<p><strong>Questionnaire</strong> — segment-aware. After the five-question gate completes, call the rules engine from the master template, assign a segment, and skip any question marked <code>—</code> for that segment. Progress bar is percentage-based. Three screen types render correctly: question, awareness-check (aware / partial / unaware), provocation card. Provocations fire at their configured positions.</p>
+<p><strong>Data capture</strong> — one screen: name, email, optional phone, consent tick. Submit writes to session state only. No account, ever.</p>
+<p><strong>Summary page</strong> — aspiration echo (template blended with keywords from the aspiration question), considered list of 3–6 provocations drawn from what the user encountered, one or two illustrative charts (static SVG is fine — the label and framing matter, not the data), CTA block, FCA footer.</p>
+<h3>The view-raw-data feature (demo-only)</h3>
+<p>At the bottom of the summary page, below the FCA footer, add a small link: <em>View the captured data</em>.</p>
+<p>Clicking opens a modal (or a route at <code>/demo/raw</code>) that displays the full session as pretty-printed JSON and offers a <em>Download as JSON</em> button. Include:</p>
+<ul>
+<li><code>tier</code> (quick / standard / thorough)</li>
+<li><code>segmentId</code> and which rule matched</li>
+<li>Every answer, keyed by question ID</li>
+<li>Every provocation shown, with timestamp</li>
+<li>The computed considered list</li>
+<li>Data capture fields (name, email, phone, consent)</li>
+<li>Start timestamp, completion timestamp, screen-count</li>
+</ul>
+<p>At the top of the modal, a short note: <em>&quot;Demo only. In production this view would not exist — data would flow to the firm&#039;s systems via HubSpot or equivalent. This page exists so IT can see the shape of the data we capture.&quot;</em></p>
+<h3>Segment-specific CTAs on the summary page</h3>
+<p>The summary-page CTA varies by segment per <code>Segmentation Design Companion.md</code> §7. For the demo, stub each as a placeholder calendar URL with a clear label:</p>
+<ul>
+<li>S1 Early Accumulator → nurture-list sign-up <em>(&quot;Join our monthly briefing&quot;)</em></li>
+<li>S2–S5, S7, S8 → standard 20-minute call booking</li>
+<li>S6 Business Owner, Exit-minded → succession-focused call booking</li>
+<li>S9 HNW → senior-partner booking</li>
+<li>Overlay <code>advised_but_looking = true</code> → senior-partner booking regardless of segment</li>
+</ul>
+<p>All destination URLs are <code>calendly.com/...placeholder</code> for the demo. Document the mapping in the README.</p>
+<h3>Non-negotiables</h3>
+<ul>
+<li>No hex values — all colour via tokens from the master template.</li>
+<li>Voice and Tone banned-word list applies everywhere, including page titles, meta descriptions, error messages, ARIA labels.</li>
+<li>App never gives advice. Every CTA invites a conversation.</li>
+<li>WCAG 2.2 AA throughout.</li>
+<li>Typekit kit ID is a TODO — leave fallbacks and flag clearly.</li>
+<li>Resume-later: store session in localStorage so a refresh does not lose state. A <em>&quot;Start over&quot;</em> button on the summary page clears it.</li>
+</ul>
+<h3>Definition of done</h3>
+<ul>
+<li>Deployed to Vercel, public URL in the README.</li>
+<li>All nine segments can be walked end-to-end — document the five-answer combos that land on each segment so the demo-er can show them deliberately.</li>
+<li><em>View the captured data</em> link works, modal opens, JSON displays, download works.</li>
+<li>Lighthouse accessibility ≥ 95 on all four screens.</li>
+<li>Typecheck and lint pass.</li>
+<li>README covers: run locally, deploy to Vercel, the nine segment demo paths, known demo limitations (no HubSpot, no GA4, no persistence, stub calendar URLs), and how a production build would differ.</li>
+</ul>
+<p>---</p>
+<p><em>End of prompt.</em></p></div>
+  </article>
+</main>
+  <footer class="site-footer">
+    <div>
+      <img src="/real-wealth-logo-wordmark.svg" alt="Real Wealth">
+      <p>Manchester / Taunton | 0161 768 7722 | hello@realwealth.co.uk</p>
+    </div>
+    <p>This client review website is for internal review only. Public launch requires final compliance sign-off and production data integrations.</p>
+  </footer>
+</body>
+</html>

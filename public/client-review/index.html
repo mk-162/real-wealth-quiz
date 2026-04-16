@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Wealth Conversation Service Review - Real Wealth Client Review</title>
+  <meta name="description" content="Client review website for the Real Wealth Wealth Conversation service.">
+  <link rel="stylesheet" href="./site.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="logo-link" href="./index.html" aria-label="Real Wealth client review home">
+      <img src="/real-wealth-logo-wordmark.svg" alt="Real Wealth">
+    </a>
+    <nav class="site-nav" aria-label="Primary navigation">
+      <a href="./index.html#service">Service</a>
+      <a href="./index.html#question-flow">Question flow</a>
+      <a href="./index.html#delivery">Delivery</a>
+      <a href="./index.html#documents">Docs</a>
+      <a class="service-link" href="/">Open service</a>
+    </nav>
+  </header>
+  
+<main>
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow">Client review website</p>
+      <h1>Wealth Conversation service review.</h1>
+      <p class="lead">A branded guide to the Real Wealth lead-magnet service: what the user experiences, how the question flow adapts, what content can trigger, and what needs to happen before public launch.</p>
+      <div class="hero-actions">
+        <a class="btn primary" href="/">Open the service</a>
+        <a class="btn secondary" href="/conversation?tier=standard">Start standard conversation</a>
+        <a class="btn ghost" href="#documents">Review source docs</a>
+      </div>
+    </div>
+    <div class="hero-visual" aria-label="Service screenshots">
+      <figure class="shot shot-main"><img src="./assets/question-screen.png" alt="Real Wealth questionnaire screen"><figcaption>Questionnaire</figcaption></figure>
+      <figure class="shot shot-small"><img src="./assets/summary-screen.png" alt="Real Wealth summary screen"><figcaption>Triggered summary</figcaption></figure>
+    </div>
+  </section>
+
+  <section id="service" class="section">
+    <div class="section-head">
+      <p class="eyebrow">How the service works</p>
+      <h2>It is a guided conversation, not a score quiz.</h2>
+      <p>The visitor chooses a depth, answers a conversational form, receives tailored prompts and a summary, then can book a call with Real Wealth. The system is designed to make the first planner conversation warmer, more specific, and easier to prepare for.</p>
+    </div>
+    <div class="journey-grid">
+      <article class="journey-card"><span>1</span><h3>Landing page</h3><p>Explains the promise, lets the visitor choose quick, standard, or thorough.</p></article>
+<article class="journey-card"><span>2</span><h3>Opening questions</h3><p>Sets tone and captures what real wealth means to the person.</p></article>
+<article class="journey-card"><span>3</span><h3>Segment gate</h3><p>Age, household, work status, income, and estate band assign a planning segment.</p></article>
+<article class="journey-card"><span>4</span><h3>Adaptive flow</h3><p>The segment matrix decides which later questions are shown, conditional, or skipped.</p></article>
+<article class="journey-card"><span>5</span><h3>Triggered insight</h3><p>Answer patterns can show provocations, awareness checks, and summary overlays.</p></article>
+<article class="journey-card"><span>6</span><h3>Next step</h3><p>The visitor submits details and moves into booking, CRM, and adviser follow-up.</p></article>
+    </div>
+  </section>
+
+  <section id="built" class="section split">
+    <div>
+      <p class="eyebrow">What has been built</p>
+      <h2>Current demo status.</h2>
+      <p>The demo is a Next.js single-page app with a content-as-code layer, typed catalogues, adaptive question routing, segment assignment, and review-ready content libraries.</p>
+    </div>
+    <div class="status-list">
+      <div class="status-row"><strong>Master Template</strong><span>Built</span><p>Next.js app, component library, content schemas.</p></div>
+<div class="status-row"><strong>Questionnaire Flow</strong><span>Built</span><p>Tier picker, question screens, navigation, local session state.</p></div>
+<div class="status-row"><strong>Segmentation Engine</strong><span>Built</span><p>Nine ranked rules and S5 to S6 upgrade behaviour.</p></div>
+<div class="status-row"><strong>Content Pipeline</strong><span>Built</span><p>Markdown content validates into typed TypeScript catalogues.</p></div>
+<div class="status-row"><strong>Component Wiring</strong><span>In progress</span><p>Demo components are connected; production integrations remain.</p></div>
+<div class="status-row"><strong>Backend / Database</strong><span>Roadmap</span><p>Postgres submission storage and consent log are designed but not live.</p></div>
+<div class="status-row"><strong>CRM Integration</strong><span>Roadmap</span><p>HubSpot is assumed, with alternative CRM options possible.</p></div>
+    </div>
+  </section>
+
+  <section id="question-flow" class="section">
+    <div class="section-head">
+      <p class="eyebrow">Question flow</p>
+      <h2>The first five gate answers shape the rest of the service.</h2>
+      <p>The app asks the same opening questions for everyone, assigns a segment silently after the money-today screen, then continues with only the sections that make sense for that person.</p>
+    </div>
+    <div class="gate-grid">
+      <article class="gate-card"><span>Q2.1</span><h3>Age</h3><p>Used for retirement, business exit, pre-retirement, and HNW context.</p></article>
+<article class="gate-card"><span>Q2.2</span><h3>Household</h3><p>Identifies partner, children, adult children, elderly parent, or solo planning.</p></article>
+<article class="gate-card"><span>Q2.3</span><h3>Work status</h3><p>Separates employed, self-employed, business owner, retired, and between-role journeys.</p></article>
+<article class="gate-card"><span>Q3.1</span><h3>Income band</h3><p>Identifies high-earner tax traps and income-led segment fit.</p></article>
+<article class="gate-card"><span>Q4.5</span><h3>Estate band</h3><p>Creates senior, HNW, IHT, and estate-planning routes.</p></article>
+    </div>
+    <h3 class="subhead">Ranked segment rules</h3>
+    <div id="ruleList" class="rule-list"></div>
+    <div class="note"><strong>S6 is two-stage.</strong> The app initially treats an older business owner as S5. If Q5.3 later shows exit intent, the segment upgrades to S6.</div>
+    <h3 class="subhead">Segment question matrix</h3>
+    <div id="segmentToolbar" class="segment-toolbar" aria-label="Filter by segment"></div>
+    <div id="routePanel" class="route-panel"></div>
+    <div class="legend"><span><b class="y">Y</b> shown</span><span><b class="c">C</b> conditional</span><span><b class="n">N</b> skipped</span></div>
+    <div class="matrix-wrap"><table id="matrixTable" class="matrix-table"></table></div>
+  </section>
+
+  <section id="triggers" class="section split">
+    <div>
+      <p class="eyebrow">Triggered content</p>
+      <h2>The service responds to meaningful answer patterns.</h2>
+      <p>Provocations create timely commercial prompts. Awareness checks educate the user on planning pitfalls and capture whether they already knew the issue.</p>
+    </div>
+    <div class="trigger-box">
+      <div><strong>24</strong><span>provocation cards</span></div>
+      <div><strong>26</strong><span>awareness checks</span></div>
+      <div><strong>11</strong><span>summary CTAs and overlays</span></div>
+    </div>
+  </section>
+  <section class="section">
+    <h3 class="subhead">Example provocation triggers</h3>
+    <div id="provocationList" class="provocation-list"></div>
+  </section>
+
+  <section id="delivery" class="section">
+    <div class="section-head">
+      <p class="eyebrow">Delivery model</p>
+      <h2>Content, compliance, data, and deployment.</h2>
+      <p>The current demo keeps data local to the browser. Production should add encrypted submission storage, consent logging, CRM record creation, and calendar prefill.</p>
+    </div>
+    <div class="delivery-grid">
+      <article><h3>Content workflow</h3><p>Markdown files are validated by Zod schemas, then compiled into typed catalogues consumed by the React app.</p></article>
+      <article><h3>Compliance workflow</h3><p>Provocations and awareness checks carry review status. Production should only render approved-to-ship content.</p></article>
+      <article><h3>Data roadmap</h3><p>Postgres should store submissions, answers, segment, fired triggers, consent text, and timestamps.</p></article>
+      <article><h3>CRM roadmap</h3><p>HubSpot is assumed. Captured fields can create a lead, attach segment metadata, and enroll follow-up workflows.</p></article>
+    </div>
+  </section>
+
+  <section id="documents" class="section">
+    <div class="section-head">
+      <p class="eyebrow">Review library</p>
+      <h2>Rendered source documents.</h2>
+      <p>The documents that were linked from the original dashboard are rendered here as HTML pages so the client can review the whole service without opening raw Markdown files.</p>
+    </div>
+    <div class="docs-grid">
+    <a class="doc-card" href="./docs/content-readme.html">
+      <span>Document</span>
+      <strong>Content README</strong>
+      <p>How copy is edited in the content folder and validated before shipping.</p>
+    </a>
+
+    <a class="doc-card" href="./docs/wealth-conversation-spec.html">
+      <span>Document</span>
+      <strong>Wealth Conversation Spec</strong>
+      <p>The core service specification for the lead magnet and client journey.</p>
+    </a>
+
+    <a class="doc-card" href="./docs/prototype-action-plan.html">
+      <span>Document</span>
+      <strong>Prototype Action Plan</strong>
+      <p>The build plan, trigger matrix, data flow, and pilot plan.</p>
+    </a>
+
+    <a class="doc-card" href="./docs/app-build-prompt.html">
+      <span>Document</span>
+      <strong>App Build Prompt</strong>
+      <p>The prompt used to scaffold the demo from the master template.</p>
+    </a>
+
+    <a class="doc-card" href="./docs/master-template-readme.html">
+      <span>Document</span>
+      <strong>Master Template README</strong>
+      <p>Engineering guide to the Next.js scaffold and project layout.</p>
+    </a>
+
+    <a class="doc-card" href="./docs/decision-log.html">
+      <span>Document</span>
+      <strong>Decision Log</strong>
+      <p>What was kept, what was cut, and what remains open.</p>
+    </a>
+
+    <a class="doc-card" href="./docs/brand-overview.html">
+      <span>Document</span>
+      <strong>Brand Overview</strong>
+      <p>Real Wealth positioning, audiences, services, and tone.</p>
+    </a>
+
+    <a class="doc-card" href="./docs/voice-and-tone.html">
+      <span>Document</span>
+      <strong>Voice and Tone</strong>
+      <p>Writing rules, banned phrases, and voice guidance.</p>
+    </a>
+
+    <a class="doc-card" href="./docs/colour-palette.html">
+      <span>Document</span>
+      <strong>Colour Palette and Tokens</strong>
+      <p>Primary, secondary, and neutral colours with usage guidance.</p>
+    </a>
+
+    <a class="doc-card" href="./docs/segmentation-companion.html">
+      <span>Document</span>
+      <strong>Segmentation Design Companion</strong>
+      <p>The nine-segment model, five-question gate, and route matrix.</p>
+    </a>
+
+    <a class="doc-card" href="./docs/question-design-options.html">
+      <span>Document</span>
+      <strong>Question Design Options</strong>
+      <p>The question catalogue and interaction patterns used in the form.</p>
+    </a></div>
+  </section>
+
+  <section id="next" class="section next-panel">
+    <p class="eyebrow">Next decisions</p>
+    <h2>What Real Wealth needs to confirm before launch.</h2>
+    <div class="next-grid">
+      <p>Review and edit the content folder or the rendered documents above.</p>
+<p>Provide final brand assets: Typekit ID, production logo files, and approved photography.</p>
+<p>Confirm CRM platform and provide credentials or sandbox access.</p>
+<p>Choose the Vercel project, domain, and DNS route.</p>
+<p>Complete CFP and compliance sign-off on all triggered content.</p>
+<p>Schedule a soft-launch pilot with 8-12 warm contacts.</p>
+    </div>
+  </section>
+</main>
+<script src="./app.js"></script>
+  <footer class="site-footer">
+    <div>
+      <img src="/real-wealth-logo-wordmark.svg" alt="Real Wealth">
+      <p>Manchester / Taunton | 0161 768 7722 | hello@realwealth.co.uk</p>
+    </div>
+    <p>This client review website is for internal review only. Public launch requires final compliance sign-off and production data integrations.</p>
+  </footer>
+</body>
+</html>

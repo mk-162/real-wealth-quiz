@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Decision Log - Real Wealth Client Review</title>
+  <meta name="description" content="What was kept, what was cut, and what remains open.">
+  <link rel="stylesheet" href="../site.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="logo-link" href="../index.html" aria-label="Real Wealth client review home">
+      <img src="/real-wealth-logo-wordmark.svg" alt="Real Wealth">
+    </a>
+    <nav class="site-nav" aria-label="Primary navigation">
+      <a href="../index.html#service">Service</a>
+      <a href="../index.html#question-flow">Question flow</a>
+      <a href="../index.html#delivery">Delivery</a>
+      <a href="../index.html#documents">Docs</a>
+      <a class="service-link" href="/">Open service</a>
+    </nav>
+  </header>
+  
+<main class="doc-page">
+  <a class="back-link" href="../index.html#documents">Back to review library</a>
+  <article class="doc-article">
+    <header class="doc-hero">
+      <p class="eyebrow">Source document</p>
+      <h1>Decision Log</h1>
+      <p>What was kept, what was cut, and what remains open.</p>
+    </header>
+    <div class="doc-body"><h2>Decision Log — Master Template</h2>
+<p><em>One-page record of what we took from the Stitch prototype, what we did not, and the open questions we couldn&#039;t resolve from the files alone.</em></p>
+<p><em>Written 2026-04-16 alongside the initial scaffold. When a decision below is revisited, append a dated addendum rather than rewriting.</em></p>
+<p>---</p>
+<h3>What we took from the prototype</h3>
+<div class="doc-table-wrap"><table><thead><tr><th>From the prototype</th><th>What we kept</th><th>Why</th></tr></thead><tbody><tr><td>Teal gradient hero (<code>#0c7372 → rgb(17,160,159)</code>)</td><td>Used verbatim as <code>--gradient-teal</code> in <code>tokens.css</code>.</td><td>On-brand; matches the dev site.</td></tr><tr><td>Sticky minimal header with wordmark left</td><td>Kept on homepage and questionnaire.</td><td>Low-friction, brand-correct.</td></tr><tr><td>Orange primary CTA on the hero</td><td>Kept as <code>--brand-orange</code> primary button.</td><td>On-brand; passes AA on paper.</td></tr><tr><td>Three reassurance pills below hero</td><td>Kept as two pills (see below), same visual pattern.</td><td>Pattern is good; claim count needed to change.</td></tr><tr><td>Question-per-screen pacing</td><td>Kept as the core questionnaire flow.</td><td>Matches the Typeform reference + the spec.</td></tr><tr><td>Benefit-card strip below the fold</td><td>Kept verbatim in shape; copy replaced.</td><td>Good visual rest between hero and footer.</td></tr><tr><td>Hero → scroll-to-tier-picker pattern</td><td>Kept. <code>smooth</code> scroll, reduced-motion respected.</td><td>The explicit CTA click + tier confirmation is part of the spec.</td></tr><tr><td>Generous whitespace rhythm</td><td>Kept in token-level spacing scale.</td><td>Matches the brand&#039;s &quot;private-bank calm&quot; register.</td></tr></tbody></table></div>
+<h3>What we did not use — and why</h3>
+<div class="doc-table-wrap"><table><thead><tr><th>From the prototype</th><th>Why cut</th></tr></thead><tbody><tr><td>Stock skyscraper photography (growth/preservation question, Regent&#039;s Reserve screen)</td><td>Explicitly banned in <code>Homepage Prompt for Agent.md</code> §What NOT to do. Brand direction is typography-led.</td></tr><tr><td>&quot;Strategic Focus&quot; / &quot;Stewardship&quot; / &quot;Speak with Advisor&quot; copy</td><td>Voice and Tone banned vocabulary. Replaced with warm, plain-spoken alternatives.</td></tr><tr><td>Material Design colour tokens (<code>primary-container</code>, <code>tertiary-fixed-dim</code>, etc.)</td><td>Unnecessary and conflicting. Replaced with the <code>var(--brand-*)</code> tokens from the Brand Assets pack.</td></tr><tr><td>&quot;Step 7 of 12&quot; progress label</td><td>The questionnaire is segment-aware; the per-user question count varies from ~12 to ~30. Replaced with percentage.</td></tr><tr><td>&quot;A fifteen-minute conversation… Fifteen questions. Five minutes.&quot;</td><td>Internally contradicting and obsoleted by the tier picker. Homepage Prompt §1/2 supersede.</td></tr><tr><td>Tailwind CDN script tag</td><td>Not appropriate for a production template. Replaced with CSS Modules that consume a single <code>tokens.css</code>.</td></tr><tr><td>Noto Serif / Manrope Google Fonts</td><td>Wrong fonts. Replaced with <code>gelica</code> + <code>area-normal</code> stacks (with TODO for the Typekit kit id).</td></tr><tr><td>Three-pill row in the hero including <code>~5 minutes</code></td><td>Time now lives inside each tier tile. Kept two pills (No sign-in / FCA regulated).</td></tr><tr><td>Dark-mode variants in the prototype HTML</td><td>Out of scope for v1. Can be added later from the same token set.</td></tr><tr><td>Inline <code>onclick</code> scripts</td><td>Replaced with React event handlers.</td></tr></tbody></table></div>
+<h3>What we reshaped</h3>
+<div class="doc-table-wrap"><table><thead><tr><th>Element</th><th>Change</th><th>Reason</th></tr></thead><tbody><tr><td>Tier picker</td><td>Added (prototype had none). Three tiles, radiogroup pattern, &quot;Most people start here&quot; ribbon on Standard.</td><td>Required by Design Agent Prompt — Tier Picker.md.</td></tr><tr><td>Provocation card</td><td>Redesigned per Component Styles.md — 3px orange left bar, 5% teal tint, <code>role=&quot;status&quot;</code>.</td><td>Prototype&#039;s ornamental styling was off-tone.</td></tr><tr><td>Header progress</td><td>Percentage-based bar only. Tier identifier shown as a quiet label, not a step count.</td><td>Segment-aware form has variable length.</td></tr><tr><td>Hero H1</td><td>Replaced with the verbatim copy from Brand Assets&#039; Key Sales Messages section.</td><td>Prototype copy contradicted itself and named a duration.</td></tr></tbody></table></div>
+<p>---</p>
+<h3>Open questions we could not resolve from the files alone</h3>
+<ol>
+<li><strong>Typekit kit ID.</strong> Brand Assets/README.md lists this as missing. Until RW supplies it, the template falls back to system serif / sans. Flagged with a <code>TODO</code> in <code>src/styles/tokens.css</code> and in <code>src/app/layout.tsx</code>.</li>
+<li><strong>FCA entity name and register number.</strong> Placeholders <code>[Real Wealth Group Ltd]</code> and <code>[xxxxxx]</code> in <code>FCAFooter</code>. Needs RW Compliance Officer sign-off before production.</li>
+<li><strong>Provocation compliance status.</strong> Every entry in <code>src/lib/provocations/catalogue.ts</code> is shipped as <code>pending</code>. None should render in production until CFP + Compliance sign off. Question Design Options §12 item 3 flags this.</li>
+<li><strong>The full Question Segment Master matrix.</strong> We translated the rules file (tab 3) into <code>rules.ts</code> from the text description in <code>Segmentation Design Companion.md</code> §5. The Y/C/N matrix in <code>matrix.ts</code> covers the 22 questions actually referenced in the catalogue — the remaining 13 questions from the 35-question Tier A need to be added when their copy is locked.</li>
+<li><strong>Urgency CTA copy per band.</strong> <code>FinalCTA</code> takes an <code>urgency</code> prop but the <code>this_week</code> variant currently says &quot;Book a slot for tomorrow&quot; — this is a placeholder. Question Design Options §12 item 10 is an open decision.</li>
+<li><strong>Consumer Duty page.</strong> The <code>FCAFooter</code> links to <code>/consumer-duty</code> but no such route exists yet. The Homepage Prompt calls this out as &quot;link needs to be there; page doesn&#039;t need to exist yet&quot;.</li>
+<li><strong>Analytics wiring.</strong> Master Action Plan A19 specifies four events (<code>tier_picker_viewed</code>, <code>tier_selected</code>, <code>tier_confirmed</code>, <code>segment_assigned</code>). The template leaves the instrumentation to a follow-up pass — adding Plausible or a similar first-party tracker is the cleanest fit because it avoids a cookie banner.</li>
+<li><strong>Who owns segment-boundary re-banding.</strong> Segmentation Design Companion §11 item 5 — an operational decision rather than a code decision. Noted so the template does not pretend to have answered it.</li>
+</ol>
+<p>---</p>
+<p>---</p>
+<h3>Addendum — 2026-04-16 — Live-site brand match</h3>
+<p>Added after a pass over https://realwealth.co.uk/ to pull through obvious brand elements the spec docs hadn&#039;t captured. Summary of what changed:</p>
+<div class="doc-table-wrap"><table><thead><tr><th>Change</th><th>Source</th></tr></thead><tbody><tr><td><strong>Logo SVG wired in</strong> (<code>public/real-wealth-wordmark.svg</code>) via a new <code>Logo</code> component. Used on the homepage header (teal on paper), the questionnaire header, and the FCA footer (white on navy).</td><td>Lifted from <code>https://dev.realwealth.co.uk/wp-content/uploads/2025/09/logo.svg</code> and recoloured to <code>currentColor</code> so CSS drives the fill.</td></tr><tr><td><strong>Primary CTA button re-styled</strong> to an orange gradient with a 2px white border, gelica italic text, and a hover-flip where the text/border go orange and the background goes paper.</td><td>Matches the <code>.wp-block-button__link</code> style on the live site.</td></tr><tr><td><strong>Card shadow softened</strong> to <code>0 15px 15px -10px rgba(0,0,0,0.05)</code> for default elevation, and a <code>--shadow-card</code> token added for the &quot;sits under the page&quot; selected-state shadow (<code>0 0 14px rgba(0,0,0,0.2)</code>).</td><td>Matches the card-elevation style on the live site.</td></tr><tr><td><strong>Gradient token added</strong> <code>--gradient-cta</code> so the CTA gradient is centrally owned.</td><td>Same source as above.</td></tr></tbody></table></div>
+<p>The five colour tokens in <code>tokens.css</code> (orange <code>#ff6801</code>, teal <code>#0c7372</code>, ink <code>#353535</code>, navy <code>#333566</code>, gold <code>#ffd33a</code>) match the live site&#039;s <code>--global-palette1..9</code> system verbatim — no change needed.</p>
+<p>Still not lifted from the live site, deliberately:</p>
+<ul>
+<li><strong>Lifestyle photography.</strong> The site uses swimming / wellness / mountain imagery. The template has no imagery yet because Real Wealth need to supply the rights-cleared files (flagged in Brand Assets/README.md &quot;What&#039;s missing&quot;).</li>
+<li><strong>The site&#039;s top navigation</strong> (Home / About / What we do / Who we are). The lead-magnet app is deliberately a single-funnel product — adding the main-site nav would pull users out of the conversation. The homepage has only the wordmark; the questionnaire header has the wordmark + a quiet progress chip. This is consistent with Design Agent Prompt — Wealth Conversation.md §Template 1.</li>
+<li><strong>The full footer column structure</strong> on the live site (contact, services, social, blog). The FCA footer here is a single-column regulatory disclosure because that&#039;s what Voice and Tone.md and Component Styles.md specify for the lead magnet.</li>
+</ul>
+<p>---</p>
+<h3>Addendum — 2026-04-16 — Content pipeline</h3>
+<p>Added after reviewing the 2,624-line <code>Content Brief — Wealth Conversation.md</code> and agreeing with the client that hand-copying copy into TypeScript stubs was producing drift. Summary of the move:</p>
+<div class="doc-table-wrap"><table><thead><tr><th>Change</th><th>Source of truth</th></tr></thead><tbody><tr><td>Content moved out of hand-written TS stubs into <code>content/*.md</code> (one file per entry, YAML frontmatter + markdown body)</td><td><code>content/**/*.md</code></td></tr><tr><td>Zod schemas added in <code>content/schema.ts</code> — every entry is validated on every build</td><td>Schema file</td></tr><tr><td>Build script <code>scripts/content-build.ts</code> emits typed catalogues to <code>src/lib/content/</code></td><td>Script</td></tr><tr><td>Compile script <code>scripts/content-compile-md.ts</code> regenerates <code>Content Brief — Compiled.md</code> for client review</td><td>Script</td></tr><tr><td><code>npm run build</code> now runs <code>content:build</code> as a prebuild step — malformed content fails the production build</td><td>package.json</td></tr></tbody></table></div>
+<p><strong>101 content entries migrated</strong> (28 screens + 26 awareness checks + 24 provocations + 11 segments + 3 pages + 9 microcopy groups).</p>
+<p><strong>Compliance workflow</strong> is now first-class: every provocation in <code>content/provocations/</code> has a <code>compliance_status</code> field with four values. The <code>provocationFor(...)</code> helper in <code>src/lib/provocations/catalogue.ts</code> filters by <code>approved_to_ship</code> at runtime so unapproved copy physically cannot render in production.</p>
+<p><strong>Client workflow options, in order of friction:</strong></p>
+<ol>
+<li>Edit per-entry markdown files directly in VS Code (recommended — the smallest possible change set per review).</li>
+<li>Review the compiled master doc (<code>Content Brief — Compiled.md</code>), hand back a marked-up copy, dev re-splits. Same document shape the client is used to, but <em>not</em> the source of truth.</li>
+<li>Later: Decap CMS / Sveltia CMS can be layered on top of the same files with no schema changes — pure future-proofing.</li>
+</ol>
+<p><strong>Known gaps in the content layer:</strong></p>
+<ul>
+<li>The app components still reference copy inline (e.g. the TierTile descriptions on the homepage). Wiring each component to <code>@/lib/content</code> is a follow-up pass — the pipeline and the copy both exist; the swap is mechanical.</li>
+<li>The provocation runtime lookup is still a placeholder string-contains check. When the rules engine lands (segmentation companion §5), it parses the trigger DSL properly.</li>
+<li>Images are still Unsplash hot-links — Real Wealth&#039;s own rights-cleared lifestyle library is still missing per <code>Brand Assets/README.md</code>.</li>
+</ul>
+<p><em>End of decision log.</em></p></div>
+  </article>
+</main>
+  <footer class="site-footer">
+    <div>
+      <img src="/real-wealth-logo-wordmark.svg" alt="Real Wealth">
+      <p>Manchester / Taunton | 0161 768 7722 | hello@realwealth.co.uk</p>
+    </div>
+    <p>This client review website is for internal review only. Public launch requires final compliance sign-off and production data integrations.</p>
+  </footer>
+</body>
+</html>

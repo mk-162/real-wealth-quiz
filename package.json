@@ -12,6 +12,7 @@
     "typecheck": "tsc --noEmit",
     "content:build": "tsx scripts/content-build.ts",
     "content:compile": "tsx scripts/content-compile-md.ts",
+    "client-review:build": "node scripts/build-client-review-site.mjs",
     "content:check": "tsx scripts/content-build.ts --check-only",
     "voice:check": "tsx scripts/voice-grep.ts",
     "test:e2e": "playwright test"

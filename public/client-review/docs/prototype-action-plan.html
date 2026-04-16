@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Prototype Action Plan - Real Wealth Client Review</title>
+  <meta name="description" content="The build plan, trigger matrix, data flow, and pilot plan.">
+  <link rel="stylesheet" href="../site.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="logo-link" href="../index.html" aria-label="Real Wealth client review home">
+      <img src="/real-wealth-logo-wordmark.svg" alt="Real Wealth">
+    </a>
+    <nav class="site-nav" aria-label="Primary navigation">
+      <a href="../index.html#service">Service</a>
+      <a href="../index.html#question-flow">Question flow</a>
+      <a href="../index.html#delivery">Delivery</a>
+      <a href="../index.html#documents">Docs</a>
+      <a class="service-link" href="/">Open service</a>
+    </nav>
+  </header>
+  
+<main class="doc-page">
+  <a class="back-link" href="../index.html#documents">Back to review library</a>
+  <article class="doc-article">
+    <header class="doc-hero">
+      <p class="eyebrow">Source document</p>
+      <h1>Prototype Action Plan</h1>
+      <p>The build plan, trigger matrix, data flow, and pilot plan.</p>
+    </header>
+    <div class="doc-body"><h2>Real Wealth Lead Magnet — Prototype Action Plan</h2>
+<p><em>Companion to &quot;Lead Magnet — Wealth Conversation Spec.&quot; All visual, motion, and voice decisions draw from <code>Brand Assets/</code> — in particular <code>Brand Assets/Key Sales Messages.md</code> for the landing-page, provocation fall-back, final-page, and email copy, <code>Brand Assets/Voice and Tone.md</code> for writing style, and <code>Brand Assets/tokens.css</code> for every colour, spacing, radius, and motion value.</em></p>
+<p><em>Version 0.2 — 16 April 2026. Owner: Programme team. For build team.</em></p>
+<p>---</p>
+<h3>1. Goal</h3>
+<p>Ship a working, branded, vibe-coded prototype of &quot;The Wealth Conversation&quot; in <strong>three weeks</strong>, ready for a closed pilot with eight to twelve warm contacts before any paid promotion. The prototype must feel finished — slick, animated, accessible, fast — even though the back-of-house wiring (CRM, marketing automation, full analytics) is deliberately minimal.</p>
+<h3>2. Prototype scope</h3>
+<p>In scope for v0.1: all fifteen questions with branching; thirty approved provocations in the trigger library; final page with three static illustrative charts; working contact form writing to a Google Sheet; Calendly embed for booking; full motion and WCAG 2.2 AA accessibility; desktop and mobile responsive; first-party analytics (Plausible).</p>
+<p>Out of scope for v0.1: live CRM integration, marketing-automation sequences, paid-campaign UTMs, partner-referral codes, dynamic chart personalisation, A/B framework. All of these are v1.0 or later.</p>
+<h3>3. Three-week plan</h3>
+<h4>Week 1 — content, logic, sign-off</h4>
+<ul>
+<li>Final question copy for all 15 questions, with answer options, signed off by the product owner.</li>
+<li>Provocation library v1.0: 30 entries in the format below, drafted by the marketing lead, reviewed by the Chartered Financial Planner, signed off by Compliance.</li>
+<li>Trigger-to-provocation matrix (section 5 of this document) finalised.</li>
+<li>Final-page &quot;things to consider&quot; copy lines (one per trigger, plain English).</li>
+<li>Three illustrative-chart specifications (assumptions, shape, title, alt text).</li>
+<li>Brand assets: typography pack, colour tokens, texture panel(s) for parallax.</li>
+<li>FCA compliance sign-off on all of the above.</li>
+</ul>
+<h4>Week 2 — build</h4>
+<ul>
+<li>Scaffold React SPA (Vite + TypeScript + Tailwind), deploy to staging subdomain.</li>
+<li>Question flow: single-viewport screens, branching on Q3/Q4/Q5.</li>
+<li>Provocation engine: JSON-driven, client-side evaluated, <code>aria-live</code> regions.</li>
+<li>Final page: aspiration echo, considerations list, three static SVG charts, contact form, Calendly embed, FCA footer.</li>
+<li>Google-Sheet submission webhook (name, email, phone, consent, answer set, triggers fired).</li>
+<li>Motion pass: entry transitions, provocation reveals, scroll behaviour, parallax backdrop.</li>
+<li>Mobile + desktop responsive.</li>
+</ul>
+<h4>Week 3 — polish and pilot</h4>
+<ul>
+<li>WCAG 2.2 AA audit (keyboard, screen reader, contrast, reduced motion). Fixes.</li>
+<li>Performance tuning — Lighthouse 95+ on mobile, FCP &lt;1.5s on 4G.</li>
+<li>Brand review with a senior adviser and the marketing lead.</li>
+<li>Content review — read every provocation out loud, re-sign-off anything that drifted.</li>
+<li>Soft launch: eight to twelve warm contacts take the tool, answer a three-question debrief.</li>
+<li>Iteration log; prioritised backlog for v1.0 (CRM wiring, full analytics, paid-channel readiness).</li>
+</ul>
+<p>---</p>
+<h3>4. The logic layer</h3>
+<p>The tool is, architecturally, a conditional form. Its behaviour is fully expressible as a data table: <em>for each question, for each answer (or answer combination), fire these provocations</em>. The engineering is minimal; the craft is in the copy and the conditions.</p>
+<h4>4.1 Data model</h4>
+<p>A single JSON file, <code>triggers.json</code>, committed to the repo and versioned with the build. Schema:</p>
+<pre><code>{
+  &quot;library_version&quot;: &quot;1.0.0&quot;,
+  &quot;signed_off&quot;: &quot;2026-04-24&quot;,
+  &quot;signed_by&quot;: [&quot;CFP: TBC&quot;, &quot;Compliance: TBC&quot;],
+  &quot;provocations&quot;: [
+    {
+      &quot;id&quot;: &quot;p_estate_2m_rnrb&quot;,
+      &quot;trigger&quot;: { &quot;question&quot;: &quot;q7_estate&quot;, &quot;answer_in&quot;: [&quot;2m_3m&quot;, &quot;over_3m&quot;] },
+      &quot;format&quot;: &quot;fact&quot;,
+      &quot;intensity&quot;: &quot;high&quot;,
+      &quot;headline&quot;: &quot;The £2m cliff&quot;,
+      &quot;copy&quot;: &quot;Your residence nil-rate band starts tapering above £2m. At £2.35m it&#039;s gone entirely — around £70,000 of extra inheritance tax on a typical estate, before any other planning.&quot;,
+      &quot;source&quot;: &quot;HMRC IHTM46000&quot;,
+      &quot;compliance_status&quot;: &quot;approved&quot;,
+      &quot;last_reviewed&quot;: &quot;2026-04-24&quot;
+    },
+    ...
+  ]
+}</code></pre>
+<p>Evaluation is client-side. On every answer, the engine scans the library, collects matching provocations, sorts by intensity, caps at two per question, and fires them in order.</p>
+<h4>4.2 Trigger-to-provocation matrix (v1.0)</h4>
+<p>The full matrix is a spreadsheet in Phase 0, JSON at build time. Below is the representative shape — the provocations that ship at v1.0.</p>
+<div class="doc-table-wrap"><table><thead><tr><th>Q#</th><th>Question (abbrev.)</th><th>Answer condition</th><th>Format</th><th>Headline</th></tr></thead><tbody><tr><td>Q2</td><td>Household</td><td>supporting older relatives</td><td>fact</td><td>April 2027 pension IHT change</td></tr><tr><td>Q2</td><td>Household</td><td>couple with dependent children</td><td>magnitude</td><td>Average family protection gap</td></tr><tr><td>Q2</td><td>Household</td><td>multi-generational</td><td>provocation</td><td>The planning window closes with capacity</td></tr><tr><td>Q4</td><td>Business extraction</td><td>salary only</td><td>magnitude + quote</td><td>£8k–£30k typical extraction saving + Sarah quote</td></tr><tr><td>Q4</td><td>Business extraction</td><td>accountant handles it / not sure</td><td>provocation</td><td>Have you and your accountant modelled the alternatives?</td></tr><tr><td>Q5</td><td>Succession</td><td>no / not sure</td><td>fact</td><td>60% of business owners have no succession plan</td></tr><tr><td>Q6</td><td>Investable assets</td><td>£1m–£3m</td><td>fact</td><td>Fragmentation at this band typically costs 0.4%+ a year</td></tr><tr><td>Q6</td><td>Investable assets</td><td>£3m+</td><td>magnitude</td><td>High-net-worth families typically save 15%+ on tax drag through coordination</td></tr><tr><td>Q7</td><td>Estate</td><td>£2m–£3m</td><td>fact</td><td>RNRB taper above £2m</td></tr><tr><td>Q7</td><td>Estate</td><td>over £3m</td><td>magnitude + quote</td><td>£200k–£500k typical IHT saving + Andrew quote</td></tr><tr><td>Q7</td><td>Estate</td><td>not sure</td><td>provocation</td><td>Most people underestimate by 20–30%</td></tr><tr><td>Q8</td><td>Pensions</td><td>four to six / more than six</td><td>fact</td><td>11-pension UK average / consolidation effect</td></tr><tr><td>Q8</td><td>Pensions</td><td>no idea</td><td>provocation</td><td>What would the total be if we asked today?</td></tr><tr><td>Q9</td><td>High income</td><td>yes</td><td>fact</td><td>Tapered annual allowance bites from £200k</td></tr><tr><td>Q9</td><td>High income</td><td>not sure</td><td>provocation</td><td>Tapered allowance is one of the most-missed planning points</td></tr><tr><td>Q10</td><td>ISA</td><td>not used / not sure</td><td>fact</td><td>ISA allowance does not roll over</td></tr><tr><td>Q10</td><td>ISA</td><td>don&#039;t have one</td><td>magnitude</td><td>What the tax drag looks like over a decade</td></tr><tr><td>Q11</td><td>Will</td><td>no will</td><td>fact</td><td>Intestacy rules — spouse may not inherit everything</td></tr><tr><td>Q11</td><td>Will</td><td>older than 5 years</td><td>quote</td><td>David &amp; Emma quote</td></tr><tr><td>Q12</td><td>LPA</td><td>no / didn&#039;t know</td><td>fact</td><td>Court of Protection: 6+ months, £4k+</td></tr><tr><td>Q13</td><td>Protection</td><td>not very / haven&#039;t thought</td><td>magnitude</td><td>Average family has under 18 months of income covered</td></tr><tr><td>Q14</td><td>Aspiration</td><td>(any)</td><td>(echoed on final page)</td><td>—</td></tr></tbody></table></div>
+<p>This matrix covers the dominant trigger paths. The full library at v1.0 contains alternative phrasings so a repeat adviser-facing test doesn&#039;t see the same line twice, plus lower-intensity provocations for users with quieter answer profiles.</p>
+<h4>4.3 Worked provocation examples</h4>
+<p>Ten examples, across formats, that the library team should use as a drafting reference for tone, length, and specificity. Every one of these goes to Compliance before it ships.</p>
+<p><strong>P1 — IHT cliff (fact).</strong> <em>&quot;Your residence nil-rate band starts tapering above £2m. At £2.35m it&#039;s gone entirely — around £70,000 of extra inheritance tax on a typical family estate, before any other planning we might do together.&quot;</em></p>
+<p><strong>P2 — Business extraction (magnitude + client quote).</strong> <em>&quot;Business owners who optimise the mix of salary, dividend and pension typically save £8,000–£30,000 a year in tax vs salary-only. Where you sit in that range depends on the detail.&quot;</em> Followed by: <em>&quot;Before Real Wealth I was taking pure salary. We restructured in six weeks and it was the best phone call I made in five years.&quot; — Sarah, founder, North West.</em></p>
+<p><strong>P3 — Pension fragmentation (fact).</strong> <em>&quot;The average UK professional has 11 workplace pensions by age 55. Only about one in five can name the total value within 20%. Consolidating typically saves 0.3%–0.8% a year in charges — a meaningful compounding difference over a working life.&quot;</em></p>
+<p><strong>P4 — Tapered annual allowance (fact).</strong> <em>&quot;Above £200,000 adjusted income, your pension annual allowance starts to taper. At £360,000 it bottoms out at £10,000 — unplanned, this can cost £20,000+ a year in lost tax relief.&quot;</em></p>
+<p><strong>P5 — ISA drag (fact).</strong> <em>&quot;Unused ISA allowance doesn&#039;t roll over. Every April, £20,000 per person evaporates unless it&#039;s used. Across a couple over a decade, that&#039;s £400,000 of shelter that was available and wasn&#039;t used.&quot;</em></p>
+<p><strong>P6 — Intestacy (fact).</strong> <em>&quot;If you die without a will, the intestacy rules decide. For a married couple with children, the spouse receives the first £322,000 plus half the remainder — the rest goes to the children. It&#039;s rarely what people assume.&quot;</em></p>
+<p><strong>P7 — LPA gap (fact).</strong> <em>&quot;Without a Lasting Power of Attorney, family members can spend six months or more and £4,000+ going through the Court of Protection if you lose capacity. It&#039;s not a conversation anyone wants to have in a crisis.&quot;</em></p>
+<p><strong>P8 — Pension IHT 2027 (fact).</strong> <em>&quot;From April 2027, unused pension funds and death benefits are expected to fall inside the estate for inheritance tax — a change affecting an estimated 1.5 million UK families. It&#039;s one of the biggest planning shifts in a decade.&quot;</em></p>
+<p><strong>P9 — Succession gap (provocation).</strong> <em>&quot;You said there&#039;s no formal succession plan. In our experience, the planning window closes faster than people expect — and the range of outcomes between a planned exit and an unplanned one is usually measured in years of the owner&#039;s life, not just the numbers.&quot;</em></p>
+<p><strong>P10 — Client quote on estate (quote).</strong> <em>&quot;We had no idea the family home could create a tax problem this big. Real Wealth showed us three ways to handle it, and we picked the one that felt right.&quot; — Andrew, retired engineer, Cheshire.</em></p>
+<p><strong>Copy rules for every entry.</strong> Two to three sentences. One specific number or one named person. Never &quot;you should.&quot; Never a product name. Never a figure of the user&#039;s own money. Every number sourced, every source logged.</p>
+<h4>4.4 Suppression rules</h4>
+<p>To protect impact, the engine limits how many provocations a user sees.</p>
+<ul>
+<li>Maximum two per question.</li>
+<li>Maximum eight across the full form. If more would match, lower-intensity ones are suppressed; the engine always keeps the highest-intensity match for each question.</li>
+<li>If a user has already seen a particular fact (e.g. the 2027 pension IHT change), it is not repeated later in the flow — even if a later answer would also trigger it.</li>
+</ul>
+<p>---</p>
+<h3>5. Interface direction (for vibe-coding)</h3>
+<p>The design brief is: <em>feel of a private-bank lobby, experience of a well-made app</em>. Typography-led. Generous. Quietly confident. Motion that earns its place.</p>
+<h4>5.1 Structural feel</h4>
+<p>One question per screen on mobile and desktop. A thin progress line at the top. A brand-textured backdrop behind each question that moves in parallax at ~0.7x of the foreground scroll rate. Content is in a centred column (max-width ~680px on desktop). The Continue button is fixed to the bottom of the thumb zone on mobile; on desktop it sits at the foot of the content column.</p>
+<p>The tone of motion is slow-considered, not bouncy. No springy overshoots. No bouncing chevrons. Transitions feel like paragraphs in a well-set book.</p>
+<h4>5.2 Motion specification</h4>
+<p><strong>Question entry.</strong> 250ms. 16px upward translation, opacity 0→1. Cubic-bezier (0.2, 0.6, 0.2, 1).</p>
+<p><strong>Answer selection feedback.</strong> Selected option lifts with a 4px shadow increase and a subtle accent-colour border, 120ms.</p>
+<p><strong>Provocation reveal.</strong> 250ms pause after selection (lets the answer land), then the provocation card fades and scales in over 400ms. Scale from 0.98 to 1.0, opacity 0 to 1. Vertical accent line draws left-to-right over the first 200ms as a micro-detail. <code>aria-live=&quot;polite&quot;</code> region announces the provocation text to screen readers.</p>
+<p><strong>Continue.</strong> Tapping Continue fades the current screen out (200ms) and slides the next question in (250ms) — a slight horizontal displacement on desktop, pure vertical on mobile.</p>
+<p><strong>Parallax backdrop.</strong> Each screen has a full-viewport background layer — brand gradient, subtle texture, no content — that translates vertically at 0.7x of the foreground scroll. On reduced-motion, the parallax is disabled and the backdrop is static.</p>
+<p><strong>Final-page scroll.</strong> Each section (aspiration echo, considerations list, charts, form, footer) enters with a scroll-triggered 300ms fade from below as it approaches 70% of the viewport height.</p>
+<h4>5.3 Should we use parallax?</h4>
+<p>Yes — but subtly and in one specific way. A full parallax &quot;scrollytelling&quot; treatment is the wrong register for a regulated financial tool and would damage trust. A subtle parallax on the question backdrops adds a sense of depth and craft without getting in the way. The test is: a user should never notice the parallax consciously; they should just feel that the form is more premium than other forms they&#039;ve used.</p>
+<p>Rule of thumb for every motion decision: <em>if it would feel at home on a games site, it&#039;s too much; if it would feel at home on a luxury hotel booking flow, it&#039;s about right.</em></p>
+<h4>5.4 Typography and colour</h4>
+<p>Full detail in <code>Brand Assets/Typography.md</code> and <code>Brand Assets/Colour Palette.md</code>. Every token is already set up in <code>Brand Assets/tokens.css</code> — import that file at the root of the stylesheet and use the variables. <code>tokens.json</code> is also provided for Tailwind or Style Dictionary.</p>
+<p>In short: <code>gelica</code> (serif) for the landing display, question text, provocation headlines, and aspiration echo. <code>area-normal</code> (sans) for body, options, buttons, and all UI. Minimum body size 18px on mobile. Primary brand teal <code>#0c7372</code> on headings; brand orange <code>#ff6801</code> for CTAs and the provocation accent bar; ink <code>#353535</code> for body; <code>#f7fafa</code> (soft teal tint) for the provocation card background. Do not introduce new colours without a reason.</p>
+<h4>5.5 Accessibility (WCAG 2.2 AA)</h4>
+<ul>
+<li>All interactive elements reachable by keyboard, in logical order.</li>
+<li>Focus states visible, with a 2px outline in the accent colour plus an inner contrast ring.</li>
+<li>Form options are real radio groups with programmatic labels; not bare divs.</li>
+<li>Provocation cards use <code>role=&quot;status&quot;</code> and <code>aria-live=&quot;polite&quot;</code> so screen readers announce them when they appear.</li>
+<li>Contrast ratio ≥ 4.5:1 for all text, ≥ 3:1 for UI components.</li>
+<li>All motion respects <code>prefers-reduced-motion</code>. When set: no parallax, no transitions, instant reveals.</li>
+<li>Forms tested with VoiceOver (iOS Safari), NVDA (Windows Chrome), TalkBack (Android Chrome).</li>
+<li>Touch targets ≥ 56px high.</li>
+</ul>
+<h4>5.6 Vibe-code prompts (ready to paste)</h4>
+<p>These are the prompts the build team uses when pair-coding with an LLM in Cursor / Claude Code / similar.</p>
+<p><strong>Scaffolding</strong></p>
+<blockquote>Scaffold a Vite + React + TypeScript + Tailwind single-page app. Route structure: /, /start (framing), /q/:index (question), /result (final page). Use Framer Motion for all transitions. Set up a single-page layout with a centred 680px column on desktop, full-width on mobile, a thin 2px progress bar at the top, and a fixed Continue button zone at the bottom on mobile.</blockquote>
+<p><strong>Question screen</strong></p>
+<blockquote>Build the question component. Takes a question object (id, text, options array, optional micro-benefit text). Renders the question text in the brand serif at 28px mobile / 36px desktop, the micro-benefit below in brand sans at 16px. Options render as large tap targets (min 56px high) with a subtle border, hover state, and selected state (accent-colour border + 4px shadow). Uses a proper radio group with keyboard nav and aria-labelledby. On selection, calls onAnswer(questionId, value). Animates in with a 250ms 16px-up fade on mount.</blockquote>
+<p><strong>Provocation component</strong></p>
+<blockquote>Build a provocation card component. Props: format (&#039;quote&#039; | &#039;fact&#039; | &#039;magnitude&#039; | &#039;provocation&#039;), headline, copy, attribution (for quotes). Appearance: card with soft secondary-tint background, 2px left border in accent colour, 20px padding. Icon in top-left based on format — quote mark for quote, info dot for fact, range-bar icon for magnitude, question mark for provocation. Headline in brand serif 20px, copy in brand sans 17px, attribution (if present) in italic brand sans 15px. Animates in with a 250ms delay after mount, then 400ms fade-and-scale from opacity 0 scale 0.98 to opacity 1 scale 1.0. Card has role=&quot;status&quot; and aria-live=&quot;polite&quot; so screen readers announce the content when it appears. Honours prefers-reduced-motion.</blockquote>
+<p><strong>Parallax backdrop</strong></p>
+<blockquote>Build a parallax background layer that sits behind the question column. Takes a texture/gradient image. Translates vertically at 0.7x of the window scroll position using a transform on the Y axis. Disabled entirely when prefers-reduced-motion is set. Covers the full viewport behind the content. Does not trap scroll or interfere with focus.</blockquote>
+<p><strong>Provocation engine</strong></p>
+<blockquote>Build a useProvocations hook. Takes the current answer set (a record of questionId -&gt; answer value), returns the provocations to render for the most recently answered question. Evaluates against a JSON library of trigger rules. Each rule has a question, an answer_in array, a format, an intensity, and copy. The hook returns up to two provocations per question, highest intensity first, and suppresses any provocation ID that has already been shown earlier in the session.</blockquote>
+<p><strong>Final-page sections</strong></p>
+<blockquote>Build the final page as five stacked sections: AspirationEcho (one-line quote in brand serif), ThingsToConsider (unordered list of strings, each prefixed with a subtle accent bullet), IllustrativeCharts (three static SVG charts with labels, assumptions, and alt text — see chart specs), ContactForm (first name, email, phone optional, consent checkbox, book-a-call button), and FCAFooter. Each section reveals with a 300ms upward fade when it enters 70% of the viewport height. Fixed brand footer below everything.</blockquote>
+<p>---</p>
+<h3>6. The final page — charts, carefully</h3>
+<p>The charts are the regulatory hotspot. They convert well because they are visual; they are dangerous because a user can misread them as their personal situation. The build team must treat the compliance rules as architectural, not cosmetic.</p>
+<h4>6.1 Framing paragraph (verbatim)</h4>
+<p>Above the chart block, one paragraph reads:</p>
+<blockquote><em>These are illustrative examples — the kinds of conversations a Real Wealth planner would have with you. They are not calculations of your personal position. Your conversation would explore the numbers that are actually yours.</em></blockquote>
+<p>This copy is signed off and locked. Do not edit without compliance review.</p>
+<h4>6.2 Per-chart template</h4>
+<p>Every chart ships with:</p>
+<ul>
+<li>A title in the brand serif.</li>
+<li>Immediately under the title, in the accent colour, the tag: <strong>Illustrative example — not your personal financial situation.</strong></li>
+<li>One line of assumptions above the chart body: <em>&quot;Based on an illustrative household with £2.5m estate, £500k main residence, married couple.&quot;</em></li>
+<li>The chart itself — static SVG at v1.0.</li>
+<li>Alt text describing the shape and conclusion for screen readers.</li>
+<li>A &quot;discuss this with a planner&quot; micro-link that scrolls to the contact form.</li>
+</ul>
+<h4>6.3 Chart A — the IHT cliff</h4>
+<p>A simple horizontal bar chart comparing IHT payable on three illustrative estates: £1.5m, £2.0m, £2.5m. The bars show the taper effect on the residence nil-rate band cutting in above £2m and eroding the band entirely by £2.35m.</p>
+<ul>
+<li><strong>Title</strong>: &quot;How IHT can bite above £2m.&quot;</li>
+<li><strong>Assumptions</strong>: &quot;Married couple, main residence £500k, all other assets liquid, both nil-rate band and residence nil-rate band available in full at baseline.&quot;</li>
+<li><strong>Alt text</strong>: &quot;Horizontal bar chart showing illustrative IHT of roughly £0 on a £1.5m estate, £120k on a £2m estate, and £240k on a £2.5m estate, driven by the residence nil-rate band tapering above £2m.&quot;</li>
+</ul>
+<h4>6.4 Chart B — pension charges over time</h4>
+<p>A two-line chart over 20 years comparing two versions of the same £500,000 pot — one at 1.0% annual charges, one at 0.4% — both with no further contributions and the same 5% gross return.</p>
+<ul>
+<li><strong>Title</strong>: &quot;What 0.6% a year in charges looks like over 20 years.&quot;</li>
+<li><strong>Assumptions</strong>: &quot;£500,000 starting pot, no contributions, 5% gross annual return, charges deducted annually.&quot;</li>
+<li><strong>Alt text</strong>: &quot;Line chart showing two pension trajectories over 20 years — the 0.4% pot ending roughly £1.22m, the 1.0% pot ending roughly £1.08m, a gap of around £140k.&quot;</li>
+</ul>
+<h4>6.5 Chart C — business extraction mix</h4>
+<p>A stacked bar comparing total tax and national insurance on £100,000 of business-owner income drawn as: (a) pure salary; (b) a typical salary + dividend + pension mix. Each bar shows income tax, NI, corporation tax (for the dividend route), and net take-home.</p>
+<ul>
+<li><strong>Title</strong>: &quot;How extraction mix can change the tax bill.&quot;</li>
+<li><strong>Assumptions</strong>: &quot;Owner-manager of a limited company drawing £100,000 a year. Illustrative only. Based on 2026/27 rates. Excludes dividend/salary allowances interactions and all personal circumstances.&quot;</li>
+<li><strong>Alt text</strong>: &quot;Stacked bar chart showing pure salary leaving roughly £66k net after tax and NI, and a salary-dividend-pension mix leaving roughly £74k net, with the difference highlighted as illustrative saving.&quot;</li>
+</ul>
+<h4>6.6 What we deliberately do NOT show</h4>
+<ul>
+<li>Any chart derived from the user&#039;s own answers.</li>
+<li>Any chart projecting the user&#039;s retirement, estate, or business outcome.</li>
+<li>Any chart naming a specific product, fund or provider.</li>
+<li>Any chart implying a personal recommendation.</li>
+<li>Any chart that could be screenshotted and read out of context as advice.</li>
+</ul>
+<p>If leadership later wants personalised charts, that is a v2 conversation with Compliance and likely requires a different regulatory posture for the tool.</p>
+<p>---</p>
+<h3>7. Data flow on submission</h3>
+<p>On submission of the final contact form, the app sends one payload to the backend:</p>
+<pre><code>{
+  &quot;library_version&quot;: &quot;1.0.0&quot;,
+  &quot;submission_id&quot;: &quot;uuid&quot;,
+  &quot;answers&quot;: { &quot;q1_age&quot;: &quot;50s&quot;, &quot;q7_estate&quot;: &quot;2m_3m&quot;, ... },
+  &quot;triggers_fired&quot;: [&quot;p_estate_2m_rnrb&quot;, &quot;p_pension_fragmentation&quot;, ...],
+  &quot;aspiration_text&quot;: &quot;A cottage near the sea...&quot;,
+  &quot;contact&quot;: { &quot;first_name&quot;: &quot;...&quot;, &quot;email&quot;: &quot;...&quot;, &quot;phone&quot;: &quot;...&quot;, &quot;consent&quot;: true },
+  &quot;utm&quot;: { ... },
+  &quot;user_agent&quot;: &quot;...&quot;,
+  &quot;submitted_at&quot;: &quot;2026-04-24T10:41:22Z&quot;
+}</code></pre>
+<p>The backend writes the full record to Postgres, writes a minimal row to the Google Sheet for the v0.1 pilot, and fires a webhook into Calendly (prefilling the booking page with name and email).</p>
+<p>Every field in the payload has a retention rule. Contact data is retained per the firm&#039;s policy; answer and trigger data is retained indefinitely for library iteration (anonymised after 12 months if no client relationship results).</p>
+<p>---</p>
+<h3>8. Pilot — how we learn</h3>
+<p>End of week three, the tool goes live on a private staging URL. Eight to twelve people from the firm&#039;s warm network take it. Each is asked three questions afterwards, by email:</p>
+<ol>
+<li>Which observation in the form, if any, made you think &quot;I need to book this call&quot;?</li>
+<li>Was there any moment where the tool felt preachy, salesy, or off-brand?</li>
+<li>Did the illustrative charts feel like examples, or did you read them as your own numbers?</li>
+</ol>
+<p>The answers drive the v1.0 edits before the tool goes anywhere near paid media.</p>
+<p>---</p>
+<h3>9. Dependencies from Real Wealth (week 1)</h3>
+<ul>
+<li>Named product owner and named Chartered Financial Planner for library sign-off.</li>
+<li>Three to five real client quotes with written permission (to replace the placeholder &quot;Andrew, retired engineer, Cheshire&quot; quote in <code>Brand Assets/Key Sales Messages.md</code>).</li>
+<li>Typekit project ID for <code>gelica</code> and <code>area-normal</code> (fallback stacks are in <code>Brand Assets/tokens.css</code> but the real faces must load before pilot).</li>
+<li>Logo files (SVG, PNG, colour and mono) — tracked in <code>Brand Assets/README.md</code> <em>&quot;What&#039;s missing&quot;</em>.</li>
+<li>FCA register number and exact partnership-entity wording for the footer.</li>
+<li>Domain/subdomain choice and DNS access for staging.</li>
+<li>Calendly account (or decision on calendar product) with a named discovery-call meeting type.</li>
+<li>Initial list of eight to twelve pilot users.</li>
+</ul>
+<p>Without these, week one slips and weeks two and three compress.</p>
+<h4>Copy already provided (no dependency)</h4>
+<p>All landing-page, final-page, CTA, error-message, email-sequence, and FCA-footer copy is drafted and ready in <code>Brand Assets/Key Sales Messages.md</code>. The build team should drop these in verbatim rather than rewriting, so the app reads as one voice with the site. Copy edits should be proposed against that file, not re-invented in the codebase.</p>
+<p>---</p>
+<h3>10. What ships at v1.0 (beyond the prototype)</h3>
+<p>For reference, not for the three-week build:</p>
+<ul>
+<li>Live CRM integration (replaces Google Sheet).</li>
+<li>Marketing-automation enrolment with a two-week follow-up sequence.</li>
+<li>Full analytics in the firm&#039;s warehouse (Plausible stays for top-of-funnel).</li>
+<li>UTM capture and partner-referral routing.</li>
+<li>A/B framework for rotating provocation phrasings.</li>
+<li>Quarterly library refresh process running live.</li>
+</ul>
+<p>---</p>
+<p><em>This action plan is a companion to the main specification. Any conflict between the two should be resolved in favour of the specification, with this document updated to match.</em></p></div>
+  </article>
+</main>
+  <footer class="site-footer">
+    <div>
+      <img src="/real-wealth-logo-wordmark.svg" alt="Real Wealth">
+      <p>Manchester / Taunton | 0161 768 7722 | hello@realwealth.co.uk</p>
+    </div>
+    <p>This client review website is for internal review only. Public launch requires final compliance sign-off and production data integrations.</p>
+  </footer>
+</body>
+</html>

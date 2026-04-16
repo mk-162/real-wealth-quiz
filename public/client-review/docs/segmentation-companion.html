@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Segmentation Design Companion - Real Wealth Client Review</title>
+  <meta name="description" content="The nine-segment model, five-question gate, and route matrix.">
+  <link rel="stylesheet" href="../site.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="logo-link" href="../index.html" aria-label="Real Wealth client review home">
+      <img src="/real-wealth-logo-wordmark.svg" alt="Real Wealth">
+    </a>
+    <nav class="site-nav" aria-label="Primary navigation">
+      <a href="../index.html#service">Service</a>
+      <a href="../index.html#question-flow">Question flow</a>
+      <a href="../index.html#delivery">Delivery</a>
+      <a href="../index.html#documents">Docs</a>
+      <a class="service-link" href="/">Open service</a>
+    </nav>
+  </header>
+  
+<main class="doc-page">
+  <a class="back-link" href="../index.html#documents">Back to review library</a>
+  <article class="doc-article">
+    <header class="doc-hero">
+      <p class="eyebrow">Source document</p>
+      <h1>Segmentation Design Companion</h1>
+      <p>The nine-segment model, five-question gate, and route matrix.</p>
+    </header>
+    <div class="doc-body"><h2>Real Wealth — Segmentation Design Companion</h2>
+<p><em>Design rationale for the Question &amp; Segment Master spreadsheet. Explains the philosophy behind the nine segments, the gating logic, and the &quot;skip-if-irrelevant&quot; approach. Read this alongside <code>Question Segment Master.xlsx</code>.</em></p>
+<p><em>Version 0.1 — 16 April 2026. Owner: Matt / programme team. Status: draft for internal review. Supersedes the unfiltered question set in <code>Question Design Options.md</code> §6.</em></p>
+<p>---</p>
+<h3>1. The problem we&#039;re solving</h3>
+<p>The current Tier A question set asks everyone the same 35 questions. That makes sense as a <em>catalogue</em> of what we might want to know, but it falls apart as a <em>form</em>. A 28-year-old on £30k with no dependants who arrives at Question 13 about dependent children&#039;s financial horizons feels badly profiled; a £3m-estate business owner who grinds through questions about their essential monthly spend feels under-served. Both users disengage, for opposite reasons — one because the form is asking questions that don&#039;t apply, the other because the form is asking questions that are beneath them.</p>
+<p>The fix is segmentation: decide what kind of prospect we&#039;re dealing with in the first handful of answers, then only ask the questions that matter for <em>that</em> prospect. The catalogue stays at 35 questions; no individual user sees all of them.</p>
+<p>This design also solves a second, quieter problem. The firm&#039;s target clients are very specific — business owners, medical/legal professionals, multi-generational families with £1m+ estates. A one-size Tier A form treats every user as a potential core client, which is generous but wasteful. A segment-aware form lets the firm route its expensive capacity (senior partners, longer call slots, bespoke follow-up) to the segments that warrant it, and route lower-fit prospects to appropriate lighter-weight paths.</p>
+<h3>2. The philosophy in one paragraph</h3>
+<p><strong>Life-stage plus wealth tier is the spine.</strong> Everything else (profession, household composition, sandwich-gen, urgency) is an overlay. Life-stage and wealth alone give us nine clean archetypes that cover the whole addressable audience, with clear rules for which questions matter to each. Overlays (medical / legal / sandwich / high-urgency / already-advised) don&#039;t change the segment, they modify the tone and the final-page routing within it. This keeps the segment count manageable while still allowing personalisation where it counts.</p>
+<h3>3. The nine segments at a glance</h3>
+<div class="doc-table-wrap"><table><thead><tr><th>#</th><th>Segment</th><th>Rough shape</th><th>Fit to RW</th></tr></thead><tbody><tr><td>S1</td><td>Early Accumulator</td><td>Under 35, under £50k, under £250k estate</td><td>Low — not a target today</td></tr><tr><td>S2</td><td>Mass-Affluent Mid-Career</td><td>35–50, £50–100k, £250k–£1m</td><td>Medium</td></tr><tr><td>S3</td><td>High-Earner Mid-Career (£100k trap)</td><td>35–55, £100–200k, £500k–£2m</td><td>High</td></tr><tr><td>S4</td><td>Senior Professional / Partner</td><td>40–60, £200k+, £1–3m</td><td>Very High</td></tr><tr><td>S5</td><td>Business Owner — Growth</td><td>30–55, business owner, £500k–£3m</td><td>High</td></tr><tr><td>S6</td><td>Business Owner — Exit-minded</td><td>50–65, business owner, £1–5m</td><td>Very High</td></tr><tr><td>S7</td><td>Pre-Retiree Affluent</td><td>55–65, employed/SE, £1–3m</td><td>Very High</td></tr><tr><td>S8</td><td>Retired / In Decumulation</td><td>60+, retired, £500k–£3m</td><td>High</td></tr><tr><td>S9</td><td>HNW / Multi-Generational</td><td>Any age, £3m+ estate</td><td>Highest</td></tr></tbody></table></div>
+<p>Every cell in this table is defensible from either RW&#039;s stated target client segments, the firm&#039;s own Compass sections, the Tax Trap paper&#039;s identification of the £100k band, or standard UK planning demographics. None of them are invented to fill a slot.</p>
+<h3>4. The gate — six questions that define everything</h3>
+<p>The form starts with a fixed opening sequence that never changes. Every user sees every gating question, and the answers write session state that drives the rest of the form.</p>
+<p>Two questions are pure tone-setters and do not change segment assignment: Q1.1 (what brought you here) and Q2.4 (happy place). They earn their seat because they soften the form — the alternative is a hard demographic grilling in the first 90 seconds, which kills completion.</p>
+<p>Five questions are the real gate: Q2.1 Age, Q2.2 Household, Q2.3 Work status, Q3.1 Income, Q4.5 Total estate. These five together are sufficient to assign any user to one of the nine segments via a simple rules decision (see the Gating &amp; Routing tab for the rank-ordered rules).</p>
+<p><strong>Design note on ordering.</strong> The user&#039;s explicit ask was to get the important data at the beginning. The gate here honours that: by question 8 of any form (Q1.1 through Q2.4 plus Q3.1 arriving at position 7 and Q4.5 arriving at position around 12), the segment is assigned. Everything after is segment-aware. In practice the user feels a form that starts broad (&quot;tell us about your life&quot;) and narrows naturally — not an interrogation.</p>
+<h3>5. How assignment actually works</h3>
+<p>The nine rules (see spreadsheet tab 3) are applied in strict rank order. The first rule that matches wins, and later rules are not evaluated. This matters because the rules overlap intentionally — a £3m-estate business owner could match several segments, and the ordering ensures they are routed to S9 (HNW) rather than S5 (Business Owner Growth), because the HNW routing is stronger.</p>
+<p>The ordering is:</p>
+<ol>
+<li><strong>HNW first.</strong> Any prospect with a £3m+ estate goes to S9 regardless of other factors. Their IHT and succession questions dominate anything else we could ask.</li>
+<li><strong>Exit-minded business owners second.</strong> An owner thinking about exit in the next five years is a different prospect from a growing owner, and the succession conversation is RW&#039;s signature strength.</li>
+<li><strong>Growing business owners third.</strong> Captures everyone who owns a business and isn&#039;t near exit.</li>
+<li><strong>Retired next.</strong> Skips accumulation-era questions; different provocation library.</li>
+<li><strong>Pre-retiree (55–65 employed/SE).</strong> Peak decumulation-planning audience.</li>
+<li><strong>Senior professional (£200k+).</strong> Tapered Annual Allowance fires; partner-level tone.</li>
+<li><strong>High-earner mid-career (£100–200k).</strong> The £100k trap — RW&#039;s richest provocation territory per the Tax Trap paper.</li>
+<li><strong>Mass-affluent mid-career (£50–100k and £250k+ estate).</strong> Accumulating but not yet at the firm&#039;s sharpest-edge audience.</li>
+<li><strong>Early Accumulator (default).</strong> Anyone who falls through the above gets the light-touch nurture flow. Low pressure, no hard booking push.</li>
+</ol>
+<p>One important consequence: <strong>S9 overrides everything.</strong> A 34-year-old with a £4m estate (likely from inheritance or a successful business) is routed to S9 and gets the full HNW treatment. This is correct — estate size is a stronger signal than age for the relevance of IHT, succession, and trust questions.</p>
+<h3>6. Skip-if-irrelevant — the filtering in practice</h3>
+<p>The matrix tab is the core deliverable. Each cell answers the question &quot;does this user, in this segment, see this question?&quot; Three values are used:</p>
+<ul>
+<li><strong>Y — always asked.</strong> Universal for the segment, subject only to the question&#039;s own internal conditional logic.</li>
+<li><strong>C — conditional.</strong> Asked only if an earlier answer warrants it (e.g. Q6.1 children-horizon only if Q2.2 includes dependent children).</li>
+<li><strong>— (skipped).</strong> Never asked of this segment. The form proceeds to the next relevant question without the user noticing.</li>
+</ul>
+<p>The count-of-questions-asked-per-segment ends up roughly:</p>
+<ul>
+<li>S1 Early Accumulator: ~12 always, 2 conditional → form feels short and friendly</li>
+<li>S2 Mass-Affluent Mid-Career: ~22 always, 4 conditional</li>
+<li>S3 High-Earner Mid-Career: ~26 always, 4 conditional</li>
+<li>S4 Senior Professional: ~26 always, 4 conditional</li>
+<li>S5 Business Owner — Growth: ~27 always, 4 conditional</li>
+<li>S6 Business Owner — Exit-minded: ~27 always, 4 conditional</li>
+<li>S7 Pre-Retiree Affluent: ~25 always, 4 conditional</li>
+<li>S8 Retired: ~22 always, 2 conditional</li>
+<li>S9 HNW: ~26 always, 5 conditional</li>
+</ul>
+<p>The actual per-user length runs from about 12 questions (S1) to about 30 (S5/S6 with all conditionals firing). This is a vastly better range than the flat 35-for-everyone of the current spec, and aligns Tier A with the user&#039;s stated depth choice more honestly — a Tier A user self-selected &quot;thorough&quot; and gets a thorough form calibrated to who they are, not an everyone-gets-everything brute-force approach.</p>
+<h3>7. What the overlay flags do</h3>
+<p>Overlays are flags that modify the user&#039;s experience <em>within</em> their assigned segment, without changing the segment itself. The spreadsheet covers five:</p>
+<ul>
+<li><strong>Sandwich generation</strong> — a household supporting dependent children <em>and</em> an elderly parent. Triggers a specific provocation and weights the LPA copy towards parent-LPA framing.</li>
+<li><strong>Medical professional</strong> — asked as a separate soft question (or inferred post-form). Adapts final-page copy for NHS pension nuance and medical defence considerations.</li>
+<li><strong>Legal / accounting professional</strong> — similar overlay for partnership tax, LLP questions, 60-day CGT.</li>
+<li><strong>High urgency</strong> (Q10.3 = &quot;This week&quot;) — across all segments, converts the CTA to &quot;Book for tomorrow&quot; with 48-hour slots only.</li>
+<li><strong>Currently advised but looking</strong> (Q9.1) — direct senior-partner booking, regardless of segment. The highest-intent signal in the form.</li>
+</ul>
+<p>None of these are gating. They are decorations on a segmented cake.</p>
+<h3>8. Trade-offs we made (and why)</h3>
+<p><strong>We chose nine segments, not twenty.</strong> Fewer would collapse important distinctions (retired vs pre-retired, business-owner-growth vs exit-minded). More would create a maintenance burden and produce segments with too few real prospects to be useful. Nine is the Goldilocks number for this audience size.</p>
+<p><strong>We put life-stage-plus-wealth above RW&#039;s five stated client segments.</strong> RW&#039;s public site lists Individuals / Family / Business Owners / Family Business / Professionals / Medical. Those are marketing segments, not financial-planning archetypes. A £100k-trap high-earner is a £100k-trap high-earner whether they are a doctor or a lawyer — the firm&#039;s provocation territory is the same. Profession is an overlay because it changes tone, not because it changes planning needs.</p>
+<p><strong>We chose skip-if-irrelevant over ask-but-soft.</strong> Asking-but-soft keeps the data model clean but annoys users and inflates time-to-complete. Skip-if-irrelevant is honest: if we cannot plausibly do anything with the answer for this segment, we should not ask.</p>
+<p><strong>We gated on the hard five, not the ten.</strong> Some signals (urgency, current-adviser relationship, specific products held) would be lovely to have earlier to inform segmentation, but asking them in the first three minutes would feel transactional. Life-stage + wealth are enough for segment; everything else arrives in the appropriate section.</p>
+<p><strong>We preserved the tier structure but reinterpret it.</strong> Tier A stays as &quot;the full 35-question catalogue, filtered by segment.&quot; Tier B remains the lean ~18-question public default — and notably, our segmentation means Tier B could itself be segmented in a v1.1 if the data justifies it. Tier C remains for paid-ad landing pages where friction matters most.</p>
+<h3>9. Open questions for Real Wealth</h3>
+<ol>
+<li><strong>Do the nine segments match how RW thinks about its own client base?</strong> We derived them from the public materials and the Tax Trap paper; RW&#039;s advisers will have their own instincts and should sanity-check the boundaries.</li>
+<li><strong>Is S1 (Early Accumulator) worth serving at all?</strong> Three options: serve them with the short nurture flow (our recommendation), redirect them to MoneyHelper, or block them from the tool entirely. Has commercial implications — the nurture list has value.</li>
+<li><strong>Should S9 HNW users skip the full question set entirely and go straight to a 30-second &quot;contact a senior partner&quot; page?</strong> Arguable either way. Our bias is yes-but-later — collect a lean version of the data now, save the planner time later.</li>
+<li><strong>Are the income bands aligned with 2026/27 tax year thresholds?</strong> Question Design Options §12 flags this; worth confirming before the library signs off.</li>
+<li><strong>Who owns segment-boundary decisions going forward?</strong> As the form runs, we&#039;ll see prospects who sit awkwardly on boundaries (a £2.8m estate, a business owner on £180k). Someone needs to decide whether to re-band. Recommend the weekly analytics huddle (Master Action Plan F-stream).</li>
+</ol>
+<h3>10. How this slots into the plan</h3>
+<p>This segmentation work updates, not replaces, several activities in the Master Action Plan:</p>
+<ul>
+<li><strong>A2 — Question Design Options v0.1</strong> stays as the canonical question catalogue. This spreadsheet sits on top of it.</li>
+<li><strong>A3 — Pitfall Awareness Library</strong> benefits from segmentation: each pitfall can now name which segments it primarily targets, keeping the rate-limiter honest.</li>
+<li><strong>A4 — CFP + Compliance co-sign</strong> should now include the segment assignments (the matrix) as part of the review pack, so the Compliance Officer sees that a user in S1 will not be asked an IHT question they cannot act on.</li>
+<li><strong>A7 — Design Agent Prompt update</strong> should describe the segment-aware flow: questions can disappear without warning, and the total question count is dynamic per user. Progress indicators need to be percentage-based, not question-number-based.</li>
+<li><strong>A19 — Analytics events</strong> should now include a <code>segment_assigned</code> event with the segment ID, fired immediately after the gate completes. Essential for measuring completion-by-segment in the warm pilot.</li>
+<li><strong>New work</strong> — the decision tree logic (spreadsheet tab 3) is a directly-buildable rules file. About half a day of engineering to turn into a JSON rules engine that the form evaluates after each gating answer.</li>
+</ul>
+<h3>11. What this unblocks</h3>
+<p>Three things get sharper as soon as this lands:</p>
+<p>First, the CFP + Compliance review becomes easier. Reviewers can see which users are shown which questions, which means approval can be segment-by-segment rather than question-by-question. Faster sign-off.</p>
+<p>Second, the warm-pilot analytics become interpretable. A 62% completion rate tells us nothing unless we know <em>who</em> completed. A 62% completion in S3 and 34% in S1 tells us the form is broken for S1 (so kill or shorten S1) but healthy for S3. The current flat-form approach cannot produce this signal.</p>
+<p>Third, the pitch gets a richer story. Moving from &quot;here is a 15-question form&quot; to &quot;here is a form that figures out who you are in 8 questions and asks the right 20 next&quot; is a structural step-change. That move — plus the awareness-check mechanic and the tier picker — is what makes the product genuinely different from everything in the firm&#039;s competitive set.</p>
+<p>---</p>
+<p><em>Companion to <code>Question Segment Master.xlsx</code>. The spreadsheet is the working artefact; this document is the rationale. When the segments change, update both.</em></p></div>
+  </article>
+</main>
+  <footer class="site-footer">
+    <div>
+      <img src="/real-wealth-logo-wordmark.svg" alt="Real Wealth">
+      <p>Manchester / Taunton | 0161 768 7722 | hello@realwealth.co.uk</p>
+    </div>
+    <p>This client review website is for internal review only. Public launch requires final compliance sign-off and production data integrations.</p>
+  </footer>
+</body>
+</html>

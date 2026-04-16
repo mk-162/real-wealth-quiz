@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Wealth Conversation Spec - Real Wealth Client Review</title>
+  <meta name="description" content="The core service specification for the lead magnet and client journey.">
+  <link rel="stylesheet" href="../site.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="logo-link" href="../index.html" aria-label="Real Wealth client review home">
+      <img src="/real-wealth-logo-wordmark.svg" alt="Real Wealth">
+    </a>
+    <nav class="site-nav" aria-label="Primary navigation">
+      <a href="../index.html#service">Service</a>
+      <a href="../index.html#question-flow">Question flow</a>
+      <a href="../index.html#delivery">Delivery</a>
+      <a href="../index.html#documents">Docs</a>
+      <a class="service-link" href="/">Open service</a>
+    </nav>
+  </header>
+  
+<main class="doc-page">
+  <a class="back-link" href="../index.html#documents">Back to review library</a>
+  <article class="doc-article">
+    <header class="doc-hero">
+      <p class="eyebrow">Source document</p>
+      <h1>Wealth Conversation Spec</h1>
+      <p>The core service specification for the lead magnet and client journey.</p>
+    </header>
+    <div class="doc-body"><h2>Real Wealth — Lead Magnet Form Specification</h2>
+<p><em>&quot;The Wealth Conversation&quot; — an engaging form that builds momentum by showing users what they didn&#039;t know they didn&#039;t know, one answer at a time.</em></p>
+<p><em>Version 0.2 — 16 April 2026. Supersedes v0.1. Owner: Programme team. Status: draft for Phase 0 sign-off.</em></p>
+<p>---</p>
+<h3>1. Executive summary</h3>
+<p>The tool is a <strong>single-session web form</strong> with one commercial mechanic: as the user answers, each answer can trigger a small, specific, emotionally-weighted callout — a customer quote, a tax fact, a planning flag, a pointed question — that appears <em>inline</em>, right there on the page, before they move to the next question. Over the course of fifteen questions, a typical user will see five to eight of these callouts, each one a specific reason to talk to a planner.</p>
+<p>By the time the user reaches the final page, they aren&#039;t being persuaded — they&#039;re already persuaded. The final page is not a reveal or a scorecard. It is a plain-English list of the things they flagged as they went, a short contact form, a booking CTA, and two or three clearly-labelled <em>illustrative</em> charts that show the kinds of things a planner conversation could cover. Conversion is high because the persuasion happened <em>during</em> the form, not after it.</p>
+<p>This is a deliberately simple product. No scoring engine. No LLM-generated narrative on user data. No account. No resume flow. No scorecard. It is a conditional form with a carefully-built provocation library — that&#039;s it. The engineering effort sits almost entirely in the content of the library and the craft of the interface.</p>
+<h3>2. The core mechanic</h3>
+<p>The form has around fifteen questions. Each question has a set of <strong>trigger rules</strong>. Each trigger, when matched, fires a <strong>provocation</strong> — a small, inline callout that appears beneath the user&#039;s answer before they move on. Provocations come in four formats, and the library mixes them to vary the rhythm:</p>
+<ul>
+<li><strong>Customer quote</strong> — a short, named, real quote from a Real Wealth client whose situation echoes the user&#039;s answer. <em>&quot;We had no idea the family home could create a tax problem this big.&quot; — Sarah, Yorkshire.</em></li>
+<li><strong>Tax or planning fact</strong> — a specific, sourceable data point that makes the implication of their answer concrete. <em>&quot;From April 2027, unused pension funds are expected to fall inside the estate for IHT — a change affecting an estimated 1.5 million UK families.&quot;</em></li>
+<li><strong>Magnitude flag</strong> — a range of what is typically at stake for households like theirs. <em>&quot;At £2m+ estate value, restructuring can typically save £200,000–£500,000 of IHT across a lifetime.&quot;</em></li>
+<li><strong>Gentle provocation</strong> — a question-shaped callout designed to make the user think. <em>&quot;You said five pensions. Most professionals can&#039;t name the total value of theirs within 20%. Can you?&quot;</em></li>
+</ul>
+<p>Each provocation is two to three sentences. Never more. It appears below the user&#039;s selected answer with a soft animated reveal, pauses for a beat, and then a &quot;continue&quot; tap takes them to the next question. Provocations are never gated — they appear whether the user asks for them or not — but they never block the flow. The user can always continue immediately.</p>
+<p>The provocations are the product. Everything else serves them.</p>
+<h3>3. Design principles</h3>
+<p><strong>Momentum over reveal.</strong> The insight arrives during the form, not at the end. By question twelve the user is already thinking <em>&quot;I need to book this call.&quot;</em></p>
+<p><strong>Specificity over generality.</strong> Every provocation references the exact answer the user gave. <em>&quot;You said £2m+&quot;</em> not <em>&quot;high-net-worth clients.&quot;</em> <em>&quot;You said three pensions&quot;</em> not <em>&quot;if you have several pensions.&quot;</em></p>
+<p><strong>Magnitude, never advice.</strong> Callouts state ranges of what is typical, never what the user should do. The tool surfaces issues; Real Wealth advises. The boundary is firm and audit-logged.</p>
+<p><strong>Plain English, adult tone.</strong> No jargon without translation. No hype. No &quot;amazing.&quot; No fear-mongering. Dry specificity is more persuasive than pressure.</p>
+<p><strong>The form is the product.</strong> No scoring engine, no LLM narrative on user answers, no accounts, no returning users, no resume flow. Users complete the form in one session or not at all.</p>
+<p><strong>Slickness earns the next click.</strong> The tool is the first experience of Real Wealth for many prospects. Motion, typography, and pacing must feel as considered as a private-bank lobby.</p>
+<p><strong>Compliance is the design constraint, not the afterthought.</strong> Every provocation, every chart, and every line of copy is signed off against the FCA advice-guidance boundary before it ships. The library is versioned so that any output a user saw can be reconstructed later.</p>
+<h3>4. What makes this different from the field</h3>
+<p>Most UK financial-planning lead magnets fall into one of four patterns: the mass-market financial-fitness score, the retirement calculator, the compatibility quiz, or the long-form data capture. Each of them holds the user&#039;s insight until the end, and each of them has a conversion problem as a result.</p>
+<p>This form flips the pattern: the user gets value <em>during</em> the form, continuously, as they answer. The &quot;gift&quot; is not withheld to coerce a data capture — it is given freely, and the data capture at the end feels like the natural next step because by then the user has already decided they want the conversation. The product thesis is that a well-designed provocation library converts better than any deferred reveal, because the user is not promised future insight but handed present insight.</p>
+<p>The tool also self-selects for the firm&#039;s target client. A user with a £300k estate, one pension and no business will trigger fewer, quieter provocations — and is less likely to complete. That is deliberate. A user with a £2.5m estate, a business they don&#039;t know how to extract from, five pensions and no will is going to hit a trigger on nearly every question, feel increasingly seen, and be a highly qualified lead by the time they reach the final page.</p>
+<h3>5. User journey</h3>
+<p><strong>Arrive.</strong> Landing page with one headline, one sentence, one Start button. No form fields. Time to complete (five minutes) and &quot;no sign-in needed&quot; shown as reassurance.</p>
+<p><strong>Start.</strong> Single framing screen — a short paragraph that says the tool will ask fifteen questions, that as they answer they&#039;ll see observations that might be relevant, that at the end they&#039;ll see a list of things worth discussing with a planner, and that nothing in the tool is personal financial advice.</p>
+<p><strong>Answer.</strong> One question per screen. Each question has a subtle progress indicator. On answering, if a trigger matches, the callout animates in beneath the answer. The user taps Continue to proceed. Some questions fire no callout; the form simply moves on. A small minority of questions fire two callouts (capped at two, never more, to preserve impact).</p>
+<p><strong>Close the aspirational loop.</strong> One of the last questions is the &quot;happy place&quot; — a short free-text, one sentence. This is the emotional anchor and appears on the final page.</p>
+<p><strong>Arrive at the final page.</strong> A clean, scrollable page containing, top to bottom: the user&#039;s aspiration line echoed back; a plain-English list of the things worth discussing (&quot;from your answers, these are worth a conversation&quot;); two or three clearly-labelled illustrative charts; a short contact form; the booking CTA; the FCA disclosure footer.</p>
+<p><strong>Submit.</strong> On submitting the contact form, the user sees a confirmation and, if they book through the embedded calendar, lands a meeting slot. Done.</p>
+<h3>6. Question set</h3>
+<p>Fifteen core questions, in this order. Branching is minimal — a &quot;no&quot; on business ownership skips two business-extraction questions; otherwise everyone sees the same set. Full copy is owned by the brand team; representative wording is given below.</p>
+<ol>
+<li><strong>Age band</strong> — 30s / 40s / 50s / 60s / 70+.</li>
+<li><strong>Household</strong> — single / couple / couple with dependent children / supporting older relatives / multi-generational.</li>
+<li><strong>Work status</strong> — employed / self-employed / business owner / retired / mix.</li>
+<li><strong>[Business owners only]</strong> How do you take money from the business? — salary only / salary + dividends / salary + pension / all three / accountant handles it / not sure.</li>
+<li><strong>[Business owners only]</strong> Is there a succession plan for the business? — documented / informal / no / not sure.</li>
+<li><strong>Household investable assets</strong> — under £250k / £250k–£1m / £1m–£3m / £3m–£10m / over £10m / prefer not to say.</li>
+<li><strong>Estate value including the home</strong> — under £500k / £500k–£1m / £1m–£2m / £2m–£3m / over £3m / not sure.</li>
+<li><strong>Pensions</strong> — how many pots roughly? — one / two or three / four to six / more than six / no idea.</li>
+<li><strong>High-income flag</strong> — is any household earner above £200k adjusted income? — yes / no / not sure.</li>
+<li><strong>ISA usage this year</strong> — fully used / partly used / not used / not sure / don&#039;t have one.</li>
+<li><strong>Will</strong> — in place and reviewed in last two years / in place but older / no will / not sure.</li>
+<li><strong>Lasting Power of Attorney</strong> — yes / no / didn&#039;t know that was a thing.</li>
+<li><strong>Protection</strong> — confidence the family could maintain lifestyle if the earner couldn&#039;t work — very / somewhat / not very / haven&#039;t thought about it.</li>
+<li><strong>Aspiration</strong> — <em>&quot;When you picture the life you&#039;re planning for, where are you? One sentence.&quot;</em> — free-text, ~140 chars.</li>
+<li><strong>Timeline</strong> — already there / within 5 years / 5–10 years / 10–20 years / beyond 20 years.</li>
+</ol>
+<p>The full question-to-trigger matrix and the v1.0 provocation library are in the <em>Prototype Action Plan</em> document.</p>
+<h3>7. The provocation library</h3>
+<p>The library is the crown jewel of the tool. It is a spreadsheet in Phase 0 and a JSON file in the repo from week one of the build, signed off by a Chartered Financial Planner and by Compliance. Each entry has:</p>
+<ul>
+<li><strong>Trigger condition</strong> — the exact answer or combination that fires it.</li>
+<li><strong>Format</strong> — quote / fact / magnitude / provocation.</li>
+<li><strong>Copy</strong> — the two-to-three-sentence text.</li>
+<li><strong>Source</strong> — the HMRC, FCA, DWP, ONS, or firm reference behind any number.</li>
+<li><strong>Compliance status</strong> — approved / in review / retired — with signoff date and signer.</li>
+<li><strong>Intensity</strong> — low / medium / high, used for suppression when a user would otherwise hit too many callouts.</li>
+</ul>
+<p>The library ships at v1.0 with around thirty approved entries — enough to cover the key triggers across all fifteen questions — and grows quarterly. Every number has a source. Every quote is either from a named real client with written permission (preferred) or a clearly-labelled composite. No fabrication.</p>
+<p>The library is versioned. Every submission logs the exact library version the user saw, so any provocation shown to any user can be reconstructed later. The Chartered Financial Planner and the Compliance Officer co-sign each library version before deployment.</p>
+<h3>8. The final page</h3>
+<p>Five elements, top to bottom:</p>
+<p><strong>Aspiration echo.</strong> One line, in the firm&#039;s brand serif. <em>&quot;You said: &#039;a cottage near the sea, with the grandchildren visiting.&#039;&quot;</em> Warm, not mocking, never embellished.</p>
+<p><strong>Things to consider.</strong> A three-to-seven-item list mirroring the triggers the user hit. Each item is a single line, phrased as a conversation opener, not a recommendation. For example:</p>
+<ul>
+<li><em>How your estate above £2m is affected by the residence nil-rate band taper.</em></li>
+<li><em>Whether your five pensions are working as one coherent retirement strategy.</em></li>
+<li><em>How the April 2027 pension IHT change may affect your plans.</em></li>
+<li><em>Whether your will reflects both your current family and your business.</em></li>
+</ul>
+<p>The list is not ranked, not scored. It is a mirror.</p>
+<p><strong>Illustrative examples.</strong> Two or three small charts. See section 9.</p>
+<p><strong>Short contact form.</strong> First name, email, phone (optional), single consent tick. Below that, a &quot;Book a 20-minute call&quot; button that opens the embedded calendar.</p>
+<p><strong>FCA footer.</strong> Real Wealth is authorised and regulated by the FCA; this tool does not constitute personal financial advice; a personal recommendation requires a regulated conversation.</p>
+<h3>9. Illustrative charts — handle with care</h3>
+<p>The charts exist because charts convert better than prose. They do not exist to show the user their personal situation, and they must not be mistaken for it. The compliance architecture around them is strict.</p>
+<p>Each chart:</p>
+<ul>
+<li>Is <strong>based on a generic fictional household</strong> whose parameters are stated on the chart itself.</li>
+<li>Is <strong>labelled &quot;Illustrative example — not your personal financial situation&quot; in bold</strong>, adjacent to the title, not hidden in a footnote.</li>
+<li>Is <strong>never personalised</strong> to the user&#039;s inputs. Tempting, but it crosses the line from guidance into something closer to advice and changes the product&#039;s regulatory posture.</li>
+<li>Is <strong>reviewed quarterly</strong> by Compliance and updated whenever tax rules change.</li>
+<li>Carries an <strong>alt-text description</strong> of shape and conclusion for screen readers.</li>
+</ul>
+<p>Three charts are proposed at v1.0:</p>
+<p><strong>Chart A — the IHT cliff.</strong> A bar or line showing how IHT scales for an illustrative £2m–£3m estate, including the residence nil-rate band taper above £2m. Title: <em>&quot;How IHT can bite above £2m — illustrative only.&quot;</em> Assumptions: £2.5m estate, £500k main residence, married couple, nil-rate band and RNRB in full.</p>
+<p><strong>Chart B — the pension consolidation effect.</strong> A two-line comparison over twenty years showing the same £500k starting pot at 1.0% annual charges vs 0.4% annual charges, with no contributions. Title: <em>&quot;0.6% in fees over 20 years — illustrative only.&quot;</em></p>
+<p><strong>Chart C — the business-extraction mix.</strong> A stacked bar comparing the tax on £100,000 drawn as pure salary vs a typical salary-dividend-pension mix. Title: <em>&quot;How extraction mix can change the tax bill — illustrative only.&quot;</em></p>
+<p>A single paragraph above the chart block frames them: <em>&quot;These are illustrative examples — the kinds of conversations a Real Wealth planner would have with you. They are not calculations of your personal position. Your conversation would explore the numbers that are actually yours.&quot;</em></p>
+<p>No chart shows the user&#039;s own answers. If leadership later wants personalised charts, that is a v2 question with a separate compliance review — it crosses from guidance into territory close to advice and needs a different product architecture.</p>
+<h3>10. Visual design and motion</h3>
+<p>The interface is typography-led. One question per screen. Generous whitespace. The firm&#039;s brand face at a large size. A single accent colour for active states. No stock imagery. The feel should be private-bank calm rather than consumer-app punchy.</p>
+<p><strong>Motion language.</strong> Each question enters with a 250ms upward slide-and-fade. The user&#039;s selected answer gets a gentle visual acknowledgement — a tick or a highlight — before any provocation appears. Provocations fade in over 400ms with a slight scale-up, and are visually distinct from the question (a card, a soft accent tint, a vertical accent line to the left). The Continue action is always visible and never moves.</p>
+<p><strong>Parallax and scroll.</strong> A light parallax on the background of each question — a brand-textured panel that shifts at ~0.7x the scroll rate of the content — is the right level of richness. Heavy parallax narratives (long pinned scrollies, video backgrounds, cinematic choreography) are the wrong register for a regulated financial tool and slow the form down. Motion must earn its place by helping the user, not impressing them. <code>prefers-reduced-motion</code> disables all non-essential motion.</p>
+<p><strong>The final page</strong> is a single long scrolling layout with quiet parallax on section backgrounds — aspiration echo, then considerations list, then charts, then form, then footer — each section revealing with a scroll-triggered fade. The feeling should be <em>&quot;this was made for me&quot;</em> without the tool having over-promised personalisation.</p>
+<p><strong>Accessibility is WCAG 2.2 AA, non-negotiable.</strong> Keyboard-only users can complete the entire form. Screen readers read every question, answer and provocation in the correct order. Contrast meets AA at every state. Focus states are visible. Provocations are announced with <code>aria-live=&quot;polite&quot;</code> so they arrive in the flow without interrupting focus. All motion respects <code>prefers-reduced-motion</code>. The tool is tested with VoiceOver (iOS) and NVDA (Windows) before launch.</p>
+<p><strong>Mobile-first, responsive up.</strong> The experience is designed for a phone held in one hand on a train. Desktop gets the same structure with more whitespace and a wider text measure. Tablet is a phone with more padding.</p>
+<h3>11. Technical architecture (summary)</h3>
+<p>React single-page app, hosted on a UK CDN on Real Wealth&#039;s domain. Small Python/FastAPI backend to accept submissions and fan out to integrations. Postgres for submissions and consent logs. The provocation library is a versioned JSON file in the repo at launch — reviewable via pull request, diffable over time — and graduates to a small headless CMS if the editorial cadence justifies it. No LLM in the form path. Trigger rules are boolean conditions evaluated client-side for speed, with a server-side revalidation on submission.</p>
+<p>At submission time, the form fires: CRM lead record (with full answer set, triggers fired, and library version ID), marketing-automation enrolment, booking-calendar prefill, analytics event. Data at rest is encrypted. Retention policy aligns with the firm&#039;s existing schedule. First-party analytics (Plausible or Fathom) by default; third-party tracking only behind a consent banner.</p>
+<h3>12. FCA compliance</h3>
+<p>The compliance architecture has four layers: scope, language, disclosure, evidence.</p>
+<p><strong>Scope.</strong> The tool surfaces topics and illustrative magnitudes. It never names a specific product, provider, fund, or course of action. It never produces a personalised projection. The provocation library enforces this at the content level, and the chart policy enforces it at the visual level.</p>
+<p><strong>Language.</strong> The tool uses <em>&quot;consider discussing with a planner,&quot;</em> never <em>&quot;you should.&quot;</em> It uses <em>&quot;typically in your situation&quot;</em> with explicit caveats, never <em>&quot;in your specific situation.&quot;</em> A banned-phrase filter runs over every library entry before it deploys.</p>
+<p><strong>Disclosure.</strong> The framing screen, the final page, the PDF, and every page footer state the tool is general guidance, not personal advice, and that a personal recommendation requires a regulated conversation. Every illustrative chart carries the &quot;illustrative only&quot; label directly adjacent to its title.</p>
+<p><strong>Evidence.</strong> Every submission logs the exact library version the user saw, the triggers fired, the provocations rendered, the consent language shown, and the timestamp. A user&#039;s entire experience can be reconstructed later.</p>
+<p>Sign-off regime: the Chartered Financial Planner owns the library content. The Compliance Officer signs off on every library version, every chart update, every disclosure change. Marketing cannot ship copy changes without both. This small friction prevents an expensive mistake.</p>
+<h3>13. Metrics</h3>
+<p>Four numbers. Completion (start → final page). Capture (final page → form submitted). Booking (submitted → call booked). Client conversion (call → onboarded client within 90 days). Floors and targets agreed in Phase 0.</p>
+<p>Drop-off per question and per-trigger booking-rate correlations are the core of weekly iteration. If a provocation is seen 200 times and never correlates with a booking, it is rewritten or retired. If a question has an above-mean drop-off, it is re-worded the following week.</p>
+<h3>14. Risks</h3>
+<p><strong>Regulatory drift.</strong> Copy edits over time cross into advice. Mitigated by the sign-off regime and banned-phrase filter.</p>
+<p><strong>Library fatigue.</strong> The same thirty provocations get stale as the tool scales. Mitigated by quarterly library reviews and a content backlog owned by the marketing lead.</p>
+<p><strong>Chart misinterpretation.</strong> A user reads the illustrative charts as personal to them. Mitigated by the &quot;illustrative only&quot; labelling, the single-paragraph framing above the chart block, and a user-test check that real users understand the label.</p>
+<p><strong>Capacity.</strong> The tool converts well enough to overwhelm adviser discovery-call capacity. Mitigated by throttling paid spend and having a triage flow ready.</p>
+<p><strong>Brand.</strong> The tool feels cynical or off-brand. Mitigated by adviser-and-compliance review on every copy version and a pilot with warm contacts before paid promotion.</p>
+<h3>15. Open questions for Phase 0</h3>
+<p>Who at Real Wealth owns the provocation library editorially? Who from Compliance signs off each version? Which three to five client quotes can the firm secure written permission for before launch? Which CRM, marketing-automation, and booking-calendar tools is the firm already on? What is the firm&#039;s current brand face and palette, and does the motion direction fit existing identity guidelines? Which three to five advisers pilot the first soft launch?</p>
+<p>---</p>
+<p><em>See the companion document &quot;Lead Magnet — Prototype Action Plan&quot; for the three-week build plan, the full question-to-trigger matrix, the v1.0 provocation library, the interface direction for the vibe-coded build, and the illustrative-charts specification.</em></p></div>
+  </article>
+</main>
+  <footer class="site-footer">
+    <div>
+      <img src="/real-wealth-logo-wordmark.svg" alt="Real Wealth">
+      <p>Manchester / Taunton | 0161 768 7722 | hello@realwealth.co.uk</p>
+    </div>
+    <p>This client review website is for internal review only. Public launch requires final compliance sign-off and production data integrations.</p>
+  </footer>
+</body>
+</html>
