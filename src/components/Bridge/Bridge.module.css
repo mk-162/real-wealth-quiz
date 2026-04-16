@@ -1,14 +1,18 @@
+/* Bridge — editorial text between the considered list and the action
+   ladder. Deliberately NO card frame: no background, no border, no
+   shadow. Reads as part of the page flow, not as a competing surface
+   next to the BriefingCard + FinalCTA cards below it. */
 .block {
   max-width: 580px;
   margin: 0 auto;
-  padding: var(--space-xl) var(--space-md) var(--space-lg);
+  padding: var(--space-lg) var(--space-md);
   text-align: center;
-  background: var(--paper);
+  background: transparent;
 }
 
 @media (min-width: 768px) {
   .block {
-    padding: var(--space-xxl) var(--space-md) var(--space-xl);
+    padding: var(--space-xl) var(--space-md);
   }
 }
 

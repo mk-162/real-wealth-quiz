@@ -209,51 +209,26 @@
   color: var(--brand-teal);
 }
 
-/* Enhanced — teal-gradient treatment for highest-intent users
-   (advised_but_looking overlay). Mirrors the spotlight flag register
-   so the two highest-impact moments on the page share styling. */
-.enhanced {
-  max-width: 560px;
-  padding: var(--space-lg) var(--space-md);
-  background: var(--gradient-teal);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-md);
-  color: var(--paper);
-}
+/* Enhanced — previously re-skinned the card with a teal gradient for
+   advised_but_looking users. That made the FinalCTA clash with the
+   BriefingCard next to it in the action-ladder grid (two cards, two
+   completely different surfaces). The "highest intent" signal is
+   already carried by the headline/body copy; keeping the same ladder
+   frame means both cards read as peers and the page feels composed.
 
-@media (min-width: 768px) {
-  .enhanced {
-    padding: var(--space-xl);
-  }
-}
-
-.enhanced .headline {
-  font-family: var(--font-heading);
-  font-style: italic;
-  font-weight: 200;
-  font-size: 32px;
-  color: var(--paper);
-  line-height: var(--lh-heading);
-}
-
-@media (min-width: 768px) {
-  .enhanced .headline {
-    font-size: 36px;
-  }
-}
-
-.enhanced .sub {
-  color: rgba(255, 255, 255, 0.9);
-}
-
-.enhanced .alt {
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.enhanced .preamble {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.4);
-  color: var(--paper);
+   A single orange eyebrow above the headline marks the highest-intent
+   state without restyling the whole card — subtle, consistent with
+   the SpotlightFlag eyebrow used elsewhere on the page. */
+.enhanced::after {
+  content: 'THE HIGHEST-INTENT CONVERSATION';
+  display: block;
+  order: -1;
+  margin: 0 0 var(--space-sm);
+  font-family: var(--font-body);
+  font-size: var(--fs-micro);
+  font-weight: 700;
+  letter-spacing: var(--ls-wider);
+  color: var(--brand-orange);
 }
 
 @keyframes fadeUp {
