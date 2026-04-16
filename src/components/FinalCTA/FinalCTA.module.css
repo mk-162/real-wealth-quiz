@@ -6,6 +6,79 @@
   animation: fadeUp var(--duration-slow) var(--ease-default) both;
 }
 
+/* Compact variant — for embedding in the sidebar card on the summary page.
+   Left-aligned, no outer padding (the card supplies its own), tighter
+   spacing so the CTA reads as a contained call-out rather than a full
+   hero. The actions row stacks at this size to keep the secondary link
+   from competing with the primary button. */
+.compact {
+  text-align: left;
+  padding: 0;
+  margin: 0;
+  animation: fadeUp var(--duration-slow) var(--ease-default) both;
+}
+
+.compact .preamble {
+  margin-left: 0;
+}
+
+.compact .headline {
+  font-size: clamp(1.5rem, 1.6vw + 0.7rem, 1.875rem);
+  margin-bottom: var(--space-xs);
+}
+
+.compact .sub {
+  margin: 0 0 var(--space-md);
+  max-width: none;
+}
+
+.compact .actions {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.compact .alt {
+  text-align: left;
+}
+
+/* Action row — primary Calendly button + secondary "Get in touch" link.
+   Default layout is centred (matches the original hero CTA); the compact
+   variant overrides this to stack. */
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+}
+
+/* True inline link treatment for the secondary "Get in touch" mailto.
+   Underlined teal, no button-like hit area — the primary Calendly action
+   carries the visual weight. */
+.secondary {
+  display: inline-block;
+  padding: var(--space-xs) 0;
+  font-family: var(--font-body);
+  font-size: var(--fs-ui);
+  font-weight: 600;
+  color: var(--brand-teal);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+  transition: color var(--duration-fast) var(--ease-default);
+}
+
+.secondary:hover {
+  color: var(--brand-orange);
+  text-decoration-thickness: 2px;
+}
+
+.secondary:focus-visible {
+  outline: 2px solid var(--brand-teal);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
 .preamble {
   display: inline-block;
   margin: 0 auto var(--space-md);

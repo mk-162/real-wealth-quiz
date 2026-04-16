@@ -46,7 +46,10 @@ export function TierTile({
       ) : null}
       {icon ? <span className={styles.icon}>{icon}</span> : null}
       <span className={styles.time}>{timeLabel}</span>
-      <h3 className={styles.name}>{name}</h3>
+      {/* Span (not <h3>) because headings are not valid inside an interactive
+          control with role="radio". The radio's accessible name is composed
+          from its visible text children automatically. */}
+      <span className={styles.name}>{name}</span>
       <p className={styles.description}>{description}</p>
     </button>
   );

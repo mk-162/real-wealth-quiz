@@ -13,11 +13,52 @@
   margin: 0 auto;
 }
 
+/* Logo: full white on the navy footer surface — `tone="paper"` already
+   leaves the SVG's native white fill untouched, so we just remove the
+   opacity fade to land on pure white. */
 .logoWrap {
   display: flex;
   justify-content: center;
   margin-bottom: var(--space-md);
-  opacity: 0.9;
+}
+
+.logoWrap :global(img) {
+  filter: brightness(0) invert(1);
+}
+
+/* Promises strip — two short lines, ruled separator, restrained tone. */
+.promises {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto var(--space-lg);
+  display: grid;
+  gap: var(--space-xs);
+  max-width: 38rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  padding: var(--space-md) 0;
+}
+
+@media (min-width: 640px) {
+  .promises {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-md);
+    text-align: left;
+  }
+}
+
+.promise {
+  font-size: var(--fs-small);
+  line-height: 1.5;
+}
+
+.promiseTitle {
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 600;
+}
+
+.promiseBody {
+  color: rgba(255, 255, 255, 0.65);
 }
 
 .footer a {

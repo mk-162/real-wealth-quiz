@@ -78,7 +78,7 @@
 .hours {
   font-family: var(--font-body);
   font-size: var(--fs-small);
-  color: var(--stone);
+  color: var(--ink-soft);
   margin: 4px 0 0;
 }
 

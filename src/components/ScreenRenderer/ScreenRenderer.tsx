@@ -13,7 +13,6 @@ import type { ReactNode } from 'react';
 import type { Screen } from '../../../content/schema';
 import { Button } from '@/components/Button';
 import { QuestionShell } from '@/components/QuestionShell';
-import { ReassuranceStrip } from '@/components/ReassuranceStrip';
 import { WhyAskToggle } from '@/components/WhyAskToggle';
 import { SectionKicker } from '@/components/SectionKicker';
 import { SlideSwap } from '@/components/SlideSwap';
@@ -153,27 +152,16 @@ function AsymmetricLayout(props: ScreenRendererProps) {
   const stem = screen.headline ?? screen.title;
 
   return (
+    /* Reassurance copy ("Your answers stay with you" / "A real planner
+       reads every answer") was previously rendered here as a tile strip
+       beneath every question. It now lives in the global FCAFooter so
+       the form itself stays focused on the next action. */
     <QuestionShell
       kicker={kicker}
       stem={stem}
       pullquote={pullquote ?? screen.sub}
       imageSrc={imageSrc}
       imageAlt={imageAlt}
-      footer={
-        <ReassuranceStrip
-          tiles={[
-            {
-              title: 'Your answers stay with you',
-              body: 'We won’t share or sell your responses. You can stop any time — everything is saved.',
-            },
-            {
-              title: 'A real planner reads every answer',
-              body: 'No AI scorecard, no auto-verdict. A senior planner reviews this before any call.',
-              tone: 'teal',
-            },
-          ]}
-        />
-      }
     >
       {screen.sub && screen.sub !== pullquote ? (
         <p className={styles.panelSub}>{screen.sub}</p>

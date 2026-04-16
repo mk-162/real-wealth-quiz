@@ -1,13 +1,14 @@
 .option {
+  position: relative;
   display: flex;
   align-items: center;
   gap: var(--space-sm);
   width: 100%;
-  min-height: 56px;
+  min-height: 64px;
   padding: var(--space-sm) var(--space-md);
   background: var(--paper);
-  border: 1px solid var(--stone);
-  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
   color: var(--ink);
   text-align: left;
   cursor: pointer;
@@ -20,14 +21,26 @@
 
 .option:hover {
   border-color: var(--brand-teal);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-sm);
   transform: translateY(-1px);
 }
 
+/* Selected state — uses inset/outset shadow ring instead of border-width
+   change so the row doesn't reflow neighbours. */
 .option[data-selected='true'] {
-  border: 2px solid var(--brand-orange);
-  background: var(--orange-tint-04);
-  padding: calc(var(--space-sm) - 1px) calc(var(--space-md) - 1px);
+  border-color: var(--brand-teal);
+  background: var(--teal-tint-04);
+  box-shadow:
+    inset 0 0 0 1px var(--brand-teal),
+    0 4px 14px -8px rgba(12, 115, 114, 0.4);
+}
+
+.option:focus-visible {
+  outline: none;
+  border-color: var(--brand-teal);
+  box-shadow:
+    inset 0 0 0 1px var(--brand-teal),
+    0 0 0 3px var(--teal-tint-15);
 }
 
 .icon {
@@ -41,30 +54,51 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
+  min-width: 0;
 }
 
 .label {
   font-family: var(--font-body);
   font-size: var(--fs-body);
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1.35;
 }
 
 .description {
   font-size: var(--fs-small);
-  color: var(--stone);
+  color: var(--ink-soft);
+  line-height: 1.4;
 }
 
 .tick {
   flex-shrink: 0;
-  width: 24px;
-  text-align: right;
-  color: var(--brand-orange);
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--paper);
   font-weight: 700;
-  font-size: var(--fs-h3);
+  font-size: 14px;
+  border: 2px solid var(--stone-soft);
+  transition:
+    background var(--duration-default) var(--ease-default),
+    border-color var(--duration-default) var(--ease-default),
+    transform var(--duration-default) var(--ease-default);
+}
+
+.option[data-selected='true'] .tick {
+  background: var(--brand-teal);
+  border-color: var(--brand-teal);
+  transform: scale(1.05);
 }
 
 @media (max-width: 480px) {
   .option {
-    font-size: var(--fs-ui);
+    min-height: 60px;
     padding: var(--space-sm);
   }
 }

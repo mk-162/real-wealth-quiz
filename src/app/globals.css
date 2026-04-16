@@ -1,3 +1,7 @@
-/* Root stylesheet. Imports the one-and-only source of CSS truth. */
+/* Root stylesheet. Imports the one-and-only source of CSS truth.
+   Typekit kit is imported here (not via a <link> in layout.tsx) so the
+   <head> stays free of React-managed children — that prevents hydration
+   mismatches with dev-tool scripts the host environment may inject. */
+@import url('https://use.typekit.net/ayo5bxu.css');
 @import '../styles/tokens.css';
 @import '../styles/base.css';

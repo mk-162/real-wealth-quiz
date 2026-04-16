@@ -61,6 +61,6 @@
   font-size: var(--fs-micro);
   letter-spacing: var(--ls-wide);
   text-transform: uppercase;
-  color: var(--stone);
+  color: var(--ink-soft);
   padding: 0 4px;
 }

@@ -12,7 +12,7 @@
   color: var(--brand-teal);
 }
 .kicker[data-tone='stone'] {
-  color: var(--stone);
+  color: var(--ink-soft);
 }
 .kicker[data-tone='paper'] {
   color: rgba(255, 255, 255, 0.75);

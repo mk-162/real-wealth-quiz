@@ -2,9 +2,10 @@
  * Root layout for the Wealth Conversation app.
  * Imports tokens once and wraps every route.
  *
- * TODO: Add the Typekit kit <link> for gelica + area-normal once we have the
- * kit id from Real Wealth. Until then, serif / sans-serif fallbacks apply and
- * the visual is off-brand.
+ * The Typekit kit is loaded via @import in globals.css (not via a <link>
+ * here) to keep the <head> free of React-managed children. Some host
+ * environments inject scripts into <head> before hydration, which would
+ * otherwise cause a hydration mismatch and disable all event handlers.
  */
 import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
@@ -26,11 +27,6 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en-GB">
-      <head>
-        {/* Real Wealth Typekit kit — same source as realwealth.co.uk.
-            Hosts gelica (humanist serif) and area-normal (geometric sans). */}
-        <link rel="stylesheet" href="https://use.typekit.net/ayo5bxu.css" />
-      </head>
       <body>
         {children}
         {/* Temporary — remove before shipping. Lets reviewers jump between templates. */}

@@ -133,10 +133,7 @@ export default function DetailsPage() {
               required
             />
             {errors.name ? (
-              <p
-                id="name-error"
-                style={{ color: 'var(--danger)', fontSize: 'var(--fs-small)' }}
-              >
+              <p id="name-error" className={styles.errorText}>
                 {errors.name}
               </p>
             ) : null}
@@ -161,10 +158,7 @@ export default function DetailsPage() {
               required
             />
             {errors.email ? (
-              <p
-                id="email-error"
-                style={{ color: 'var(--danger)', fontSize: 'var(--fs-small)' }}
-              >
+              <p id="email-error" className={styles.errorText}>
                 {errors.email}
               </p>
             ) : null}
@@ -175,6 +169,7 @@ export default function DetailsPage() {
           <div className={styles.field}>
             <label className={styles.label} htmlFor="phone">
               {phoneField.label}
+              <span className={styles.optional}>optional</span>
             </label>
             <input
               id="phone"
@@ -188,34 +183,37 @@ export default function DetailsPage() {
           </div>
         ) : null}
 
-        <div className={styles.consent}>
-          <input
-            id="consent-service"
-            type="checkbox"
-            checked={consentService}
-            onChange={(e) => setConsentService(e.target.checked)}
-            aria-invalid={Boolean(errors.consent)}
-            required
-          />
-          <label htmlFor="consent-service">{consentServiceLabel}</label>
-        </div>
-        {errors.consent ? (
-          <p style={{ color: 'var(--danger)', fontSize: 'var(--fs-small)' }}>
-            {errors.consent}
-          </p>
-        ) : null}
+        <div className={styles.consentGroup}>
+          <div className={styles.consent}>
+            <input
+              id="consent-service"
+              type="checkbox"
+              checked={consentService}
+              onChange={(e) => setConsentService(e.target.checked)}
+              aria-invalid={Boolean(errors.consent)}
+              aria-describedby={errors.consent ? 'consent-error' : undefined}
+              required
+            />
+            <label htmlFor="consent-service">{consentServiceLabel}</label>
+          </div>
+          {errors.consent ? (
+            <p id="consent-error" className={styles.errorText} role="alert">
+              {errors.consent}
+            </p>
+          ) : null}
 
-        <div className={styles.consent}>
-          <input
-            id="consent-marketing"
-            type="checkbox"
-            checked={consentMarketing}
-            onChange={(e) => setConsentMarketing(e.target.checked)}
-          />
-          <label htmlFor="consent-marketing">{consentMarketingLabel}</label>
+          <div className={styles.consent}>
+            <input
+              id="consent-marketing"
+              type="checkbox"
+              checked={consentMarketing}
+              onChange={(e) => setConsentMarketing(e.target.checked)}
+            />
+            <label htmlFor="consent-marketing">{consentMarketingLabel}</label>
+          </div>
         </div>
 
-        <p style={{ fontSize: 'var(--fs-small)' }}>
+        <p className={styles.privacyLinkLine}>
           <a href={consentDetailHref} className={styles.detailLink}>
             {consentDetailLabel}
           </a>

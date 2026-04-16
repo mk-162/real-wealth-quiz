@@ -19,6 +19,25 @@ export interface FinalCTAProps {
   preamble?: string;
   /** Enhanced teal-gradient treatment for the highest-intent (`advised_but_looking`) users. */
   enhanced?: boolean;
+  /**
+   * Secondary "Get in touch" action shown alongside the primary Calendly
+   * button. Typically a mailto: link. The button label defaults to
+   * "Get in touch" when only `secondaryHref` is supplied.
+   */
+  secondaryButton?: string;
+  secondaryHref?: string;
+  /**
+   * `"compact"` swaps the full-width hero block for a tighter, left-aligned
+   * layout suitable for embedding in a sidebar card on the summary page.
+   */
+  variant?: 'default' | 'compact';
+  /**
+   * Overrides the default `aria-label` ("Book a call"). When the same
+   * page renders multiple `FinalCTA` instances (sidebar + narrative
+   * resolution on the summary page), each one should have a distinct
+   * accessible name to keep landmark navigation unambiguous.
+   */
+  ariaLabel?: string;
   onBook?: () => void;
 }
 
@@ -30,6 +49,10 @@ export function FinalCTA({
   helper,
   preamble,
   enhanced = false,
+  secondaryButton = 'Get in touch',
+  secondaryHref,
+  variant = 'default',
+  ariaLabel = 'Book a call',
   onBook,
 }: FinalCTAProps) {
   const handleClick = () => {
@@ -37,14 +60,26 @@ export function FinalCTA({
     else if (buttonHref) window.open(normaliseHref(buttonHref), '_blank', 'noopener,noreferrer');
   };
 
-  const cardClassName = enhanced ? `${styles.block} ${styles.enhanced}` : styles.block;
+  const baseClass = variant === 'compact' ? styles.compact : styles.block;
+  const cardClassName = enhanced ? `${baseClass} ${styles.enhanced}` : baseClass;
 
   return (
-    <section className={cardClassName} aria-label="Book a call" data-enhanced={enhanced ? 'true' : undefined}>
+    <section
+      className={cardClassName}
+      aria-label={ariaLabel}
+      data-enhanced={enhanced ? 'true' : undefined}
+    >
       {preamble ? <p className={styles.preamble}>{preamble}</p> : null}
       <h2 className={styles.headline}>{headline}</h2>
       <p className={styles.sub}>{body}</p>
-      <Button onClick={handleClick}>{button}</Button>
+      <div className={styles.actions}>
+        <Button onClick={handleClick}>{button}</Button>
+        {secondaryHref ? (
+          <a className={styles.secondary} href={secondaryHref}>
+            {secondaryButton}
+          </a>
+        ) : null}
+      </div>
       {helper ? <p className={styles.alt}>{helper}</p> : null}
     </section>
   );

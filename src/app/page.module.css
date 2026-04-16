@@ -1,16 +1,57 @@
 /* Homepage — hero, tier picker, freedom moment, benefit rows.
-   Brand-aligned to realwealth.co.uk: sans upright headlines on teal,
-   outlined CTA on dark, orange-gradient CTA on paper. */
+   Brand-aligned to realwealth.co.uk: gelica-italic display headlines,
+   teal hero, orange-gradient pill CTAs on paper, masked lifestyle imagery. */
 
 /* Sticky minimal header -------------------------------------------- */
 .topnav {
   position: sticky;
   top: 0;
   z-index: var(--z-sticky);
-  background: rgba(250, 248, 246, 0.85);
+  background: rgba(250, 248, 246, 0.88);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  padding: var(--space-sm) var(--space-md);
+  padding: var(--space-sm) var(--gutter);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  border-bottom: 1px solid rgba(53, 53, 53, 0.05);
+}
+
+.topnavCta {
+  display: none;
+}
+@media (min-width: 600px) {
+  .topnavCta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0.55rem 1.1rem;
+    background: var(--gradient-cta);
+    color: var(--paper);
+    border-radius: 999px;
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 0.95rem;
+    text-decoration: none;
+    box-shadow: var(--shadow-cta);
+    transition:
+      transform var(--duration-fast) var(--ease-default),
+      box-shadow var(--duration-default) var(--ease-default);
+  }
+  .topnavCta:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-cta-hover);
+    color: var(--paper);
+  }
+  .topnavCta::after {
+    content: '›';
+    font-style: normal;
+    font-size: 1.15em;
+    line-height: 0.8;
+    transform: translateY(-1px);
+  }
 }
 
 /* ===== Hero ======================================================= */
@@ -19,19 +60,12 @@
   position: relative;
   overflow: hidden;
   color: var(--paper);
-  padding: var(--space-lg) var(--space-md) var(--space-xl);
+  padding: clamp(2.5rem, 6vw, 5rem) var(--gutter) clamp(3rem, 7vw, 6rem);
   isolation: isolate;
-}
-@media (min-width: 768px) {
-  .hero {
-    padding: var(--space-xl) var(--space-lg);
-    min-height: 520px;
-  }
 }
 @media (min-width: 1024px) {
   .hero {
-    padding: var(--space-xxl) var(--space-lg);
-    min-height: 600px;
+    min-height: 620px;
     display: flex;
     align-items: center;
   }
@@ -43,6 +77,16 @@
   z-index: -1;
   background: var(--gradient-teal);
 }
+.heroBg::after {
+  /* Subtle radial highlight, lifts the gradient */
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(60% 50% at 75% 35%, rgba(255, 255, 255, 0.18), transparent 70%),
+    radial-gradient(40% 40% at 15% 85%, rgba(0, 0, 0, 0.15), transparent 70%);
+  pointer-events: none;
+}
 
 .heroInner {
   position: relative;
@@ -51,7 +95,7 @@
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--space-lg);
+  gap: var(--space-xl);
   animation: fadeUp var(--duration-slow) var(--ease-default) both;
 }
 
@@ -59,7 +103,7 @@
   .heroInner {
     grid-template-columns: 6fr 5fr;
     align-items: center;
-    gap: var(--space-xxl);
+    gap: clamp(3rem, 6vw, 6rem);
   }
 }
 
@@ -73,27 +117,30 @@
   }
 }
 
-/* Sans-upright headline — matches the live site's h1 treatment.
-   Tight line-height, negative letter-spacing for display weight. */
+/* Display headline — gelica italic, the realwealth.co.uk signature.
+   Renders the headline as the start of a sentence; CSS adds the italic
+   "voice" without needing to alter copy. */
 .headline {
-  font-family: var(--font-body);
-  font-weight: 500;
-  font-style: normal;
-  font-size: clamp(2rem, 3.5vw + 1rem, 3rem);
-  line-height: 1.1;
+  font-family: var(--font-heading);
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(2.5rem, 4.5vw + 0.5rem, 4.25rem);
+  line-height: 1.05;
   letter-spacing: -0.015em;
   color: var(--paper);
   margin: 0 0 var(--space-md);
   max-width: 18ch;
+  text-wrap: balance;
 }
 
 .sub {
   font-family: var(--font-body);
-  font-size: var(--fs-body);
-  line-height: var(--lh-body);
-  color: rgba(255, 255, 255, 0.9);
-  max-width: 560px;
+  font-size: clamp(1.05rem, 0.9vw + 0.85rem, 1.25rem);
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.92);
+  max-width: 520px;
   margin: 0 0 var(--space-lg);
+  font-weight: 400;
 }
 
 .heroCta {
@@ -105,8 +152,9 @@
 
 .reassure {
   font-size: var(--fs-small);
-  color: rgba(255, 255, 255, 0.68);
+  color: rgba(255, 255, 255, 0.75);
   max-width: 420px;
+  margin: 0;
 }
 
 .pills {
@@ -120,32 +168,33 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 5px 12px;
+  padding: 6px 14px;
   border-radius: var(--radius-full);
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  color: rgba(255, 255, 255, 0.9);
-  font-size: var(--fs-micro);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: rgba(255, 255, 255, 0.95);
+  font-size: var(--fs-small);
   font-weight: 500;
+  backdrop-filter: blur(4px);
 }
 
-/* Hero media — lifestyle image with a quiet attribution caption.
-   On mobile, lives above the text as a 16:10 banner.
-   On desktop, right-column 4:5 portrait with overlayed quote. */
+/* Hero media — lifestyle image with brand-style organic mask.
+   Uses a soft circular crop on desktop to evoke the realwealth.co.uk lens. */
 .heroMedia {
   order: 1;
   margin: 0;
   position: relative;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   overflow: hidden;
-  aspect-ratio: 16 / 10;
-  box-shadow: 0 40px 80px -40px rgba(0, 0, 0, 0.5);
+  aspect-ratio: 16 / 11;
+  box-shadow: 0 50px 80px -40px rgba(0, 0, 0, 0.45);
 }
 @media (min-width: 1024px) {
   .heroMedia {
     order: 2;
     aspect-ratio: 4 / 5;
-    max-height: 560px;
+    max-height: 600px;
+    border-radius: 50% 50% 50% 14px / 50% 50% 50% 14px;
   }
 }
 
@@ -154,10 +203,10 @@
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 600ms var(--ease-default);
+  transition: transform 800ms var(--ease-default);
 }
 .heroMedia:hover .heroImg {
-  transform: scale(1.02);
+  transform: scale(1.03);
 }
 
 .heroQuote {
@@ -165,8 +214,8 @@
   left: 0;
   right: 0;
   bottom: 0;
-  padding: var(--space-md);
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+  padding: var(--space-lg) var(--space-md) var(--space-md);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.65), transparent);
   color: var(--paper);
 }
 .heroQuote q {
@@ -175,9 +224,10 @@
   font-style: italic;
   font-weight: 300;
   font-size: var(--fs-ui);
-  line-height: 1.45;
+  line-height: 1.5;
   quotes: '“' '”';
   margin-bottom: var(--space-xs);
+  max-width: 30ch;
 }
 .heroQuote cite {
   font-family: var(--font-body);
@@ -185,11 +235,12 @@
   font-size: var(--fs-micro);
   letter-spacing: var(--ls-wider);
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 600;
 }
 @media (max-width: 767px) {
   .heroQuote {
-    padding: var(--space-sm);
+    padding: var(--space-md) var(--space-sm) var(--space-sm);
   }
   .heroQuote q {
     font-size: var(--fs-small);
@@ -199,29 +250,37 @@
 /* ===== Tier picker =============================================== */
 
 .tierSection {
-  padding: var(--space-xl) var(--space-md);
+  padding: clamp(3rem, 7vw, 6rem) var(--gutter);
   background: var(--paper-warm);
-}
-@media (min-width: 768px) {
-  .tierSection {
-    padding: var(--space-xxl) var(--space-lg);
-  }
 }
 
 .tierInner {
-  max-width: 1200px;
+  max-width: var(--container-max);
   margin: 0 auto;
   text-align: center;
 }
 
-.tierHeading {
+.tierKicker {
+  display: inline-block;
   font-family: var(--font-body);
-  font-weight: 500;
-  font-size: clamp(1.75rem, 2.5vw + 0.75rem, 2.25rem);
-  line-height: 1.2;
+  font-size: var(--fs-micro);
+  font-weight: 700;
+  letter-spacing: var(--ls-wider);
+  text-transform: uppercase;
+  color: var(--brand-orange);
+  margin-bottom: var(--space-sm);
+}
+
+.tierHeading {
+  font-family: var(--font-heading);
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(2rem, 3vw + 1rem, 3rem);
+  line-height: 1.1;
   color: var(--ink);
   margin: 0 0 var(--space-sm);
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
 }
 
 .tierSub {
@@ -229,7 +288,7 @@
   color: var(--ink-muted);
   max-width: 520px;
   margin: 0 auto var(--space-xl);
-  line-height: 1.5;
+  line-height: 1.55;
 }
 
 .tiles {
@@ -237,12 +296,14 @@
   grid-template-columns: 1fr;
   gap: var(--space-md);
   text-align: left;
+  max-width: var(--tile-row-max);
+  margin: 0 auto;
 }
 
 @media (min-width: 768px) {
   .tiles {
     grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-md);
+    gap: var(--space-lg);
   }
 }
 
@@ -266,50 +327,40 @@
 
 .helper {
   font-size: var(--fs-small);
-  color: var(--stone);
+  color: var(--ink-soft);
 }
 
 /* ===== Freedom moment ============================================ */
-/* Full-bleed tinted band — alternates rhythm with the paper sections. */
 
 .freedom {
   background: linear-gradient(180deg, var(--paper-cool), var(--paper-warm));
-  padding: var(--space-xl) var(--space-md);
+  padding: clamp(3rem, 7vw, 6rem) var(--gutter);
   text-align: center;
   position: relative;
-}
-@media (min-width: 768px) {
-  .freedom {
-    padding: var(--space-xxl) var(--space-md);
-  }
 }
 
 .freedomQuote {
   font-family: var(--font-heading);
   font-weight: 300;
   font-style: italic;
-  font-size: clamp(1.5rem, 2.6vw + 0.6rem, 2.25rem);
-  line-height: 1.35;
+  font-size: clamp(1.625rem, 2.4vw + 0.8rem, 2.5rem);
+  line-height: 1.3;
   color: var(--brand-teal);
-  max-width: var(--content-max);
+  max-width: 24ch;
   margin: 0 auto;
   quotes: none;
+  text-wrap: balance;
 }
 
-/* ===== Benefit rows (ruled lines, not cards) ===================== */
+/* ===== Benefit rows ============================================= */
 
 .benefits {
-  padding: var(--space-xl) var(--space-md) var(--space-xxl);
+  padding: clamp(3rem, 7vw, 6rem) var(--gutter) clamp(4rem, 8vw, 7rem);
   background: var(--paper-warm);
-}
-@media (min-width: 768px) {
-  .benefits {
-    padding: var(--space-xxl) var(--space-lg);
-  }
 }
 
 .benefitsInner {
-  max-width: 900px;
+  max-width: 920px;
   margin: 0 auto;
   border-top: var(--rule-fine);
 }
@@ -325,50 +376,50 @@
 }
 @media (min-width: 768px) {
   .benefitRow {
-    grid-template-columns: 56px 1fr;
+    grid-template-columns: 64px 1fr;
     gap: var(--space-lg);
     padding: var(--space-lg) 0;
   }
 }
 
-.benefitRow:nth-child(2) {
-  animation-delay: 80ms;
-}
-.benefitRow:nth-child(3) {
-  animation-delay: 160ms;
-}
+.benefitRow:nth-child(2) { animation-delay: 80ms; }
+.benefitRow:nth-child(3) { animation-delay: 160ms; }
 
 .benefitIcon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  background: var(--teal-tint-05);
+  background: var(--teal-tint-08);
   color: var(--brand-teal);
   flex-shrink: 0;
   transition: background var(--duration-default) var(--ease-default);
 }
 @media (min-width: 768px) {
   .benefitIcon {
-    width: 48px;
-    height: 48px;
+    width: 56px;
+    height: 56px;
   }
 }
 
 .benefitRow:hover .benefitIcon {
-  background: var(--teal-tint-10);
+  background: var(--teal-tint-15);
 }
 
+/* Benefit row headline is an item-level title in a list of three. Use
+   sans-serif semibold ink (same recipe as summary list items + tier tiles)
+   so display-tier italic gelica stays reserved for true section / page
+   headings. */
 .benefitBody h3 {
-  font-family: var(--font-heading);
-  font-style: italic;
-  font-weight: 300;
-  font-size: clamp(1.25rem, 1.5vw + 0.5rem, 1.625rem);
-  line-height: 1.25;
-  color: var(--brand-teal);
-  margin: 0 0 6px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: clamp(1.125rem, 0.6vw + 0.9rem, 1.375rem);
+  line-height: 1.3;
+  color: var(--ink);
+  margin: 0 0 var(--space-xs);
+  letter-spacing: -0.005em;
 }
 
 .benefitBody p {
@@ -376,12 +427,13 @@
   color: var(--ink-muted);
   line-height: 1.55;
   margin: 0;
+  max-width: 56ch;
 }
 
 @keyframes fadeUp {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(14px);
   }
   to {
     opacity: 1;

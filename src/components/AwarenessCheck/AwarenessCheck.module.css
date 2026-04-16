@@ -27,7 +27,7 @@
 .micro {
   font-family: var(--font-body);
   font-size: var(--fs-small);
-  color: var(--stone);
+  color: var(--ink-soft);
   margin-bottom: var(--space-lg);
 }
 
@@ -82,7 +82,7 @@
 .description {
   font-family: var(--font-body);
   font-size: var(--fs-small);
-  color: var(--stone);
+  color: var(--ink-soft);
 }
 
 .tag {

@@ -50,11 +50,11 @@ benefit_cards:
 footer:
   disclosure: "Real Wealth Partners Ltd is authorised and regulated by the Financial Conduct Authority (FRN 1037186). Registered in England and Wales, company number 16498380. Registered office: Office 1, First Floor, 14–18 Tib Lane, Manchester, M2 4JB. A wholly owned subsidiary of Real Wealth Group Ltd."
   general_line: "This tool provides general guidance and does not constitute a personal recommendation or financial advice."
-  # Template-review links removed for production. The /privacy and
-  # /consumer-duty app routes still exist — they're referenced from the
-  # data-capture consent line only. Add entries back to this list when
-  # the client decides to surface them in the global footer.
-  links: []
+  links:
+    - label: "Privacy"
+      href: "/privacy"
+    - label: "How we meet our Consumer Duty obligations"
+      href: "/consumer-duty"
 ---
 
 The homepage is the one page every user sees. It has four stacked sections — hero, tier picker, brand freedom moment, benefit cards — and a standing footer. The aesthetic is Real Wealth's "Digital Private Suite" — generous whitespace, serif headlines in gelica ExtraLight Italic, no 1px borders, tonal layering instead.

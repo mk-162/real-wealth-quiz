@@ -1,33 +1,46 @@
+/* Input block — each block is one *question* on a multi-question screen
+   (e.g. income band + estate band). Treat each as its own visual section
+   so two stacked questions don't read as one continuous form. */
 .inputBlock {
   display: flex;
   flex-direction: column;
-  gap: var(--space-sm);
+  gap: var(--space-md);
 }
 
+/* Subsequent question on the same screen: generous breathing room plus
+   a stronger horizontal rule to make the section break unambiguous.
+   The rule sits above the new label so the label clearly belongs to a
+   *new* question, not a continuation of the previous control. */
 .inputBlock + .inputBlock {
-  margin-top: var(--space-lg);
-  padding-top: var(--space-lg);
-  border-top: var(--rule-fine);
+  margin-top: var(--space-xl);
+  padding-top: var(--space-xl);
+  border-top: 1px solid var(--border-subtle);
 }
 
 .inputHead {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--space-xs);
 }
 
+/* Promoted label — reads as a real question heading rather than a
+   form-field caption. Body font (we reserve italic gelica for display
+   headings), but at heading scale and weight so the eye registers it
+   as the start of a new section. */
 .label {
   font-family: var(--font-body);
-  font-weight: 500;
-  font-size: var(--fs-small);
+  font-weight: 600;
+  font-size: clamp(1.0625rem, 0.6vw + 0.95rem, 1.25rem);
+  line-height: 1.35;
   color: var(--ink);
+  letter-spacing: -0.005em;
 }
 
 .helper {
   font-family: var(--font-body);
   font-size: var(--fs-small);
-  color: var(--stone);
-  font-style: italic;
+  color: var(--ink-soft);
+  line-height: 1.5;
 }
 
 .radioGroup {
@@ -39,15 +52,16 @@
 .textarea {
   width: 100%;
   resize: vertical;
-  min-height: 120px;
+  min-height: 140px;
   padding: var(--space-md);
   font-family: var(--font-heading);
   font-style: italic;
-  font-size: var(--fs-h4);
+  font-weight: 300;
+  font-size: clamp(1.125rem, 1vw + 0.75rem, 1.375rem);
   line-height: 1.5;
   color: var(--ink);
   background: var(--paper);
-  border: 1px solid var(--stone);
+  border: 1px solid var(--stone-soft);
   border-radius: var(--radius-md);
   transition:
     border-color var(--duration-default) var(--ease-default),
@@ -57,30 +71,34 @@
 .textarea:focus {
   outline: none;
   border-color: var(--brand-teal);
-  box-shadow: 0 0 0 3px var(--teal-tint-15);
+  box-shadow: 0 0 0 4px var(--teal-tint-15);
 }
 
 .textarea::placeholder {
-  color: var(--stone);
+  color: var(--ink-soft);
   font-style: italic;
 }
 
 .numberInput {
   width: 100%;
-  min-height: 48px;
+  min-height: 56px;
   padding: 0 var(--space-md);
   font-family: var(--font-body);
-  font-size: var(--fs-body);
+  font-size: var(--fs-h4);
+  font-weight: 500;
   color: var(--ink);
   background: var(--paper);
-  border: 1px solid var(--stone);
+  border: 1px solid var(--stone-soft);
   border-radius: var(--radius-sm);
+  transition:
+    border-color var(--duration-default) var(--ease-default),
+    box-shadow var(--duration-default) var(--ease-default);
 }
 
 .numberInput:focus {
   outline: none;
   border-color: var(--brand-teal);
-  box-shadow: 0 0 0 3px var(--teal-tint-15);
+  box-shadow: 0 0 0 4px var(--teal-tint-15);
 }
 
 .missing {

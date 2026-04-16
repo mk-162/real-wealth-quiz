@@ -67,6 +67,18 @@ export default function Home() {
     <>
       <header className={styles.topnav}>
         <Logo tone="teal" width={160} />
+        <a
+          href="#tier-picker"
+          className={styles.topnavCta}
+          onClick={(e) => {
+            e.preventDefault();
+            document
+              .getElementById('tier-picker')
+              ?.scrollIntoView({ behavior: 'smooth' });
+          }}
+        >
+          Start the conversation
+        </a>
       </header>
 
       <main>
@@ -79,14 +91,14 @@ export default function Home() {
               <p className={styles.sub}>{sub}</p>
               <div className={styles.heroCta}>
                 <Button
-                  variant="outline-on-dark"
+                  variant="primary"
                   onClick={() =>
                     document
                       .getElementById('tier-picker')
                       ?.scrollIntoView({ behavior: 'smooth' })
                   }
                 >
-                  {primaryCta}
+                  {primaryCta} →
                 </Button>
                 <p className={styles.reassure}>{reassurance}</p>
               </div>
@@ -124,6 +136,7 @@ export default function Home() {
           aria-labelledby="tier-heading"
         >
           <div className={styles.tierInner}>
+            <span className={styles.tierKicker}>Choose your depth</span>
             <h2 id="tier-heading" className={styles.tierHeading}>
               {tierHeading}
             </h2>

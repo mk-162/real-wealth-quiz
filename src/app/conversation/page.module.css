@@ -2,7 +2,7 @@
   min-height: 100vh;
   background: var(--paper-warm);
   /* Ensure the dev-nav chip doesn't cover the last interactive row on mobile. */
-  padding-bottom: 88px;
+  padding-bottom: 100px;
 }
 
 @media (min-width: 768px) {
@@ -15,15 +15,15 @@
   position: sticky;
   top: 0;
   z-index: var(--z-sticky);
-  background: rgba(250, 248, 246, 0.92);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  padding: var(--space-sm) var(--space-md);
+  background: rgba(250, 248, 246, 0.94);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding: var(--space-sm) var(--gutter);
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-sm);
-  border-bottom: var(--rule-fine);
+  border-bottom: 1px solid rgba(53, 53, 53, 0.05);
 }
 
 .headLeft,
@@ -37,52 +37,50 @@
   gap: var(--space-md);
 }
 
-/* Section chip — replaces the full side-nav list. Best-practice:
-   show only the CURRENT section name, not the ten-item sitemap. */
+/* Section chip — current section name + step number. */
 .sectionChip {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 4px 10px 4px 4px;
-  background: var(--teal-tint-05);
-  border: 1px solid var(--teal-tint-15);
+  padding: 4px 12px 4px 4px;
+  background: var(--paper);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-full);
   color: var(--brand-teal);
   font-family: var(--font-body);
   font-size: var(--fs-small);
-  font-weight: 500;
+  font-weight: 600;
   transition: background var(--duration-default) var(--ease-default);
+  box-shadow: var(--shadow-xs);
 }
 
 .sectionChip:hover {
-  background: var(--teal-tint-10);
+  background: var(--teal-tint-04);
 }
 
-/* Awareness-interstitial variant — no step number, softer tone so the
-   user reads this as "a pause, not a step". */
 .sectionChip[data-kind='insight'] {
-  padding: 4px 12px;
+  padding: 5px 12px;
   background: var(--paper);
   border-color: var(--border-subtle);
-  color: var(--stone);
+  color: var(--ink-soft);
   text-transform: uppercase;
   letter-spacing: var(--ls-wider);
   font-size: var(--fs-micro);
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .sectionNum {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   background: var(--brand-teal);
   color: var(--paper);
   font-size: 11px;
-  font-weight: 600;
-  letter-spacing: var(--ls-wide);
+  font-weight: 700;
+  letter-spacing: 0;
 }
 
 .sectionLabel {
@@ -94,12 +92,16 @@
   font-size: var(--fs-micro);
   letter-spacing: var(--ls-wider);
   text-transform: uppercase;
-  color: var(--stone);
+  color: var(--ink-soft);
+  font-weight: 600;
 }
 
 @media (max-width: 600px) {
   .sectionLabel {
     display: none;
+  }
+  .header {
+    padding: var(--space-xs) var(--gutter);
   }
 }
 
@@ -111,14 +113,14 @@
   gap: var(--space-md);
   margin-top: var(--space-lg);
   padding-top: var(--space-md);
-  border-top: 1px solid var(--border-subtle);
+  border-top: var(--rule-fine);
   flex-wrap: wrap;
 }
 
 .actionsLeft {
   display: inline-flex;
   align-items: center;
-  min-height: 44px; /* keeps the row height stable when WhyAsk is absent */
+  min-height: 44px;
 }
 
 .actionsRight {
@@ -128,23 +130,27 @@
   margin-left: auto;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 600px) {
   .actions {
-    flex-direction: column;
+    flex-direction: column-reverse;
     align-items: stretch;
   }
   .actionsRight {
     margin-left: 0;
-    justify-content: space-between;
+    flex-direction: column-reverse;
     width: 100%;
   }
 }
 
 .inlineProv {
   margin-top: var(--space-lg);
+  max-width: var(--container-max);
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 var(--gutter);
 }
 
-/* Aspiration — textarea + pullquote image below ------------------ */
+/* Aspiration block */
 .aspirationBlock {
   display: flex;
   flex-direction: column;
@@ -154,24 +160,25 @@
 .aspirationLabel {
   font-family: var(--font-body);
   font-size: var(--fs-micro);
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: var(--ls-wider);
   text-transform: uppercase;
-  color: var(--stone);
+  color: var(--ink-soft);
 }
 
 .aspirationInput {
   width: 100%;
   resize: vertical;
-  min-height: 120px;
+  min-height: 140px;
   padding: var(--space-md);
   font-family: var(--font-heading);
   font-style: italic;
+  font-weight: 300;
   font-size: var(--fs-h4);
   line-height: 1.5;
   color: var(--ink);
   background: var(--paper);
-  border: 1px solid var(--stone);
+  border: 1px solid var(--stone-soft);
   border-radius: var(--radius-md);
   transition:
     border-color var(--duration-default) var(--ease-default),
@@ -181,10 +188,10 @@
 .aspirationInput:focus {
   outline: none;
   border-color: var(--brand-teal);
-  box-shadow: 0 0 0 3px var(--teal-tint-15);
+  box-shadow: 0 0 0 4px var(--teal-tint-15);
 }
 
 .aspirationInput::placeholder {
-  color: var(--stone);
+  color: var(--ink-soft);
   font-style: italic;
 }

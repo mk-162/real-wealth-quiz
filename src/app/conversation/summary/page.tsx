@@ -18,12 +18,14 @@
 
 import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { AspirationEcho } from '@/components/AspirationEcho';
 import { Bridge } from '@/components/Bridge';
+import { BriefingCard } from '@/components/BriefingCard';
+import { Button } from '@/components/Button';
 import { FinalCTA } from '@/components/FinalCTA';
 import { IllustrativeChart } from '@/components/IllustrativeChart';
 import { SilentGapCard } from '@/components/SilentGapCard';
 import { SpotlightFlag } from '@/components/SpotlightFlag';
+import { SummaryHeader } from '@/components/SummaryHeader';
 import {
   awareness as awarenessCatalogue,
   microcopy,
@@ -126,11 +128,6 @@ function Summary() {
     'bridge.copy',
     "We haven't asked everything — no 10-minute form could. A planner will fill in the detail that changes the picture.",
   );
-  const aspirationCaption = pageValue<string>(
-    'summary',
-    'aspiration_echo.caption',
-    '— in your words, gently rephrased.',
-  );
   const illustrativeTag = pageValue<string>(
     'summary',
     'charts.per_chart_illustrative_tag',
@@ -186,19 +183,69 @@ function Summary() {
     }
   }, [session, emotionalIntro.id, spotlight, silentGaps, items, isAdvisedLooking, segmentId]);
 
+  /* Primary action — uniform across the page. The free 30-minute
+     consultation is the lead-gen offer; segment-specific copy stays as
+     framing in the FinalCTA body but the button label is consistent. */
+  const primaryCtaLabel = 'Book your free 30-minute consultation';
+  /* Segment/overlay button_link values in the content files are stored
+     without protocol (e.g. "calendly.com/..."). FinalCTA normalises
+     internally; the hero opens window.open directly so we must
+     normalise here too — otherwise the URL resolves as a relative path. */
+  const primaryCtaHref = normaliseHref(cta.button_link);
+  const contactHref = pageValue<string>(
+    'summary',
+    'contact_url',
+    'https://realwealth.co.uk/contact',
+  );
+  const briefingHref = pageValue<string>(
+    'summary',
+    'briefing_signup_url',
+    'https://realwealth.co.uk/briefing',
+  );
+
   return (
     <div className={styles.shell}>
-      {/* Section 1 — Aspiration echo */}
-      <div className={styles.heroOverlay}>
-        <AspirationEcho line={aspirationLine} caption={aspirationCaption} />
-      </div>
+      <SummaryHeader contactHref={contactHref} />
 
-      {/* Section 2 — Emotional-state intro + considered-list heading */}
-      <section className={styles.intro} aria-labelledby="considered">
-        <span className={styles.listKicker}>{listKicker}</span>
-        <h2 id="considered" className={styles.introCopy}>
-          {emotionalIntro.copy}
-        </h2>
+      {/* Hero — problem framing + primary CTA. The aspiration echo line
+          is preserved as a small caption above the headline so the user
+          still sees their own words back, but the dominant element is
+          now what we'd help them with and how to start that conversation. */}
+      <section className={styles.hero} aria-labelledby="hero-headline">
+        <div className={styles.heroInner}>
+          <p className={styles.heroAspiration}>
+            <span className={styles.heroAspirationKicker}>You said:</span>{' '}
+            <span className={styles.heroAspirationLine}>
+              &ldquo;{aspirationLine}&rdquo;
+            </span>
+          </p>
+          <h1 id="hero-headline" className={styles.heroHeadline}>
+            Five things worth a conversation.
+          </h1>
+          <p className={styles.heroFrame}>
+            The gap between the life you described and the money working
+            quietly behind it is usually made of small, fixable things.
+            Below is a shortlist of what we&rsquo;d talk through with you —
+            and a free 30-minute conversation if you want one.
+          </p>
+          <div className={styles.heroActions}>
+            <Button
+              onClick={() =>
+                primaryCtaHref &&
+                window.open(primaryCtaHref, '_blank', 'noopener,noreferrer')
+              }
+            >
+              {primaryCtaLabel}
+            </Button>
+            <a className={styles.heroSecondary} href={contactHref} target="_blank" rel="noopener noreferrer">
+              Or get in touch first
+            </a>
+          </div>
+          <p className={styles.heroHelper}>
+            30 minutes. Free. On this exact briefing — no preparation needed
+            on your side.
+          </p>
+        </div>
       </section>
 
       {/* Section 3 — Spotlight compound flag (conditional) */}
@@ -213,7 +260,27 @@ function Summary() {
         </div>
       ) : null}
 
-      {/* Section 4 — Considered list (with inline charts) */}
+      {/* Section heading for the considered list. The kicker stays as
+          the formal section label; the heading frames the list as the
+          planner's preview. The emotional-intro copy from the resolver
+          lives here as the warmer, segment-aware lede that softens the
+          shortlist. */}
+      <section className={styles.listHeading} aria-labelledby="considered">
+        <span className={styles.listKicker}>{listKicker}</span>
+        <h2 id="considered" className={styles.listHeadline}>
+          What we&rsquo;d talk through with you
+        </h2>
+        <p className={styles.listLede}>{emotionalIntro.copy}</p>
+      </section>
+
+      {/* Section 4 — Considered list (with inline charts).
+          On desktop the list shares a two-column grid with a sticky CTA
+          card so the contact action is always in view as the user scans
+          the list. The grid collapses to a single column below 1024px;
+          the sidebar then drops directly under the list. The full-width
+          narrative CTA at the bottom of the page (Section 7) remains as
+          the emotional resolution to the briefing. */}
+      <div className={styles.listLayout}>
       <section className={styles.list} aria-label="Considered list">
         <ul className={styles.items}>
           {items.map((item) => (
@@ -258,6 +325,33 @@ function Summary() {
         <span hidden>{illustrativeTag}</span>
       </section>
 
+        {/* Sidebar CTA never uses the enhanced gradient treatment —
+            the .enhanced styles add their own background/padding/shadow
+            that would conflict with the .ctaCard wrapper. The narrative
+            CTA at the end of the page (Section 7) keeps `enhanced` for
+            advised_but_looking users. */}
+        {/* Sidebar CTA — uniform primary action ("Book your free 30-min
+            consultation"). Segment-specific framing copy stays in the
+            body. Secondary action goes to the marketing-site contact
+            page (not mailto) so users get a fuller intake form. */}
+        <aside className={styles.ctaSidebar} aria-label="Book a conversation">
+          <div className={styles.ctaCard}>
+            <FinalCTA
+              variant="compact"
+              ariaLabel="Book a call (sidebar)"
+              headline="Talk this through with a planner."
+              body={cta.body}
+              button={primaryCtaLabel}
+              buttonHref={primaryCtaHref}
+              helper="30 minutes. Free. No preparation needed."
+              preamble={cta.preamble}
+              secondaryButton="Get in touch"
+              secondaryHref={contactHref}
+            />
+          </div>
+        </aside>
+      </div>
+
       {/* Section 5 — Silent gaps (conditional, 2+ triggers) */}
       {silentGaps.length > 0 ? (
         <section
@@ -265,9 +359,9 @@ function Summary() {
           aria-labelledby="silent-gaps-heading"
         >
           <div className={styles.silentGapsInner}>
-            <span id="silent-gaps-heading" className={styles.silentGapsKicker}>
+            <h2 id="silent-gaps-heading" className={styles.silentGapsKicker}>
               {silentGapsHeading}
-            </span>
+            </h2>
             <p className={styles.silentGapsIntro}>{silentGapsIntro}</p>
             <div className={styles.silentGapsGrid}>
               {silentGaps.map((g) => (
@@ -281,16 +375,27 @@ function Summary() {
       {/* Section 6 — Bridge (not for Tier C) */}
       {showBridge ? <Bridge copy={bridgeCopy} /> : null}
 
-      {/* Section 7 — Segment CTA (enhanced if advised-but-looking) */}
-      <FinalCTA
-        headline={cta.headline}
-        body={cta.body}
-        button={cta.button}
-        buttonHref={cta.button_link}
-        helper={cta.helper}
-        preamble={cta.preamble}
-        enhanced={isAdvisedLooking}
-      />
+      {/* Action ladder — three escalating offers in priority order:
+          1. Primary: book the free 30-min consultation.
+          2. Secondary: monthly briefing for users not ready to book.
+          3. Tertiary: get in touch via the marketing-site contact form.
+          The visual weight strictly mirrors the priority. */}
+      <section className={styles.actionLadder} aria-label="Next steps">
+        <FinalCTA
+          ariaLabel="Book a call (end of summary)"
+          headline={cta.headline}
+          body={cta.body}
+          button={primaryCtaLabel}
+          buttonHref={primaryCtaHref}
+          helper="30 minutes, free, on this exact briefing — no preparation needed."
+          preamble={cta.preamble}
+          enhanced={isAdvisedLooking}
+          secondaryButton="Get in touch instead"
+          secondaryHref={contactHref}
+        />
+
+        <BriefingCard href={briefingHref} />
+      </section>
 
       <StartOverFooter />
     </div>
@@ -554,6 +659,14 @@ function deriveFromSession(session: Session | null): Derived {
     aspiration:
       typeof answers.happy_place === 'string' ? (answers.happy_place as string) : null,
   };
+}
+
+/** Mirrors FinalCTA's normaliser — content files store Calendly URLs
+ *  without protocol (e.g. "calendly.com/..."). */
+function normaliseHref(href: string): string {
+  if (!href) return href;
+  if (/^(https?:|mailto:|tel:|\/)/i.test(href)) return href;
+  return `https://${href}`;
 }
 
 function trimToTenWords(s: string): string {

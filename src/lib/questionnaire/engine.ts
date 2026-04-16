@@ -150,9 +150,18 @@ export function useQuestionnaireEngine(tier: TierSlug): EngineState & EngineActi
     });
   }, [hydrated, tier, answers, currentId, visitedOrder, firedAwareness, firedProvocations]);
 
-  /* Filter the full screen list down to the ones this tier can ever show. */
+  /* Filter the full screen list down to the ones this tier can ever show.
+     Also drop full-page `transition` interstitials — they made the form
+     feel longer without adding information that the always-visible
+     section chip + section pullquote don't already convey. The editorial
+     copy that lived on those screens has been migrated into section meta. */
   const screensForTier = useMemo(
-    () => allScreens.filter((s) => !s.tier_limit || s.tier_limit.includes(tierCode)),
+    () =>
+      allScreens.filter(
+        (s) =>
+          s.layout !== 'transition' &&
+          (!s.tier_limit || s.tier_limit.includes(tierCode)),
+      ),
     [tierCode],
   );
 
@@ -213,15 +222,35 @@ export function useQuestionnaireEngine(tier: TierSlug): EngineState & EngineActi
   /* Start position: the first visible screen.
      Stale-session guard: if the persisted currentId is no longer in the
      visible-screens list (e.g. the matrix changed after the session was
-     saved, or the user's answers narrowed the set), rebase to the first
-     visible screen rather than rendering nothing. */
+     saved, the user's answers narrowed the set, or — most recently —
+     interstitial transition screens were removed entirely from the flow),
+     try to rebase to the *nearest* still-visible screen so a returning
+     user keeps their place. We walk forward in original document order
+     first, then backward, before falling back to the very first screen. */
   const currentIdIsValid =
     currentId !== null && visibleScreens.some((s) => s.id === currentId);
-  const effectiveCurrentId = currentIdIsValid
-    ? currentId
-    : visibleScreens.length > 0
-      ? visibleScreens[0].id
-      : null;
+
+  const effectiveCurrentId = (() => {
+    if (currentIdIsValid) return currentId;
+    if (visibleScreens.length === 0) return null;
+
+    /* Use the full ordered list to find the original position of the
+       (now-invisible) currentId, then scan outward for a successor that
+       *is* still visible. */
+    if (currentId !== null) {
+      const visibleIds = new Set(visibleScreens.map((s) => s.id));
+      const originalIndex = allScreens.findIndex((s) => s.id === currentId);
+      if (originalIndex !== -1) {
+        for (let i = originalIndex + 1; i < allScreens.length; i++) {
+          if (visibleIds.has(allScreens[i].id)) return allScreens[i].id;
+        }
+        for (let i = originalIndex - 1; i >= 0; i--) {
+          if (visibleIds.has(allScreens[i].id)) return allScreens[i].id;
+        }
+      }
+    }
+    return visibleScreens[0].id;
+  })();
 
   useEffect(() => {
     if (hydrated && currentId !== null && !currentIdIsValid && effectiveCurrentId) {

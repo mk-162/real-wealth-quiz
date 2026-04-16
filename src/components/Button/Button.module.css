@@ -3,14 +3,17 @@
   align-items: center;
   justify-content: center;
   gap: var(--space-xs);
-  padding: 0.6rem 1.25rem;
-  min-height: 44px;
+  padding: 0.75rem 1.4rem;
+  min-height: 48px;
   font-family: var(--font-body);
   font-size: var(--fs-ui);
-  font-weight: 700;
+  font-weight: 600;
+  letter-spacing: 0.01em;
   border: 2px solid transparent;
   border-radius: var(--radius-cta);
   cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
   transition:
     transform var(--duration-fast) var(--ease-default),
     box-shadow var(--duration-default) var(--ease-default),
@@ -21,89 +24,106 @@
 
 @media (min-width: 768px) {
   .btn {
-    padding: 0.7rem 1.4rem;
-    min-height: 48px;
+    padding: 0.85rem 1.65rem;
+    min-height: 52px;
   }
 }
 
 .btn:disabled {
-  opacity: 0.5;
+  opacity: 0.45;
   cursor: not-allowed;
+  filter: grayscale(0.2);
 }
 
 .fullWidth {
   width: 100%;
 }
 
-/* Primary — orange gradient with white 2px border, gelica italic.
-   Matches the live site's signature CTA treatment. */
+/* Primary — orange gradient pill, gelica italic with chevron baked in.
+   This is the signature CTA across the site. */
 .primary {
   background: var(--gradient-cta);
   color: var(--paper);
-  border-color: var(--paper);
+  border-color: transparent;
   font-family: var(--font-heading);
   font-style: italic;
   font-weight: 400;
-  font-size: 1.1em;
-  letter-spacing: 0.01em;
+  font-size: 1.125rem;
+  letter-spacing: 0;
+  box-shadow: var(--shadow-cta);
+  border-radius: 999px;
+  padding-inline: 1.6rem;
+}
+@media (min-width: 768px) {
+  .primary {
+    font-size: 1.25rem;
+    padding-inline: 2rem;
+  }
 }
 .primary:hover:not(:disabled) {
-  background: var(--paper);
-  color: var(--brand-orange);
-  border-color: var(--brand-orange);
-  box-shadow: var(--shadow-md);
+  background: var(--gradient-cta-hover);
+  box-shadow: var(--shadow-cta-hover);
   transform: translateY(-1px);
 }
 .primary:active:not(:disabled) {
   transform: translateY(0);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-cta);
 }
 
-/* Secondary — teal outlined ------------------------------------ */
+/* Secondary — teal outlined, used on paper. */
 .secondary {
   background: var(--paper);
   color: var(--brand-teal);
-  font-weight: 500;
+  font-weight: 600;
   border-color: var(--brand-teal);
+  border-radius: 999px;
+  padding-inline: 1.4rem;
 }
 .secondary:hover:not(:disabled) {
   background: var(--teal-tint-05);
+  border-color: var(--brand-teal-deep);
+  color: var(--brand-teal-deep);
 }
 
-/* Text — inline conversational link ---------------------------- */
+/* Text — inline conversational link */
 .text {
   background: transparent;
   color: var(--brand-teal);
   min-height: auto;
-  padding: 0.25rem 0;
+  padding: 0.5rem 0.75rem;
   border: 0;
-  font-weight: 500;
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
 }
-.text:hover {
-  color: var(--ink);
+.text:hover:not(:disabled) {
+  color: var(--brand-teal-deep);
+  background: var(--teal-tint-05);
 }
 
-/* Outline on dark — the live site's hero CTA pattern.
-   Transparent fill, 2px white border, white text. Hover flips to solid
-   white background with teal text. Used on the teal hero only. */
+/* Outline-on-dark — the live site's hero variant.
+   White ring with a chevron-like italic look matched to primary. */
 .outline-on-dark {
   background: transparent;
   color: var(--paper);
-  border-color: var(--paper);
+  border-color: rgba(255, 255, 255, 0.85);
   font-weight: 600;
+  border-radius: 999px;
+  padding-inline: 1.6rem;
 }
 .outline-on-dark:hover:not(:disabled) {
   background: var(--paper);
   color: var(--brand-teal);
   border-color: var(--paper);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
 }
 
-/* Responsive — full-width on small screens for rhythm ---------- */
+/* Responsive — full-width on small screens for primary rhythm */
 @media (max-width: 480px) {
   .primary,
-  .secondary {
+  .secondary,
+  .outline-on-dark {
     width: 100%;
+    min-height: 52px;
   }
 }

@@ -44,7 +44,7 @@
 .lastUpdated {
   font-family: var(--font-body);
   font-size: var(--fs-small);
-  color: var(--stone);
+  color: var(--ink-soft);
   margin: 0 0 var(--space-xl);
   letter-spacing: var(--ls-wide);
   text-transform: uppercase;

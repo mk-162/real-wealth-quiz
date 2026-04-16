@@ -5,10 +5,10 @@
   gap: var(--space-xs);
   width: 100%;
   min-height: 240px;
-  padding: var(--space-md);
+  padding: var(--space-lg);
   background: var(--paper);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
   text-align: left;
   cursor: pointer;
@@ -22,67 +22,87 @@
 .tile:hover {
   border-color: var(--brand-teal);
   box-shadow: var(--shadow-md);
+  transform: translateY(-3px);
+}
+
+/* Selected — inset ring keeps the geometry stable, no padding compensation */
+.tile[data-selected='true'] {
+  background: var(--teal-tint-04);
+  border-color: var(--brand-teal);
+  box-shadow:
+    inset 0 0 0 2px var(--brand-teal),
+    0 16px 36px -16px rgba(12, 115, 114, 0.35);
   transform: translateY(-2px);
 }
 
-.tile[data-selected='true'] {
-  background: var(--teal-tint-05);
-  border: 3px solid var(--brand-teal);
-  box-shadow: var(--shadow-card);
-  padding: calc(var(--space-md) - 2px);
-  transform: translateY(-1px);
+.tile:focus-visible {
+  outline: none;
+  border-color: var(--brand-teal);
+  box-shadow:
+    inset 0 0 0 2px var(--brand-teal),
+    0 0 0 4px var(--teal-tint-15);
 }
 
 .ribbon {
   position: absolute;
-  top: -14px;
-  left: var(--space-sm);
+  top: -12px;
+  left: var(--space-md);
   display: inline-block;
-  padding: 4px 10px;
-  background: var(--brand-teal);
+  padding: 5px 12px;
+  background: var(--brand-orange);
   color: var(--paper);
   font-size: var(--fs-micro);
-  font-weight: 500;
+  font-weight: 700;
   letter-spacing: var(--ls-wider);
-  border-radius: var(--radius-sm);
+  text-transform: uppercase;
+  border-radius: var(--radius-full);
+  box-shadow: 0 6px 14px -6px rgba(255, 104, 1, 0.5);
 }
 
 .icon {
   color: var(--brand-teal);
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   display: inline-flex;
 }
 
 .time {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   font-family: var(--font-body);
   font-size: var(--fs-micro);
-  font-weight: 500;
+  font-weight: 700;
   letter-spacing: var(--ls-wider);
   text-transform: uppercase;
-  color: var(--stone);
+  color: var(--brand-teal);
+}
+.time::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--brand-teal);
 }
 
+/* Tile name is a card-level title, not a section heading. Sans-serif
+   semibold ink keeps the section H2 above (italic gelica) as the dominant
+   display element and prevents the "every tile looks like a section title"
+   collision. */
 .name {
-  font-family: var(--font-heading);
-  font-size: var(--fs-h3);
-  font-weight: 400;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: clamp(1.25rem, 1vw + 0.6rem, 1.5rem);
   color: var(--ink);
-  margin: var(--space-xs) 0 0;
+  margin: var(--space-xs) 0 var(--space-2xs);
+  line-height: 1.2;
+  letter-spacing: -0.005em;
 }
 
 .description {
   font-family: var(--font-body);
   font-size: var(--fs-ui);
   color: var(--ink-muted);
-  line-height: var(--lh-body);
-}
-
-@media (min-width: 768px) {
-  .tile {
-    max-width: 320px;
-  }
-  .name {
-    font-size: var(--fs-h2);
-  }
+  line-height: 1.5;
 }
