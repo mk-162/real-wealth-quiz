@@ -300,6 +300,15 @@ function renderMarkdown(markdown) {
   return out.join('\n');
 }
 
+function stripInitialMarkdownHeading(markdown) {
+  let source = repairText(markdown).replace(/^\uFEFF/, '').replace(/\r\n/g, '\n');
+  if (source.startsWith('---\n')) {
+    const end = source.indexOf('\n---\n', 4);
+    if (end !== -1) source = source.slice(end + 5);
+  }
+  return source.replace(/^\s*#{1,4}\s+.+\n+/, '');
+}
+
 function pageShell({ title, description, body }) {
   return `<!doctype html>
 <html lang="en">
@@ -490,7 +499,7 @@ function buildIndex() {
 }
 
 function buildDocPage(doc) {
-  const raw = readFileSync(doc.source, 'utf8');
+  const raw = stripInitialMarkdownHeading(readFileSync(doc.source, 'utf8'));
   const body = `
 <main class="doc-page">
   <a class="back-link" href="/client-review#documents">Back to review library</a>
