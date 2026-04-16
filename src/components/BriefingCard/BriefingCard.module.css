@@ -41,25 +41,29 @@
 }
 
 .button {
+  /* Matches the realwealth.co.uk CTA vocabulary: 6px radius, 1.5px
+     brand-teal ring, gelica ExtraLight, no shadow, no pill. */
   display: inline-flex;
   align-items: center;
   justify-content: center;
   align-self: flex-start;
-  padding: var(--space-sm) var(--space-lg);
+  padding: 8px 24px;
   min-height: 44px;
   margin-top: auto;
-  font-family: var(--font-body);
-  font-weight: 600;
-  font-size: var(--fs-ui);
+  font-family: var(--font-heading);
+  font-style: normal;
+  font-weight: 200;
+  font-size: 1.05rem;
+  line-height: 1.2;
   color: var(--brand-teal);
-  background: transparent;
+  background: var(--paper);
   border: 1.5px solid var(--brand-teal);
-  border-radius: 999px;
+  border-radius: var(--radius-cta);
   text-decoration: none;
   transition:
-    color var(--duration-fast) var(--ease-default),
-    background var(--duration-fast) var(--ease-default),
-    border-color var(--duration-fast) var(--ease-default);
+    color var(--duration-default) var(--ease-default),
+    background var(--duration-default) var(--ease-default),
+    border-color var(--duration-default) var(--ease-default);
 }
 
 .button:hover {

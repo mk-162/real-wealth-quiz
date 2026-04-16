@@ -241,26 +241,29 @@
 }
 
 .shareButton {
+  /* Same CTA vocabulary as the rest of the site now (6px radius,
+     1.5px teal ring, gelica ExtraLight, no shadow). */
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
   align-self: flex-start;
-  padding: 0.625rem 1.125rem;
+  padding: 8px 20px;
   min-height: 40px;
-  background: transparent;
+  background: var(--paper);
   color: var(--brand-teal);
   border: 1.5px solid var(--brand-teal);
-  border-radius: 999px;
-  font-family: var(--font-body);
-  font-size: var(--fs-ui);
-  font-weight: 600;
+  border-radius: var(--radius-cta);
+  font-family: var(--font-heading);
+  font-style: normal;
+  font-weight: 200;
+  font-size: 1rem;
+  line-height: 1.2;
   cursor: pointer;
   transition:
-    background var(--duration-fast) var(--ease-default),
-    color var(--duration-fast) var(--ease-default),
-    border-color var(--duration-fast) var(--ease-default),
-    transform var(--duration-default) var(--ease-default);
+    background var(--duration-default) var(--ease-default),
+    color var(--duration-default) var(--ease-default),
+    border-color var(--duration-default) var(--ease-default);
 }
 
 .shareButton svg {
@@ -303,7 +306,9 @@
   left: 0;
   right: 0;
   height: 4px;
-  background: var(--gradient-cta);
+  /* Solid brand-orange stripe — matches the no-gradient vocabulary
+     of realwealth.co.uk (gradients are reserved for the teal hero). */
+  background: var(--brand-orange);
 }
 
 /* Section 4 — considered list --------------------------------------- */
@@ -673,34 +678,33 @@
 }
 
 .startOverPrimary {
+  /* Same CTA vocabulary: white fill, 1.5px orange ring, gelica
+     ExtraLight, 6px radius, no shadow. Matches the rest of the
+     site's primary CTAs. */
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.6rem 1.25rem;
+  padding: 8px 24px;
   min-height: 44px;
-  background: var(--gradient-cta);
-  color: var(--paper);
-  border: 2px solid var(--paper);
+  background: var(--paper);
+  color: var(--brand-orange);
+  border: 1.5px solid var(--brand-orange);
   border-radius: var(--radius-cta);
   font-family: var(--font-heading);
-  font-style: italic;
-  font-weight: 400;
-  font-size: var(--fs-ui);
+  font-style: normal;
+  font-weight: 200;
+  font-size: 1.05rem;
+  line-height: 1.2;
   cursor: pointer;
   transition:
     background var(--duration-default) var(--ease-default),
     color var(--duration-default) var(--ease-default),
-    border-color var(--duration-default) var(--ease-default),
-    transform var(--duration-fast) var(--ease-default),
-    box-shadow var(--duration-default) var(--ease-default);
+    border-color var(--duration-default) var(--ease-default);
 }
 
 .startOverPrimary:hover {
-  background: var(--paper);
-  color: var(--brand-orange);
-  border-color: var(--brand-orange);
-  box-shadow: var(--shadow-md);
-  transform: translateY(-1px);
+  background: var(--brand-orange);
+  color: var(--paper);
 }
 
 .startOverSecondary {

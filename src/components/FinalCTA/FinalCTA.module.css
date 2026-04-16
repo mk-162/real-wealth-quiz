@@ -88,7 +88,9 @@
   left: 0;
   right: 0;
   height: 4px;
-  background: var(--gradient-cta);
+  /* Solid brand-orange, no gradient — keeps the card vocabulary in
+     step with realwealth.co.uk which doesn't use gradient accents. */
+  background: var(--brand-orange);
 }
 
 .ladder .preamble {

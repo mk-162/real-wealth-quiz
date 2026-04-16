@@ -6,7 +6,17 @@
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
 import styles from './Button.module.css';
 
-type Variant = 'primary' | 'secondary' | 'text' | 'outline-on-dark';
+type Variant =
+  /** Solid-orange signature CTA (matches realwealth.co.uk "Get in Touch"). */
+  | 'primary'
+  /** White fill + orange ring variant of the primary (matches "Let's talk about you"). */
+  | 'outline-primary'
+  /** Teal outline on paper. Used for supportive, non-primary actions. */
+  | 'secondary'
+  /** Inline text-link style for Back / Cancel. */
+  | 'text'
+  /** Transparent with a white ring — use on teal/dark hero surfaces. */
+  | 'outline-on-dark';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: Variant;

@@ -93,6 +93,11 @@ export default function Home() {
               <h1 className={styles.headline}>{headline}</h1>
               <p className={styles.sub}>{sub}</p>
               <div className={styles.heroCta}>
+                {/* Solid-orange "Get in Touch" style CTA on the teal
+                    hero — exactly as realwealth.co.uk treats its
+                    primary conversion button. The orange fill + white
+                    ring + italic gelica reads as the signature
+                    Real Wealth action across every surface. */}
                 <Button
                   variant="primary"
                   onClick={() =>

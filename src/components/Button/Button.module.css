@@ -1,98 +1,168 @@
+/*
+  Button — vocabulary matched to the live realwealth.co.uk site:
+    - rectangular with a gentle 6px radius (var(--radius-cta))
+    - 1.5px solid border in the brand colour
+    - solid-white OR fully-transparent background (never a gradient)
+    - gelica ExtraLight 200 (upright, not italic — the italic face is
+      reserved for the site's display type, not its buttons)
+    - no box-shadow on rest or hover
+    - hover inverts the colour pair rather than pushing the element up
+
+  Primary lives on paper surfaces and uses the brand orange.
+  Secondary lives on paper surfaces and uses brand teal (for CTAs
+    that need to read as supportive, not primary).
+  Outline-on-dark lives on the teal hero / dark gradients — transparent
+    with a white 1.5px border, inverts to solid white on hover.
+  Text is the utility link variant for Back buttons and similar.
+*/
+
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: var(--space-xs);
-  padding: 0.75rem 1.4rem;
-  min-height: 48px;
-  font-family: var(--font-body);
-  font-size: var(--fs-ui);
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  border: 2px solid transparent;
+  padding: 8px 24px;
+  min-height: 44px;
+  font-family: var(--font-heading);
+  font-style: normal;
+  font-weight: 200;
+  font-size: 1.125rem; /* ~18px at base */
+  letter-spacing: 0;
+  line-height: 1.2;
+  border: 1.5px solid transparent;
   border-radius: var(--radius-cta);
   cursor: pointer;
   text-decoration: none;
   white-space: nowrap;
+  background: transparent;
   transition:
-    transform var(--duration-fast) var(--ease-default),
-    box-shadow var(--duration-default) var(--ease-default),
-    background var(--duration-default) var(--ease-default),
+    background-color var(--duration-default) var(--ease-default),
     color var(--duration-default) var(--ease-default),
     border-color var(--duration-default) var(--ease-default);
 }
 
 @media (min-width: 768px) {
   .btn {
-    padding: 0.85rem 1.65rem;
-    min-height: 52px;
+    font-size: 1.25rem; /* 20px — the live site's primary CTA size */
+    min-height: 48px;
+    padding: 8px 28px;
   }
 }
 
 .btn:disabled {
   opacity: 0.45;
   cursor: not-allowed;
-  filter: grayscale(0.2);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--brand-teal);
+  outline-offset: 3px;
 }
 
 .fullWidth {
   width: 100%;
 }
 
-/* Primary — orange gradient pill, gelica italic with chevron baked in.
-   This is the signature CTA across the site. */
+/* Primary — solid orange with a white ring. Directly mirrors the
+   realwealth.co.uk "Get in Touch" CTA: a subtle orange gradient that
+   reads as flat at a glance, white 1.5px ring, white italic gelica
+   300, 5px radius, no shadow. This is the signature CTA across the
+   app and sits cleanly on both teal/hero and paper surfaces. */
 .primary {
-  background: var(--gradient-cta);
+  background-image: linear-gradient(
+    135deg,
+    var(--brand-orange) 0%,
+    #ff9753 50%,
+    var(--brand-orange) 100%
+  );
+  background-color: var(--brand-orange);
   color: var(--paper);
-  border-color: transparent;
+  border-color: var(--paper);
+  border-radius: 5px;
+  padding: 6px 24px;
   font-family: var(--font-heading);
   font-style: italic;
-  font-weight: 400;
-  font-size: 1.125rem;
-  letter-spacing: 0;
-  box-shadow: var(--shadow-cta);
-  border-radius: 999px;
-  padding-inline: 1.6rem;
-}
-@media (min-width: 768px) {
-  .primary {
-    font-size: 1.25rem;
-    padding-inline: 2rem;
-  }
+  font-weight: 300;
+  font-size: 1.2rem; /* ~19.2px — matches the live site's "Get in Touch" */
 }
 .primary:hover:not(:disabled) {
-  background: var(--gradient-cta-hover);
-  box-shadow: var(--shadow-cta-hover);
-  transform: translateY(-1px);
+  background-image: linear-gradient(
+    135deg,
+    var(--brand-orange-deep) 0%,
+    var(--brand-orange) 50%,
+    var(--brand-orange-deep) 100%
+  );
+  background-color: var(--brand-orange-deep);
 }
 .primary:active:not(:disabled) {
-  transform: translateY(0);
-  box-shadow: var(--shadow-cta);
+  background-image: none;
+  background-color: var(--brand-orange-deep);
 }
 
-/* Secondary — teal outlined, used on paper. */
+/* Outline-primary — the paper-surface variant of the primary CTA:
+   white fill, 1.5px orange ring, orange text. Mirrors realwealth.co.uk's
+   "Let's talk about you" button. Used when the primary would be too
+   heavy against a white section (e.g. form submits on the details
+   page) — same 6px-radius vocabulary, just inverted. */
+.outline-primary {
+  background: var(--paper);
+  color: var(--brand-orange);
+  border-color: var(--brand-orange);
+}
+.outline-primary:hover:not(:disabled) {
+  background: var(--brand-orange);
+  color: var(--paper);
+}
+.outline-primary:active:not(:disabled) {
+  background: var(--brand-orange-deep);
+  border-color: var(--brand-orange-deep);
+  color: var(--paper);
+}
+
+/* Secondary — teal pair for accent CTAs on paper (e.g. "Learn more"
+   next to a primary booking link). */
 .secondary {
   background: var(--paper);
   color: var(--brand-teal);
-  font-weight: 600;
   border-color: var(--brand-teal);
-  border-radius: 999px;
-  padding-inline: 1.4rem;
 }
 .secondary:hover:not(:disabled) {
-  background: var(--teal-tint-05);
+  background: var(--brand-teal);
+  color: var(--paper);
+}
+.secondary:active:not(:disabled) {
+  background: var(--brand-teal-deep);
   border-color: var(--brand-teal-deep);
+}
+
+/* Outline-on-dark — transparent with a white ring for use on the
+   teal hero / gradient surfaces. Hover fills white, text switches to
+   teal. */
+.outline-on-dark {
+  background: transparent;
+  color: var(--paper);
+  border-color: var(--paper);
+}
+.outline-on-dark:hover:not(:disabled) {
+  background: var(--paper);
+  color: var(--brand-teal);
+}
+.outline-on-dark:active:not(:disabled) {
+  background: var(--paper);
   color: var(--brand-teal-deep);
 }
 
-/* Text — inline conversational link */
+/* Text — inline utility link for Back / Cancel / tertiary actions.
+   Kept understated, no border, still keyboard-focusable. */
 .text {
   background: transparent;
   color: var(--brand-teal);
   min-height: auto;
   padding: 0.5rem 0.75rem;
   border: 0;
+  font-family: var(--font-body);
   font-weight: 600;
+  font-size: var(--fs-ui);
   border-radius: var(--radius-sm);
 }
 .text:hover:not(:disabled) {
@@ -100,30 +170,12 @@
   background: var(--teal-tint-05);
 }
 
-/* Outline-on-dark — the live site's hero variant.
-   White ring with a chevron-like italic look matched to primary. */
-.outline-on-dark {
-  background: transparent;
-  color: var(--paper);
-  border-color: rgba(255, 255, 255, 0.85);
-  font-weight: 600;
-  border-radius: 999px;
-  padding-inline: 1.6rem;
-}
-.outline-on-dark:hover:not(:disabled) {
-  background: var(--paper);
-  color: var(--brand-teal);
-  border-color: var(--paper);
-  box-shadow: var(--shadow-md);
-  transform: translateY(-1px);
-}
-
-/* Responsive — full-width on small screens for primary rhythm */
+/* Small-screen layout — stretch the primary rhythm on mobile so the
+   CTA lands as a clear row. */
 @media (max-width: 480px) {
   .primary,
   .secondary,
   .outline-on-dark {
     width: 100%;
-    min-height: 52px;
   }
 }

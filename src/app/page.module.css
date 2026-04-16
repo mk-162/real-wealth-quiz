@@ -47,27 +47,31 @@
   display: none;
 }
 @media (min-width: 600px) {
+  /* Mirrors realwealth.co.uk's "Let's talk about you" CTA: white
+     surface, 1.5px orange ring, gelica ExtraLight text, 6px radius,
+     no shadow. Hover inverts to solid orange on white rather than
+     pushing the element up. */
   .topnavCta {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 0.55rem 1.1rem;
-    background: var(--gradient-cta);
-    color: var(--paper);
-    border-radius: 999px;
+    padding: 8px 24px;
+    background: var(--paper);
+    color: var(--brand-orange);
+    border: 1.5px solid var(--brand-orange);
+    border-radius: var(--radius-cta);
     font-family: var(--font-heading);
-    font-style: italic;
-    font-weight: 400;
-    font-size: 0.95rem;
+    font-style: normal;
+    font-weight: 200;
+    font-size: 1.05rem;
+    line-height: 1.2;
     text-decoration: none;
-    box-shadow: var(--shadow-cta);
     transition:
-      transform var(--duration-fast) var(--ease-default),
-      box-shadow var(--duration-default) var(--ease-default);
+      background-color var(--duration-default) var(--ease-default),
+      color var(--duration-default) var(--ease-default);
   }
   .topnavCta:hover {
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-cta-hover);
+    background: var(--brand-orange);
     color: var(--paper);
   }
   .topnavCta::after {
