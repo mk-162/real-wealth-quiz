@@ -132,7 +132,7 @@ export default function Home() {
           aria-labelledby="tier-heading"
         >
           <div className={styles.tierInner}>
-            <span className={styles.tierKicker}>Choose your depth</span>
+            <span className={styles.tierKicker}>Choose your pace</span>
             <h2 id="tier-heading" className={styles.tierHeading}>
               {tierHeading}
             </h2>

@@ -3006,35 +3006,35 @@ export const pages: Page[] = [
         ]
       },
       "tier_picker": {
-        "heading": "How deep would you like to go?",
-        "sub": "Three lengths, same honest conversation. Stop whenever you like — your answers are saved.",
+        "heading": "How long would you like to take?",
+        "sub": "Three ways in, same honest conversation. Stop whenever — we save what you've told us so far.",
         "tiles": [
           {
             "id": "quick",
             "icon": "zap",
             "time_label": "THREE MINUTES",
-            "name": "Quick picture",
-            "description": "A handful of questions and a short list of things worth a conversation. Enough for a feel."
+            "name": "A first look",
+            "description": "A handful of questions and a short list of things worth a conversation. Enough to know if this is useful."
           },
           {
             "id": "standard",
             "icon": "bar-chart-3",
             "time_label": "SEVEN MINUTES",
-            "name": "Standard dive",
+            "name": "A shortlist",
             "description": "A proper shortlist, with illustrative examples — the shape of what a first call might cover.",
-            "ribbon": "MOST PEOPLE START HERE",
+            "ribbon": "Most people start here",
             "featured": true
           },
           {
             "id": "thorough",
             "icon": "book-open",
             "time_label": "TWELVE MINUTES",
-            "name": "Thorough",
-            "description": "Enough of a picture that you'll save half your first call. Best if you're close to wanting one."
+            "name": "A closer look",
+            "description": "By the end, half of a first call is already done. Useful if you're thinking one through."
           }
         ],
         "primary_button": "Let's begin →",
-        "helper": "Not sure? Start with Standard — you can always stop early."
+        "helper": "Not sure? Start with a shortlist — you can always stop early."
       },
       "freedom_quote": {
         "text": "Real wealth isn't just about money — it's about freedom. Freedom to choose how you live, work, and spend your time."
