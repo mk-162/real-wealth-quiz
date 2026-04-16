@@ -8,12 +8,18 @@
    left-aligned black wordmark at 200 / 188 / 152 px across desktop /
    tablet / mobile. `--logo-width` cascades into the Logo component,
    which is configured to read it with a 160px fallback. */
+/* Full-bleed white surface + border, but the contents sit in a
+   container constrained to --container-max (1480px) just like the
+   live site — so on wide screens the logo aligns with the page
+   content below rather than flying off to the viewport edge.
+   Implemented with horizontal padding that grows to fill the gap
+   beyond the container width. */
 .topnav {
   position: sticky;
   top: 0;
   z-index: var(--z-sticky);
   background: var(--paper);
-  padding: 0 25px;
+  padding: 0 max(25px, calc((100% - var(--container-max)) / 2 + 25px));
   min-height: 80px;
   display: flex;
   align-items: center;

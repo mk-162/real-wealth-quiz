@@ -8,6 +8,10 @@
   --logo-width: 200px;
 }
 
+/* `.inner` was already container-constrained, but the child logo
+   cell pins to the left viewport edge on very wide screens if the
+   container padding is small. Bumping horizontal padding on the
+   inner flex row keeps the logo flush with the content below. */
 .inner {
   display: flex;
   align-items: center;

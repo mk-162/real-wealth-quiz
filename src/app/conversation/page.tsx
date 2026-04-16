@@ -132,7 +132,11 @@ function Questionnaire() {
           </span>
         </div>
       </header>
-      <ProgressBar progress={progress} />
+      {/* ProgressBar intentionally not rendered — the live realwealth.co.uk
+          header has no coloured strip under it, and the teal-tinted track
+          read as a distracting green bar against the new pure-white header.
+          The numeric progress % in the header chip still provides the
+          signal to the user. */}
 
       <SlideSwap swapKey={activeKey}>
         {active.kind === 'awareness' ? (

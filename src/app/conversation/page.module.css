@@ -15,12 +15,14 @@
    80px / 58px min-height, 25px / 6px horizontal padding, responsive
    200 / 188 / 152px ink wordmark. Right-aligned section chip +
    progress stays as before (functional questionnaire chrome). */
+/* Full-bleed white surface + border; inner content constrained to
+   --container-max (1480px) matching the live site. */
 .header {
   position: sticky;
   top: 0;
   z-index: var(--z-sticky);
   background: var(--paper);
-  padding: 0 25px;
+  padding: 0 max(25px, calc((100% - var(--container-max)) / 2 + 25px));
   min-height: 80px;
   display: flex;
   align-items: center;
