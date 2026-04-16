@@ -1,20 +1,15 @@
 /* Input block — each block is one *question* on a multi-question screen
    (e.g. income band + estate band). Treat each as its own visual section
-   so two stacked questions don't read as one continuous form. */
+   so two stacked questions don't read as one continuous form.
+
+   Note: the between-question divider + generous margin lives on the
+   parent .inputSlot wrapper in ScreenRenderer.module.css; that wrapper
+   is present whether the input is conditional (wrapped in SlideSwap)
+   or not, so the sibling rule fires reliably. */
 .inputBlock {
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
-}
-
-/* Subsequent question on the same screen: generous breathing room plus
-   a stronger horizontal rule to make the section break unambiguous.
-   The rule sits above the new label so the label clearly belongs to a
-   *new* question, not a continuation of the previous control. */
-.inputBlock + .inputBlock {
-  margin-top: var(--space-xl);
-  padding-top: var(--space-xl);
-  border-top: 1px solid var(--border-subtle);
 }
 
 .inputHead {
@@ -24,16 +19,21 @@
 }
 
 /* Promoted label — reads as a real question heading rather than a
-   form-field caption. Body font (we reserve italic gelica for display
-   headings), but at heading scale and weight so the eye registers it
-   as the start of a new section. */
+   form-field caption. Heavier and slightly larger than before so that
+   on a multi-question screen the eye registers each label as the
+   start of a new section without having to read the words.
+
+   Pairs with the .inputSlot divider above it: whitespace carries most
+   of the "new question" signal, the label carries the rest. */
 .label {
+  display: block;
   font-family: var(--font-body);
   font-weight: 600;
-  font-size: clamp(1.0625rem, 0.6vw + 0.95rem, 1.25rem);
-  line-height: 1.35;
+  font-size: clamp(1.125rem, 0.75vw + 0.95rem, 1.4375rem);
+  line-height: 1.3;
   color: var(--ink);
-  letter-spacing: -0.005em;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
 }
 
 .helper {

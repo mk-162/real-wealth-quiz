@@ -156,6 +156,24 @@
   margin: 0 0 var(--space-md);
 }
 
+/* ==== Input slot — the single wrapper for every input on a      =
+   screen. Consecutive slots get a generous gap + hairline rule   =
+   so grouped screens (two or more inputs) clearly separate each  =
+   question from the one above. Without the unified wrapper the   =
+   adjacent-sibling selector on .inputBlock can't fire because    =
+   conditional inputs are wrapped in <SlideSwap>.                 = */
+.inputSlot + .inputSlot {
+  margin-top: var(--space-xl);
+  padding-top: var(--space-xl);
+  border-top: var(--rule-fine);
+}
+
+/* A slot whose conditional content is currently hidden collapses
+   so no divider hangs below an invisible follow-up question. */
+.inputSlot:empty {
+  display: none;
+}
+
 /* ==== Action row ============================================== */
 
 .actions {

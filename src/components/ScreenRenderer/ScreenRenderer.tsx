@@ -117,12 +117,14 @@ function CentredLayout(props: ScreenRendererProps) {
               onChange={(v) => onAnswer(input.id, v)}
             />
           ) : null;
-          return isConditional ? (
-            <SlideSwap key={input.id} swapKey={visible ? 'shown' : 'hidden'}>
-              {rendered}
-            </SlideSwap>
-          ) : (
-            <div key={input.id}>{rendered}</div>
+          return (
+            <div key={input.id} className={styles.inputSlot}>
+              {isConditional ? (
+                <SlideSwap swapKey={visible ? 'shown' : 'hidden'}>{rendered}</SlideSwap>
+              ) : (
+                rendered
+              )}
+            </div>
           );
         })}
         <ActionRow {...props} />
@@ -179,12 +181,14 @@ function AsymmetricLayout(props: ScreenRendererProps) {
               onChange={(v) => onAnswer(input.id, v)}
             />
           ) : null;
-          return isConditional ? (
-            <SlideSwap key={input.id} swapKey={visible ? 'shown' : 'hidden'}>
-              {rendered}
-            </SlideSwap>
-          ) : (
-            <div key={input.id}>{rendered}</div>
+          return (
+            <div key={input.id} className={styles.inputSlot}>
+              {isConditional ? (
+                <SlideSwap swapKey={visible ? 'shown' : 'hidden'}>{rendered}</SlideSwap>
+              ) : (
+                rendered
+              )}
+            </div>
           );
         });
       })()}
