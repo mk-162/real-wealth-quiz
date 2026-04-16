@@ -22,7 +22,9 @@
 import { test, expect, type Page } from '@playwright/test';
 
 const SESSION_KEY = 'real-wealth:conversation';
-const SESSION_VERSION = '1';
+/* Keep in lockstep with SESSION_VERSION in src/lib/questionnaire/session.ts.
+   Bumping the version there invalidates seeded test sessions too. */
+const SESSION_VERSION = '2';
 
 interface SeedAnswers {
   age: number;

@@ -49,6 +49,7 @@ function Questionnaire() {
     progress,
     isFirst,
     isLast,
+    canCompleteFlow,
     canAdvance,
     inlineProvocations,
     firedAwareness,
@@ -78,7 +79,14 @@ function Questionnaire() {
   const sectionNumber = section?.step ?? 1;
 
   const handleNext = () => {
-    if (active.kind === 'content' && isLast) {
+    /* Route to the details page only when the user is on the last
+       visible content screen AND the gate is complete. `canCompleteFlow`
+       guards against the "jumps straight to final step" bug — when
+       segmentation shrinks `visibleScreens` mid-flow the user could find
+       themselves positionally on the last screen without having
+       answered every gate question; routing in that case would jump
+       them to /details before the flow was really done. */
+    if (active.kind === 'content' && isLast && canCompleteFlow) {
       router.push('/conversation/details');
       return;
     }

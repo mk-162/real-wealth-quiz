@@ -41,7 +41,13 @@ import {
   type HouseholdTag,
 } from '../segmentation';
 import { shouldShowInput } from './visibility';
-import { loadSession, saveSession, isExpired, type AwarenessLevel } from './session';
+import {
+  loadSession,
+  saveSession,
+  isExpired,
+  SESSION_VERSION,
+  type AwarenessLevel,
+} from './session';
 import { evaluateTrigger } from './triggers';
 import { isCompliancePublishable } from '../provocations/catalogue';
 
@@ -83,6 +89,9 @@ export interface EngineState {
   progress: number; /* 0..1 */
   isFirst: boolean;
   isLast: boolean;
+  /** True once every gate answer is in place — a prerequisite for
+      routing to the details/summary pages. */
+  canCompleteFlow: boolean;
   canAdvance: boolean;
   tier: TierSlug;
   /** Provocations to render inline below the current content screen. */
@@ -138,7 +147,7 @@ export function useQuestionnaireEngine(tier: TierSlug): EngineState & EngineActi
   useEffect(() => {
     if (!hydrated) return;
     saveSession({
-      version: '1',
+      version: SESSION_VERSION,
       createdAt: loadSession()?.createdAt ?? new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       tier,
@@ -164,6 +173,28 @@ export function useQuestionnaireEngine(tier: TierSlug): EngineState & EngineActi
       ),
     [tierCode],
   );
+
+  /* Dev-only sanity check: if the current tier shares its entire screen
+     set with the next tier down, the three-length UX is a lie. The
+     client brief asks for a "quick / standard / thorough" progression;
+     if content authors haven't added tier-A-only screens we want a
+     visible warning in the console rather than silent equivalence
+     between standard and thorough. */
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'production') return;
+    if (tierCode !== 'A') return;
+    const tierBCount = allScreens.filter(
+      (s) =>
+        s.layout !== 'transition' && (!s.tier_limit || s.tier_limit.includes('B')),
+    ).length;
+    if (screensForTier.length === tierBCount) {
+      console.warn(
+        '[engine] Tier A (thorough) contains the same screen set as Tier B (standard). ' +
+          'No screen declares tier_limit: [A] only — the "thorough" experience reads as ' +
+          'identical to "standard". Add deeper questions for Tier A in content/screens/*.md.',
+      );
+    }
+  }, [tierCode, screensForTier.length]);
 
   /* Derive the currently-assigned segment from the collected gating answers. */
   const gating: Partial<GatingAnswers> = useMemo(() => {
@@ -282,7 +313,17 @@ export function useQuestionnaireEngine(tier: TierSlug): EngineState & EngineActi
   const progress = Math.min(1, (currentIndex + 1) / total);
 
   const isFirst = currentIndex === 0;
+  /* Positional "last screen" indicator — true whenever the user is on the
+     last visible screen. The conversation page uses this alongside a
+     `canCompleteFlow` guard before routing to /conversation/details, so
+     that sudden mid-flow shrinkage of `visibleScreens` (e.g. an
+     aggressive segment hides several downstream screens) doesn't fire
+     the completion route before the user has actually answered the
+     gate. */
   const isLast = currentIndex === visibleScreens.length - 1;
+  /* Guard: the gate (age, household, work_status, income, estate) must
+     be complete for the flow to be considered finished. */
+  const canCompleteFlow = gateReady;
 
   /* Eligibility selectors -------------------------------------------- */
 
@@ -511,6 +552,7 @@ export function useQuestionnaireEngine(tier: TierSlug): EngineState & EngineActi
     progress,
     isFirst,
     isLast,
+    canCompleteFlow,
     canAdvance,
     tier,
     inlineProvocations,
