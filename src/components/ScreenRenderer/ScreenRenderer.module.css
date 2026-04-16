@@ -168,6 +168,15 @@
   border-top: var(--rule-fine);
 }
 
+/* Aside slot for centred layouts — sits below the panel, centred and
+   matched to the centred panel's max-width so it reads as a
+   continuation of the column rather than floating loose. */
+.centredAside {
+  max-width: var(--content-max);
+  margin: var(--space-lg) auto 0;
+  padding: 0 var(--gutter);
+}
+
 /* A slot whose conditional content is currently hidden collapses
    so no divider hangs below an invisible follow-up question. */
 .inputSlot:empty {

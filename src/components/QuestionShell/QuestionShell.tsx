@@ -28,6 +28,12 @@ export interface QuestionShellProps {
   children: ReactNode;
   /** Footer row (back / continue / reassurance tiles). */
   footer?: ReactNode;
+  /**
+   * Optional content that should appear under the left column on
+   * desktop (below the image) and fall to the foot of the screen on
+   * narrow viewports. Used on the questionnaire to surface inline
+   * provocation cards without breaking the question→panel flow. */
+  aside?: ReactNode;
 }
 
 export function QuestionShell({
@@ -39,6 +45,7 @@ export function QuestionShell({
   leftExtras,
   children,
   footer,
+  aside,
 }: QuestionShellProps) {
   return (
     <div className={styles.shell}>
@@ -65,6 +72,12 @@ export function QuestionShell({
             </figure>
           ) : null}
         </section>
+
+        {/* Aside slot — occupies a new grid row at column 1 on desktop so
+            the content sits directly under the image. On narrow viewports
+            the grid collapses to a single column and the aside naturally
+            lands below the panel. */}
+        {aside ? <aside className={styles.aside}>{aside}</aside> : null}
       </div>
       {footer ? <div className={styles.footer}>{footer}</div> : null}
     </div>

@@ -153,37 +153,37 @@ function Questionnaire() {
             canAdvance={canAdvance}
           />
         ) : (
-          <div>
-            <ScreenRenderer
-              screen={active.screen}
-              answers={answers}
-              onAnswer={engine.answer}
-              onNext={handleNext}
-              onBack={engine.back}
-              isFirst={isFirst}
-              isLast={isLast}
-              canAdvance={canAdvance}
-              continueLabel={isLast ? 'Continue to details →' : 'Continue →'}
-            />
-            {inlineProvocations.length > 0 ? (
-              <div className={styles.inlineProv}>
-                {inlineProvocations.map((p) => (
-                  <ProvocationCard
-                    key={p.id}
-                    headline={p.headline}
-                    body={p.body}
-                    closing={p.close}
-                    complianceTag={
-                      process.env.NODE_ENV !== 'production' &&
-                      p.compliance_status !== 'approved_to_ship'
-                        ? p.compliance_status
-                        : null
-                    }
-                  />
-                ))}
-              </div>
-            ) : null}
-          </div>
+          <ScreenRenderer
+            screen={active.screen}
+            answers={answers}
+            onAnswer={engine.answer}
+            onNext={handleNext}
+            onBack={engine.back}
+            isFirst={isFirst}
+            isLast={isLast}
+            canAdvance={canAdvance}
+            continueLabel={isLast ? 'Continue to details →' : 'Continue →'}
+            aside={
+              inlineProvocations.length > 0 ? (
+                <div className={styles.inlineProv}>
+                  {inlineProvocations.map((p) => (
+                    <ProvocationCard
+                      key={p.id}
+                      headline={p.headline}
+                      body={p.body}
+                      closing={p.close}
+                      complianceTag={
+                        process.env.NODE_ENV !== 'production' &&
+                        p.compliance_status !== 'approved_to_ship'
+                          ? p.compliance_status
+                          : null
+                      }
+                    />
+                  ))}
+                </div>
+              ) : null
+            }
+          />
         )}
       </SlideSwap>
     </div>

@@ -158,13 +158,11 @@ function Summary() {
     'ILLUSTRATIVE EXAMPLE',
   );
 
-  /* Aspiration echo — user-written line, else a template fallback. */
-  const fallbackLine = pageValue<string>(
-    'summary',
-    'aspiration_echo.fallback_templates.freedom_time',
-    "The life you're planning for.",
-  );
-  const aspirationLine = aspirationParam.trim().length > 0 ? aspirationParam : fallbackLine;
+  /* Aspiration echo is no longer rendered in the summary hero — the
+     quote read as noise above the briefing headline and users preferred
+     getting straight to the shortlist. Q2.4 is still read into
+     `aspirationParam` above so it can feed the resolvers via
+     `happyPlace`; we just don't display it back. */
 
   /* Resolvers. */
   const emotionalIntro = useMemo(() => selectEmotionalIntro(inputs), [inputs]);
@@ -294,13 +292,6 @@ function Summary() {
           element. */}
       <section className={styles.hero} aria-labelledby="hero-headline">
         <div className={styles.heroInner}>
-          <p className={styles.heroAspiration}>
-            <span className={styles.heroAspirationLine}>
-              {aspirationIsUserWritten
-                ? `\u201C${aspirationLine}\u201D`
-                : aspirationLine}
-            </span>
-          </p>
           <h1 id="hero-headline" className={styles.heroHeadline}>
             Five things worth a conversation.
           </h1>

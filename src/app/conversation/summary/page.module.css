@@ -21,19 +21,6 @@
   text-align: left;
 }
 
-.heroAspiration {
-  font-family: var(--font-body);
-  font-size: var(--fs-small);
-  color: var(--ink-soft);
-  margin: 0 0 var(--space-md);
-  line-height: 1.5;
-}
-
-.heroAspirationLine {
-  font-style: italic;
-  color: var(--ink-soft);
-}
-
 .heroHeadline {
   font-family: var(--font-heading);
   font-style: italic;

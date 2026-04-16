@@ -98,6 +98,28 @@
   margin-top: var(--space-sm);
 }
 
+/* Aside — inline provocations / alert cards that sit under the left
+   column on desktop (grid row 2, column 1) so they read directly
+   below the lifestyle image rather than jammed under the panel. On
+   narrow viewports the grid collapses to a single column and the
+   aside falls naturally to the bottom.
+
+   The `align-self: start` stops the aside stretching to match the
+   right column's height on tall panels — keeps the card its natural
+   size at the foot of the image. */
+.aside {
+  align-self: start;
+  margin-top: var(--space-sm);
+}
+
+@media (min-width: 1024px) {
+  .aside {
+    grid-column: 1;
+    grid-row: 2;
+    margin-top: var(--space-md);
+  }
+}
+
 /* Right column (the interaction panel). */
 .right {
   min-width: 0;

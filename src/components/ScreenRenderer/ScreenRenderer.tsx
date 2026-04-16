@@ -32,6 +32,13 @@ export interface ScreenRendererProps {
   canAdvance: boolean;
   /** Text shown inside the Continue button. */
   continueLabel?: string;
+  /**
+   * Optional content rendered under the left column on asymmetric
+   * layouts, and beneath the panel on centred layouts. Used for inline
+   * provocation cards that used to render outside the panel via the
+   * conversation page. Keeping them inside ScreenRenderer lets the
+   * two-column grid reclaim the whitespace on the left. */
+  aside?: ReactNode;
 }
 
 export function ScreenRenderer(props: ScreenRendererProps) {
@@ -129,6 +136,9 @@ function CentredLayout(props: ScreenRendererProps) {
         })}
         <ActionRow {...props} />
       </div>
+      {props.aside ? (
+        <div className={styles.centredAside}>{props.aside}</div>
+      ) : null}
     </div>
   );
 }
@@ -138,7 +148,7 @@ function CentredLayout(props: ScreenRendererProps) {
 /* ================================================================ */
 
 function AsymmetricLayout(props: ScreenRendererProps) {
-  const { screen, answers, onAnswer } = props;
+  const { screen, answers, onAnswer, aside } = props;
   const section = sectionMeta(screen.section as never);
 
   const imageSrc =
@@ -164,6 +174,7 @@ function AsymmetricLayout(props: ScreenRendererProps) {
       pullquote={pullquote ?? screen.sub}
       imageSrc={imageSrc}
       imageAlt={imageAlt}
+      aside={aside}
     >
       {screen.sub && screen.sub !== pullquote ? (
         <p className={styles.panelSub}>{screen.sub}</p>

@@ -142,12 +142,14 @@
   }
 }
 
+/* Wrapper for the inline provocation cards rendered in the question
+   shell's aside slot. No outer max-width or gutter — those come from
+   the grid cell. Just a small vertical rhythm between cards when more
+   than one fires at a time. */
 .inlineProv {
-  margin-top: var(--space-lg);
-  max-width: var(--container-max);
-  margin-left: auto;
-  margin-right: auto;
-  padding: 0 var(--gutter);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
 }
 
 /* Aspiration block */
