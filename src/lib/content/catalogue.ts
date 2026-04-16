@@ -36,7 +36,7 @@ export const screens: Screen[] = [
     "inputs": [],
     "headline": "Let's talk about the life you're planning for.",
     "sub": "A few honest questions. No right answers, no scorecard — just a clearer picture by the end. You can stop any time; we'll save what you've told us so far.",
-    "body": "Eyebrow: BEFORE WE START.\nPrimary button: *Begin →*.\nNo back button on this screen."
+    "body": "Eyebrow: BEFORE WE START.\nPrimary button: Begin →.\nNo back button on this screen."
   },
   {
     "id": "screen.3.1.intent",
@@ -1974,8 +1974,8 @@ export const awareness: AwarenessCheck[] = [
     "compliance_status": "draft",
     "stem": "The all-in cost of ongoing advice is typically quoted as just the adviser fee — but the total (adviser + platform + fund) is usually 1.5–2× that number. Have you ever seen yours as a single figure?",
     "aware_body": "Helpful — that usually means you've already seen the total as a single figure, rather than just the adviser slice.",
-    "partial_body": "Three cost layers: adviser ongoing (roughly 0.5–1.0%), platform (0.15–0.35%), fund OCF (0.05–0.9%). Totals usually land between 0.7% and 2.0%. Consumer Duty obliges advisers to demonstrate value for the *total* fee, not just their slice.",
-    "unaware_body": "It's not that advice is wrong to cost money. It's that the total cost is often quoted as a single line that happens to only include one of three layers. A Consumer Duty-compliant review of your current arrangement asks: what is the total, what am I getting for it, is it defensible. Useful even when the answer is *\"yes, fine.\"*"
+    "partial_body": "Three cost layers: adviser ongoing (roughly 0.5–1.0%), platform (0.15–0.35%), fund OCF (0.05–0.9%). Totals usually land between 0.7% and 2.0%. Consumer Duty obliges advisers to demonstrate value for the total fee, not just their slice.",
+    "unaware_body": "It's not that advice is wrong to cost money. It's that the total cost is often quoted as a single line that happens to only include one of three layers. A Consumer Duty-compliant review of your current arrangement asks: what is the total, what am I getting for it, is it defensible. Useful even when the answer is \"yes, fine.\""
   },
   {
     "id": "pitfall.badr_timing",
@@ -2006,7 +2006,7 @@ export const awareness: AwarenessCheck[] = [
     ],
     "compliance_status": "draft",
     "stem": "Buy-to-let properties held personally lose most of their mortgage interest as a tax-deductible expense. Those held in a limited company don't. Were you aware of the difference?",
-    "aware_body": "Noted — the *\"should I incorporate\"* question tends to bring about eight follow-ups with it, and they're worth working through jointly with your accountant.",
+    "aware_body": "Noted — the \"should I incorporate\" question tends to bring about eight follow-ups with it, and they're worth working through jointly with your accountant.",
     "partial_body": "Section 24 of the Finance Act 2015 replaced personal-name mortgage interest relief with a flat 20% tax credit. For higher and additional-rate taxpayers with mortgaged BTLs, that effectively raises the tax rate on rent. Incorporation avoids it, but the transfer itself triggers CGT and SDLT.",
     "unaware_body": "After Section 24, a higher-rate landlord with a heavily-mortgaged BTL can end up paying tax on income they didn't actually earn. Incorporation is the conversation people tend to have next — but the transfer triggers CGT and SDLT unless structured carefully. It's a £5,000–£15,000 decision for most portfolio landlords, and we tend to run it alongside your accountant rather than over the top of them."
   },
@@ -2023,7 +2023,7 @@ export const awareness: AwarenessCheck[] = [
     "compliance_status": "draft",
     "stem": "Long-term residential care in the UK typically costs £60,000–£100,000+ a year. It's not free at the point of use once assets pass £23,250 — and that includes the value of a home not occupied by a spouse. Were you aware of those thresholds?",
     "aware_body": "Then the only question is which members of the family this is likely to affect, and when.",
-    "partial_body": "The means-test thresholds in England: lower capital limit £14,250, upper £23,250. A home is disregarded if a spouse or partner still lives there. The *\"care cost cap\"* reform announced for October 2025 was paused in 2024.",
+    "partial_body": "The means-test thresholds in England: lower capital limit £14,250, upper £23,250. A home is disregarded if a spouse or partner still lives there. The \"care cost cap\" reform announced for October 2025 was paused in 2024.",
     "unaware_body": "The average stay in residential care is about 30 months; 50% of people admitted will pay the full cost. A £90,000-a-year care home bill erodes a £450,000 house in five years. Families who plan this (immediate-needs annuities, deputyship, property structures) routinely preserve £100,000–£300,000 of the estate. It's the conversation that comes up too late."
   },
   {
@@ -2088,7 +2088,7 @@ export const awareness: AwarenessCheck[] = [
     "compliance_status": "draft",
     "stem": "Most business-owner clients we review are paying more tax on extraction than they need to — often because the salary, dividend and pension mix hasn't been revisited for a few years. How confident are you yours has been?",
     "aware_body": "The thing we usually sanity-check is whether the current mix still fits 2024/25 — the dividend allowance tightened again, and the optimum shifts slightly each year.",
-    "partial_body": "The classic optimisation: salary up to the NI threshold, dividends to the basic-rate band, then employer pension contribution for the rest. Exact numbers shift every tax year. *\"My accountant handles it\"* often means the default mix hasn't been revisited for several years.",
+    "partial_body": "The classic optimisation: salary up to the NI threshold, dividends to the basic-rate band, then employer pension contribution for the rest. Exact numbers shift every tax year. \"My accountant handles it\" often means the default mix hasn't been revisited for several years.",
     "unaware_body": "On £100,000 drawn as pure salary versus a typical salary/dividend/employer-pension mix, the tax bill can differ by £15,000–£20,000 — per year. Whether that's you depends on your company structure and your accountant's current advice. We run this jointly with the accountant rather than over the top of them."
   },
   {
@@ -2118,10 +2118,10 @@ export const awareness: AwarenessCheck[] = [
       "A"
     ],
     "compliance_status": "draft",
-    "stem": "Most DC pension default funds don't automatically reduce equity risk as you approach retirement — the *\"lifestyling\"* you may be assuming often isn't switched on. Worth a look?",
+    "stem": "Most DC pension default funds don't automatically reduce equity risk as you approach retirement — the \"lifestyling\" you may be assuming often isn't switched on. Worth a look?",
     "aware_body": "Most of our clients who've thought about this one want to check the glide path still matches the retirement shape they're picturing — drawdown versus annuity changes the answer.",
-    "partial_body": "Since freedom-and-choice in 2015, many default funds assume drawdown rather than annuity purchase — which means they hold equity risk for longer. That isn't wrong in itself — but it matters whether it fits *your* plan.",
-    "unaware_body": "A 58-year-old five years from planned retirement may still be 80%+ in equities inside a *\"default\"* fund. A 25% equity fall at 62 is very different from the same fall at 35. One question worth asking isn't *\"is equity risk bad\"* — it's *\"is this risk profile right for your plan.\"* Most near-retirees we meet have never had this conversation about their default fund."
+    "partial_body": "Since freedom-and-choice in 2015, many default funds assume drawdown rather than annuity purchase — which means they hold equity risk for longer. That isn't wrong in itself — but it matters whether it fits your plan.",
+    "unaware_body": "A 58-year-old five years from planned retirement may still be 80%+ in equities inside a \"default\" fund. A 25% equity fall at 62 is very different from the same fall at 35. One question worth asking isn't \"is equity risk bad\" — it's \"is this risk profile right for your plan.\" Most near-retirees we meet have never had this conversation about their default fund."
   },
   {
     "id": "pitfall.group_life_fragility",
@@ -2138,7 +2138,7 @@ export const awareness: AwarenessCheck[] = [
     "stem": "Life cover through work ends on the day you leave the job. The cover you have today isn't the cover you'll have if you change employer. Were you aware of that?",
     "aware_body": "Worth a quick check on whether there's any personal cover to carry between jobs — that's the bit that usually gets missed.",
     "partial_body": "Group life is typically 3–4× salary and ends when employment ends. Critical illness and income protection in group schemes usually work the same way. Personal cover, set up while you're young and healthy, is often cheaper than people assume.",
-    "unaware_body": "Most families we work with had assumed their *\"work benefit\"* was lifelong cover. It isn't. A personal £500,000 life and £50,000 income protection policy for a healthy 40-year-old typically costs under £40 a month — less than most broadband bills. It's the cheapest big decision on most family balance sheets."
+    "unaware_body": "Most families we work with had assumed their \"work benefit\" was lifelong cover. It isn't. A personal £500,000 life and £50,000 income protection policy for a healthy 40-year-old typically costs under £40 a month — less than most broadband bills. It's the cheapest big decision on most family balance sheets."
   },
   {
     "id": "pitfall.iht_mitigation",
@@ -2153,7 +2153,7 @@ export const awareness: AwarenessCheck[] = [
     ],
     "compliance_status": "draft",
     "stem": "There are well-established, legal ways to reduce — sometimes to nothing — the inheritance tax bill on an estate of your size. Were you aware of that?",
-    "aware_body": "What we usually check is whether the plan you have still matches the rules as they are *now*, rather than as they were when you first set it up — several changed in the 2024 Budget.",
+    "aware_body": "What we usually check is whether the plan you have still matches the rules as they are now, rather than as they were when you first set it up — several changed in the 2024 Budget.",
     "partial_body": "The toolkit has four main parts: gifting within the seven-year rule; trust structures (discretionary, life interest); Business Relief on qualifying shares and AIM portfolios; and the residence nil-rate band if you leave the home to direct descendants. Each has specific rules, and the 2024 Budget changed several of them.",
     "unaware_body": "At an estate of your size, the default IHT bill is typically 40% of everything above £325,000 (or £500,000 if the residence nil-rate band applies and you qualify). For a £2m estate, that's £540,000–£700,000. With 2–5 years of structured planning, most families we work with reduce that by £150,000–£400,000. It's the most common senior-planner conversation we have."
   },
@@ -2189,7 +2189,7 @@ export const awareness: AwarenessCheck[] = [
     "compliance_status": "draft",
     "stem": "A \"financial adviser\" can be either independent or restricted — and a restricted adviser can only recommend products from a limited range, sometimes a single provider. Did you know whether yours is independent?",
     "aware_body": "That's the right question to have asked. It shapes how the rest of the review looks, since an independent firm and a restricted one are working from different shelves.",
-    "partial_body": "The FCA requires advisers to disclose their status. *Independent* means they can recommend across the whole of market. *Restricted* can mean anything from *\"limited to one provider\"* to *\"whole of market except annuities.\"* The scope sits on the first page of their initial disclosure document.",
+    "partial_body": "The FCA requires advisers to disclose their status. Independent means they can recommend across the whole of market. Restricted can mean anything from \"limited to one provider\" to \"whole of market except annuities.\" The scope sits on the first page of their initial disclosure document.",
     "unaware_body": "About 60% of UK advice firms are restricted. Not knowing the scope of your current adviser's restriction isn't a problem in itself — but it's a question worth asking if you've never looked at the initial disclosure document. Real Wealth is independent and FCA-regulated, which means we're free to look across the whole market."
   },
   {
@@ -2221,10 +2221,10 @@ export const awareness: AwarenessCheck[] = [
       "A"
     ],
     "compliance_status": "draft",
-    "stem": "Once you take *any* taxable income from a pension — even a small amount — you lose 72% of your ability to contribute in future, from £60,000 a year down to £10,000. Were you aware of that?",
+    "stem": "Once you take any taxable income from a pension — even a small amount — you lose 72% of your ability to contribute in future, from £60,000 a year down to £10,000. Were you aware of that?",
     "aware_body": "It's the MPAA in shorthand. The live question is usually whether anything's already crystallised it without you realising.",
-    "partial_body": "Taking the 25% tax-free lump sum by itself doesn't trigger it. It's the first time you take *taxable* income from a flexi-access drawdown that crystallises the MPAA — and once triggered, it doesn't unwind.",
-    "unaware_body": "A surprising number of people we meet took £5,000 of *\"just to test it\"* pension income in their 50s and capped their future contributions at £10,000 a year for the rest of their working life. The decision is reversible in the sense that you can stop — but not in the sense that you can reinstate the £60,000 allowance."
+    "partial_body": "Taking the 25% tax-free lump sum by itself doesn't trigger it. It's the first time you take taxable income from a flexi-access drawdown that crystallises the MPAA — and once triggered, it doesn't unwind.",
+    "unaware_body": "A surprising number of people we meet took £5,000 of \"just to test it\" pension income in their 50s and capped their future contributions at £10,000 a year for the rest of their working life. The decision is reversible in the sense that you can stop — but not in the sense that you can reinstate the £60,000 allowance."
   },
   {
     "id": "pitfall.ni_gaps",
@@ -2290,8 +2290,8 @@ export const awareness: AwarenessCheck[] = [
     "compliance_status": "draft",
     "stem": "Most people with four or more pension pots find, on consolidation, at least one old workplace scheme with charges more than double their best current one. Does that ring a bell?",
     "aware_body": "With this many pots, the decision usually turns on whether any old scheme carries a guarantee — protected tax-free cash, a guaranteed annuity rate — worth more than the charge saving you'd get from consolidating.",
-    "partial_body": "Old workplace pensions often carry 1–1.5% annual charges; modern equivalents are 0.2–0.5%. But a handful of older schemes have valuable safeguarded benefits (guaranteed annuity rates, protected tax-free cash) that would be lost on transfer. In our experience it's rarely *\"consolidate everything\"* — it's *\"consolidate the right ones.\"*",
-    "unaware_body": "Four or more pots often hides something forgotten. The average new client we work with finds £40,000–£60,000 across old workplace schemes they hadn't tracked. One question worth asking isn't *\"can I consolidate\"* — it's *\"should I, and in what order.\"*"
+    "partial_body": "Old workplace pensions often carry 1–1.5% annual charges; modern equivalents are 0.2–0.5%. But a handful of older schemes have valuable safeguarded benefits (guaranteed annuity rates, protected tax-free cash) that would be lost on transfer. In our experience it's rarely \"consolidate everything\" — it's \"consolidate the right ones.\"",
+    "unaware_body": "Four or more pots often hides something forgotten. The average new client we work with finds £40,000–£60,000 across old workplace schemes they hadn't tracked. One question worth asking isn't \"can I consolidate\" — it's \"should I, and in what order.\""
   },
   {
     "id": "pitfall.pension_iht_2027",
@@ -2306,10 +2306,10 @@ export const awareness: AwarenessCheck[] = [
       "C"
     ],
     "compliance_status": "draft",
-    "stem": "From April 2027, unused pension funds are expected to fall *inside* the estate for inheritance tax — reversing a fifteen-year-old planning position. Were you aware of that change?",
+    "stem": "From April 2027, unused pension funds are expected to fall inside the estate for inheritance tax — reversing a fifteen-year-old planning position. Were you aware of that change?",
     "aware_body": "Noted — that puts the 2026–27 window firmly on the table, which is where most of the decisions sit for families in this range.",
     "partial_body": "Currently, most pensions pass outside the estate. The 2024 Budget announced that from April 2027, defined-contribution pension wealth will be included for IHT purposes. Draft legislation is expected in 2025 — the detail will matter.",
-    "unaware_body": "This one's live. For a family with £500,000+ in pensions and a £1m+ estate, the decision you'd have made in 2024 — *\"draw from ISAs first, keep the pension for inheritance\"* — may no longer fit from April 2027. Worth revisiting in the 2026–27 window rather than later."
+    "unaware_body": "This one's live. For a family with £500,000+ in pensions and a £1m+ estate, the decision you'd have made in 2024 — \"draw from ISAs first, keep the pension for inheritance\" — may no longer fit from April 2027. Worth revisiting in the 2026–27 window rather than later."
   },
   {
     "id": "pitfall.rnrb_taper",
@@ -2326,8 +2326,8 @@ export const awareness: AwarenessCheck[] = [
     "compliance_status": "draft",
     "stem": "Above £2 million of total estate, the residence nil-rate band starts tapering away — £1 of relief lost for every £2 over. Were you aware of that?",
     "aware_body": "At £2.35m per person the RNRB is fully gone, so most of the conversation is about how to keep the estate under the cliff — timing of gifts, or Business Relief-qualifying investments.",
-    "partial_body": "The RNRB is £175,000 per person (£350,000 for a married couple). It tapers at £1 for every £2 over £2m, fully gone at £2.35m per person. The £2m threshold counts *all* assets — including pensions from April 2027.",
-    "unaware_body": "A typical £2.5m family estate (house plus investments) can easily pay £200,000–£500,000 more IHT than necessary because of this taper alone. In our experience the conversation is rarely *\"spend more\"* — it's usually about timing gifts, or using Business Relief-qualifying investments to move the estate below the cliff."
+    "partial_body": "The RNRB is £175,000 per person (£350,000 for a married couple). It tapers at £1 for every £2 over £2m, fully gone at £2.35m per person. The £2m threshold counts all assets — including pensions from April 2027.",
+    "unaware_body": "A typical £2.5m family estate (house plus investments) can easily pay £200,000–£500,000 more IHT than necessary because of this taper alone. In our experience the conversation is rarely \"spend more\" — it's usually about timing gifts, or using Business Relief-qualifying investments to move the estate below the cliff."
   },
   {
     "id": "pitfall.savings_tax_efficiency",
@@ -2342,9 +2342,9 @@ export const awareness: AwarenessCheck[] = [
     ],
     "compliance_status": "draft",
     "stem": "Most people pay more tax on their savings and investments than they need to — because the three allowances that reduce it don't tend to be used together. Any sense of whether you're using yours?",
-    "aware_body": "Good. What we usually check next is whether the mix still fits *this* tax year — the allowances move around, and a couple's combined capacity is easy to under-use.",
+    "aware_body": "Good. What we usually check next is whether the mix still fits this tax year — the allowances move around, and a couple's combined capacity is easy to under-use.",
     "partial_body": "The three levers: £20,000 annual ISA, £3,000 CGT annual exempt amount, and £500 dividend allowance. Used together across a couple, that's £46,500 of tax-protected capacity a year. Most couples use less than half.",
-    "unaware_body": "On £100,000 of investments outside an ISA, moving £20,000 a year inside over five years protects the whole amount from tax on future growth. The technique's called *\"Bed and ISA\"* and it's one of the most common first-year conversations we have."
+    "unaware_body": "On £100,000 of investments outside an ISA, moving £20,000 a year inside over five years protects the whole amount from tax on future growth. The technique's called \"Bed and ISA\" and it's one of the most common first-year conversations we have."
   },
   {
     "id": "pitfall.ssp_gap",
@@ -2359,7 +2359,7 @@ export const awareness: AwarenessCheck[] = [
     "compliance_status": "draft",
     "stem": "Statutory Sick Pay is £116.75 a week — about £505 a month — and most employer sick pay schemes run out at six months. Were you aware the gap is that steep?",
     "aware_body": "Income protection is usually what fills the gap, and because the event it covers is more common than early death, the premium is often lower than people expect.",
-    "partial_body": "The ladder: full pay for up to 6 months (if lucky) → half pay → SSP → nothing. For most households with a mortgage, the *\"half-pay\"* line is already below essential outgoings.",
+    "partial_body": "The ladder: full pay for up to 6 months (if lucky) → half pay → SSP → nothing. For most households with a mortgage, the \"half-pay\" line is already below essential outgoings.",
     "unaware_body": "If the main earner is off sick for a year, most families we meet find their sick-pay arrangement covers the first 3–6 months at best, then crashes to £505 a month statutory. That's rarely enough to cover the mortgage. Income protection closes the gap — and because the event is more likely than early death, it's much cheaper than life insurance."
   },
   {
@@ -2394,7 +2394,7 @@ export const awareness: AwarenessCheck[] = [
     "stem": "A will more than five years old is often out of date before anyone realises. Life moves — houses, children, business stakes, relationships — without a nudge to update the document. When did you last look at yours?",
     "aware_body": "The prompt we usually give is a five-year re-read — life moves even when nothing dramatic has happened, and the document drifts quietly out of shape.",
     "partial_body": "The common triggers for a will review: marriage or divorce, new child, house purchase, business stake, gift above £3,000, or the death of a named beneficiary. If none of those have happened since the last review, the will probably still works.",
-    "unaware_body": "The commonest will problem we see isn't *\"no will\"* — it's *\"an old will that no longer reflects what the family actually looks like.\"* The cost of updating is usually a few hundred pounds. The cost of not updating it can be a seven-figure dispute."
+    "unaware_body": "The commonest will problem we see isn't \"no will\" — it's \"an old will that no longer reflects what the family actually looks like.\" The cost of updating is usually a few hundred pounds. The cost of not updating it can be a seven-figure dispute."
   }
 ];
 
@@ -2430,7 +2430,7 @@ export const provocations: Provocation[] = [
     "version": "0.1.0",
     "source_refs": [],
     "headline": "The incorporation question.",
-    "body": "For portfolio landlords holding two or more properties personally with mortgages, the Section 24 tax change has made *\"should I incorporate\"* one of the most common planning questions we hear. In our experience it's *\"it depends\"* for about 60% of cases, and clearly yes or no for the rest.",
+    "body": "For portfolio landlords holding two or more properties personally with mortgages, the Section 24 tax change has made \"should I incorporate\" one of the most common planning questions we hear. In our experience it's \"it depends\" for about 60% of cases, and clearly yes or no for the rest.",
     "close": "We usually run this jointly with your accountant."
   },
   {
@@ -2446,7 +2446,7 @@ export const provocations: Provocation[] = [
     "version": "0.1.0",
     "source_refs": [],
     "headline": "Thinking is the planning starting.",
-    "body": "There's no such thing as a bad first succession conversation — even *\"I don't know what I want yet\"* is a starting position. Most of the owners we work with came to us exactly there.",
+    "body": "There's no such thing as a bad first succession conversation — even \"I don't know what I want yet\" is a starting position. Most of the owners we work with came to us exactly there.",
     "close": "Thirty minutes to start the thinking in the open."
   },
   {
@@ -2493,7 +2493,7 @@ export const provocations: Provocation[] = [
     "version": "0.1.0",
     "source_refs": [],
     "headline": "Most of our best client relationships started here.",
-    "body": "*\"I don't know what I don't know\"* is the most common way our strongest relationships begin. A first call is often half about what *you* think, half about what we show *you* — and the shape usually becomes obvious inside twenty minutes.",
+    "body": "\"I don't know what I don't know\" is the most common way our strongest relationships begin. A first call is often half about what you think, half about what we show you — and the shape usually becomes obvious inside twenty minutes.",
     "close": "A good reason to book."
   },
   {
@@ -2579,7 +2579,7 @@ export const provocations: Provocation[] = [
     "version": "0.1.0",
     "source_refs": [],
     "headline": "Most of our clients said the same, first meeting.",
-    "body": "One question we often come back to isn't *\"how much.\"* It's *\"what do I want them to be able to do with it.\"* Getting that question answered once — between you, with a third party to hold the pen — is usually where the useful planning starts.",
+    "body": "One question we often come back to isn't \"how much.\" It's \"what do I want them to be able to do with it.\" Getting that question answered once — between you, with a third party to hold the pen — is usually where the useful planning starts.",
     "close": "Worth half an hour together."
   },
   {
@@ -2699,7 +2699,7 @@ export const provocations: Provocation[] = [
     "version": "0.1.0",
     "source_refs": [],
     "headline": "It's not about when you stop.",
-    "body": "Over half of our business-owner and senior-professional clients said the same thing in their first meeting. Planning isn't about *\"when do I stop\"* — it's about *\"when could I stop if I wanted to.\"* The freedom, not the date.",
+    "body": "Over half of our business-owner and senior-professional clients said the same thing in their first meeting. Planning isn't about \"when do I stop\" — it's about \"when could I stop if I wanted to.\" The freedom, not the date.",
     "close": "A conversation about optionality, not retirement."
   },
   {
@@ -2714,7 +2714,7 @@ export const provocations: Provocation[] = [
     "version": "0.1.0",
     "source_refs": [],
     "headline": "Both ways at once.",
-    "body": "Families supporting children *and* a parent at the same time are the planning group we see most stretched for time. The tools that matter here — LPAs for your parents, protection for you, a will that accounts for both — are the ones that get put off until they're urgent.",
+    "body": "Families supporting children and a parent at the same time are the planning group we see most stretched for time. The tools that matter here — LPAs for your parents, protection for you, a will that accounts for both — are the ones that get put off until they're urgent.",
     "close": "Worth thirty minutes with us."
   },
   {
@@ -2885,7 +2885,7 @@ export const segments: SegmentCta[] = [
     "overlay": null,
     "button_link": "calendly.com/real-wealth-succession-call-placeholder",
     "headline": "The succession conversation.",
-    "body": "The BADR rate transition and the 18–24 month sale timeline mean the conversation about *when* is usually as important as the conversation about *how much*. Our senior partners handle exits directly.",
+    "body": "The BADR rate transition and the 18–24 month sale timeline mean the conversation about when is usually as important as the conversation about how much. Our senior partners handle exits directly.",
     "button": "Book a succession-focused call",
     "helper": "A 30-minute call with a senior partner."
   },

@@ -12,7 +12,7 @@ tier_limit: [A, B]
 There are well-established, legal ways to reduce — sometimes to nothing — the inheritance tax bill on an estate of your size. Were you aware of that?
 
 # Aware body
-What we usually check is whether the plan you have still matches the rules as they are *now*, rather than as they were when you first set it up — several changed in the 2024 Budget.
+What we usually check is whether the plan you have still matches the rules as they are now, rather than as they were when you first set it up — several changed in the 2024 Budget.
 
 # Partial body
 The toolkit has four main parts: gifting within the seven-year rule; trust structures (discretionary, life interest); Business Relief on qualifying shares and AIM portfolios; and the residence nil-rate band if you leave the home to direct descendants. Each has specific rules, and the 2024 Budget changed several of them.

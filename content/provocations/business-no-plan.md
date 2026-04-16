@@ -10,7 +10,7 @@ version: 0.1.0
 Thinking is the planning starting.
 
 # Body
-There's no such thing as a bad first succession conversation — even *"I don't know what I want yet"* is a starting position. Most of the owners we work with came to us exactly there.
+There's no such thing as a bad first succession conversation — even "I don't know what I want yet" is a starting position. Most of the owners we work with came to us exactly there.
 
 # Close
 Thirty minutes to start the thinking in the open.

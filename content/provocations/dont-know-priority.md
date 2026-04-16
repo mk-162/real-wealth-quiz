@@ -10,7 +10,7 @@ version: 0.1.0
 Most of our best client relationships started here.
 
 # Body
-*"I don't know what I don't know"* is the most common way our strongest relationships begin. A first call is often half about what *you* think, half about what we show *you* — and the shape usually becomes obvious inside twenty minutes.
+"I don't know what I don't know" is the most common way our strongest relationships begin. A first call is often half about what you think, half about what we show you — and the shape usually becomes obvious inside twenty minutes.
 
 # Close
 A good reason to book.

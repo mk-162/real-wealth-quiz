@@ -9,7 +9,7 @@ button_link: "calendly.com/real-wealth-succession-call-placeholder"
 The succession conversation.
 
 # Body
-The BADR rate transition and the 18–24 month sale timeline mean the conversation about *when* is usually as important as the conversation about *how much*. Our senior partners handle exits directly.
+The BADR rate transition and the 18–24 month sale timeline mean the conversation about when is usually as important as the conversation about how much. Our senior partners handle exits directly.
 
 # Button
 Book a succession-focused call

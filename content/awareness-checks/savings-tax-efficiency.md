@@ -13,10 +13,10 @@ tier_limit: [A, B]
 Most people pay more tax on their savings and investments than they need to — because the three allowances that reduce it don't tend to be used together. Any sense of whether you're using yours?
 
 # Aware body
-Good. What we usually check next is whether the mix still fits *this* tax year — the allowances move around, and a couple's combined capacity is easy to under-use.
+Good. What we usually check next is whether the mix still fits this tax year — the allowances move around, and a couple's combined capacity is easy to under-use.
 
 # Partial body
 The three levers: £20,000 annual ISA, £3,000 CGT annual exempt amount, and £500 dividend allowance. Used together across a couple, that's £46,500 of tax-protected capacity a year. Most couples use less than half.
 
 # Unaware body
-On £100,000 of investments outside an ISA, moving £20,000 a year inside over five years protects the whole amount from tax on future growth. The technique's called *"Bed and ISA"* and it's one of the most common first-year conversations we have.
+On £100,000 of investments outside an ISA, moving £20,000 a year inside over five years protects the whole amount from tax on future growth. The technique's called "Bed and ISA" and it's one of the most common first-year conversations we have.

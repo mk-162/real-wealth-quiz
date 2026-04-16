@@ -12,7 +12,7 @@ tier_limit: [A]
 Buy-to-let properties held personally lose most of their mortgage interest as a tax-deductible expense. Those held in a limited company don't. Were you aware of the difference?
 
 # Aware body
-Noted — the *"should I incorporate"* question tends to bring about eight follow-ups with it, and they're worth working through jointly with your accountant.
+Noted — the "should I incorporate" question tends to bring about eight follow-ups with it, and they're worth working through jointly with your accountant.
 
 # Partial body
 Section 24 of the Finance Act 2015 replaced personal-name mortgage interest relief with a flat 20% tax credit. For higher and additional-rate taxpayers with mortgaged BTLs, that effectively raises the tax rate on rent. Incorporation avoids it, but the transfer itself triggers CGT and SDLT.

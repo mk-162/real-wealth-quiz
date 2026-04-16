@@ -10,7 +10,7 @@ version: 0.1.0
 Most of our clients said the same, first meeting.
 
 # Body
-One question we often come back to isn't *"how much."* It's *"what do I want them to be able to do with it."* Getting that question answered once — between you, with a third party to hold the pen — is usually where the useful planning starts.
+One question we often come back to isn't "how much." It's "what do I want them to be able to do with it." Getting that question answered once — between you, with a third party to hold the pen — is usually where the useful planning starts.
 
 # Close
 Worth half an hour together.

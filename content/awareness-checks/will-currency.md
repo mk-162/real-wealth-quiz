@@ -19,4 +19,4 @@ The prompt we usually give is a five-year re-read — life moves even when nothi
 The common triggers for a will review: marriage or divorce, new child, house purchase, business stake, gift above £3,000, or the death of a named beneficiary. If none of those have happened since the last review, the will probably still works.
 
 # Unaware body
-The commonest will problem we see isn't *"no will"* — it's *"an old will that no longer reflects what the family actually looks like."* The cost of updating is usually a few hundred pounds. The cost of not updating it can be a seven-figure dispute.
+The commonest will problem we see isn't "no will" — it's "an old will that no longer reflects what the family actually looks like." The cost of updating is usually a few hundred pounds. The cost of not updating it can be a seven-figure dispute.

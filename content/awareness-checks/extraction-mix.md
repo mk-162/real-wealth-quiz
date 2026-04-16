@@ -16,7 +16,7 @@ Most business-owner clients we review are paying more tax on extraction than the
 The thing we usually sanity-check is whether the current mix still fits 2024/25 — the dividend allowance tightened again, and the optimum shifts slightly each year.
 
 # Partial body
-The classic optimisation: salary up to the NI threshold, dividends to the basic-rate band, then employer pension contribution for the rest. Exact numbers shift every tax year. *"My accountant handles it"* often means the default mix hasn't been revisited for several years.
+The classic optimisation: salary up to the NI threshold, dividends to the basic-rate band, then employer pension contribution for the rest. Exact numbers shift every tax year. "My accountant handles it" often means the default mix hasn't been revisited for several years.
 
 # Unaware body
 On £100,000 drawn as pure salary versus a typical salary/dividend/employer-pension mix, the tax bill can differ by £15,000–£20,000 — per year. Whether that's you depends on your company structure and your accountant's current advice. We run this jointly with the accountant rather than over the top of them.
