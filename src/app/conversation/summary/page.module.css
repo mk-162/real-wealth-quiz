@@ -218,44 +218,81 @@
   }
 }
 
-/* Share-with-a-friend — tertiary action directly beneath the sidebar
-   card. Intentionally quiet: a small inline-button that reads as a link
-   with a leading icon. Never competes with the primary Calendly CTA
-   inside the card above. */
-.shareLink {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
+/* Share-with-a-friend widget — sits directly beneath the sidebar CTA
+   as a quieter P.S. Same paper surface as the primary card above but
+   without the orange stripe and with a softer border + no shadow, so
+   it reads clearly as subordinate to the booking action. Headline
+   sits at the "sub" rung of the type ladder (17px) — smaller than
+   the primary sidebar headline (20px). */
+.shareCard {
   margin-top: var(--space-md);
-  padding: 0.5rem 0;
-  background: transparent;
-  border: 0;
-  font-family: var(--font-body);
-  font-size: var(--fs-small);
-  font-weight: 500;
-  color: var(--ink-soft);
-  cursor: pointer;
-  transition: color var(--duration-fast) var(--ease-default);
+  padding: var(--space-md) var(--space-lg);
+  background: var(--paper);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
 }
 
-.shareLink svg {
-  flex-shrink: 0;
+.shareHeadline {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1.0625rem;
+  line-height: 1.35;
+  color: var(--ink);
+  margin: 0;
+  letter-spacing: -0.005em;
+}
+
+.shareBody {
+  font-family: var(--font-body);
+  font-size: var(--fs-small);
+  line-height: 1.55;
+  color: var(--ink-soft);
+  margin: 0 0 var(--space-sm);
+}
+
+.shareButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  align-self: flex-start;
+  padding: 0.625rem 1.125rem;
+  min-height: 40px;
+  background: transparent;
   color: var(--brand-teal);
+  border: 1.5px solid var(--brand-teal);
+  border-radius: 999px;
+  font-family: var(--font-body);
+  font-size: var(--fs-ui);
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background var(--duration-fast) var(--ease-default),
+    color var(--duration-fast) var(--ease-default),
+    border-color var(--duration-fast) var(--ease-default),
+    transform var(--duration-default) var(--ease-default);
+}
+
+.shareButton svg {
+  flex-shrink: 0;
   transition: transform var(--duration-default) var(--ease-default);
 }
 
-.shareLink:hover {
-  color: var(--brand-teal);
+.shareButton:hover {
+  background: var(--brand-teal);
+  color: var(--paper);
 }
 
-.shareLink:hover svg {
-  transform: translateX(2px) translateY(-1px);
+.shareButton:hover svg {
+  transform: translateX(1px);
 }
 
-.shareLink:focus-visible {
+.shareButton:focus-visible {
   outline: 2px solid var(--brand-teal);
   outline-offset: 3px;
-  border-radius: var(--radius-sm);
 }
 
 /* The card around the sidebar CTA. Strong visual weight: warm paper

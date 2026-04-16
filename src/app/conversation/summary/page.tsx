@@ -75,26 +75,50 @@ function Summary() {
 
   const derived = useMemo(() => deriveFromSession(session), [session]);
 
-  const segmentId = derived.segmentId ?? params.get('segment') ?? 'S3';
+  /* The segment source of truth: a completed gate in the persisted
+     session. A URL param can provide a demo/dev override. If neither
+     is available we keep `segmentId` null and render a neutral
+     "incomplete" summary further down rather than silently adopting
+     S3's copy for every visitor. */
+  const segmentId: string | null =
+    derived.segmentId ?? params.get('segment') ?? null;
+  const hasResolvedSegment = Boolean(segmentId);
   const urgency = derived.urgency ?? params.get('urgency');
   const adviceStatus = derived.adviceStatus ?? params.get('adviceStatus');
   const aspirationParam = derived.aspiration ?? params.get('aspiration') ?? '';
   const tier = (session?.tier ?? params.get('tier') ?? 'A') as string;
+  /* Aspiration came from the user directly (Q2.4) rather than a
+     fallback template — controls whether we render it in quote marks
+     (only their own words get attributed). */
+  const aspirationIsUserWritten = aspirationParam.trim().length > 0;
 
   /* Treat yes_but_looking (internal form value) and yes_looking
      (legacy overlay key) as the same high-intent state. */
   const isAdvisedLooking =
     adviceStatus === 'yes_but_looking' || adviceStatus === 'yes_looking';
 
-  /* Narrowed inputs for every summary resolver. */
+  /* Internal segment passed to the resolvers — they require a string.
+     When the real segment is unknown we fall back to S2 (mass-affluent
+     mid-career) because that's the most generally applicable CTA
+     shape; we still drive the user-facing copy off `hasResolvedSegment`
+     below. */
+  const resolverSegmentId = segmentId ?? 'S2';
   const inputs: SummaryInputs = useMemo(
     () =>
-      buildSummaryInputs(session, segmentId, {
+      buildSummaryInputs(session, resolverSegmentId, {
         urgency,
         currentAdviser: isAdvisedLooking ? 'yes_but_looking' : adviceStatus,
-        happyPlace: aspirationParam.trim().length > 0 ? aspirationParam : null,
+        happyPlace: aspirationIsUserWritten ? aspirationParam : null,
       }),
-    [session, segmentId, urgency, adviceStatus, isAdvisedLooking, aspirationParam],
+    [
+      session,
+      resolverSegmentId,
+      urgency,
+      adviceStatus,
+      isAdvisedLooking,
+      aspirationIsUserWritten,
+      aspirationParam,
+    ],
   );
 
   /* --- Copy sourced from content/pages/summary.md ------------------ */
@@ -151,10 +175,13 @@ function Summary() {
     return gaps.length >= min ? gaps : [];
   }, [inputs]);
 
-  const items = useMemo(() => buildConsideredList(segmentId, inputs), [segmentId, inputs]);
+  const items = useMemo(
+    () => buildConsideredList(resolverSegmentId, inputs),
+    [resolverSegmentId, inputs],
+  );
   const cta = useMemo(
-    () => resolveCta(segmentId, urgency, isAdvisedLooking ? 'yes_looking' : adviceStatus),
-    [segmentId, urgency, adviceStatus, isAdvisedLooking],
+    () => resolveCta(resolverSegmentId, urgency, isAdvisedLooking ? 'yes_looking' : adviceStatus),
+    [resolverSegmentId, urgency, adviceStatus, isAdvisedLooking],
   );
 
   /* Hide the bridge for Tier C — the quick-picture path is deliberately terse. */
@@ -172,7 +199,9 @@ function Summary() {
         compoundFlagTriggerAnswers: spotlight?.triggerAnswerIds ?? [],
         silentGapFlags: silentGaps.map((g) => g.id),
         inlineChartIds: items.flatMap((i) => (i.chartId ? [i.chartId] : [])),
-        ctaVariant: isAdvisedLooking ? `${segmentId}+advised_but_looking` : segmentId,
+        ctaVariant: isAdvisedLooking
+          ? `${resolverSegmentId}+advised_but_looking`
+          : resolverSegmentId,
         ctaEnhanced: isAdvisedLooking,
       },
     };
@@ -181,7 +210,15 @@ function Summary() {
     } catch {
       /* quota exceeded — silently drop */
     }
-  }, [session, emotionalIntro.id, spotlight, silentGaps, items, isAdvisedLooking, segmentId]);
+  }, [
+    session,
+    emotionalIntro.id,
+    spotlight,
+    silentGaps,
+    items,
+    isAdvisedLooking,
+    resolverSegmentId,
+  ]);
 
   /* Primary action — uniform across the page. The free 30-minute
      consultation is the lead-gen offer; segment-specific copy stays as
@@ -203,6 +240,49 @@ function Summary() {
     'https://realwealth.co.uk/briefing',
   );
 
+  /* Graceful "incomplete" path — user landed on /summary without a
+     resolved segment (skipped the gate, or hit the Dev-nav shortcut).
+     Show a polite "finish the form first" nudge rather than silently
+     rendering a made-up segment's copy. */
+  if (!hasResolvedSegment) {
+    return (
+      <div className={styles.shell}>
+        <SummaryHeader contactHref={contactHref} />
+        <section className={styles.hero} aria-labelledby="incomplete-headline">
+          <div className={styles.heroInner}>
+            <h1 id="incomplete-headline" className={styles.heroHeadline}>
+              There&rsquo;s a little more to fill in first.
+            </h1>
+            <p className={styles.heroFrame}>
+              Your briefing is assembled from your answers — and we
+              haven&rsquo;t got enough yet to shape it. Pick up the
+              conversation where you left off and we&rsquo;ll bring you
+              back here when it&rsquo;s ready.
+            </p>
+            <div className={styles.heroActions}>
+              <Button
+                onClick={() => {
+                  window.location.href = '/conversation';
+                }}
+              >
+                Continue the conversation
+              </Button>
+              <a
+                className={styles.heroSecondary}
+                href={contactHref}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Or get in touch first
+              </a>
+            </div>
+          </div>
+        </section>
+        <StartOverFooter />
+      </div>
+    );
+  }
+
   return (
     <div className={styles.shell}>
       <SummaryHeader contactHref={contactHref} />
@@ -216,7 +296,9 @@ function Summary() {
         <div className={styles.heroInner}>
           <p className={styles.heroAspiration}>
             <span className={styles.heroAspirationLine}>
-              &ldquo;{aspirationLine}&rdquo;
+              {aspirationIsUserWritten
+                ? `\u201C${aspirationLine}\u201D`
+                : aspirationLine}
             </span>
           </p>
           <h1 id="hero-headline" className={styles.heroHeadline}>
@@ -229,14 +311,26 @@ function Summary() {
             and a free 30-minute conversation if you want one.
           </p>
           <div className={styles.heroActions}>
-            <Button
-              onClick={() =>
-                primaryCtaHref &&
-                window.open(primaryCtaHref, '_blank', 'noopener,noreferrer')
-              }
-            >
-              {primaryCtaLabel}
-            </Button>
+            {primaryCtaHref ? (
+              <Button
+                onClick={() =>
+                  window.open(primaryCtaHref, '_blank', 'noopener,noreferrer')
+                }
+              >
+                {primaryCtaLabel}
+              </Button>
+            ) : (
+              /* When no live booking link is configured the primary
+                 action falls back to the contact form so the button
+                 isn't silently inert. */
+              <Button
+                onClick={() =>
+                  window.open(contactHref, '_blank', 'noopener,noreferrer')
+                }
+              >
+                Get in touch
+              </Button>
+            )}
             <a className={styles.heroSecondary} href={contactHref} target="_blank" rel="noopener noreferrer">
               Or get in touch first
             </a>
@@ -340,28 +434,14 @@ function Summary() {
         <span hidden>{illustrativeTag}</span>
       </section>
 
-        {/* Sidebar CTA — compact, consistent type scale with the briefing
-            card below. Fixed short body to avoid the long segment copy
-            wrapping past the sidebar's narrow column. Secondary action
-            links to the marketing-site contact form. A subtle
-            "recommend to a friend" share link sits outside the card as
-            a tertiary action. */}
-        <aside className={styles.ctaSidebar} aria-label="Book a conversation">
-          <div className={styles.ctaCard}>
-            <FinalCTA
-              variant="compact"
-              ariaLabel="Book a call (sidebar)"
-              headline="Talk this through with a planner."
-              body="A free 30-minute conversation. No preparation needed on your side."
-              button={primaryCtaLabel}
-              buttonHref={primaryCtaHref}
-              helper="We'll bring this briefing to the call."
-              preamble={cta.preamble}
-              secondaryButton="Get in touch"
-              secondaryHref={contactHref}
-            />
-          </div>
-          <ShareWithFriend className={styles.shareLink} />
+        {/* Sidebar column — compact "share with a friend" tertiary
+            action only. The full book-a-call CTA used to live here too,
+            but it duplicated the action-ladder further down and made
+            the page feel pushy. The primary CTA is already in the hero
+            and again at the end of the page (action ladder) where it
+            resolves the emotional arc. */}
+        <aside className={styles.ctaSidebar} aria-label="Share this briefing">
+          <ShareWithFriend />
         </aside>
       </div>
 
@@ -403,7 +483,12 @@ function Summary() {
             body={cta.body}
             button={primaryCtaLabel}
             buttonHref={primaryCtaHref}
-            helper="30 minutes, free, on this exact briefing — no preparation needed."
+            /* Segment-specific helper — each segment's content file
+               provides a "Helper" line. Previously the ladder hard-coded
+               a generic string which meant S2/S4/S5/S7's personal touch
+               ("We'll hold a slot this week and next.") never rendered
+               and the relevant Playwright assertions failed. */
+            helper={cta.helper}
             preamble={cta.preamble}
             enhanced={isAdvisedLooking}
             secondaryButton="Get in touch instead"
@@ -741,61 +826,107 @@ function highlightForChart(id: string): number {
 /* ================================================================ */
 
 /**
- * Small text-link share action. Uses `navigator.share` where available
- * (mobile + most modern desktops) and falls back to a pre-filled
- * mailto: when it isn't. Designed to read as a quiet tertiary beside
- * the sidebar CTA — never compete with the primary "book a call"
- * action. The page-level share text is intentionally soft: users are
- * recommending a tool their friend might find useful, not forwarding a
- * personal briefing.
+ * ShareWithFriend — a small "recommend this" widget that sits below
+ * the sidebar CTA. Explains what the friend will experience (so the
+ * share doesn't feel like a cold link-drop), then the primary action
+ * is a single "Share link" button.
+ *
+ * Share strategy (graceful fallback chain):
+ *   1. `navigator.share()` — native share sheet on mobile + most
+ *      modern desktops; best experience.
+ *   2. Clipboard copy — on desktops without Web Share, we copy the
+ *      URL and swap the button label to "Link copied" briefly. The
+ *      user can paste it anywhere (WhatsApp, email, Slack) on their
+ *      own terms.
+ *   3. mailto: — last-ditch fallback if both above throw. Rare.
+ *
+ * The widget is deliberately quieter than the sidebar's primary
+ * booking card above it: softer surface, smaller headline, a single
+ * outline button. It should feel like a thoughtful P.S., not a
+ * second competing call-to-action.
  */
-function ShareWithFriend({ className }: { className?: string }) {
-  function handleShare() {
+function ShareWithFriend() {
+  const [copied, setCopied] = useState(false);
+
+  async function handleShare() {
     const shareUrl =
       typeof window !== 'undefined' ? `${window.location.origin}/` : '/';
     const shareTitle = 'Real Wealth — The Wealth Conversation';
     const shareText =
-      "I tried this 10-minute conversation with Real Wealth — it's a thoughtful way to see what might be worth a planner's time. Thought you'd find it useful.";
+      "A 10-minute conversation I thought you'd find useful. No numbers, no forms — just a thoughtful run through what's worth a planner's time. Real Wealth send you your own briefing at the end.";
 
+    /* Preferred: native share sheet. */
     if (typeof navigator !== 'undefined' && 'share' in navigator) {
-      navigator
-        .share({ title: shareTitle, text: shareText, url: shareUrl })
-        .catch(() => {
-          /* user cancelled or share failed; no fallback needed */
+      try {
+        await navigator.share({
+          title: shareTitle,
+          text: shareText,
+          url: shareUrl,
         });
-      return;
+        return;
+      } catch {
+        /* User cancelled, or share not permitted — fall through to
+           copy so the action never feels inert. */
+      }
     }
-    /* Fallback: open the user's mail client with a pre-filled message. */
+
+    /* Fallback: copy the URL and show a brief confirmation. */
+    if (
+      typeof navigator !== 'undefined' &&
+      navigator.clipboard &&
+      typeof navigator.clipboard.writeText === 'function'
+    ) {
+      try {
+        await navigator.clipboard.writeText(shareUrl);
+        setCopied(true);
+        window.setTimeout(() => setCopied(false), 2400);
+        return;
+      } catch {
+        /* Clipboard unavailable (older browsers, insecure context) —
+           drop to mailto. */
+      }
+    }
+
+    /* Last resort: pre-filled mail client. */
     const subject = encodeURIComponent('A 10-minute conversation worth trying');
     const body = encodeURIComponent(`${shareText}\n\n${shareUrl}`);
     window.location.href = `mailto:?subject=${subject}&body=${body}`;
   }
 
   return (
-    <button
-      type="button"
-      className={className}
-      onClick={handleShare}
-      aria-label="Recommend this to a friend"
-    >
-      <svg
-        viewBox="0 0 16 16"
-        width="16"
-        height="16"
-        focusable="false"
-        aria-hidden="true"
+    <section className={styles.shareCard} aria-label="Share with a friend">
+      <h3 className={styles.shareHeadline}>
+        Know someone who&rsquo;d find this useful?
+      </h3>
+      <p className={styles.shareBody}>
+        Send them the link. It&rsquo;s a 10-minute conversation — no forms,
+        no numbers — and they&rsquo;ll get the same kind of briefing we just
+        put together for you.
+      </p>
+      <button
+        type="button"
+        className={styles.shareButton}
+        onClick={handleShare}
       >
-        <path
-          d="M11 2.5 L14 5.5 L11 8.5 M14 5.5 H6 C4.3 5.5 3 6.8 3 8.5 V13"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-      <span>Recommend to a friend</span>
-    </button>
+        <svg
+          viewBox="0 0 16 16"
+          width="16"
+          height="16"
+          focusable="false"
+          aria-hidden="true"
+        >
+          <path
+            d="M11 2.5 L14 5.5 L11 8.5 M14 5.5 H6 C4.3 5.5 3 6.8 3 8.5 V13"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+        <span aria-live="polite">{copied ? 'Link copied' : 'Share link'}</span>
+      </button>
+    </section>
   );
 }
 
