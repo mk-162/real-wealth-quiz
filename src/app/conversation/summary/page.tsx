@@ -139,7 +139,8 @@ function Summary() {
                 {item.close ? (
                   <span className={styles.itemClose}>{item.close}</span>
                 ) : null}
-                {item.compliance === 'draft' ? (
+                {item.compliance === 'draft' &&
+                process.env.NODE_ENV !== 'production' ? (
                   <span className={styles.draftTag}>DRAFT — pending compliance</span>
                 ) : null}
               </span>
@@ -346,7 +347,7 @@ function buildConsideredList(segmentId: string): ListItem[] {
     headline: trimToTenWords(a.stem),
     body: a.partial_body,
     close: 'Worth a conversation.',
-    compliance: 'ok',
+    compliance: a.compliance_status === 'approved_to_ship' ? 'ok' : 'draft',
     rank: a.rank ?? 50,
   }));
 
@@ -368,7 +369,16 @@ function buildConsideredList(segmentId: string): ListItem[] {
     return true;
   });
 
+  /* In production, draft compliance content must not reach the user. In
+     dev we keep drafts so authors can see what's landing and flag it
+     via the "DRAFT — pending compliance" tag in the list body. When
+     every item would be filtered (all content still in draft), fall
+     back to showing the draft list so the page never looks broken. */
   deduped.sort((a, b) => a.rank - b.rank);
+  if (process.env.NODE_ENV === 'production') {
+    const approvedOnly = deduped.filter((item) => item.compliance === 'ok');
+    if (approvedOnly.length > 0) return approvedOnly.slice(0, 6);
+  }
   return deduped.slice(0, 6);
 }
 

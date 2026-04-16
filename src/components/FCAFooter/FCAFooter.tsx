@@ -36,18 +36,20 @@ export function FCAFooter() {
         </div>
         <p className={styles.disclosure}>{disclosure}</p>
         <p className={styles.disclosure}>{generalLine}</p>
-        <p className={styles.links}>
-          {links.map((l, i) => (
-            <span key={i}>
-              <a href={l.href ?? '#'}>{l.label}</a>
-              {i < links.length - 1 ? (
-                <span aria-hidden="true" className={styles.sep}>
-                  ·
-                </span>
-              ) : null}
-            </span>
-          ))}
-        </p>
+        {links.length > 0 ? (
+          <p className={styles.links}>
+            {links.map((l, i) => (
+              <span key={i}>
+                <a href={l.href ?? '#'}>{l.label}</a>
+                {i < links.length - 1 ? (
+                  <span aria-hidden="true" className={styles.sep}>
+                    ·
+                  </span>
+                ) : null}
+              </span>
+            ))}
+          </p>
+        ) : null}
         <p className={styles.contact}>
           Manchester · Taunton &nbsp; | &nbsp; 0161 768 7722 &nbsp; | &nbsp;{' '}
           <a href="mailto:hello@realwealth.co.uk">hello@realwealth.co.uk</a>

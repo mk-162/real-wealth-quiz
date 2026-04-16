@@ -846,7 +846,7 @@ export const screens: Screen[] = [
           }
         ],
         "required": false,
-        "conditional_reveal": "only when pension_pots >= four_six"
+        "conditional_reveal": "only when pension_pots in [four_six, more_than_six]"
       },
       {
         "id": "investments_band",
@@ -3059,16 +3059,7 @@ export const pages: Page[] = [
       "footer": {
         "disclosure": "Real Wealth Partners Ltd is authorised and regulated by the Financial Conduct Authority (FRN 1037186). Registered in England and Wales, company number 16498380. Registered office: Office 1, First Floor, 14–18 Tib Lane, Manchester, M2 4JB. A wholly owned subsidiary of Real Wealth Group Ltd.",
         "general_line": "This tool provides general guidance and does not constitute a personal recommendation or financial advice.",
-        "links": [
-          {
-            "label": "Privacy",
-            "href": "/privacy"
-          },
-          {
-            "label": "How we meet our Consumer Duty obligations",
-            "href": "/consumer-duty"
-          }
-        ]
+        "links": []
       },
       "body": "The homepage is the one page every user sees. It has four stacked sections — hero, tier picker, brand freedom moment, benefit cards — and a standing footer. The aesthetic is Real Wealth's \"Digital Private Suite\" — generous whitespace, serif headlines in gelica ExtraLight Italic, no 1px borders, tonal layering instead.\n\nThe hero uses the teal gradient at 96px / 48px vertical padding (desktop / mobile). Typography-led, no hero photography."
     }
