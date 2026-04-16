@@ -186,7 +186,7 @@ export const screens: Screen[] = [
       }
     ],
     "headline": "When you picture a life that feels genuinely wealthy to you — which comes closest?",
-    "sub": "Pick the one that resonates most. You can tell us *\"it's all six\"* on the call."
+    "sub": "Pick the one that resonates most."
   },
   {
     "id": "screen.3.3.about_you",
