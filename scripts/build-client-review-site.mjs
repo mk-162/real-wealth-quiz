@@ -358,8 +358,8 @@ function buildIndex() {
       </div>
     </div>
     <div class="hero-visual" aria-label="Service screenshots">
-      <figure class="shot shot-main"><img src="/client-review/assets/question-screen.png" alt="Real Wealth questionnaire screen"><figcaption>Questionnaire</figcaption></figure>
-      <figure class="shot shot-small"><img src="/client-review/assets/summary-screen.png" alt="Real Wealth summary screen"><figcaption>Triggered summary</figcaption></figure>
+      <figure class="shot shot-main"><img src="/client-review/assets/summary-page.png" alt="Real Wealth summary page with personalised conversation prompts and chart examples"><figcaption>Summary page</figcaption></figure>
+      <figure class="shot shot-small"><img src="/client-review/assets/summary-detail.png" alt="Real Wealth summary chart examples"><figcaption>Chart examples</figcaption></figure>
     </div>
   </section>
 
@@ -725,8 +725,8 @@ function main() {
   mkdirSync(docsDir, { recursive: true });
   mkdirSync(assetsDir, { recursive: true });
 
-  copyAsset(join(parentRoot, 'Lead Magnet App', 'flow-q1.1.png'), 'question-screen.png');
-  copyAsset(join(parentRoot, 'Lead Magnet App', 'PHASE-C-summary-S3-urgency.png'), 'summary-screen.png');
+  copyAsset(join(parentRoot, 'Lead Magnet App', 'AFTER-04-summary-desktop.png'), 'summary-page.png');
+  copyAsset(join(parentRoot, 'Lead Magnet App', 'PHASE-C-summary-S3-urgency.png'), 'summary-detail.png');
 
   writeFileSync(join(outDir, 'site.css'), buildCss(), 'utf8');
   writeFileSync(join(outDir, 'app.js'), buildJs(), 'utf8');

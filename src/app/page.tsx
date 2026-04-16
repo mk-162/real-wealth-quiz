@@ -1,5 +1,5 @@
 /**
- * Homepage — hero with editorial lifestyle image (mobile banner, desktop
+ * Homepage - hero with chart-led summary preview (mobile banner, desktop
  * right column), tier picker, freedom moment, ruled-line benefit rows.
  *
  * Every piece of user-facing copy is sourced from content/pages/homepage.md
@@ -37,6 +37,30 @@ interface HeroPillContent {
   icon?: string;
   label?: string;
 }
+
+const heroChartCards = [
+  {
+    label: 'Illustrative example',
+    title: 'How IHT can bite above GBP 2m',
+    note: 'Estate shape, not a personal calculation.',
+    values: [34, 47, 55, 62, 74, 82],
+    highlight: 4,
+  },
+  {
+    label: 'Illustrative example',
+    title: '0.6% in fees over 20 years',
+    note: 'Small percentage changes can compound.',
+    values: [29, 40, 48, 55, 63, 70],
+    highlight: 1,
+  },
+  {
+    label: 'Illustrative example',
+    title: 'Extraction mix changes the tax bill',
+    note: 'Salary, dividend, and pension in context.',
+    values: [25, 35, 42, 50, 58, 66],
+    highlight: 2,
+  },
+] as const;
 
 export default function Home() {
   const router = useRouter();
@@ -111,21 +135,7 @@ export default function Home() {
               </div>
             </div>
 
-            <figure className={styles.heroMedia} aria-hidden="true">
-              <img
-                src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=85"
-                alt=""
-                className={styles.heroImg}
-                loading="eager"
-              />
-              <figcaption className={styles.heroQuote}>
-                <q>
-                  We thought we were further behind than we were. An afternoon with a
-                  planner changed the whole next ten years.
-                </q>
-                <cite>Andrew &amp; Caroline · Cheshire</cite>
-              </figcaption>
-            </figure>
+            <HeroChartPreview />
           </div>
         </section>
 
@@ -199,10 +209,59 @@ export default function Home() {
   );
 }
 
-/**
- * Icon dispatcher — maps the icon names used in content YAML to inline SVGs.
- * Add new glyphs here when new icon names appear in content files.
- */
+/* Chart-led homepage preview, matching the summary page design language. */
+function HeroChartPreview() {
+  return (
+    <figure
+      className={styles.heroMedia}
+      aria-label="Illustrative chart examples from the Real Wealth summary page"
+    >
+      <div className={styles.previewShell}>
+        <div className={styles.previewHeader}>
+          <span className={styles.previewKicker}>Your considered list</span>
+          <p className={styles.previewTitle}>
+            From your answers, these are worth a conversation.
+          </p>
+          <p className={styles.previewCopy}>
+            Not a recommendation. A clearer starting point for a planner.
+          </p>
+        </div>
+
+        <div className={styles.previewCards}>
+          {heroChartCards.map((card) => (
+            <article key={card.title} className={styles.previewCard}>
+              <span className={styles.previewCardLabel}>{card.label}</span>
+              <p className={styles.previewCardTitle}>{card.title}</p>
+              <p className={styles.previewCardNote}>{card.note}</p>
+              <MiniChart values={card.values} highlight={card.highlight} />
+            </article>
+          ))}
+        </div>
+      </div>
+    </figure>
+  );
+}
+
+function MiniChart({
+  values,
+  highlight,
+}: {
+  values: readonly number[];
+  highlight: number;
+}) {
+  return (
+    <div className={styles.miniChart} aria-hidden="true">
+      {values.map((value, index) => (
+        <span
+          key={`${value}-${index}`}
+          className={`${styles.miniBar} ${index === highlight ? styles.miniBarHighlight : ''}`}
+          style={{ height: `${value}%` }}
+        />
+      ))}
+    </div>
+  );
+}
+
 function Glyph({ name }: { name?: string }) {
   switch (name) {
     case 'heart-handshake':

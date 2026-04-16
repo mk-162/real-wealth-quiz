@@ -1,6 +1,6 @@
-/* Homepage — hero, tier picker, freedom moment, benefit rows.
+/* Homepage - hero, tier picker, freedom moment, benefit rows.
    Brand-aligned to realwealth.co.uk: gelica-italic display headlines,
-   teal hero, orange-gradient pill CTAs on paper, masked lifestyle imagery. */
+   teal hero, orange-gradient pill CTAs on paper, chart-led summary preview. */
 
 /* Sticky minimal header -------------------------------------------- */
 .topnav {
@@ -178,19 +178,16 @@
   backdrop-filter: blur(4px);
 }
 
-/* Hero media — lifestyle image with brand-style organic mask.
-   Uses a soft circular crop on desktop to evoke the realwealth.co.uk lens. */
+/* Hero media - chart-led summary preview. */
 .heroMedia {
   order: 1;
   margin: 0;
   position: relative;
-  aspect-ratio: 16 / 11;
+  min-height: 620px;
   box-shadow: 0 50px 80px -40px rgba(0, 0, 0, 0.45);
-  /* Rounded rectangle matching the realwealth.co.uk hero shape.
-     `border-radius` + `overflow: hidden` clips the image to the
-     exact 22px-radius corners regardless of intrinsic image size;
-     the clip-path on .heroImg below is the SVG-authored backstop
-     so the shape stays in one place of truth. */
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(250, 248, 246, 0.98));
+  color: var(--ink);
+  border: 1px solid rgba(255, 255, 255, 0.35);
   border-radius: 22px;
   overflow: hidden;
 }
@@ -198,62 +195,125 @@
   .heroMedia {
     order: 2;
     aspect-ratio: 4 / 5;
-    max-height: 600px;
+    min-height: 600px;
+    max-height: 640px;
   }
 }
 
-.heroImg {
-  width: 100%;
+.previewShell {
+  min-height: inherit;
   height: 100%;
-  object-fit: cover;
-  display: block;
-  transition: transform 800ms var(--ease-default);
-  /* Shared rounded-rect clip-path from HeroMaskDefs (see
-     src/components/HeroMaskDefs). The objectBoundingBox variant
-     scales with the image box; the figure's overflow:hidden +
-     22px border-radius above guarantees the shape renders even
-     on browsers that don't honour SVG clip-path on HTML images. */
-  clip-path: url(#rw-hero-large);
-}
-.heroMedia:hover .heroImg {
-  transform: scale(1.03);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding: clamp(1rem, 2vw, 1.4rem);
 }
 
-.heroQuote {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: var(--space-lg) var(--space-md) var(--space-md);
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.65), transparent);
-  color: var(--paper);
+.previewHeader {
+  padding: clamp(0.2rem, 1vw, 0.6rem) 0 var(--space-xs);
 }
-.heroQuote q {
+
+.previewKicker,
+.previewCardLabel {
   display: block;
+  color: var(--brand-orange);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: var(--ls-wider);
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.previewTitle {
+  max-width: 12ch;
+  margin: var(--space-xs) 0 0;
+  color: var(--ink);
   font-family: var(--font-heading);
+  font-size: clamp(2rem, 4vw, 2.9rem);
   font-style: italic;
   font-weight: 300;
-  font-size: var(--fs-ui);
-  line-height: 1.5;
-  quotes: '“' '”';
-  margin-bottom: var(--space-xs);
-  max-width: 30ch;
+  letter-spacing: 0;
+  line-height: 1.05;
 }
-.heroQuote cite {
-  font-family: var(--font-body);
-  font-style: normal;
-  font-size: var(--fs-micro);
-  letter-spacing: var(--ls-wider);
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.85);
-  font-weight: 600;
+
+.previewCopy {
+  max-width: 34ch;
+  margin: var(--space-sm) 0 0;
+  color: var(--ink-soft);
+  font-size: var(--fs-small);
+  line-height: 1.45;
 }
-@media (max-width: 767px) {
-  .heroQuote {
-    padding: var(--space-md) var(--space-sm) var(--space-sm);
+
+.previewCards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-xs);
+  margin-top: auto;
+}
+
+.previewCard {
+  min-height: 130px;
+  padding: var(--space-sm);
+  background: var(--paper);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+}
+
+.previewCardTitle {
+  margin: var(--space-2xs) 0 var(--space-2xs);
+  color: var(--brand-teal);
+  font-family: var(--font-heading);
+  font-size: clamp(1.05rem, 1.1vw + 0.75rem, 1.3rem);
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.18;
+}
+
+.previewCardNote {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
+.miniChart {
+  height: 58px;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  align-items: end;
+  gap: 7px;
+  margin-top: var(--space-xs);
+}
+
+.miniBar {
+  min-height: 16px;
+  display: block;
+  border-radius: 7px 7px 4px 4px;
+  background: var(--teal-tint-15);
+}
+
+.miniBarHighlight {
+  background: var(--brand-orange);
+}
+
+@media (max-width: 520px) {
+  .heroMedia {
+    min-height: 660px;
   }
-  .heroQuote q {
-    font-size: var(--fs-small);
+
+  .previewShell {
+    padding: var(--space-sm);
+  }
+
+  .previewTitle {
+    max-width: 13ch;
+    font-size: 2rem;
+  }
+
+  .previewCard {
+    min-height: 124px;
   }
 }
 
