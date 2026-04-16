@@ -222,39 +222,43 @@ export function useQuestionnaireEngine(tier: TierSlug): EngineState & EngineActi
   /* Start position: the first visible screen.
      Stale-session guard: if the persisted currentId is no longer in the
      visible-screens list (e.g. the matrix changed after the session was
-     saved, the user's answers narrowed the set, or — most recently —
-     interstitial transition screens were removed entirely from the flow),
-     try to rebase to the *nearest* still-visible screen so a returning
-     user keeps their place. We walk forward in original document order
-     first, then backward, before falling back to the very first screen. */
+     saved, the user's answers narrowed the set, or interstitial
+     transition screens were removed from the flow), rebase forward.
+     CRITICAL: we only ever scan FORWARD. Scanning backward (as the old
+     implementation did) caused returning users to be teleported to an
+     earlier screen they'd already answered ("goes backwards" bug). If
+     nothing forward is visible we fall back to the first visible screen;
+     that happens only when the user finished the flow on an old tier and
+     the new tier has zero screens after their last position. */
   const currentIdIsValid =
     currentId !== null && visibleScreens.some((s) => s.id === currentId);
 
-  const effectiveCurrentId = (() => {
+  const effectiveCurrentId = useMemo(() => {
     if (currentIdIsValid) return currentId;
     if (visibleScreens.length === 0) return null;
 
-    /* Use the full ordered list to find the original position of the
-       (now-invisible) currentId, then scan outward for a successor that
-       *is* still visible. */
     if (currentId !== null) {
       const visibleIds = new Set(visibleScreens.map((s) => s.id));
       const originalIndex = allScreens.findIndex((s) => s.id === currentId);
       if (originalIndex !== -1) {
+        /* Forward-only scan — never regress the user. */
         for (let i = originalIndex + 1; i < allScreens.length; i++) {
-          if (visibleIds.has(allScreens[i].id)) return allScreens[i].id;
-        }
-        for (let i = originalIndex - 1; i >= 0; i--) {
           if (visibleIds.has(allScreens[i].id)) return allScreens[i].id;
         }
       }
     }
     return visibleScreens[0].id;
-  })();
+  }, [currentIdIsValid, currentId, visibleScreens]);
 
   useEffect(() => {
     if (hydrated && currentId !== null && !currentIdIsValid && effectiveCurrentId) {
       const timer = window.setTimeout(() => {
+        /* When the rebase skips over the user's old currentId we treat
+           that id as "visited" — otherwise Back is a no-op until they
+           answer at least one more screen. Keep visitedOrder deduped. */
+        setVisitedOrder((prev) =>
+          currentId && !prev.includes(currentId) ? [...prev, currentId] : prev,
+        );
         setCurrentId(effectiveCurrentId);
       }, 0);
       return () => window.clearTimeout(timer);
@@ -262,11 +266,15 @@ export function useQuestionnaireEngine(tier: TierSlug): EngineState & EngineActi
     return undefined;
   }, [hydrated, currentId, currentIdIsValid, effectiveCurrentId]);
 
-  const currentIndex = Math.max(
-    0,
-    visibleScreens.findIndex((s) => s.id === effectiveCurrentId),
-  );
-  const currentScreen = visibleScreens[currentIndex] ?? null;
+  /* findIndex may return -1 if effectiveCurrentId briefly falls outside
+     visibleScreens (transient race between the hydrate timer and the
+     visibleScreens memo). Detect explicitly rather than silently
+     remapping to index 0 (the old Math.max(0, …) pattern collapsed the
+     failure into a screen-0 teleport). When -1, render nothing this
+     tick; the guard effect above will rebase on the next frame. */
+  const rawIndex = visibleScreens.findIndex((s) => s.id === effectiveCurrentId);
+  const currentIndex = rawIndex >= 0 ? rawIndex : 0;
+  const currentScreen = rawIndex >= 0 ? visibleScreens[rawIndex] : null;
 
   /* Progress — the position in the visible list. Virtual awareness screens
      don't add to the denominator; they just slow the bar between steps. */

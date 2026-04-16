@@ -27,10 +27,13 @@ export interface FinalCTAProps {
   secondaryButton?: string;
   secondaryHref?: string;
   /**
-   * `"compact"` swaps the full-width hero block for a tighter, left-aligned
-   * layout suitable for embedding in a sidebar card on the summary page.
+   * Layout variant.
+   * - `"default"` — full-width hero block, centred copy (summary page legacy)
+   * - `"compact"` — tight, left-aligned, for embedding in the sidebar card
+   * - `"ladder"` — self-contained peer card matched to `BriefingCard`
+   *   (paper surface, border, radius, orange top stripe, gradient button)
    */
-  variant?: 'default' | 'compact';
+  variant?: 'default' | 'compact' | 'ladder';
   /**
    * Overrides the default `aria-label` ("Book a call"). When the same
    * page renders multiple `FinalCTA` instances (sidebar + narrative
@@ -60,7 +63,12 @@ export function FinalCTA({
     else if (buttonHref) window.open(normaliseHref(buttonHref), '_blank', 'noopener,noreferrer');
   };
 
-  const baseClass = variant === 'compact' ? styles.compact : styles.block;
+  const baseClass =
+    variant === 'compact'
+      ? styles.compact
+      : variant === 'ladder'
+        ? styles.ladder
+        : styles.block;
   const cardClassName = enhanced ? `${baseClass} ${styles.enhanced}` : baseClass;
 
   return (

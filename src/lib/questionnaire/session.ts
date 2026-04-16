@@ -10,7 +10,16 @@
 
 import type { TierSlug } from './engine';
 
-export const SESSION_VERSION = '1';
+/**
+ * Bumped to '2' in engine-stability pass (2026-04-16):
+ *  - v1 sessions could persist a `currentScreenId` or `visitedOrder` entry
+ *    pointing at a transition-layout screen. Transitions are now filtered
+ *    out of the visible flow for every tier, which made those ids stale
+ *    and caused the rebase guard to scan backward and land the user on an
+ *    earlier screen ("goes backwards"). Bumping the version invalidates
+ *    every old session so we start from a clean slate.
+ */
+export const SESSION_VERSION = '2';
 export const SESSION_KEY = 'real-wealth:conversation';
 const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
 

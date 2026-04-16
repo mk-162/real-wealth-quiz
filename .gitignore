@@ -50,3 +50,6 @@ next-env.d.ts
 # IDE
 .vscode
 .idea
+
+# local dev harness (Claude Code preview launch config)
+.claude

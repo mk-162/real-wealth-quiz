@@ -29,30 +29,36 @@
   line-height: 1.5;
 }
 
-.heroAspirationKicker {
-  font-weight: 600;
-  letter-spacing: var(--ls-wider);
-  text-transform: uppercase;
-  font-size: var(--fs-micro);
-  color: var(--brand-teal);
-  margin-right: var(--space-xs);
-}
-
 .heroAspirationLine {
   font-style: italic;
-  color: var(--ink);
+  color: var(--ink-soft);
 }
 
 .heroHeadline {
   font-family: var(--font-heading);
   font-style: italic;
   font-weight: 200;
-  font-size: clamp(1.75rem, 3.5vw + 0.5rem, 2.75rem);
+  /* Ceiling lowered so "Five things worth a conversation." lands on one
+     line across our typical desktop/tablet widths. text-wrap: balance
+     keeps the fallback (very narrow mobile) from producing a 1-word
+     orphan line. */
+  font-size: clamp(1.625rem, 3vw + 0.5rem, 2.375rem);
   line-height: var(--lh-heading);
   letter-spacing: var(--ls-tight);
   color: var(--ink);
   margin: 0 0 var(--space-md);
-  max-width: 18ch;
+  max-width: none;
+  text-wrap: balance;
+  white-space: nowrap;
+}
+
+/* Allow the headline to wrap naturally only when the viewport genuinely
+   can't fit one line. The threshold matches the font-size clamp's lower
+   end — below ~420px the copy would overflow the gutter. */
+@media (max-width: 420px) {
+  .heroHeadline {
+    white-space: normal;
+  }
 }
 
 .heroFrame {
@@ -138,10 +144,30 @@
 }
 
 /* ================================================================ */
-/* Action ladder — primary CTA + briefing fallback                   */
+/* Action ladder — two peer cards in a matched grid                  */
 /* ================================================================ */
+/* Primary FinalCTA + BriefingCard sit side-by-side as consistent peer
+   cards. Both use the same frame, padding, radius, headline size, and
+   button height. The distinction is carried by the primary's brand
+   stripe + gradient button vs. the briefing's outline button. */
 .actionLadder {
   padding: clamp(2rem, 4vw, 3rem) var(--gutter) var(--space-xl);
+  max-width: var(--container-max);
+  margin: 0 auto;
+}
+
+.actionLadderGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-lg);
+  align-items: stretch;
+}
+
+@media (min-width: 768px) {
+  .actionLadderGrid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-xl);
+  }
 }
 
 /* Section 3 — spotlight compound flag ------------------------------- */
@@ -190,6 +216,46 @@
     top: var(--space-lg);
     align-self: start;
   }
+}
+
+/* Share-with-a-friend — tertiary action directly beneath the sidebar
+   card. Intentionally quiet: a small inline-button that reads as a link
+   with a leading icon. Never competes with the primary Calendly CTA
+   inside the card above. */
+.shareLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: var(--space-md);
+  padding: 0.5rem 0;
+  background: transparent;
+  border: 0;
+  font-family: var(--font-body);
+  font-size: var(--fs-small);
+  font-weight: 500;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: color var(--duration-fast) var(--ease-default);
+}
+
+.shareLink svg {
+  flex-shrink: 0;
+  color: var(--brand-teal);
+  transition: transform var(--duration-default) var(--ease-default);
+}
+
+.shareLink:hover {
+  color: var(--brand-teal);
+}
+
+.shareLink:hover svg {
+  transform: translateX(2px) translateY(-1px);
+}
+
+.shareLink:focus-visible {
+  outline: 2px solid var(--brand-teal);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
 }
 
 /* The card around the sidebar CTA. Strong visual weight: warm paper
@@ -253,7 +319,8 @@
   font-size: var(--fs-body);
   color: var(--ink);
   line-height: var(--lh-body);
-  transition: padding-left var(--duration-default) var(--ease-default);
+  /* No padding-left hover shift — it caused headlines to re-flow/wrap
+     in the narrow column. Hover feedback lives in the chev fill only. */
   animation: itemIn var(--duration-default) var(--ease-default) both;
 }
 
@@ -267,10 +334,9 @@
   border-top: 0;
 }
 
-.item:hover {
-  padding-left: var(--space-xs);
-}
-
+/* Circular bullet with an SVG chevron. SVG is symmetric in its viewBox
+   so the visual centre matches the circle centre — unlike the earlier
+   ›  glyph, whose optical centre sat off-axis. */
 .chev {
   display: inline-flex;
   align-items: center;
@@ -280,13 +346,17 @@
   border-radius: 50%;
   background: var(--teal-tint-10);
   color: var(--brand-teal);
-  font-weight: 700;
   flex-shrink: 0;
-  transition: transform var(--duration-default) var(--ease-default);
+  transition:
+    background var(--duration-default) var(--ease-default),
+    color var(--duration-default) var(--ease-default);
+}
+
+.chev svg {
+  display: block;
 }
 
 .item:hover .chev {
-  transform: translateX(2px);
   background: var(--brand-teal);
   color: var(--paper);
 }
@@ -311,7 +381,11 @@
 .itemHeadline {
   font-family: var(--font-heading);
   font-weight: 400;
-  font-size: var(--fs-h4);
+  /* Card level in the page's type ladder (20px) — sits between the
+     22px silent-gaps intro and the 18px body copy. Kept slightly
+     smaller than previous 22px so headlines don't have to wrap in
+     the narrow column. */
+  font-size: 1.25rem;
   line-height: 1.3;
   color: var(--brand-teal);
 }
@@ -419,8 +493,10 @@
 .silentGapsIntro {
   font-family: var(--font-heading);
   font-weight: 400;
-  font-size: var(--fs-question);
-  line-height: var(--lh-question);
+  /* Matches the list-section intro size (--fs-body + 2) so the two
+     sections read as peers in the type ladder rather than competing. */
+  font-size: 1.25rem;
+  line-height: 1.4;
   color: var(--ink);
   margin: 0 0 var(--space-lg);
   max-width: 620px;

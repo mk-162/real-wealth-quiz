@@ -208,13 +208,13 @@ function Summary() {
       <SummaryHeader contactHref={contactHref} />
 
       {/* Hero — problem framing + primary CTA. The aspiration echo line
-          is preserved as a small caption above the headline so the user
-          still sees their own words back, but the dominant element is
-          now what we'd help them with and how to start that conversation. */}
+          is preserved as a small quiet caption above the headline so the
+          user still sees their own words back (without the "You said:"
+          prefix, which read as a chore). The headline is the dominant
+          element. */}
       <section className={styles.hero} aria-labelledby="hero-headline">
         <div className={styles.heroInner}>
           <p className={styles.heroAspiration}>
-            <span className={styles.heroAspirationKicker}>You said:</span>{' '}
             <span className={styles.heroAspirationLine}>
               &ldquo;{aspirationLine}&rdquo;
             </span>
@@ -290,7 +290,22 @@ function Summary() {
               data-compliance={item.compliance}
             >
               <span aria-hidden="true" className={styles.chev}>
-                ›
+                <svg
+                  viewBox="0 0 10 10"
+                  width="10"
+                  height="10"
+                  focusable="false"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M3 2.5 L6 5 L3 7.5"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
               </span>
               <span className={styles.itemBody}>
                 <span className={styles.itemEyebrow}>{item.category}</span>
@@ -325,30 +340,28 @@ function Summary() {
         <span hidden>{illustrativeTag}</span>
       </section>
 
-        {/* Sidebar CTA never uses the enhanced gradient treatment —
-            the .enhanced styles add their own background/padding/shadow
-            that would conflict with the .ctaCard wrapper. The narrative
-            CTA at the end of the page (Section 7) keeps `enhanced` for
-            advised_but_looking users. */}
-        {/* Sidebar CTA — uniform primary action ("Book your free 30-min
-            consultation"). Segment-specific framing copy stays in the
-            body. Secondary action goes to the marketing-site contact
-            page (not mailto) so users get a fuller intake form. */}
+        {/* Sidebar CTA — compact, consistent type scale with the briefing
+            card below. Fixed short body to avoid the long segment copy
+            wrapping past the sidebar's narrow column. Secondary action
+            links to the marketing-site contact form. A subtle
+            "recommend to a friend" share link sits outside the card as
+            a tertiary action. */}
         <aside className={styles.ctaSidebar} aria-label="Book a conversation">
           <div className={styles.ctaCard}>
             <FinalCTA
               variant="compact"
               ariaLabel="Book a call (sidebar)"
               headline="Talk this through with a planner."
-              body={cta.body}
+              body="A free 30-minute conversation. No preparation needed on your side."
               button={primaryCtaLabel}
               buttonHref={primaryCtaHref}
-              helper="30 minutes. Free. No preparation needed."
+              helper="We'll bring this briefing to the call."
               preamble={cta.preamble}
               secondaryButton="Get in touch"
               secondaryHref={contactHref}
             />
           </div>
+          <ShareWithFriend className={styles.shareLink} />
         </aside>
       </div>
 
@@ -375,26 +388,30 @@ function Summary() {
       {/* Section 6 — Bridge (not for Tier C) */}
       {showBridge ? <Bridge copy={bridgeCopy} /> : null}
 
-      {/* Action ladder — three escalating offers in priority order:
-          1. Primary: book the free 30-min consultation.
-          2. Secondary: monthly briefing for users not ready to book.
-          3. Tertiary: get in touch via the marketing-site contact form.
-          The visual weight strictly mirrors the priority. */}
+      {/* Action ladder — two peer cards in a matched grid. Same padding,
+          border, border-radius, headline size, button height. Distinction
+          is carried by the primary's orange top stripe + gradient button
+          and the briefing's outline button. Both headlines use the same
+          weight/size to read as peers. The "share with a friend" link
+          below is a tertiary action in a quieter register. */}
       <section className={styles.actionLadder} aria-label="Next steps">
-        <FinalCTA
-          ariaLabel="Book a call (end of summary)"
-          headline={cta.headline}
-          body={cta.body}
-          button={primaryCtaLabel}
-          buttonHref={primaryCtaHref}
-          helper="30 minutes, free, on this exact briefing — no preparation needed."
-          preamble={cta.preamble}
-          enhanced={isAdvisedLooking}
-          secondaryButton="Get in touch instead"
-          secondaryHref={contactHref}
-        />
+        <div className={styles.actionLadderGrid}>
+          <FinalCTA
+            variant="ladder"
+            ariaLabel="Book a call (end of summary)"
+            headline={cta.headline}
+            body={cta.body}
+            button={primaryCtaLabel}
+            buttonHref={primaryCtaHref}
+            helper="30 minutes, free, on this exact briefing — no preparation needed."
+            preamble={cta.preamble}
+            enhanced={isAdvisedLooking}
+            secondaryButton="Get in touch instead"
+            secondaryHref={contactHref}
+          />
 
-        <BriefingCard href={briefingHref} />
+          <BriefingCard href={briefingHref} />
+        </div>
       </section>
 
       <StartOverFooter />
@@ -717,6 +734,69 @@ function highlightForChart(id: string): number {
     default:
       return 2;
   }
+}
+
+/* ================================================================ */
+/* Share-with-a-friend tertiary action                               */
+/* ================================================================ */
+
+/**
+ * Small text-link share action. Uses `navigator.share` where available
+ * (mobile + most modern desktops) and falls back to a pre-filled
+ * mailto: when it isn't. Designed to read as a quiet tertiary beside
+ * the sidebar CTA — never compete with the primary "book a call"
+ * action. The page-level share text is intentionally soft: users are
+ * recommending a tool their friend might find useful, not forwarding a
+ * personal briefing.
+ */
+function ShareWithFriend({ className }: { className?: string }) {
+  function handleShare() {
+    const shareUrl =
+      typeof window !== 'undefined' ? `${window.location.origin}/` : '/';
+    const shareTitle = 'Real Wealth — The Wealth Conversation';
+    const shareText =
+      "I tried this 10-minute conversation with Real Wealth — it's a thoughtful way to see what might be worth a planner's time. Thought you'd find it useful.";
+
+    if (typeof navigator !== 'undefined' && 'share' in navigator) {
+      navigator
+        .share({ title: shareTitle, text: shareText, url: shareUrl })
+        .catch(() => {
+          /* user cancelled or share failed; no fallback needed */
+        });
+      return;
+    }
+    /* Fallback: open the user's mail client with a pre-filled message. */
+    const subject = encodeURIComponent('A 10-minute conversation worth trying');
+    const body = encodeURIComponent(`${shareText}\n\n${shareUrl}`);
+    window.location.href = `mailto:?subject=${subject}&body=${body}`;
+  }
+
+  return (
+    <button
+      type="button"
+      className={className}
+      onClick={handleShare}
+      aria-label="Recommend this to a friend"
+    >
+      <svg
+        viewBox="0 0 16 16"
+        width="16"
+        height="16"
+        focusable="false"
+        aria-hidden="true"
+      >
+        <path
+          d="M11 2.5 L14 5.5 L11 8.5 M14 5.5 H6 C4.3 5.5 3 6.8 3 8.5 V13"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+      <span>Recommend to a friend</span>
+    </button>
+  );
 }
 
 /** Deliberately plain bar placeholder so the page renders end-to-end. */

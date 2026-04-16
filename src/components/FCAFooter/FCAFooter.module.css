@@ -13,52 +13,70 @@
   margin: 0 auto;
 }
 
-/* Logo: full white on the navy footer surface — `tone="paper"` already
-   leaves the SVG's native white fill untouched, so we just remove the
-   opacity fade to land on pure white. */
+/* Logo: force pure white on the navy footer surface. The inner Logo
+   component ships its own filter rule keyed to `data-tone='paper'`
+   with higher specificity than a class-only selector here, so we bump
+   our own selector with !important — the footer is the only place the
+   logo needs a hard-override white fill, and this avoids adding a new
+   tone to the shared Logo component. */
 .logoWrap {
   display: flex;
   justify-content: center;
-  margin-bottom: var(--space-md);
+  margin-bottom: var(--space-lg);
 }
 
 .logoWrap :global(img) {
-  filter: brightness(0) invert(1);
+  filter: brightness(0) invert(1) !important;
+  opacity: 1;
 }
 
-/* Promises strip — two short lines, ruled separator, restrained tone. */
+/* Promises strip — a gently raised plate inside the footer. Subtle
+   white-tinted surface with a hairline border sets it apart from the
+   plain regulatory text below without overpowering it. Vertical rhythm
+   is tuned for two short title+body pairs; the stack reads as two
+   natural rows on narrow viewports and as two columns on wider ones. */
 .promises {
   list-style: none;
-  padding: 0;
-  margin: 0 auto var(--space-lg);
+  margin: 0 auto var(--space-xl);
+  padding: var(--space-md) var(--space-lg);
+  max-width: 40rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
   display: grid;
-  gap: var(--space-xs);
-  max-width: 38rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-  padding: var(--space-md) 0;
+  gap: var(--space-md);
+  text-align: left;
 }
 
 @media (min-width: 640px) {
   .promises {
     grid-template-columns: 1fr 1fr;
-    gap: var(--space-md);
-    text-align: left;
+    gap: var(--space-lg);
+    padding: var(--space-lg) var(--space-xl);
   }
 }
 
 .promise {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
   font-size: var(--fs-small);
   line-height: 1.5;
 }
 
 .promiseTitle {
-  color: rgba(255, 255, 255, 0.95);
+  font-family: var(--font-body);
   font-weight: 600;
+  font-size: var(--fs-ui);
+  color: var(--paper);
+  letter-spacing: -0.005em;
 }
 
 .promiseBody {
-  color: rgba(255, 255, 255, 0.65);
+  font-family: var(--font-body);
+  font-size: var(--fs-small);
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.55;
 }
 
 .footer a {

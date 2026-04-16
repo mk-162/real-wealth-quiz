@@ -9,8 +9,8 @@
 /* Compact variant — for embedding in the sidebar card on the summary page.
    Left-aligned, no outer padding (the card supplies its own), tighter
    spacing so the CTA reads as a contained call-out rather than a full
-   hero. The actions row stacks at this size to keep the secondary link
-   from competing with the primary button. */
+   hero. Headline sizing now matches the briefing card (22px area-normal
+   600) so the two CTAs read as peers in the type ladder. */
 .compact {
   text-align: left;
   padding: 0;
@@ -23,11 +23,23 @@
 }
 
 .compact .headline {
-  font-size: clamp(1.5rem, 1.6vw + 0.7rem, 1.875rem);
-  margin-bottom: var(--space-xs);
+  /* 20px, matches the card-level rung of the summary-page type ladder
+     (itemHeadline, BriefingCard headline). Area-normal 600 instead of
+     the big italic gelica display — this is a utility widget, not the
+     page's emotional finale. */
+  font-family: var(--font-body);
+  font-style: normal;
+  font-weight: 600;
+  font-size: 1.25rem;
+  line-height: 1.3;
+  letter-spacing: 0;
+  color: var(--ink);
+  margin: 0 0 var(--space-xs);
 }
 
 .compact .sub {
+  font-size: var(--fs-small);
+  line-height: 1.55;
   margin: 0 0 var(--space-md);
   max-width: none;
 }
@@ -39,6 +51,78 @@
 
 .compact .alt {
   text-align: left;
+  font-size: var(--fs-micro);
+  margin-top: var(--space-sm);
+}
+
+/* Ladder variant — peer card matched to BriefingCard for the
+   end-of-page action ladder grid. Same frame as the briefing (paper
+   surface, subtle border, 9px radius) with an orange top stripe to
+   mark primary intent. Headline sits at the card-level rung so both
+   cards in the ladder read as peers. */
+.ladder {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-width: none;
+  margin: 0;
+  padding: var(--space-lg);
+  background: var(--paper);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  text-align: left;
+  overflow: hidden;
+  animation: fadeUp var(--duration-slow) var(--ease-default) both;
+}
+
+@media (min-width: 768px) {
+  .ladder {
+    padding: var(--space-xl);
+  }
+}
+
+.ladder::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--gradient-cta);
+}
+
+.ladder .preamble {
+  margin-left: 0;
+}
+
+.ladder .headline {
+  font-family: var(--font-body);
+  font-style: normal;
+  font-weight: 600;
+  font-size: 1.375rem;
+  line-height: 1.3;
+  letter-spacing: 0;
+  color: var(--ink);
+  margin: 0 0 var(--space-sm);
+}
+
+.ladder .sub {
+  font-size: var(--fs-body);
+  line-height: 1.55;
+  margin: 0 0 var(--space-lg);
+  max-width: none;
+  color: var(--ink-soft);
+}
+
+.ladder .actions {
+  justify-content: flex-start;
+  margin-top: auto;
+}
+
+.ladder .alt {
+  text-align: left;
+  font-size: var(--fs-small);
+  margin-top: var(--space-md);
 }
 
 /* Action row — primary Calendly button + secondary "Get in touch" link.
