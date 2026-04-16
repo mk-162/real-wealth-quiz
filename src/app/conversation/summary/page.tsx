@@ -230,7 +230,7 @@ function Summary() {
   const contactHref = pageValue<string>(
     'summary',
     'contact_url',
-    'https://realwealth.co.uk/contact',
+    'https://realwealth.co.uk/get-in-touch/',
   );
   const briefingHref = pageValue<string>(
     'summary',

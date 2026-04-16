@@ -13,12 +13,13 @@ import { Logo } from '@/components/Logo';
 import styles from './SummaryHeader.module.css';
 
 export interface SummaryHeaderProps {
-  /** Marketing-site contact page. Defaults to the canonical /contact path. */
+  /** Marketing-site contact page. Defaults to the canonical
+      /get-in-touch/ path. */
   contactHref?: string;
 }
 
 export function SummaryHeader({
-  contactHref = 'https://realwealth.co.uk/contact',
+  contactHref = 'https://realwealth.co.uk/get-in-touch/',
 }: SummaryHeaderProps) {
   // No role="banner" here: this header renders inside <main> in
   // ConversationLayout, so an explicit banner landmark would be
