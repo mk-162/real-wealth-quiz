@@ -1,0 +1,42 @@
+/* Wrapper renders naturally in the document flow; the inner block replays a
+   slide-up-fade animation every time the component re-mounts (via its `key`),
+   which is how swaps are triggered.
+   The previous version used a :has()-driven grid-template-rows collapse to
+   animate height-to-0 when children became null — but that rule sporadically
+   collapsed live content to 0 in Chromium when the inner wrapper briefly
+   appeared childless during React reconciliation, leading to an invisible
+   active screen. Plain children-null → render nothing is simpler and safe. */
+
+.outer {
+  display: block;
+}
+
+.inner {
+  animation: slideInUp var(--duration-default) var(--ease-default) both;
+}
+
+.outer[data-direction='down'] .inner {
+  animation-name: slideInDown;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

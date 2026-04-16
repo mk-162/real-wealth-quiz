@@ -1,0 +1,107 @@
+/* /privacy and /consumer-duty — single-column reading layout.
+   Paper-warm background, sticky header (no nav), serif italic title,
+   area-normal body at 18px / 1.6, teal links. Shared by both routes via
+   a sibling CSS module file in /consumer-duty (kept in sync by hand). */
+
+.topnav {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  background: rgba(250, 248, 246, 0.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding: var(--space-sm) var(--space-md);
+}
+
+.main {
+  background: var(--paper-warm);
+  min-height: calc(100vh - 80px);
+  padding: var(--space-xl) var(--space-md) var(--space-xxl);
+}
+@media (min-width: 768px) {
+  .main {
+    padding: var(--space-xxl) var(--space-md);
+  }
+}
+
+.article {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  color: var(--ink);
+}
+
+.pageTitle {
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(2rem, 3.2vw + 0.8rem, 2.75rem);
+  line-height: 1.2;
+  color: var(--brand-teal);
+  letter-spacing: -0.005em;
+  margin: 0 0 var(--space-sm);
+}
+
+.lastUpdated {
+  font-family: var(--font-body);
+  font-size: var(--fs-small);
+  color: var(--stone);
+  margin: 0 0 var(--space-xl);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+}
+
+/* Body — long-form reading typography. Subheadings get a clean ink-500
+   weight to keep the page readable without shouting. Bullets are loose,
+   paragraphs sit on a generous 1.6 leading. */
+.body {
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--ink);
+}
+
+.body h2 {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: var(--fs-h3);
+  line-height: var(--lh-heading);
+  color: var(--ink);
+  letter-spacing: -0.005em;
+  margin: var(--space-xl) 0 var(--space-sm);
+}
+
+.body h2:first-child {
+  margin-top: 0;
+}
+
+.body p {
+  margin: 0 0 var(--space-md);
+  max-width: 64ch;
+}
+
+.body ul {
+  margin: 0 0 var(--space-md);
+  padding-left: 1.25rem;
+  max-width: 64ch;
+}
+
+.body li {
+  margin: 0 0 var(--space-xs);
+  padding-left: 0.25rem;
+  line-height: var(--lh-body);
+}
+
+.body li::marker {
+  color: var(--brand-teal);
+}
+
+.body a {
+  color: var(--brand-teal);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+
+.body a:hover {
+  text-decoration-thickness: 2px;
+}

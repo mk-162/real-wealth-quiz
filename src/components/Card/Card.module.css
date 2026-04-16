@@ -1,0 +1,42 @@
+.card {
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  border: 1px solid var(--border-subtle);
+  animation: cardIn var(--duration-slow) var(--ease-default) both;
+}
+
+@media (min-width: 768px) {
+  .card {
+    padding: var(--space-lg);
+  }
+}
+
+.tone-paper {
+  background: var(--paper);
+}
+
+.tone-tinted {
+  background: var(--provocation-bg);
+}
+
+.elev-none {
+  box-shadow: none;
+}
+.elev-sm {
+  /* Softer "sit below the page" shadow, lifted from realwealth.co.uk. */
+  box-shadow: 0 15px 15px -10px rgba(0, 0, 0, 0.05);
+}
+.elev-md {
+  box-shadow: var(--shadow-card);
+}
+
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

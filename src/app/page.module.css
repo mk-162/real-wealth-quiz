@@ -1,0 +1,390 @@
+/* Homepage — hero, tier picker, freedom moment, benefit rows.
+   Brand-aligned to realwealth.co.uk: sans upright headlines on teal,
+   outlined CTA on dark, orange-gradient CTA on paper. */
+
+/* Sticky minimal header -------------------------------------------- */
+.topnav {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  background: rgba(250, 248, 246, 0.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding: var(--space-sm) var(--space-md);
+}
+
+/* ===== Hero ======================================================= */
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  color: var(--paper);
+  padding: var(--space-lg) var(--space-md) var(--space-xl);
+  isolation: isolate;
+}
+@media (min-width: 768px) {
+  .hero {
+    padding: var(--space-xl) var(--space-lg);
+    min-height: 520px;
+  }
+}
+@media (min-width: 1024px) {
+  .hero {
+    padding: var(--space-xxl) var(--space-lg);
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+  }
+}
+
+.heroBg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--gradient-teal);
+}
+
+.heroInner {
+  position: relative;
+  width: 100%;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-lg);
+  animation: fadeUp var(--duration-slow) var(--ease-default) both;
+}
+
+@media (min-width: 1024px) {
+  .heroInner {
+    grid-template-columns: 6fr 5fr;
+    align-items: center;
+    gap: var(--space-xxl);
+  }
+}
+
+.heroCopy {
+  max-width: 640px;
+  order: 2;
+}
+@media (min-width: 1024px) {
+  .heroCopy {
+    order: 1;
+  }
+}
+
+/* Sans-upright headline — matches the live site's h1 treatment.
+   Tight line-height, negative letter-spacing for display weight. */
+.headline {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-style: normal;
+  font-size: clamp(2rem, 3.5vw + 1rem, 3rem);
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  color: var(--paper);
+  margin: 0 0 var(--space-md);
+  max-width: 18ch;
+}
+
+.sub {
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 560px;
+  margin: 0 0 var(--space-lg);
+}
+
+.heroCta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-sm);
+}
+
+.reassure {
+  font-size: var(--fs-small);
+  color: rgba(255, 255, 255, 0.68);
+  max-width: 420px;
+}
+
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  margin-top: var(--space-md);
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 12px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: rgba(255, 255, 255, 0.9);
+  font-size: var(--fs-micro);
+  font-weight: 500;
+}
+
+/* Hero media — lifestyle image with a quiet attribution caption.
+   On mobile, lives above the text as a 16:10 banner.
+   On desktop, right-column 4:5 portrait with overlayed quote. */
+.heroMedia {
+  order: 1;
+  margin: 0;
+  position: relative;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+  box-shadow: 0 40px 80px -40px rgba(0, 0, 0, 0.5);
+}
+@media (min-width: 1024px) {
+  .heroMedia {
+    order: 2;
+    aspect-ratio: 4 / 5;
+    max-height: 560px;
+  }
+}
+
+.heroImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 600ms var(--ease-default);
+}
+.heroMedia:hover .heroImg {
+  transform: scale(1.02);
+}
+
+.heroQuote {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: var(--space-md);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+  color: var(--paper);
+}
+.heroQuote q {
+  display: block;
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-weight: 300;
+  font-size: var(--fs-ui);
+  line-height: 1.45;
+  quotes: '“' '”';
+  margin-bottom: var(--space-xs);
+}
+.heroQuote cite {
+  font-family: var(--font-body);
+  font-style: normal;
+  font-size: var(--fs-micro);
+  letter-spacing: var(--ls-wider);
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.8);
+}
+@media (max-width: 767px) {
+  .heroQuote {
+    padding: var(--space-sm);
+  }
+  .heroQuote q {
+    font-size: var(--fs-small);
+  }
+}
+
+/* ===== Tier picker =============================================== */
+
+.tierSection {
+  padding: var(--space-xl) var(--space-md);
+  background: var(--paper-warm);
+}
+@media (min-width: 768px) {
+  .tierSection {
+    padding: var(--space-xxl) var(--space-lg);
+  }
+}
+
+.tierInner {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.tierHeading {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: clamp(1.75rem, 2.5vw + 0.75rem, 2.25rem);
+  line-height: 1.2;
+  color: var(--ink);
+  margin: 0 0 var(--space-sm);
+  letter-spacing: -0.01em;
+}
+
+.tierSub {
+  font-size: var(--fs-body);
+  color: var(--ink-muted);
+  max-width: 520px;
+  margin: 0 auto var(--space-xl);
+  line-height: 1.5;
+}
+
+.tiles {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+  text-align: left;
+}
+
+@media (min-width: 768px) {
+  .tiles {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-md);
+  }
+}
+
+.tileStagger > *:nth-child(1) {
+  animation: fadeUp var(--duration-slow) var(--ease-default) 80ms both;
+}
+.tileStagger > *:nth-child(2) {
+  animation: fadeUp var(--duration-slow) var(--ease-default) 160ms both;
+}
+.tileStagger > *:nth-child(3) {
+  animation: fadeUp var(--duration-slow) var(--ease-default) 240ms both;
+}
+
+.tierCta {
+  margin-top: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.helper {
+  font-size: var(--fs-small);
+  color: var(--stone);
+}
+
+/* ===== Freedom moment ============================================ */
+/* Full-bleed tinted band — alternates rhythm with the paper sections. */
+
+.freedom {
+  background: linear-gradient(180deg, var(--paper-cool), var(--paper-warm));
+  padding: var(--space-xl) var(--space-md);
+  text-align: center;
+  position: relative;
+}
+@media (min-width: 768px) {
+  .freedom {
+    padding: var(--space-xxl) var(--space-md);
+  }
+}
+
+.freedomQuote {
+  font-family: var(--font-heading);
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(1.5rem, 2.6vw + 0.6rem, 2.25rem);
+  line-height: 1.35;
+  color: var(--brand-teal);
+  max-width: var(--content-max);
+  margin: 0 auto;
+  quotes: none;
+}
+
+/* ===== Benefit rows (ruled lines, not cards) ===================== */
+
+.benefits {
+  padding: var(--space-xl) var(--space-md) var(--space-xxl);
+  background: var(--paper-warm);
+}
+@media (min-width: 768px) {
+  .benefits {
+    padding: var(--space-xxl) var(--space-lg);
+  }
+}
+
+.benefitsInner {
+  max-width: 900px;
+  margin: 0 auto;
+  border-top: var(--rule-fine);
+}
+
+.benefitRow {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: var(--space-md);
+  padding: var(--space-md) 0;
+  border-bottom: var(--rule-fine);
+  align-items: start;
+  animation: fadeUp var(--duration-slow) var(--ease-default) both;
+}
+@media (min-width: 768px) {
+  .benefitRow {
+    grid-template-columns: 56px 1fr;
+    gap: var(--space-lg);
+    padding: var(--space-lg) 0;
+  }
+}
+
+.benefitRow:nth-child(2) {
+  animation-delay: 80ms;
+}
+.benefitRow:nth-child(3) {
+  animation-delay: 160ms;
+}
+
+.benefitIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--teal-tint-05);
+  color: var(--brand-teal);
+  flex-shrink: 0;
+  transition: background var(--duration-default) var(--ease-default);
+}
+@media (min-width: 768px) {
+  .benefitIcon {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+.benefitRow:hover .benefitIcon {
+  background: var(--teal-tint-10);
+}
+
+.benefitBody h3 {
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(1.25rem, 1.5vw + 0.5rem, 1.625rem);
+  line-height: 1.25;
+  color: var(--brand-teal);
+  margin: 0 0 6px;
+}
+
+.benefitBody p {
+  font-size: var(--fs-body);
+  color: var(--ink-muted);
+  line-height: 1.55;
+  margin: 0;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

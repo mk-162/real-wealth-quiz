@@ -1,0 +1,109 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  padding: 0.6rem 1.25rem;
+  min-height: 44px;
+  font-family: var(--font-body);
+  font-size: var(--fs-ui);
+  font-weight: 700;
+  border: 2px solid transparent;
+  border-radius: var(--radius-cta);
+  cursor: pointer;
+  transition:
+    transform var(--duration-fast) var(--ease-default),
+    box-shadow var(--duration-default) var(--ease-default),
+    background var(--duration-default) var(--ease-default),
+    color var(--duration-default) var(--ease-default),
+    border-color var(--duration-default) var(--ease-default);
+}
+
+@media (min-width: 768px) {
+  .btn {
+    padding: 0.7rem 1.4rem;
+    min-height: 48px;
+  }
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+/* Primary — orange gradient with white 2px border, gelica italic.
+   Matches the live site's signature CTA treatment. */
+.primary {
+  background: var(--gradient-cta);
+  color: var(--paper);
+  border-color: var(--paper);
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.1em;
+  letter-spacing: 0.01em;
+}
+.primary:hover:not(:disabled) {
+  background: var(--paper);
+  color: var(--brand-orange);
+  border-color: var(--brand-orange);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+.primary:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Secondary — teal outlined ------------------------------------ */
+.secondary {
+  background: var(--paper);
+  color: var(--brand-teal);
+  font-weight: 500;
+  border-color: var(--brand-teal);
+}
+.secondary:hover:not(:disabled) {
+  background: var(--teal-tint-05);
+}
+
+/* Text — inline conversational link ---------------------------- */
+.text {
+  background: transparent;
+  color: var(--brand-teal);
+  min-height: auto;
+  padding: 0.25rem 0;
+  border: 0;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.text:hover {
+  color: var(--ink);
+}
+
+/* Outline on dark — the live site's hero CTA pattern.
+   Transparent fill, 2px white border, white text. Hover flips to solid
+   white background with teal text. Used on the teal hero only. */
+.outline-on-dark {
+  background: transparent;
+  color: var(--paper);
+  border-color: var(--paper);
+  font-weight: 600;
+}
+.outline-on-dark:hover:not(:disabled) {
+  background: var(--paper);
+  color: var(--brand-teal);
+  border-color: var(--paper);
+}
+
+/* Responsive — full-width on small screens for rhythm ---------- */
+@media (max-width: 480px) {
+  .primary,
+  .secondary {
+    width: 100%;
+  }
+}

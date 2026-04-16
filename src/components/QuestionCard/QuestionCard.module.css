@@ -1,0 +1,54 @@
+.card {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: var(--space-xl) var(--space-md);
+  animation: fadeUp var(--duration-slow) var(--ease-default) both;
+}
+
+@media (min-width: 768px) {
+  .card {
+    padding: var(--space-hero) var(--space-md);
+  }
+}
+
+.stem {
+  font-family: var(--font-heading);
+  font-weight: 400;
+  font-size: var(--fs-question);
+  line-height: var(--lh-question);
+  color: var(--brand-teal);
+  margin-bottom: var(--space-md);
+}
+
+.micro {
+  font-family: var(--font-body);
+  font-size: var(--fs-small);
+  color: var(--stone);
+  margin-bottom: var(--space-lg);
+  line-height: var(--lh-small);
+}
+
+.sensitive {
+  font-family: var(--font-body);
+  font-size: var(--fs-small);
+  font-style: italic;
+  color: var(--ink-muted);
+  margin-bottom: var(--space-lg);
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

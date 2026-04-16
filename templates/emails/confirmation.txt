@@ -1,0 +1,21 @@
+Real Wealth
+
+{{email1_body_first_para}}
+
+Book a 20-minute call: {{booking_url}}
+
+-- Your shortlist --
+
+<!-- SHORTLIST_ITEMS -->
+
+--
+
+{{footer_regulated}}
+
+{{footer_confidentiality}}
+
+{{footer_non_binding}}
+
+{{footer_security}}
+
+{{footer_call_recording}}

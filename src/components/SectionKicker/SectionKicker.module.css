@@ -1,0 +1,19 @@
+.kicker {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: var(--fs-micro);
+  font-weight: 600;
+  letter-spacing: var(--ls-wider);
+  text-transform: uppercase;
+  margin-bottom: var(--space-sm);
+}
+
+.kicker[data-tone='teal'] {
+  color: var(--brand-teal);
+}
+.kicker[data-tone='stone'] {
+  color: var(--stone);
+}
+.kicker[data-tone='paper'] {
+  color: rgba(255, 255, 255, 0.75);
+}

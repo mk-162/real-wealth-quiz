@@ -1,0 +1,132 @@
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-sm);
+}
+
+@media (min-width: 600px) {
+  .grid[data-cols='2'] {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .grid[data-cols='3'] {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding: var(--space-sm) var(--space-md) var(--space-sm) var(--space-sm);
+  min-height: 104px;
+  background: var(--paper);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  text-align: left;
+  cursor: pointer;
+  overflow: hidden;
+  opacity: 0;
+  animation: cardIn var(--duration-default) var(--ease-default) both;
+  transition:
+    border-color var(--duration-default) var(--ease-default),
+    box-shadow var(--duration-default) var(--ease-default),
+    background var(--duration-default) var(--ease-default),
+    transform var(--duration-fast) var(--ease-default);
+}
+
+.card:hover {
+  border-color: var(--brand-teal);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.card[data-selected='true'] {
+  border: 2px solid var(--brand-teal);
+  background: var(--teal-tint-05);
+  padding: calc(var(--space-sm) - 1px) calc(var(--space-md) - 1px) calc(var(--space-sm) - 1px) calc(var(--space-sm) - 1px);
+  box-shadow: 0 8px 20px -10px rgba(12, 115, 114, 0.3);
+}
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-sm);
+  background: var(--teal-tint-10);
+  color: var(--brand-teal);
+  margin-bottom: var(--space-xs);
+  transition: transform var(--duration-default) var(--ease-default);
+}
+
+.card:hover .icon {
+  transform: scale(1.06);
+}
+
+.card[data-selected='true'] .icon {
+  background: var(--teal-tint-10);
+  color: var(--brand-teal);
+}
+
+.title {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: var(--fs-ui);
+  color: var(--ink);
+  line-height: 1.3;
+}
+
+.desc {
+  font-family: var(--font-body);
+  font-size: var(--fs-small);
+  line-height: 1.45;
+  color: var(--ink-muted);
+}
+
+/* The per-card reveal is intentionally hidden in-place — it's rendered in
+   the single below-grid slot instead so selecting a card does NOT resize
+   and jump the neighbouring cards. The `reveal` prop remains on the data
+   object for consumers that want to render it elsewhere. */
+.reveal {
+  display: none;
+}
+
+.tick {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--brand-teal);
+  color: var(--paper);
+  font-size: 13px;
+  font-weight: 700;
+  opacity: 0;
+  transform: scale(0.5);
+  transition:
+    opacity var(--duration-default) var(--ease-default),
+    transform var(--duration-default) var(--ease-default);
+}
+
+.card[data-selected='true'] .tick {
+  opacity: 1;
+  transform: scale(1);
+}
+
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,179 @@
+.shell {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: var(--space-md) var(--space-md) var(--space-xxl);
+  animation: fadeUp var(--duration-default) var(--ease-default) both;
+}
+
+@media (min-width: 768px) {
+  .shell {
+    padding: var(--space-lg) var(--space-lg) var(--space-xxl);
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+  align-items: start;
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: minmax(280px, 5fr) minmax(360px, 7fr);
+    gap: var(--space-xl);
+  }
+}
+
+@media (min-width: 1280px) {
+  .grid {
+    grid-template-columns: minmax(320px, 5fr) minmax(420px, 7fr);
+    gap: var(--space-xxl);
+  }
+}
+
+/* Left column — kicker, stem, pullquote, image. */
+.left {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding-top: 4px; /* aligns the kicker with the right panel's top padding */
+}
+
+.stem {
+  font-family: var(--font-heading);
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(1.75rem, 3vw + 0.5rem, 2.5rem);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 0;
+}
+
+.pullquote {
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-weight: 300;
+  font-size: var(--fs-ui);
+  line-height: 1.55;
+  color: var(--ink-muted);
+  max-width: 42ch;
+  padding-left: var(--space-sm);
+  border-left: 2px solid var(--brand-teal);
+  margin: var(--space-xs) 0 0;
+}
+
+/* Lifestyle image — desktop: top of left column underneath pullquote.
+   Mobile: stays in the left column which renders before the panel;
+   we reorder via order so it appears AFTER the panel as a rest. */
+.figure {
+  margin: 0;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  max-height: 280px;
+  margin-top: var(--space-sm);
+}
+
+@media (max-width: 1023px) {
+  /* On mobile, image lives in a separate grid item below the panel. */
+  .left {
+    padding-top: 0;
+  }
+  .figure {
+    aspect-ratio: 16 / 10;
+    max-height: none;
+    margin-top: var(--space-md);
+  }
+}
+
+.img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 700ms var(--ease-default);
+}
+
+.img:hover {
+  transform: scale(1.02);
+}
+
+.leftExtras {
+  margin-top: var(--space-sm);
+}
+
+/* Right column (the interaction panel). */
+.right {
+  min-width: 0;
+}
+
+.panel {
+  background: var(--paper);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  border: var(--rule-fine);
+  box-shadow: 0 15px 30px -20px rgba(0, 0, 0, 0.12);
+  animation: panelIn var(--duration-default) var(--ease-default) 80ms both;
+}
+
+@media (min-width: 768px) {
+  .panel {
+    padding: var(--space-lg);
+  }
+}
+
+.footer {
+  max-width: var(--container-max);
+  margin: var(--space-lg) auto 0;
+  padding: 0;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes panelIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mobile image placement: the QuestionShell component renders a
+   `.figureBelow` element that ONLY shows on mobile, after the panel.
+   Desktop keeps the image inside the left column. */
+.figureBelow {
+  display: none;
+}
+@media (max-width: 1023px) {
+  .figureBelow {
+    display: block;
+    margin: var(--space-md) 0 0;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    aspect-ratio: 16 / 10;
+  }
+  .figureBelow img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  /* And hide the desktop-location image on mobile. */
+  .left .figure {
+    display: none;
+  }
+}

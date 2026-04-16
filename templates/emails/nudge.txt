@@ -1,0 +1,21 @@
+Real Wealth
+
+{{email2_body_first_para}}
+
+Pick a time whenever you're ready: {{booking_url}}
+
+-- Your shortlist --
+
+<!-- SHORTLIST_ITEMS -->
+
+--
+
+{{footer_regulated}}
+
+{{footer_confidentiality}}
+
+{{footer_non_binding}}
+
+{{footer_security}}
+
+{{footer_call_recording}}

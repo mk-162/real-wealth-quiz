@@ -1,0 +1,1 @@
+export { FCAFooter } from './FCAFooter';

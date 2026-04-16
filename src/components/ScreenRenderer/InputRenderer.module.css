@@ -1,0 +1,91 @@
+.inputBlock {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.inputBlock + .inputBlock {
+  margin-top: var(--space-lg);
+  padding-top: var(--space-lg);
+  border-top: var(--rule-fine);
+}
+
+.inputHead {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.label {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: var(--fs-small);
+  color: var(--ink);
+}
+
+.helper {
+  font-family: var(--font-body);
+  font-size: var(--fs-small);
+  color: var(--stone);
+  font-style: italic;
+}
+
+.radioGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.textarea {
+  width: 100%;
+  resize: vertical;
+  min-height: 120px;
+  padding: var(--space-md);
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-size: var(--fs-h4);
+  line-height: 1.5;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--stone);
+  border-radius: var(--radius-md);
+  transition:
+    border-color var(--duration-default) var(--ease-default),
+    box-shadow var(--duration-default) var(--ease-default);
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: var(--brand-teal);
+  box-shadow: 0 0 0 3px var(--teal-tint-15);
+}
+
+.textarea::placeholder {
+  color: var(--stone);
+  font-style: italic;
+}
+
+.numberInput {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 var(--space-md);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--stone);
+  border-radius: var(--radius-sm);
+}
+
+.numberInput:focus {
+  outline: none;
+  border-color: var(--brand-teal);
+  box-shadow: 0 0 0 3px var(--teal-tint-15);
+}
+
+.missing {
+  font-family: var(--font-body);
+  font-size: var(--fs-small);
+  color: var(--danger);
+  font-style: italic;
+}

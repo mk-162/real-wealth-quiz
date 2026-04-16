@@ -1,0 +1,41 @@
+.chart {
+  margin: 0 0 var(--space-xl);
+  padding: var(--space-lg);
+  background: var(--paper);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.cap {
+  display: block;
+  margin-bottom: var(--space-md);
+}
+
+.tag {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: var(--fs-micro);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--ls-wide);
+  color: var(--brand-orange);
+  margin-bottom: var(--space-xs);
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-weight: 500;
+  font-size: var(--fs-h3);
+  color: var(--brand-teal);
+  margin: 0 0 var(--space-xs);
+}
+
+.assumptions {
+  font-size: var(--fs-small);
+  color: var(--stone);
+  margin: 0;
+}
+
+.body {
+  margin-top: var(--space-md);
+}

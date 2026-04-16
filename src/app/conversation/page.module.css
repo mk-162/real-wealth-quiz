@@ -1,0 +1,190 @@
+.shell {
+  min-height: 100vh;
+  background: var(--paper-warm);
+  /* Ensure the dev-nav chip doesn't cover the last interactive row on mobile. */
+  padding-bottom: 88px;
+}
+
+@media (min-width: 768px) {
+  .shell {
+    padding-bottom: var(--space-xl);
+  }
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  background: rgba(250, 248, 246, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: var(--space-sm) var(--space-md);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  border-bottom: var(--rule-fine);
+}
+
+.headLeft,
+.headRight {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.headRight {
+  gap: var(--space-md);
+}
+
+/* Section chip — replaces the full side-nav list. Best-practice:
+   show only the CURRENT section name, not the ten-item sitemap. */
+.sectionChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px 4px 4px;
+  background: var(--teal-tint-05);
+  border: 1px solid var(--teal-tint-15);
+  border-radius: var(--radius-full);
+  color: var(--brand-teal);
+  font-family: var(--font-body);
+  font-size: var(--fs-small);
+  font-weight: 500;
+  transition: background var(--duration-default) var(--ease-default);
+}
+
+.sectionChip:hover {
+  background: var(--teal-tint-10);
+}
+
+/* Awareness-interstitial variant — no step number, softer tone so the
+   user reads this as "a pause, not a step". */
+.sectionChip[data-kind='insight'] {
+  padding: 4px 12px;
+  background: var(--paper);
+  border-color: var(--border-subtle);
+  color: var(--stone);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-wider);
+  font-size: var(--fs-micro);
+  font-weight: 600;
+}
+
+.sectionNum {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--brand-teal);
+  color: var(--paper);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: var(--ls-wide);
+}
+
+.sectionLabel {
+  letter-spacing: var(--ls-wide);
+}
+
+.progressLabel {
+  font-family: var(--font-body);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--ls-wider);
+  text-transform: uppercase;
+  color: var(--stone);
+}
+
+@media (max-width: 600px) {
+  .sectionLabel {
+    display: none;
+  }
+}
+
+/* Action row inside the panel ---------------------------------------- */
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  margin-top: var(--space-lg);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--border-subtle);
+  flex-wrap: wrap;
+}
+
+.actionsLeft {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px; /* keeps the row height stable when WhyAsk is absent */
+}
+
+.actionsRight {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-left: auto;
+}
+
+@media (max-width: 480px) {
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .actionsRight {
+    margin-left: 0;
+    justify-content: space-between;
+    width: 100%;
+  }
+}
+
+.inlineProv {
+  margin-top: var(--space-lg);
+}
+
+/* Aspiration — textarea + pullquote image below ------------------ */
+.aspirationBlock {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.aspirationLabel {
+  font-family: var(--font-body);
+  font-size: var(--fs-micro);
+  font-weight: 600;
+  letter-spacing: var(--ls-wider);
+  text-transform: uppercase;
+  color: var(--stone);
+}
+
+.aspirationInput {
+  width: 100%;
+  resize: vertical;
+  min-height: 120px;
+  padding: var(--space-md);
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-size: var(--fs-h4);
+  line-height: 1.5;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--stone);
+  border-radius: var(--radius-md);
+  transition:
+    border-color var(--duration-default) var(--ease-default),
+    box-shadow var(--duration-default) var(--ease-default);
+}
+
+.aspirationInput:focus {
+  outline: none;
+  border-color: var(--brand-teal);
+  box-shadow: 0 0 0 3px var(--teal-tint-15);
+}
+
+.aspirationInput::placeholder {
+  color: var(--stone);
+  font-style: italic;
+}

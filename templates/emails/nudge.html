@@ -1,0 +1,124 @@
+<!--
+  Real Wealth — Gentle nudge email.
+
+  Sent at +7 days after the Wealth Conversation if the recipient has not
+  booked a call. Deliberately softer tone than the confirmation email.
+
+  Placeholders (merge fields the email engine MUST populate):
+    {{first_name}}             — recipient's first name
+    {{email2_subject}}         — subject line, from content/microcopy/emails.md
+    {{email2_preview}}         — preview / pre-header, from emails.md
+    {{email2_body_first_para}} — opening paragraph, from emails.md
+    {{booking_url}}            — URL to the booking flow
+    {{footer_regulated}}       — paragraph 1 of the legal footer, from emails.md
+    {{footer_confidentiality}} — paragraph 2 of the legal footer
+    {{footer_non_binding}}     — paragraph 3 of the legal footer
+    {{footer_security}}        — paragraph 4 of the legal footer
+    {{footer_call_recording}}  — paragraph 5 of the legal footer
+
+  Template slots (populated by the email engine, not merge fields):
+    <!-- SHORTLIST_ITEMS -->   — the same rendered shortlist included again
+
+  Email client rules applied:
+    - Table-based layout for Outlook compatibility
+    - Inline styles only (no external CSS, no classnames for styling)
+    - 600px max width on the outer wrapper
+    - System font stack fallback; no @import or <link> web fonts
+    - Literal hex colour values (no CSS custom properties)
+    - color-scheme: light on the wrapper to stop dark-mode auto-invert
+    - No remote images (wordmark rendered as text)
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="color-scheme" content="light" />
+    <meta name="supported-color-schemes" content="light" />
+    <title>{{email2_subject}}</title>
+    <!--[if mso]>
+    <style type="text/css">
+      table, td { border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+      body, table, td, p, a { font-family: Arial, Helvetica, sans-serif !important; }
+    </style>
+    <![endif]-->
+  </head>
+  <body style="margin:0;padding:0;background-color:#faf8f6;color-scheme:light;">
+    <!-- Preview / pre-header text (hidden in the body, shown in the inbox preview) -->
+    <div style="display:none;max-height:0;overflow:hidden;mso-hide:all;font-size:1px;line-height:1px;color:#faf8f6;opacity:0;">
+      {{email2_preview}}
+    </div>
+
+    <!-- Outer wrapper -->
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#faf8f6;color-scheme:light;">
+      <tr>
+        <td align="center" style="padding:24px 12px;">
+
+          <!-- 600px inner wrapper -->
+          <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px;max-width:600px;background-color:#ffffff;border:1px solid #e6e3df;">
+
+            <!-- Header / wordmark -->
+            <tr>
+              <td align="left" style="padding:28px 32px 20px 32px;border-bottom:1px solid #e6e3df;">
+                <span style="font-family:'gelica',Georgia,'Times New Roman',serif;font-style:italic;font-weight:300;font-size:24px;line-height:1;color:#0c7372;letter-spacing:0.2px;">Real Wealth</span>
+              </td>
+            </tr>
+
+            <!-- Opening paragraph -->
+            <tr>
+              <td style="padding:28px 32px 8px 32px;font-family:'area-normal',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.55;color:#353535;">
+                <p style="margin:0 0 16px 0;">{{email2_body_first_para}}</p>
+              </td>
+            </tr>
+
+            <!-- Softer call to action -->
+            <tr>
+              <td align="left" style="padding:12px 32px 24px 32px;">
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td align="center" bgcolor="#ff6801" style="background:linear-gradient(180deg,#ff7a1f,#ff6801);background-color:#ff6801;border:1px solid #ffffff;border-radius:5px;">
+                      <a href="{{booking_url}}" style="display:inline-block;padding:14px 24px;font-family:'area-normal',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:16px;line-height:1;font-weight:600;color:#ffffff;text-decoration:none;border-radius:5px;">Pick a time whenever you're ready</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- Shortlist rule + slot -->
+            <tr>
+              <td style="padding:0 32px;">
+                <hr style="border:0;border-top:1px solid #e6e3df;margin:0;" />
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:20px 32px 4px 32px;font-family:'area-normal',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:13px;line-height:1.5;color:#b2b2b2;letter-spacing:0.5px;text-transform:uppercase;">
+                Your shortlist
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:8px 32px 28px 32px;font-family:'area-normal',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.55;color:#353535;">
+                <!-- SHORTLIST_ITEMS -->
+              </td>
+            </tr>
+
+            <!-- Regulatory + legal footer. Five paragraphs in the exact order
+                 documented in content/microcopy/emails.md. -->
+            <tr>
+              <td style="padding:20px 32px 28px 32px;border-top:1px solid #e6e3df;background-color:#faf8f6;font-family:'area-normal',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:13px;line-height:1.55;color:#b2b2b2;">
+                <p style="margin:0 0 12px 0;">{{footer_regulated}}</p>
+                <p style="margin:0 0 12px 0;">{{footer_confidentiality}}</p>
+                <p style="margin:0 0 12px 0;">{{footer_non_binding}}</p>
+                <p style="margin:0 0 12px 0;">{{footer_security}}</p>
+                <p style="margin:0;">{{footer_call_recording}}</p>
+              </td>
+            </tr>
+
+          </table>
+          <!-- /600px inner wrapper -->
+
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

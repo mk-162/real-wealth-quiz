@@ -1,0 +1,37 @@
+/* The wordmark SVG uses currentColor via /public/real-wealth-wordmark.svg.
+   We can't directly set `color` on an <img>, so we tint with a CSS filter.
+   Each tone has a pre-computed filter that converts the native white fill
+   to the target brand colour. */
+
+.wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Paper (white) — no filter needed, SVG native fill is white. */
+.wrap[data-tone='paper'] .img {
+  filter: none;
+}
+
+/* Teal — brand-teal #0c7372 */
+.wrap[data-tone='teal'] .img {
+  filter: brightness(0) saturate(100%) invert(34%) sepia(44%) saturate(651%)
+    hue-rotate(139deg) brightness(95%) contrast(96%);
+}
+
+/* Ink — #353535 */
+.wrap[data-tone='ink'] .img {
+  filter: brightness(0) saturate(100%) invert(21%);
+}
+
+/* Inherit — lets a parent filter pipeline win. */
+.wrap[data-tone='inherit'] .img {
+  filter: inherit;
+}

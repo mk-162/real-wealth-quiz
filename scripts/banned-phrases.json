@@ -1,0 +1,24 @@
+{
+  "deny": [
+    "unlock",
+    "supercharge",
+    "transform your",
+    "revolutionary",
+    "proven results",
+    "#1",
+    "number one",
+    "best-in-class",
+    "guaranteed gains",
+    "risk-free",
+    "secret",
+    "amazing",
+    "empowers you",
+    "maximises"
+  ],
+  "allow_contexts": [
+    "guaranteed annuity rates",
+    "guaranteed return equal to",
+    "guaranteed minimum"
+  ],
+  "notes": "Word list sourced from Brand Assets/Voice and Tone.md. allow_contexts lists phrases where a banned word appears in a technical/factual context that's safe to keep."
+}

@@ -1,0 +1,65 @@
+[
+  {
+    "rank": 1,
+    "segmentId": "S9",
+    "label": "HNW / Multi-Gen",
+    "predicate": "Q4.5 ≥ £3m",
+    "description": "HNW overrides other signals. Senior-partner routing regardless of age / income."
+  },
+  {
+    "rank": 2,
+    "segmentId": "S6",
+    "label": "Business Owner — Exit-minded",
+    "predicate": "Q2.3 = Business owner AND Q2.1 ≥ 50 AND Q5.3 ∈ (want out in 5 yrs / no plan but thinking)",
+    "description": "Exit-oriented overrides the growth label."
+  },
+  {
+    "rank": 3,
+    "segmentId": "S5",
+    "label": "Business Owner — Growth",
+    "predicate": "Q2.3 = Business owner AND Q2.1 < 50",
+    "description": "Owner still building."
+  },
+  {
+    "rank": 4,
+    "segmentId": "S8",
+    "label": "Retired / Decumulation",
+    "predicate": "Q2.3 ∈ (Fully retired, Partly retired) AND Q2.1 ≥ 60",
+    "description": "Skips accumulation-era questions (Q7.1, protection)."
+  },
+  {
+    "rank": 5,
+    "segmentId": "S7",
+    "label": "Pre-Retiree Affluent",
+    "predicate": "Q2.1 ∈ 55–65 AND Q2.3 ∈ (Employed, Self-employed)",
+    "description": "Peak RW target for retirement planning."
+  },
+  {
+    "rank": 6,
+    "segmentId": "S4",
+    "label": "Senior Professional / Partner",
+    "predicate": "Q3.1 ≥ £200k AND Q4.5 ≥ £1m",
+    "description": "TAA triggers; senior-partner-style tone."
+  },
+  {
+    "rank": 7,
+    "segmentId": "S3",
+    "label": "High-Earner Mid-Career",
+    "predicate": "Q3.1 ∈ £100k–£200k",
+    "description": "£100k trap fires — RW's richest provocation territory."
+  },
+  {
+    "rank": 8,
+    "segmentId": "S2",
+    "label": "Mass-Affluent Mid-Career",
+    "predicate": "Q3.1 ∈ £50k–£100k AND Q4.5 ≥ £250k",
+    "description": "Accumulating but not yet at RW's core provocation point."
+  },
+  {
+    "rank": 9,
+    "segmentId": "S1",
+    "label": "Early Accumulator",
+    "predicate": "Default (none of the above)",
+    "description": "Low-fit fallback. Short friendly form, nurture-only route."
+  }
+]
