@@ -10,6 +10,7 @@
 import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
 import { DevNav } from '@/components/DevNav';
+import { HeroMaskDefs } from '@/components/HeroMaskDefs';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -28,6 +29,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en-GB">
       <body>
+        {/* Shared SVG <clipPath>/<mask> defs for the site's rounded
+            hero-image shapes. Lives once at the top of <body> so any
+            route can reference the ids from CSS (clip-path: url(#rw-hero-large)). */}
+        <HeroMaskDefs />
         {children}
         {/* Temporary — remove before shipping. Lets reviewers jump between templates. */}
         <DevNav />

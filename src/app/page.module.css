@@ -184,17 +184,19 @@
   order: 1;
   margin: 0;
   position: relative;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
   aspect-ratio: 16 / 11;
   box-shadow: 0 50px 80px -40px rgba(0, 0, 0, 0.45);
+  /* Rounded rectangle matching the realwealth.co.uk hero shape: 22px
+     radius at the reference width, scaled via clip-path in the img
+     below. We mirror the curvature on the figure's border-radius so
+     the box-shadow silhouette lines up with the clipped image. */
+  border-radius: 22px;
 }
 @media (min-width: 1024px) {
   .heroMedia {
     order: 2;
     aspect-ratio: 4 / 5;
     max-height: 600px;
-    border-radius: 50% 50% 50% 14px / 50% 50% 50% 14px;
   }
 }
 
@@ -204,6 +206,10 @@
   object-fit: cover;
   display: block;
   transition: transform 800ms var(--ease-default);
+  /* Shared rounded-rect clip-path from HeroMaskDefs (see
+     src/components/HeroMaskDefs). Keeps every hero on-brand and
+     swappable from a single source. */
+  clip-path: url(#rw-hero-large);
 }
 .heroMedia:hover .heroImg {
   transform: scale(1.03);
