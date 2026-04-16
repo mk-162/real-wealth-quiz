@@ -1,7 +1,7 @@
-/* The wordmark SVG uses currentColor via /public/real-wealth-wordmark.svg.
-   We can't directly set `color` on an <img>, so we tint with a CSS filter.
-   Each tone has a pre-computed filter that converts the native white fill
-   to the target brand colour. */
+/* The Logo component inlines an <svg> with `fill="currentColor"` so
+   setting `color` on the wrapper drives the rendered colour directly —
+   no brightness/saturate/invert filter stack to approximate the token.
+   Each tone lines up with a brand colour in tokens.css. */
 
 .wrap {
   /* Width comes from the `--logo-width` custom property written by the
@@ -11,31 +11,41 @@
   align-items: center;
   justify-content: flex-start;
   width: var(--logo-width, 160px);
+  line-height: 0; /* stops inline-SVG descender gap */
 }
 
 .img {
   width: 100%;
   height: auto;
   display: block;
+  color: inherit;
 }
 
-/* Paper (white) — no filter needed, SVG native fill is white. */
-.wrap[data-tone='paper'] .img {
-  filter: none;
+/* Ink — #353535 (near-black wordmark on white surfaces — matches the
+   realwealth.co.uk header). Default tone. */
+.wrap[data-tone='ink'] {
+  color: var(--ink);
 }
 
-/* Teal — brand-teal #0c7372 */
-.wrap[data-tone='teal'] .img {
-  filter: brightness(0) saturate(100%) invert(34%) sepia(44%) saturate(651%)
-    hue-rotate(139deg) brightness(95%) contrast(96%);
+/* Navy — #333566 (slightly cooler dark for marketing surfaces that
+   want more colour than the neutral ink). */
+.wrap[data-tone='navy'] {
+  color: var(--navy);
 }
 
-/* Ink — #353535 */
-.wrap[data-tone='ink'] .img {
-  filter: brightness(0) saturate(100%) invert(21%);
+/* Teal — #0c7372 (brand-teal for paper/cream-on-teal surfaces where
+   the wordmark needs to live in the brand gradient). */
+.wrap[data-tone='teal'] {
+  color: var(--brand-teal);
 }
 
-/* Inherit — lets a parent filter pipeline win. */
-.wrap[data-tone='inherit'] .img {
-  filter: inherit;
+/* Paper — white on dark/tonal backgrounds (e.g. the FCA footer). */
+.wrap[data-tone='paper'] {
+  color: var(--paper);
+}
+
+/* Inherit — lets a parent decide `color` (useful for gradient footers
+   where the logo should share the copy colour cascade). */
+.wrap[data-tone='inherit'] {
+  color: inherit;
 }
