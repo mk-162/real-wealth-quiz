@@ -34,7 +34,7 @@ export default function PrivacyPage() {
   return (
     <>
       <header className={styles.topnav}>
-        <Logo tone="ink" width={200} />
+        <Logo tone="ink" />
       </header>
 
       <main className={styles.main}>

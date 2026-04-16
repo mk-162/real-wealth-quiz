@@ -1,9 +1,11 @@
 /* Matches the live realwealth.co.uk header: pure white surface, left-
-   aligned 200px ink wordmark, 80px / 58px min-heights, 25px / 6px
-   horizontal padding. */
+   aligned responsive ink wordmark (200 / 188 / 152 across desktop /
+   tablet / mobile), 80px / 58px min-heights, 25px / 6px horizontal
+   padding. `--logo-width` cascades into the Logo component. */
 .header {
   background: var(--paper);
   border-bottom: 1px solid rgba(53, 53, 53, 0.05);
+  --logo-width: 200px;
 }
 
 .inner {
@@ -17,7 +19,16 @@
   min-height: 80px;
 }
 
+@media (max-width: 1199px) {
+  .header {
+    --logo-width: 188px;
+  }
+}
+
 @media (max-width: 767px) {
+  .header {
+    --logo-width: 152px;
+  }
   .inner {
     padding: 0 6px;
     min-height: 58px;

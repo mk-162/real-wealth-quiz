@@ -4,9 +4,13 @@
    to the target brand colour. */
 
 .wrap {
+  /* Width comes from the `--logo-width` custom property written by the
+     Logo component (in px). Parents can override it at breakpoints by
+     setting `--logo-width` on the Logo element or a close ancestor. */
   display: inline-flex;
   align-items: center;
   justify-content: flex-start;
+  width: var(--logo-width, 160px);
 }
 
 .img {

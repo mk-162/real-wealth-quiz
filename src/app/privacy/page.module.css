@@ -4,7 +4,8 @@
    a sibling CSS module file in /consumer-duty (kept in sync by hand). */
 
 /* Mirrors the live realwealth.co.uk header: pure white surface,
-   80px min-height desktop / 58px mobile, 25px / 6px horizontal padding. */
+   80px / 58px min-height, 25px / 6px horizontal padding, responsive
+   200 / 188 / 152px ink wordmark. */
 .topnav {
   position: sticky;
   top: 0;
@@ -15,12 +16,20 @@
   display: flex;
   align-items: center;
   border-bottom: 1px solid rgba(53, 53, 53, 0.05);
+  --logo-width: 200px;
+}
+
+@media (max-width: 1199px) {
+  .topnav {
+    --logo-width: 188px;
+  }
 }
 
 @media (max-width: 767px) {
   .topnav {
     padding: 0 6px;
     min-height: 58px;
+    --logo-width: 152px;
   }
 }
 

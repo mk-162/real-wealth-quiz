@@ -66,9 +66,10 @@ export default function Home() {
   return (
     <>
       <header className={styles.topnav}>
-        {/* Matches live realwealth.co.uk: 200px ink (near-black) wordmark,
-            left-aligned on a pure white header row. */}
-        <Logo tone="ink" width={200} />
+        {/* Width is owned by the parent header's `--logo-width` custom
+            property so we get the live-site's responsive ladder
+            (200 / 188 / 152 across desktop / tablet / mobile). */}
+        <Logo tone="ink" />
         <a
           href="#tier-picker"
           className={styles.topnavCta}

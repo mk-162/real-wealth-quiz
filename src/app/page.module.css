@@ -3,11 +3,11 @@
    teal hero, orange-gradient pill CTAs on paper, square summary preview. */
 
 /* Sticky minimal header -------------------------------------------- */
-/* Mirrors the live realwealth.co.uk header: pure white surface,
-   80px min-height desktop / 58px mobile, 25px horizontal padding
-   desktop / 6px mobile, left-aligned black wordmark. Content edges
-   sit flush to the 1480px container max-width so the logo aligns
-   with the page content below. */
+/* Mirrors the live realwealth.co.uk header: pure white surface, 80px
+   min-height desktop / 58px mobile, 25px / 6px horizontal padding,
+   left-aligned black wordmark at 200 / 188 / 152 px across desktop /
+   tablet / mobile. `--logo-width` cascades into the Logo component,
+   which is configured to read it with a 160px fallback. */
 .topnav {
   position: sticky;
   top: 0;
@@ -20,12 +20,20 @@
   justify-content: space-between;
   gap: var(--space-md);
   border-bottom: 1px solid rgba(53, 53, 53, 0.05);
+  --logo-width: 200px;
+}
+
+@media (max-width: 1199px) {
+  .topnav {
+    --logo-width: 188px;
+  }
 }
 
 @media (max-width: 767px) {
   .topnav {
     padding: 0 6px;
     min-height: 58px;
+    --logo-width: 152px;
   }
 }
 
