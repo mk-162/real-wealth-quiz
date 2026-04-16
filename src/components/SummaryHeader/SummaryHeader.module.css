@@ -1,6 +1,9 @@
+/* Matches the live realwealth.co.uk header: pure white surface, left-
+   aligned 200px ink wordmark, 80px / 58px min-heights, 25px / 6px
+   horizontal padding. */
 .header {
-  background: var(--paper-warm);
-  border-bottom: 1px solid var(--border-subtle);
+  background: var(--paper);
+  border-bottom: 1px solid rgba(53, 53, 53, 0.05);
 }
 
 .inner {
@@ -10,7 +13,15 @@
   gap: var(--space-md);
   max-width: var(--container-max);
   margin: 0 auto;
-  padding: var(--space-md) var(--gutter);
+  padding: 0 25px;
+  min-height: 80px;
+}
+
+@media (max-width: 767px) {
+  .inner {
+    padding: 0 6px;
+    min-height: 58px;
+  }
 }
 
 .brand {

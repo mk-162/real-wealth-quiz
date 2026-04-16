@@ -28,7 +28,7 @@ export default function ConsumerDutyPage() {
   return (
     <>
       <header className={styles.topnav}>
-        <Logo tone="teal" width={160} />
+        <Logo tone="ink" width={200} />
       </header>
 
       <main className={styles.main}>

@@ -100,7 +100,7 @@ function Questionnaire() {
     <div className={styles.shell}>
       <header className={styles.header}>
         <div className={styles.headLeft}>
-          <Logo tone="teal" width={128} />
+          <Logo tone="ink" width={200} />
         </div>
         <div className={styles.headRight}>
           <SlideSwap

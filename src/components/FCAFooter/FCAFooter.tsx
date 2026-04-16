@@ -32,7 +32,10 @@ export function FCAFooter() {
     <footer className={styles.footer} role="contentinfo">
       <div className={styles.inner}>
         <div className={styles.logoWrap}>
-          <Logo tone="paper" width={140} />
+          {/* Matches the live realwealth.co.uk wordmark — 177px width in
+              the site footer's row. Pure white via the parent's filter
+              override (see FCAFooter.module.css .logoWrap img). */}
+          <Logo tone="paper" width={177} />
         </div>
 
         {/* Promises strip — moved here from beneath each question so the

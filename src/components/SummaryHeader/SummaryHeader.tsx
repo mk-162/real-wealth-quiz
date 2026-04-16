@@ -31,7 +31,7 @@ export function SummaryHeader({
           className={styles.brand}
           aria-label="Real Wealth — home"
         >
-          <Logo tone="teal" width={140} />
+          <Logo tone="ink" width={200} />
         </a>
         <nav className={styles.nav} aria-label="Primary">
           <a

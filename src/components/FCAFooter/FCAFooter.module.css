@@ -1,28 +1,46 @@
+/* FCAFooter — styled to match the live realwealth.co.uk footer.
+   Key live-site values:
+     - Background: 236deg gradient across #333566 → rgb(68,78,122) → #333566
+     - Body text: font-size 0.7em, line-height 1.7, color rgba(255,255,255,0.6)
+     - Logo: wordmark 177×35, pure white
+     - Container max-width: 1480px (our --container-max)
+     - Bottom-footer padding: 17px */
 .footer {
   margin-top: var(--space-xxl);
-  padding: var(--space-lg) var(--space-md);
-  background: var(--navy);
+  padding: var(--space-hero) var(--gutter) var(--space-lg);
+  background: linear-gradient(
+    236deg,
+    var(--navy) 8%,
+    rgb(68, 78, 122) 43%,
+    rgb(68, 78, 122) 56%,
+    var(--navy) 92%
+  );
   color: rgba(255, 255, 255, 0.6);
-  font-size: var(--fs-small);
+  font-size: 0.7em;
   line-height: 1.7;
+  font-weight: 400;
   text-align: center;
 }
 
+/* Tighter bottom padding — matches live site's 17px on the regulatory row. */
+.footer > .inner > :last-child {
+  padding-bottom: 17px;
+}
+
 .inner {
-  max-width: var(--content-max);
+  max-width: var(--container-max);
   margin: 0 auto;
 }
 
-/* Logo: force pure white on the navy footer surface. The inner Logo
-   component ships its own filter rule keyed to `data-tone='paper'`
-   with higher specificity than a class-only selector here, so we bump
-   our own selector with !important — the footer is the only place the
-   logo needs a hard-override white fill, and this avoids adding a new
-   tone to the shared Logo component. */
+/* Logo: 177px wordmark, pure white. Mirrors the `theFooter` row on the
+   live site which sits the wordmark centred above the copyright block.
+   The inner Logo component ships its own filter rule keyed to
+   `data-tone='paper'` — we override with !important since that rule has
+   higher specificity than any class selector here. */
 .logoWrap {
   display: flex;
   justify-content: center;
-  margin-bottom: var(--space-lg);
+  margin-bottom: var(--space-xl);
 }
 
 .logoWrap :global(img) {
@@ -30,11 +48,10 @@
   opacity: 1;
 }
 
-/* Promises strip — a gently raised plate inside the footer. Subtle
-   white-tinted surface with a hairline border sets it apart from the
-   plain regulatory text below without overpowering it. Vertical rhythm
-   is tuned for two short title+body pairs; the stack reads as two
-   natural rows on narrow viewports and as two columns on wider ones. */
+/* Promises strip — a gently raised plate inside the footer. This block
+   is app-specific (the live marketing site doesn't have it) but it uses
+   the same surface vocabulary as the navy footer: subtle white-tinted
+   background, hairline border, white title + muted body. */
 .promises {
   list-style: none;
   margin: 0 auto var(--space-xl);
@@ -46,6 +63,8 @@
   display: grid;
   gap: var(--space-md);
   text-align: left;
+  font-size: var(--fs-small); /* undo parent 0.7em for readability */
+  line-height: 1.5;
 }
 
 @media (min-width: 640px) {
@@ -60,8 +79,6 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
-  font-size: var(--fs-small);
-  line-height: 1.5;
 }
 
 .promiseTitle {
@@ -79,14 +96,22 @@
   line-height: 1.55;
 }
 
+/* Link treatment — matches the live site's muted white links with a
+   thin underline. */
 .footer a {
   color: rgba(255, 255, 255, 0.85);
   text-decoration: underline;
   text-underline-offset: 3px;
+  transition: color var(--duration-fast) var(--ease-default);
+}
+
+.footer a:hover {
+  color: var(--paper);
 }
 
 .disclosure {
-  margin: 0 0 var(--space-md);
+  margin: 0 auto var(--space-md);
+  max-width: 72ch;
 }
 
 .links {

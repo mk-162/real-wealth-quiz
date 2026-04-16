@@ -11,19 +11,29 @@
   }
 }
 
+/* Mirrors the live realwealth.co.uk header: pure white surface,
+   80px min-height desktop / 58px mobile, 25px / 6px horizontal padding.
+   Left-aligned ink wordmark; right-aligned section chip + progress
+   stays as before (functional questionnaire chrome). */
 .header {
   position: sticky;
   top: 0;
   z-index: var(--z-sticky);
-  background: rgba(250, 248, 246, 0.94);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  padding: var(--space-sm) var(--gutter);
+  background: var(--paper);
+  padding: 0 25px;
+  min-height: 80px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-sm);
   border-bottom: 1px solid rgba(53, 53, 53, 0.05);
+}
+
+@media (max-width: 767px) {
+  .header {
+    padding: 0 6px;
+    min-height: 58px;
+  }
 }
 
 .headLeft,
