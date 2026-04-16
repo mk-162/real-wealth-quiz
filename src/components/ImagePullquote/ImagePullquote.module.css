@@ -12,8 +12,9 @@
   object-fit: cover;
   display: block;
   transition: transform 600ms var(--ease-default);
-  /* Match the realwealth.co.uk small-card image shape. Defs are
-     mounted globally via <HeroMaskDefs/> in the root layout. */
+  /* Match the realwealth.co.uk small-card image shape. The figure's
+     border-radius + overflow:hidden (above) is the primary clipper;
+     the SVG clip-path from HeroMaskDefs is the authored backstop. */
   clip-path: url(#rw-hero-small);
 }
 .figure:hover .img {

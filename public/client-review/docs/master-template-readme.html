@@ -6,24 +6,24 @@
   <meta name="robots" content="noindex, nofollow">
   <title>Master Template README - Real Wealth Client Review</title>
   <meta name="description" content="Engineering guide to the Next.js scaffold and project layout.">
-  <link rel="stylesheet" href="../site.css">
+  <link rel="stylesheet" href="/client-review/site.css">
 </head>
 <body>
   <header class="site-header">
-    <a class="logo-link" href="../index.html" aria-label="Real Wealth client review home">
+    <a class="logo-link" href="/client-review" aria-label="Real Wealth client review home">
       <img src="/real-wealth-logo-wordmark.svg" alt="Real Wealth">
     </a>
     <nav class="site-nav" aria-label="Primary navigation">
-      <a href="../index.html#service">Service</a>
-      <a href="../index.html#question-flow">Question flow</a>
-      <a href="../index.html#delivery">Delivery</a>
-      <a href="../index.html#documents">Docs</a>
+      <a href="/client-review#service">Service</a>
+      <a href="/client-review#question-flow">Question flow</a>
+      <a href="/client-review#delivery">Delivery</a>
+      <a href="/client-review#documents">Docs</a>
       <a class="service-link" href="/">Open service</a>
     </nav>
   </header>
   
 <main class="doc-page">
-  <a class="back-link" href="../index.html#documents">Back to review library</a>
+  <a class="back-link" href="/client-review#documents">Back to review library</a>
   <article class="doc-article">
     <header class="doc-hero">
       <p class="eyebrow">Source document</p>
@@ -47,7 +47,7 @@ npm run content:compile  # regenerates Content Brief — Compiled.md</code></pre
 <p>Node 24 LTS is the current Vercel default and is recommended.</p>
 <h3>Content architecture</h3>
 <p>Every piece of user-facing copy lives under <code>content/</code> as per-entry markdown files with YAML frontmatter. The build validates against Zod schemas in <code>content/schema.ts</code>, emits typed catalogues to <code>src/lib/content/</code>, and regenerates a human-readable <code>Content Brief — Compiled.md</code> at the project root on request.</p>
-<p>See <a href="./content-readme.html"><code>content/README.md</code></a> for the client&#039;s authoring guide.</p>
+<p>See <a href="/client-review/docs/content-readme.html"><code>content/README.md</code></a> for the client&#039;s authoring guide.</p>
 <p><strong>At a glance:</strong></p>
 <ul>
 <li><code>content/pages/*.md</code> — homepage, data-capture, summary-page structure</li>

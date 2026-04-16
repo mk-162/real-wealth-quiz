@@ -178,7 +178,7 @@ function inlineMarkdown(value) {
 function rewriteDocHref(href) {
   const decoded = decodeURIComponent(href).replaceAll('\\', '/');
   const match = docs.find((doc) => decoded.endsWith(doc.source.replaceAll('\\', '/').split('/').slice(-1)[0]));
-  if (match) return `./${match.slug}.html`;
+  if (match) return `/client-review/docs/${match.slug}.html`;
   return href;
 }
 
@@ -300,8 +300,7 @@ function renderMarkdown(markdown) {
   return out.join('\n');
 }
 
-function pageShell({ title, description, body, depth = 0 }) {
-  const prefix = depth === 0 ? './' : '../';
+function pageShell({ title, description, body }) {
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -310,18 +309,18 @@ function pageShell({ title, description, body, depth = 0 }) {
   <meta name="robots" content="noindex, nofollow">
   <title>${escapeHtml(title)} - Real Wealth Client Review</title>
   <meta name="description" content="${escapeHtml(description)}">
-  <link rel="stylesheet" href="${prefix}site.css">
+  <link rel="stylesheet" href="/client-review/site.css">
 </head>
 <body>
   <header class="site-header">
-    <a class="logo-link" href="${prefix}index.html" aria-label="Real Wealth client review home">
+    <a class="logo-link" href="/client-review" aria-label="Real Wealth client review home">
       <img src="/real-wealth-logo-wordmark.svg" alt="Real Wealth">
     </a>
     <nav class="site-nav" aria-label="Primary navigation">
-      <a href="${prefix}index.html#service">Service</a>
-      <a href="${prefix}index.html#question-flow">Question flow</a>
-      <a href="${prefix}index.html#delivery">Delivery</a>
-      <a href="${prefix}index.html#documents">Docs</a>
+      <a href="/client-review#service">Service</a>
+      <a href="/client-review#question-flow">Question flow</a>
+      <a href="/client-review#delivery">Delivery</a>
+      <a href="/client-review#documents">Docs</a>
       <a class="service-link" href="/">Open service</a>
     </nav>
   </header>
@@ -339,7 +338,7 @@ function pageShell({ title, description, body, depth = 0 }) {
 
 function buildIndex() {
   const docCards = docs.map((doc) => `
-    <a class="doc-card" href="./docs/${doc.slug}.html">
+    <a class="doc-card" href="/client-review/docs/${doc.slug}.html">
       <span>Document</span>
       <strong>${escapeHtml(doc.title)}</strong>
       <p>${escapeHtml(doc.summary)}</p>
@@ -359,8 +358,8 @@ function buildIndex() {
       </div>
     </div>
     <div class="hero-visual" aria-label="Service screenshots">
-      <figure class="shot shot-main"><img src="./assets/question-screen.png" alt="Real Wealth questionnaire screen"><figcaption>Questionnaire</figcaption></figure>
-      <figure class="shot shot-small"><img src="./assets/summary-screen.png" alt="Real Wealth summary screen"><figcaption>Triggered summary</figcaption></figure>
+      <figure class="shot shot-main"><img src="/client-review/assets/question-screen.png" alt="Real Wealth questionnaire screen"><figcaption>Questionnaire</figcaption></figure>
+      <figure class="shot shot-small"><img src="/client-review/assets/summary-screen.png" alt="Real Wealth summary screen"><figcaption>Triggered summary</figcaption></figure>
     </div>
   </section>
 
@@ -481,7 +480,7 @@ function buildIndex() {
     </div>
   </section>
 </main>
-<script src="./app.js"></script>`;
+<script src="/client-review/app.js"></script>`;
 
   return pageShell({
     title: 'Wealth Conversation Service Review',
@@ -494,7 +493,7 @@ function buildDocPage(doc) {
   const raw = readFileSync(doc.source, 'utf8');
   const body = `
 <main class="doc-page">
-  <a class="back-link" href="../index.html#documents">Back to review library</a>
+  <a class="back-link" href="/client-review#documents">Back to review library</a>
   <article class="doc-article">
     <header class="doc-hero">
       <p class="eyebrow">Source document</p>

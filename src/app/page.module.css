@@ -186,11 +186,13 @@
   position: relative;
   aspect-ratio: 16 / 11;
   box-shadow: 0 50px 80px -40px rgba(0, 0, 0, 0.45);
-  /* Rounded rectangle matching the realwealth.co.uk hero shape: 22px
-     radius at the reference width, scaled via clip-path in the img
-     below. We mirror the curvature on the figure's border-radius so
-     the box-shadow silhouette lines up with the clipped image. */
+  /* Rounded rectangle matching the realwealth.co.uk hero shape.
+     `border-radius` + `overflow: hidden` clips the image to the
+     exact 22px-radius corners regardless of intrinsic image size;
+     the clip-path on .heroImg below is the SVG-authored backstop
+     so the shape stays in one place of truth. */
   border-radius: 22px;
+  overflow: hidden;
 }
 @media (min-width: 1024px) {
   .heroMedia {
@@ -207,8 +209,10 @@
   display: block;
   transition: transform 800ms var(--ease-default);
   /* Shared rounded-rect clip-path from HeroMaskDefs (see
-     src/components/HeroMaskDefs). Keeps every hero on-brand and
-     swappable from a single source. */
+     src/components/HeroMaskDefs). The objectBoundingBox variant
+     scales with the image box; the figure's overflow:hidden +
+     22px border-radius above guarantees the shape renders even
+     on browsers that don't honour SVG clip-path on HTML images. */
   clip-path: url(#rw-hero-large);
 }
 .heroMedia:hover .heroImg {
