@@ -30,3 +30,6 @@ export * from './FCAFooter';
 export * from './IllustrativeChart';
 export * from './WhyAskToggle';
 export * from './ResumeBanner';
+export * from './SpotlightFlag';
+export * from './SilentGapCard';
+export * from './Bridge';

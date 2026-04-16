@@ -24,6 +24,21 @@ export interface Contact {
 
 export type AwarenessLevel = 'aware' | 'partial' | 'unaware';
 
+/**
+ * Telemetry for the summary page — which resolver outputs rendered on a
+ * given render. Written to the session each time the summary page mounts
+ * so /demo/raw can display what the user actually saw.
+ */
+export interface SummaryRecord {
+  emotionalStateVariant: string;
+  compoundFlagId: string | null;
+  compoundFlagTriggerAnswers: string[];
+  silentGapFlags: string[];
+  inlineChartIds: string[];
+  ctaVariant: string;
+  ctaEnhanced: boolean;
+}
+
 export interface Session {
   version: string;
   createdAt: string; // ISO date
@@ -37,6 +52,8 @@ export interface Session {
   firedAwareness?: Record<string, AwarenessLevel>;
   /** Provocation ids the user has already had shown (sticky once fired). */
   firedProvocations?: string[];
+  /** Snapshot of the summary-page resolver outputs. Written on mount. */
+  summary?: SummaryRecord;
 }
 
 /** Safely read localStorage. Returns null on SSR, missing, or parse failure. */

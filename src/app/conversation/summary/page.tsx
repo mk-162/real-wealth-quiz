@@ -1,22 +1,29 @@
 /**
- * Summary / results page — aspiration echo, considered list, illustrative
- * charts, segment-specific CTA, FCA footer. Never gives advice.
+ * Summary / results page.
  *
- * Reads URL params for demo purposes (since the engine's runtime state
- * doesn't yet persist across route changes):
+ * Seven-section structure (per Summary Page Redesign prompt, 2026-04-16):
+ *   1. Aspiration echo
+ *   2. Emotional-state intro + considered-list heading
+ *   3. Spotlight compound flag (conditional)
+ *   4. Considered list + inline charts
+ *   5. "Things we didn't ask — but noticed" (conditional)
+ *   6. "What We Didn't Ask" bridge paragraph (not for Tier C)
+ *   7. Segment-tailored CTA (enhanced treatment for advised_but_looking)
+ *   + FCA footer and start-over link
  *
- *   ?segment=S3                     — assigned segment id
- *   ?urgency=this_week              — optional urgency overlay
- *   ?adviceStatus=yes_looking       — optional advised-but-looking overlay
- *   ?aspiration=<text>              — user's Q2.4 answer
+ * Every flag is a conversation invitation — never a calculation.
+ * All visual tokens via var(--*). No hex values in CSS (see tokens.css).
  */
 'use client';
 
 import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { AspirationEcho } from '@/components/AspirationEcho';
+import { Bridge } from '@/components/Bridge';
 import { FinalCTA } from '@/components/FinalCTA';
 import { IllustrativeChart } from '@/components/IllustrativeChart';
+import { SilentGapCard } from '@/components/SilentGapCard';
+import { SpotlightFlag } from '@/components/SpotlightFlag';
 import {
   awareness as awarenessCatalogue,
   microcopy,
@@ -33,6 +40,14 @@ import {
   type GatingAnswers,
   type HouseholdTag,
 } from '@/lib/segmentation';
+import {
+  buildSummaryInputs,
+  chartForCard,
+  selectEmotionalIntro,
+  selectSilentGaps,
+  selectSpotlightFlag,
+  type SummaryInputs,
+} from '@/lib/summary';
 import styles from './page.module.css';
 
 export default function SummaryPage() {
@@ -62,6 +77,23 @@ function Summary() {
   const urgency = derived.urgency ?? params.get('urgency');
   const adviceStatus = derived.adviceStatus ?? params.get('adviceStatus');
   const aspirationParam = derived.aspiration ?? params.get('aspiration') ?? '';
+  const tier = (session?.tier ?? params.get('tier') ?? 'A') as string;
+
+  /* Treat yes_but_looking (internal form value) and yes_looking
+     (legacy overlay key) as the same high-intent state. */
+  const isAdvisedLooking =
+    adviceStatus === 'yes_but_looking' || adviceStatus === 'yes_looking';
+
+  /* Narrowed inputs for every summary resolver. */
+  const inputs: SummaryInputs = useMemo(
+    () =>
+      buildSummaryInputs(session, segmentId, {
+        urgency,
+        currentAdviser: isAdvisedLooking ? 'yes_but_looking' : adviceStatus,
+        happyPlace: aspirationParam.trim().length > 0 ? aspirationParam : null,
+      }),
+    [session, segmentId, urgency, adviceStatus, isAdvisedLooking, aspirationParam],
+  );
 
   /* --- Copy sourced from content/pages/summary.md ------------------ */
   const listKicker = pageValue<string>(
@@ -69,33 +101,40 @@ function Summary() {
     'considered_list.section_heading',
     'THINGS WORTH A CONVERSATION',
   );
-  const listIntro = pageValue<string>(
-    'summary',
-    'considered_list.intro',
-    'From your answers, these are worth a conversation.',
-  );
   const listFinal = pageValue<string>(
     'summary',
     'considered_list.final_line',
     "We'll save this list against your name. If you book a call, we'll bring it to the conversation so you don't have to.",
-  );
-
-  const chartsKicker = pageValue<string>('summary', 'charts.section_heading', 'THE SHAPE OF IT');
-  const chartsIntro = pageValue<string>(
-    'summary',
-    'charts.intro',
-    "Not your numbers — nobody's numbers. The shape of the question.",
   );
   const chartsDisclaimer = pageValue<string>(
     'summary',
     'charts.disclaimer',
     'These are not projections of your personal numbers.',
   );
-
+  const silentGapsHeading = pageValue<string>(
+    'summary',
+    'silent_gaps.section_heading',
+    "THINGS WE DIDN'T ASK — BUT NOTICED",
+  );
+  const silentGapsIntro = pageValue<string>(
+    'summary',
+    'silent_gaps.intro',
+    "Based on the shape of what you've told us, a few things stand out — even though we didn't ask about them directly.",
+  );
+  const bridgeCopy = pageValue<string>(
+    'summary',
+    'bridge.copy',
+    "We haven't asked everything — no 10-minute form could. A planner will fill in the detail that changes the picture.",
+  );
   const aspirationCaption = pageValue<string>(
     'summary',
     'aspiration_echo.caption',
     '— in your words, gently rephrased.',
+  );
+  const illustrativeTag = pageValue<string>(
+    'summary',
+    'charts.per_chart_illustrative_tag',
+    'ILLUSTRATIVE EXAMPLE',
   );
 
   /* Aspiration echo — user-written line, else a template fallback. */
@@ -106,22 +145,76 @@ function Summary() {
   );
   const aspirationLine = aspirationParam.trim().length > 0 ? aspirationParam : fallbackLine;
 
-  const cta = useMemo(() => resolveCta(segmentId, urgency, adviceStatus), [
-    segmentId,
-    urgency,
-    adviceStatus,
-  ]);
-  const items = useMemo(() => buildConsideredList(segmentId), [segmentId]);
+  /* Resolvers. */
+  const emotionalIntro = useMemo(() => selectEmotionalIntro(inputs), [inputs]);
+  const spotlight = useMemo(() => selectSpotlightFlag(inputs), [inputs]);
+  const silentGaps = useMemo(() => {
+    const min = pageValue<number>('summary', 'silent_gaps.min_cards', 2);
+    const gaps = selectSilentGaps(inputs);
+    return gaps.length >= min ? gaps : [];
+  }, [inputs]);
+
+  const items = useMemo(() => buildConsideredList(segmentId, inputs), [segmentId, inputs]);
+  const cta = useMemo(
+    () => resolveCta(segmentId, urgency, isAdvisedLooking ? 'yes_looking' : adviceStatus),
+    [segmentId, urgency, adviceStatus, isAdvisedLooking],
+  );
+
+  /* Hide the bridge for Tier C — the quick-picture path is deliberately terse. */
+  const showBridge = tier !== 'C';
+
+  /* Telemetry — expose the resolver results in the persisted session so the
+     /demo/raw view can render them. We write once per render key change. */
+  useEffect(() => {
+    if (typeof window === 'undefined' || !session) return;
+    const record = {
+      ...session,
+      summary: {
+        emotionalStateVariant: emotionalIntro.id,
+        compoundFlagId: spotlight?.id ?? null,
+        compoundFlagTriggerAnswers: spotlight?.triggerAnswerIds ?? [],
+        silentGapFlags: silentGaps.map((g) => g.id),
+        inlineChartIds: items.flatMap((i) => (i.chartId ? [i.chartId] : [])),
+        ctaVariant: isAdvisedLooking ? `${segmentId}+advised_but_looking` : segmentId,
+        ctaEnhanced: isAdvisedLooking,
+      },
+    };
+    try {
+      window.localStorage.setItem('real-wealth:conversation', JSON.stringify(record));
+    } catch {
+      /* quota exceeded — silently drop */
+    }
+  }, [session, emotionalIntro.id, spotlight, silentGaps, items, isAdvisedLooking, segmentId]);
 
   return (
     <div className={styles.shell}>
+      {/* Section 1 — Aspiration echo */}
       <div className={styles.heroOverlay}>
         <AspirationEcho line={aspirationLine} caption={aspirationCaption} />
       </div>
 
-      <section className={styles.list} aria-labelledby="considered">
+      {/* Section 2 — Emotional-state intro + considered-list heading */}
+      <section className={styles.intro} aria-labelledby="considered">
         <span className={styles.listKicker}>{listKicker}</span>
-        <h2 id="considered">{listIntro}</h2>
+        <h2 id="considered" className={styles.introCopy}>
+          {emotionalIntro.copy}
+        </h2>
+      </section>
+
+      {/* Section 3 — Spotlight compound flag (conditional) */}
+      {spotlight ? (
+        <div className={styles.spotlightWrap}>
+          <SpotlightFlag
+            eyebrow={spotlight.eyebrow}
+            headline={spotlight.headline}
+            body={spotlight.body}
+            close={spotlight.close}
+          />
+        </div>
+      ) : null}
+
+      {/* Section 4 — Considered list (with inline charts) */}
+      <section className={styles.list} aria-label="Considered list">
         <ul className={styles.items}>
           {items.map((item) => (
             <li
@@ -136,6 +229,16 @@ function Summary() {
                 <span className={styles.itemEyebrow}>{item.category}</span>
                 <span className={styles.itemHeadline}>{item.headline}</span>
                 <span className={styles.itemText}>{item.body}</span>
+                {item.chart ? (
+                  <span className={styles.inlineChartWrap}>
+                    <IllustrativeChart
+                      title={item.chart.title}
+                      assumptions={item.chart.caption}
+                    >
+                      <PlaceholderBars highlightIndex={highlightForChart(item.chart.id)} />
+                    </IllustrativeChart>
+                  </span>
+                ) : null}
                 {item.close ? (
                   <span className={styles.itemClose}>{item.close}</span>
                 ) : null}
@@ -148,38 +251,37 @@ function Summary() {
           ))}
         </ul>
         <p className={styles.listFinal}>{listFinal}</p>
-      </section>
-
-      <section className={styles.charts} aria-labelledby="illustrative">
-        <div className={styles.chartsInner}>
-          <span className={styles.chartsKicker}>{chartsKicker}</span>
-          <p id="illustrative" className={styles.chartsIntro}>
-            {chartsIntro}
-          </p>
-          <div className={styles.chartGrid}>
-            <IllustrativeChart
-              title="How IHT can bite above £2m"
-              assumptions="£2.5m estate, married couple, RNRB in full."
-            >
-              <PlaceholderBars highlightIndex={4} />
-            </IllustrativeChart>
-            <IllustrativeChart
-              title="0.6% in fees over 20 years"
-              assumptions="£500k invested, 5% gross return, 0.3% vs 0.9% total fees."
-            >
-              <PlaceholderBars highlightIndex={1} />
-            </IllustrativeChart>
-            <IllustrativeChart
-              title="How extraction mix changes the tax bill"
-              assumptions="£100k drawn, salary-only vs salary + dividend + pension."
-            >
-              <PlaceholderBars highlightIndex={2} />
-            </IllustrativeChart>
-          </div>
+        {items.some((i) => i.chart) ? (
           <p className={styles.chartsDisclaimer}>{chartsDisclaimer}</p>
-        </div>
+        ) : null}
+        {/* Unused but retained for future injection of a custom label. */}
+        <span hidden>{illustrativeTag}</span>
       </section>
 
+      {/* Section 5 — Silent gaps (conditional, 2+ triggers) */}
+      {silentGaps.length > 0 ? (
+        <section
+          className={styles.silentGaps}
+          aria-labelledby="silent-gaps-heading"
+        >
+          <div className={styles.silentGapsInner}>
+            <span id="silent-gaps-heading" className={styles.silentGapsKicker}>
+              {silentGapsHeading}
+            </span>
+            <p className={styles.silentGapsIntro}>{silentGapsIntro}</p>
+            <div className={styles.silentGapsGrid}>
+              {silentGaps.map((g) => (
+                <SilentGapCard key={g.id} body={g.body} />
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
+
+      {/* Section 6 — Bridge (not for Tier C) */}
+      {showBridge ? <Bridge copy={bridgeCopy} /> : null}
+
+      {/* Section 7 — Segment CTA (enhanced if advised-but-looking) */}
       <FinalCTA
         headline={cta.headline}
         body={cta.body}
@@ -187,6 +289,7 @@ function Summary() {
         buttonHref={cta.button_link}
         helper={cta.helper}
         preamble={cta.preamble}
+        enhanced={isAdvisedLooking}
       />
 
       <StartOverFooter />
@@ -328,9 +431,11 @@ interface ListItem {
   close?: string;
   compliance: 'draft' | 'ok';
   rank: number;
+  chart?: { id: string; title: string; caption: string };
+  chartId?: string;
 }
 
-function buildConsideredList(segmentId: string): ListItem[] {
+function buildConsideredList(segmentId: string, inputs: SummaryInputs): ListItem[] {
   /* Provocations whose `segments` array includes `'all'` or the assigned id. */
   const segmentProvocations = provocationCatalogue.filter(
     (p) => p.segments.includes('all') || p.segments.includes(segmentId),
@@ -341,7 +446,7 @@ function buildConsideredList(segmentId: string): ListItem[] {
     .filter((a) => a.core)
     .sort((a, b) => (a.rank ?? 99) - (b.rank ?? 99));
 
-  const awarenessItems: ListItem[] = coreAwareness.slice(0, 4).map((a) => ({
+  const awarenessItems: ListItem[] = coreAwareness.slice(0, 3).map((a) => ({
     id: a.id,
     category: categoryFromId(a.id),
     headline: trimToTenWords(a.stem),
@@ -369,17 +474,28 @@ function buildConsideredList(segmentId: string): ListItem[] {
     return true;
   });
 
-  /* In production, draft compliance content must not reach the user. In
-     dev we keep drafts so authors can see what's landing and flag it
-     via the "DRAFT — pending compliance" tag in the list body. When
-     every item would be filtered (all content still in draft), fall
-     back to showing the draft list so the page never looks broken. */
   deduped.sort((a, b) => a.rank - b.rank);
+
+  /* Cap at 5 (reduced from 6 — spotlight compound flag now carries the 6th slot). */
+  let trimmed: ListItem[];
   if (process.env.NODE_ENV === 'production') {
     const approvedOnly = deduped.filter((item) => item.compliance === 'ok');
-    if (approvedOnly.length > 0) return approvedOnly.slice(0, 6);
+    trimmed = approvedOnly.length > 0 ? approvedOnly.slice(0, 5) : deduped.slice(0, 5);
+  } else {
+    trimmed = deduped.slice(0, 5);
   }
-  return deduped.slice(0, 6);
+
+  /* Attach inline charts — max 2 across the whole list per brief §4. */
+  let chartsAttached = 0;
+  const withCharts = trimmed.map((item) => {
+    if (chartsAttached >= 2) return item;
+    const chart = chartForCard(item.id, inputs);
+    if (!chart) return item;
+    chartsAttached += 1;
+    return { ...item, chart, chartId: chart.id };
+  });
+
+  return withCharts;
 }
 
 interface Derived {
@@ -469,6 +585,25 @@ function categoryFromId(id: string): string {
     return 'ADVICE & FAMILY';
   }
   return 'WORTH NOTICING';
+}
+
+function highlightForChart(id: string): number {
+  switch (id) {
+    case 'income_trap_100k':
+      return 4;
+    case 'iht_on_3m':
+      return 0;
+    case 'extraction_mix':
+      return 2;
+    case 'compounding_line':
+      return 5;
+    case 'drawdown_paths':
+      return 1;
+    case 'badr_transition':
+      return 3;
+    default:
+      return 2;
+  }
 }
 
 /** Deliberately plain bar placeholder so the page renders end-to-end. */

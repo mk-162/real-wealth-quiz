@@ -17,6 +17,8 @@ export interface FinalCTAProps {
   helper?: string;
   /** Shown as a small advisory line above the main CTA when the urgency overlay applies. */
   preamble?: string;
+  /** Enhanced teal-gradient treatment for the highest-intent (`advised_but_looking`) users. */
+  enhanced?: boolean;
   onBook?: () => void;
 }
 
@@ -27,6 +29,7 @@ export function FinalCTA({
   buttonHref,
   helper,
   preamble,
+  enhanced = false,
   onBook,
 }: FinalCTAProps) {
   const handleClick = () => {
@@ -34,8 +37,10 @@ export function FinalCTA({
     else if (buttonHref) window.open(normaliseHref(buttonHref), '_blank', 'noopener,noreferrer');
   };
 
+  const cardClassName = enhanced ? `${styles.block} ${styles.enhanced}` : styles.block;
+
   return (
-    <section className={styles.block} aria-label="Book a call">
+    <section className={cardClassName} aria-label="Book a call" data-enhanced={enhanced ? 'true' : undefined}>
       {preamble ? <p className={styles.preamble}>{preamble}</p> : null}
       <h2 className={styles.headline}>{headline}</h2>
       <p className={styles.sub}>{body}</p>

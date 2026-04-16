@@ -50,6 +50,53 @@
   color: var(--brand-teal);
 }
 
+/* Enhanced — teal-gradient treatment for highest-intent users
+   (advised_but_looking overlay). Mirrors the spotlight flag register
+   so the two highest-impact moments on the page share styling. */
+.enhanced {
+  max-width: 560px;
+  padding: var(--space-lg) var(--space-md);
+  background: var(--gradient-teal);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  color: var(--paper);
+}
+
+@media (min-width: 768px) {
+  .enhanced {
+    padding: var(--space-xl);
+  }
+}
+
+.enhanced .headline {
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-weight: 200;
+  font-size: 32px;
+  color: var(--paper);
+  line-height: var(--lh-heading);
+}
+
+@media (min-width: 768px) {
+  .enhanced .headline {
+    font-size: 36px;
+  }
+}
+
+.enhanced .sub {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.enhanced .alt {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.enhanced .preamble {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.4);
+  color: var(--paper);
+}
+
 @keyframes fadeUp {
   from {
     opacity: 0;
@@ -58,5 +105,11 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .block {
+    animation: none;
   }
 }

@@ -1,0 +1,29 @@
+.card {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: flex-start;
+  padding: var(--space-sm);
+  background: var(--paper);
+  border-radius: 8px;
+  box-shadow: var(--shadow-sm);
+}
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  color: var(--brand-teal);
+  margin-top: 2px;
+}
+
+.body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--fs-ui);
+  line-height: var(--lh-body);
+  color: var(--ink);
+  max-width: 60ch;
+}

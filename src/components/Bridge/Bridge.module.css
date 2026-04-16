@@ -1,0 +1,29 @@
+.block {
+  max-width: 580px;
+  margin: 0 auto;
+  padding: var(--space-xl) var(--space-md) var(--space-lg);
+  text-align: center;
+  background: var(--paper);
+}
+
+@media (min-width: 768px) {
+  .block {
+    padding: var(--space-xxl) var(--space-md) var(--space-xl);
+  }
+}
+
+.copy {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-weight: 300;
+  font-size: 18px;
+  line-height: var(--lh-question);
+  color: var(--brand-teal);
+}
+
+@media (min-width: 768px) {
+  .copy {
+    font-size: var(--fs-question);
+  }
+}
