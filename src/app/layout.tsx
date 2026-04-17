@@ -9,14 +9,13 @@
  */
 import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
-import { DevNav } from '@/components/DevNav';
 import { HeroMaskDefs } from '@/components/HeroMaskDefs';
 import './globals.css';
 
 export const metadata: Metadata = {
   title: 'The Wealth Conversation — Real Wealth',
   description:
-    'A ten-minute conversation with yourself about the life you’re planning for. No advice — a shortlist of things worth talking to a planner about.',
+    'Your free Wealth Report. Ten minutes of honest questions about your money. In return, a written report showing where your planning is strong, where the gaps are, and what’s worth talking to a planner about.',
 };
 
 export const viewport: Viewport = {
@@ -34,8 +33,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             route can reference the ids from CSS (clip-path: url(#rw-hero-large)). */}
         <HeroMaskDefs />
         {children}
-        {/* Temporary — remove before shipping. Lets reviewers jump between templates. */}
-        <DevNav />
       </body>
     </html>
   );

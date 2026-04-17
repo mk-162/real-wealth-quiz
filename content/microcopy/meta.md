@@ -5,7 +5,7 @@ entries:
   - key: home_title
     value: "The Wealth Conversation — Real Wealth"
   - key: home_description
-    value: "Ten minutes of honest questions about your money. You'll finish with a shortlist of things worth a planner conversation."
+    value: "Your free Wealth Report. Ten minutes of honest questions about your money — and a written report of the things worth a planner conversation."
   - key: start_title
     value: "Start the conversation — Real Wealth"
   - key: start_description
@@ -13,15 +13,15 @@ entries:
   - key: questions_title
     value: "The Wealth Conversation — Real Wealth"
   - key: questions_description
-    value: "Ten minutes of honest questions about your money. You'll finish with a shortlist of things worth a planner conversation."
+    value: "Ten minutes of honest questions about your money. In return, a Wealth Report of the things worth a planner conversation."
   - key: details_title
     value: "Where shall we send it? — Real Wealth"
   - key: details_description
-    value: "Your contact details so we can send your shortlist."
+    value: "Your contact details so we can send your Wealth Report."
   - key: summary_title
-    value: "Your considered picture — Real Wealth"
+    value: "Your Wealth Report — Real Wealth"
   - key: summary_description
-    value: "A clear, illustrative picture of what's worth a first conversation."
+    value: "A clear, illustrative Wealth Report of what's worth a first conversation."
   - key: demo_raw_title
     value: "Session data — Real Wealth (demo)"
   - key: demo_raw_description

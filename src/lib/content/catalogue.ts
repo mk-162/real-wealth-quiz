@@ -35,7 +35,7 @@ export const screens: Screen[] = [
     "logged_as": [],
     "inputs": [],
     "headline": "Let's talk about the life you're planning for.",
-    "sub": "A few honest questions. No right answers, no scorecard — just a clearer picture by the end. You can stop any time; we'll save what you've told us so far.",
+    "sub": "A few honest questions. No right answers, no scorecard — a Wealth Report by the end. You can stop any time; we'll save what you've told us so far.",
     "body": "Eyebrow: BEFORE WE START.\nPrimary button: Begin →.\nNo back button on this screen."
   },
   {
@@ -1333,7 +1333,7 @@ export const screens: Screen[] = [
     "inputs": [
       {
         "id": "target_retirement_age",
-        "label": "At what age would you ideally stop *needing* to work for money?",
+        "label": "At what age would you ideally stop needing to work for money?",
         "control": "slider",
         "range": {
           "min": 25,
@@ -2841,7 +2841,7 @@ export const segments: SegmentCta[] = [
     "overlay": null,
     "button_link": "calendly.com/real-wealth-standard-call-placeholder",
     "headline": "A first conversation.",
-    "body": "Twenty minutes to walk through what you've told us — no preparation needed on your side, no obligation on ours. We'll share the shortlist and point out the moves that move the needle.",
+    "body": "Twenty minutes to walk through what you've told us — no preparation needed on your side, no obligation on ours. We'll share your Wealth Report and point out the moves that move the needle.",
     "button": "Book a 20-minute call",
     "helper": "We'll hold a slot this week and next."
   },
@@ -2932,7 +2932,7 @@ export const pages: Page[] = [
       "id": "consumer-duty",
       "title": "How we meet our Consumer Duty obligations",
       "last_updated": "2026-04-16",
-      "body": "<!-- Compliance note: this is a draft for Compliance review. The four-outcomes wording, vulnerable-customer paragraph, and foreseeable-harms list should be checked against the firm's Consumer Duty policy and signed off by the Compliance Officer before this page ships. -->\n\nThe Financial Conduct Authority's Consumer Duty asks firms to deliver good outcomes for retail customers across four areas — products and services, price and value, consumer understanding, and consumer support. This page sets out how we meet those obligations in plain English.\n\n## Products and services\n\nWe offer regulated financial planning. Nothing else. We do not sell products we have not independently assessed, and we do not earn commission on the products we recommend.\n\nIf a planner recommends a pension, an investment platform, or a protection contract, you will know why we chose it, what it costs, and what we considered alongside it.\n\n## Price and value\n\nWe quote fees as a single total — adviser charge, platform fee, and fund cost combined. You see the figure before any work starts. There are no platform tiers, kickbacks, or trail commissions hidden in the price.\n\nIf our fee is not good value for what you need, we will say so and point you to a more suitable route. That is part of the job.\n\n## Consumer understanding\n\nWe write in plain English. If we use a term we cannot explain in one sentence, we have used the wrong term.\n\nThis tool is an example of the principle: it asks questions, it does not lecture. The shortlist you receive is the same language you would hear in a first meeting — short sentences, no jargon, no asterisks.\n\n## Consumer support\n\nWhen you contact us, a real planner replies within one working day. We do not run a call centre, and there is no gatekeeper between you and the person who would do your planning.\n\nIf you book a call, the person you speak to is the person who would work with you afterwards. No handovers.\n\n## Vulnerable customers\n\nWe adjust how we work for anyone who tells us they need it. Bereavement, illness, cognitive tiredness, a recent diagnosis, English as a second language — any of these change the right pace, format, and follow-up rhythm.\n\nYou do not need to disclose anything you do not want to disclose. If you mention something, we will offer to adjust. If you ask for an adjustment, we will not ask why.\n\n## Foreseeable harms we raise proactively\n\nThree risks are common enough that we raise them with most clients, whether or not they ask:\n\n- Over-funding a pension that becomes inheritance-tax exposed in 2027 under the new rules.\n- Under-funding protection — life cover, income protection, critical illness — relative to the family's actual exposure.\n- Following old advice that no longer fits current rules. The 2024 and 2025 changes to pensions, IHT, and capital gains have moved a lot of advice off the optimal path.\n\nIf any of these apply to you, we will tell you. If none of them apply, we will tell you that too.\n\n## Questions\n\nIf you would like to know more about how we meet our Consumer Duty obligations, write to hello@realwealth.co.uk or call 0161 768 7722."
+      "body": "<!-- Compliance note: this is a draft for Compliance review. The four-outcomes wording, vulnerable-customer paragraph, and foreseeable-harms list should be checked against the firm's Consumer Duty policy and signed off by the Compliance Officer before this page ships. -->\n\nThe Financial Conduct Authority's Consumer Duty asks firms to deliver good outcomes for retail customers across four areas — products and services, price and value, consumer understanding, and consumer support. This page sets out how we meet those obligations in plain English.\n\n## Products and services\n\nWe offer regulated financial planning. Nothing else. We do not sell products we have not independently assessed, and we do not earn commission on the products we recommend.\n\nIf a planner recommends a pension, an investment platform, or a protection contract, you will know why we chose it, what it costs, and what we considered alongside it.\n\n## Price and value\n\nWe quote fees as a single total — adviser charge, platform fee, and fund cost combined. You see the figure before any work starts. There are no platform tiers, kickbacks, or trail commissions hidden in the price.\n\nIf our fee is not good value for what you need, we will say so and point you to a more suitable route. That is part of the job.\n\n## Consumer understanding\n\nWe write in plain English. If we use a term we cannot explain in one sentence, we have used the wrong term.\n\nThis tool is an example of the principle: it asks questions, it does not lecture. The Wealth Report you receive is the same language you would hear in a first meeting — short sentences, no jargon, no asterisks.\n\n## Consumer support\n\nWhen you contact us, a real planner replies within one working day. We do not run a call centre, and there is no gatekeeper between you and the person who would do your planning.\n\nIf you book a call, the person you speak to is the person who would work with you afterwards. No handovers.\n\n## Vulnerable customers\n\nWe adjust how we work for anyone who tells us they need it. Bereavement, illness, cognitive tiredness, a recent diagnosis, English as a second language — any of these change the right pace, format, and follow-up rhythm.\n\nYou do not need to disclose anything you do not want to disclose. If you mention something, we will offer to adjust. If you ask for an adjustment, we will not ask why.\n\n## Foreseeable harms we raise proactively\n\nThree risks are common enough that we raise them with most clients, whether or not they ask:\n\n- Over-funding a pension that becomes inheritance-tax exposed in 2027 under the new rules.\n- Under-funding protection — life cover, income protection, critical illness — relative to the family's actual exposure.\n- Following old advice that no longer fits current rules. The 2024 and 2025 changes to pensions, IHT, and capital gains have moved a lot of advice off the optimal path.\n\nIf any of these apply to you, we will tell you. If none of them apply, we will tell you that too.\n\n## Questions\n\nIf you would like to know more about how we meet our Consumer Duty obligations, write to hello@realwealth.co.uk or call 0161 768 7722."
     }
   },
   {
@@ -2942,8 +2942,8 @@ export const pages: Page[] = [
       "id": "data-capture",
       "title": "Data capture",
       "eyebrow": "LAST THING",
-      "headline": "Where shall we send your shortlist?",
-      "sub": "We'll email you your picture and, if you'd like, hold a slot for a first conversation. No account to create, no password to remember.",
+      "headline": "Where shall we send your Wealth Report?",
+      "sub": "We'll email you your Wealth Report and, if you'd like, hold a slot for a first conversation. No account to create, no password to remember.",
       "fields": [
         {
           "id": "first_name",
@@ -2977,7 +2977,7 @@ export const pages: Page[] = [
       },
       "consent_detail_link_label": "See our privacy notice for the detail — plain English.",
       "consent_detail_link_href": "/privacy",
-      "primary_button": "See your picture →",
+      "primary_button": "See my Wealth Report →",
       "honesty_line": "We won't share your details with anyone outside Real Wealth.",
       "body": "One screen, four fields, no account creation. This sits between the last questionnaire screen and the summary page."
     }
@@ -2989,9 +2989,9 @@ export const pages: Page[] = [
       "id": "homepage",
       "title": "Homepage",
       "hero": {
-        "eyebrow": "A CONVERSATION WITH REAL WEALTH",
-        "headline": "The life you're planning for.",
-        "sub": "Ten minutes of honest questions about your money and your plans. You'll finish with a clear shortlist of things worth talking to a planner about. No advice — just a picture.",
+        "eyebrow": "YOUR FREE WEALTH REPORT",
+        "headline": "Your free Wealth Report.",
+        "sub": "Ten minutes of honest questions about your money and your plans. In return, a written report showing where your planning is strong, where the gaps are, and what's worth talking to a planner about. No advice — just a picture of where you stand.",
         "primary_cta": "Free report",
         "reassurance_line": "Your answers stay with us. We won't share them. You can stop any time.",
         "pills": [
@@ -3007,21 +3007,21 @@ export const pages: Page[] = [
       },
       "tier_picker": {
         "heading": "How long would you like to take?",
-        "sub": "Three ways in, same honest conversation. Stop whenever — we save what you've told us so far.",
+        "sub": "Three lengths, same Wealth Report at the end. Stop whenever — we save what you've told us so far.",
         "tiles": [
           {
             "id": "quick",
             "icon": "zap",
             "time_label": "THREE MINUTES",
-            "name": "A first look",
-            "description": "A handful of questions and a short list of things worth a conversation. Enough to know if this is useful."
+            "name": "Short Wealth Report",
+            "description": "A handful of questions and a short Wealth Report of things worth a conversation. Enough to know if this is useful."
           },
           {
             "id": "standard",
             "icon": "bar-chart-3",
             "time_label": "SEVEN MINUTES",
-            "name": "A shortlist",
-            "description": "A proper shortlist, with illustrative examples — the shape of what a first call might cover.",
+            "name": "Full Wealth Report",
+            "description": "A full Wealth Report, with illustrative examples — the shape of what a first call might cover.",
             "ribbon": "Most people start here",
             "featured": true
           },
@@ -3029,12 +3029,12 @@ export const pages: Page[] = [
             "id": "thorough",
             "icon": "book-open",
             "time_label": "TWELVE MINUTES",
-            "name": "A closer look",
+            "name": "Detailed Wealth Report",
             "description": "By the end, half of a first call is already done. Useful if you're thinking one through."
           }
         ],
         "primary_button": "Let's begin →",
-        "helper": "Not sure? Start with a shortlist — you can always stop early."
+        "helper": "Not sure? Start with the Full Wealth Report — you can always stop early."
       },
       "freedom_quote": {
         "text": "Real wealth isn't just about money — it's about freedom. Freedom to choose how you live, work, and spend your time."
@@ -3048,7 +3048,7 @@ export const pages: Page[] = [
         {
           "icon": "refresh-ccw",
           "headline": "A mirror, not a scorecard.",
-          "sub": "A reflection tool, not an exam. There are no right or wrong answers — just a clearer picture."
+          "sub": "A reflection tool, not an exam. There are no right or wrong answers — just a clearer view of where you stand."
         },
         {
           "icon": "shield-check",
@@ -3080,7 +3080,7 @@ export const pages: Page[] = [
       "id": "privacy",
       "title": "Privacy — How we handle your information",
       "last_updated": "2026-04-16",
-      "body": "<!-- Compliance note: this is a draft for Compliance review. The wording below is a starting point only. The Compliance Officer should sign off the final copy and replace [ICO REF] with the live ICO registration reference before this page ships. -->\n\nThis notice explains what information we collect when you use the Wealth Conversation, why we collect it, who sees it, and how long we keep it. It is written in plain English. If anything is unclear, write to us at hello@realwealth.co.uk and we will explain it in person.\n\n## What we collect\n\nWhen you use this tool we collect:\n\n- Your first name and email address.\n- Your phone number, if you give it to us.\n- Your answers to the Wealth Conversation questions.\n- Session timestamps — when you started, when you finished.\n- Consent flags — what you agreed to, and when.\n\nWe do not collect special-category data, payment details, or anything you have not chosen to give us.\n\n## Why we collect it\n\nWe use this information for three reasons:\n\n- To send you the shortlist of things worth a conversation, in the format you asked for.\n- To prepare for a first call with one of our planners, if you book one.\n- To improve the tool — so the next person who uses it gets a clearer picture.\n\nWe do not sell your information. We do not pass it to third parties for marketing.\n\n## Who sees it\n\nOnly Real Wealth Partners Ltd staff see your answers. The team works from our offices in Manchester and Taunton.\n\nThe only third parties involved are the regulated infrastructure providers we use to run the firm — our email provider and our calendar provider. They process the data on our instructions, under written contracts that meet UK GDPR requirements.\n\n## How long we keep it\n\nIf you do not book a call, we delete your session data after thirty days.\n\nIf you book a call and become a client, we keep your records for seven years after the relationship ends. The seven-year window is an FCA requirement for regulated client files.\n\n## Your rights\n\nUnder UK GDPR you have the right to:\n\n- See the information we hold about you.\n- Ask us to correct anything that is wrong.\n- Ask us to erase your data, where the law allows.\n- Receive your data in a portable format.\n- Object to how we use your data, or restrict that use.\n\nTo use any of these rights, write to hello@realwealth.co.uk. We will respond within one calendar month.\n\nIf you are not happy with our response, you can complain to the Information Commissioner's Office at ico.org.uk or on 0303 123 1113.\n\n## Cookies and tracking\n\nWe use first-party analytics only — a count of how many people start the conversation, how far they get, and which questions cause people to drop out. We do this so we can make the tool better.\n\nWe do not use third-party trackers. We do not run advertising cookies. We do not sell or share behavioural data.\n\n## Contact\n\nReal Wealth Partners Ltd\nOffice 1, First Floor, 14–18 Tib Lane, Manchester, M2 4JB\nhello@realwealth.co.uk\n0161 768 7722\n\n## Regulatory references\n\nReal Wealth Partners Ltd is authorised and regulated by the Financial Conduct Authority (FRN 1037186). Registered in England and Wales, company number 16498380. A wholly owned subsidiary of Real Wealth Group Ltd.\n\nWe are registered with the Information Commissioner's Office under reference [ICO REF]."
+      "body": "<!-- Compliance note: this is a draft for Compliance review. The wording below is a starting point only. The Compliance Officer should sign off the final copy and replace [ICO REF] with the live ICO registration reference before this page ships. -->\n\nThis notice explains what information we collect when you use the Wealth Conversation, why we collect it, who sees it, and how long we keep it. It is written in plain English. If anything is unclear, write to us at hello@realwealth.co.uk and we will explain it in person.\n\n## What we collect\n\nWhen you use this tool we collect:\n\n- Your first name and email address.\n- Your phone number, if you give it to us.\n- Your answers to the Wealth Conversation questions.\n- Session timestamps — when you started, when you finished.\n- Consent flags — what you agreed to, and when.\n\nWe do not collect special-category data, payment details, or anything you have not chosen to give us.\n\n## Why we collect it\n\nWe use this information for three reasons:\n\n- To send you your Wealth Report — the things worth a conversation, in the format you asked for.\n- To prepare for a first call with one of our planners, if you book one.\n- To improve the tool — so the next person who uses it gets a clearer Wealth Report.\n\nWe do not sell your information. We do not pass it to third parties for marketing.\n\n## Who sees it\n\nOnly Real Wealth Partners Ltd staff see your answers. The team works from our offices in Manchester and Taunton.\n\nThe only third parties involved are the regulated infrastructure providers we use to run the firm — our email provider and our calendar provider. They process the data on our instructions, under written contracts that meet UK GDPR requirements.\n\n## How long we keep it\n\nIf you do not book a call, we delete your session data after thirty days.\n\nIf you book a call and become a client, we keep your records for seven years after the relationship ends. The seven-year window is an FCA requirement for regulated client files.\n\n## Your rights\n\nUnder UK GDPR you have the right to:\n\n- See the information we hold about you.\n- Ask us to correct anything that is wrong.\n- Ask us to erase your data, where the law allows.\n- Receive your data in a portable format.\n- Object to how we use your data, or restrict that use.\n\nTo use any of these rights, write to hello@realwealth.co.uk. We will respond within one calendar month.\n\nIf you are not happy with our response, you can complain to the Information Commissioner's Office at ico.org.uk or on 0303 123 1113.\n\n## Cookies and tracking\n\nWe use first-party analytics only — a count of how many people start the conversation, how far they get, and which questions cause people to drop out. We do this so we can make the tool better.\n\nWe do not use third-party trackers. We do not run advertising cookies. We do not sell or share behavioural data.\n\n## Contact\n\nReal Wealth Partners Ltd\nOffice 1, First Floor, 14–18 Tib Lane, Manchester, M2 4JB\nhello@realwealth.co.uk\n0161 768 7722\n\n## Regulatory references\n\nReal Wealth Partners Ltd is authorised and regulated by the Financial Conduct Authority (FRN 1037186). Registered in England and Wales, company number 16498380. A wholly owned subsidiary of Real Wealth Group Ltd.\n\nWe are registered with the Information Commissioner's Office under reference [ICO REF]."
     }
   },
   {
@@ -3107,11 +3107,11 @@ export const pages: Page[] = [
         "retirement_less": "Here are the things that can still improve the shape of retirement — even after you've stopped work.",
         "s1_early": "Here are the basics that usually make the biggest difference at your stage — small moves now that compound later.",
         "s9_hnw": "Here are the structural questions that usually matter most at this level — trusts, timing, and the 2027 pension change.",
-        "fallback": "Here's what we noticed, based on what you told us. None of this is advice yet — it's a shortlist of conversations that would be valuable for someone in your situation."
+        "fallback": "Here's what we noticed, based on what you told us. None of this is advice yet — it's your Wealth Report, a shortlist of conversations that would be valuable for someone in your situation."
       },
       "considered_list": {
         "section_heading": "THINGS WORTH A CONVERSATION",
-        "intro": "Here's what we noticed, based on what you told us. None of this is advice yet — it's a shortlist of conversations that would be valuable for someone in your situation.",
+        "intro": "Here's what we noticed, based on what you told us. None of this is advice yet — it's your Wealth Report, a shortlist of conversations that would be valuable for someone in your situation.",
         "max_cards": 5,
         "min_cards": 3,
         "final_line": "We'll save this list against your name. If you book a call, we'll bring it to the conversation so you don't have to."
@@ -3234,15 +3234,15 @@ export const microcopy: MicrocopyGroup[] = [
       },
       {
         "key": "tier_quick",
-        "value": "Quick picture, three minutes. A handful of questions."
+        "value": "Short Wealth Report, three minutes. A handful of questions."
       },
       {
         "key": "tier_standard",
-        "value": "Standard dive, seven minutes. Most people start here. A proper shortlist."
+        "value": "Full Wealth Report, seven minutes. Most people start here."
       },
       {
         "key": "tier_thorough",
-        "value": "Thorough, twelve minutes. Enough for a full first-call picture."
+        "value": "Detailed Wealth Report, twelve minutes. Enough for a full first-call briefing."
       },
       {
         "key": "tier_primary_button",
@@ -3264,15 +3264,15 @@ export const microcopy: MicrocopyGroup[] = [
     "entries": [
       {
         "key": "email1_subject",
-        "value": "Your considered picture, {first_name}"
+        "value": "Your Wealth Report, {first_name}"
       },
       {
         "key": "email1_preview",
-        "value": "The shortlist from your conversation, plus a link to book a first call."
+        "value": "Your Wealth Report from the conversation, plus a link to book a first call."
       },
       {
         "key": "email1_body_first_para",
-        "value": "{first_name}, thank you for spending ten minutes with us. Below is the shortlist we promised — the same one you saw on screen — along with a link to book a first conversation whenever you're ready. We won't chase you."
+        "value": "{first_name}, thank you for spending ten minutes with us. Below is the Wealth Report we promised — the same one you saw on screen — along with a link to book a first conversation whenever you're ready. We won't chase you."
       },
       {
         "key": "email2_subject",
@@ -3280,11 +3280,11 @@ export const microcopy: MicrocopyGroup[] = [
       },
       {
         "key": "email2_preview",
-        "value": "No pressure. Your shortlist is here whenever you want it."
+        "value": "No pressure. Your Wealth Report is here whenever you want it."
       },
       {
         "key": "email2_body_first_para",
-        "value": "{first_name}, we saw you hadn't picked a time yet — that's completely fine. Here's your shortlist again, in case it's useful. If the moment isn't right, it isn't right. When it is, we're here."
+        "value": "{first_name}, we saw you hadn't picked a time yet — that's completely fine. Here's your Wealth Report again, in case it's useful. If the moment isn't right, it isn't right. When it is, we're here."
       },
       {
         "key": "footer_regulated",
@@ -3322,7 +3322,7 @@ export const microcopy: MicrocopyGroup[] = [
       },
       {
         "key": "email_blank",
-        "value": "We need an email so we can send you the picture."
+        "value": "We need an email so we can send you your Wealth Report."
       },
       {
         "key": "first_name_blank",
@@ -3334,7 +3334,7 @@ export const microcopy: MicrocopyGroup[] = [
       },
       {
         "key": "consent_unchecked",
-        "value": "We need your consent to send the shortlist — this box is how we confirm it."
+        "value": "We need your consent to send the Wealth Report — this box is how we confirm it."
       },
       {
         "key": "slider_default",
@@ -3368,7 +3368,7 @@ export const microcopy: MicrocopyGroup[] = [
       },
       {
         "key": "summary_computing",
-        "value": "Putting the picture together.",
+        "value": "Putting your Wealth Report together.",
         "note": "Skeleton state — only shown if the considered list takes more than 500ms."
       },
       {
@@ -3387,7 +3387,7 @@ export const microcopy: MicrocopyGroup[] = [
       },
       {
         "key": "home_description",
-        "value": "Ten minutes of honest questions about your money. You'll finish with a shortlist of things worth a planner conversation."
+        "value": "Your free Wealth Report. Ten minutes of honest questions about your money — and a written report of the things worth a planner conversation."
       },
       {
         "key": "start_title",
@@ -3403,7 +3403,7 @@ export const microcopy: MicrocopyGroup[] = [
       },
       {
         "key": "questions_description",
-        "value": "Ten minutes of honest questions about your money. You'll finish with a shortlist of things worth a planner conversation."
+        "value": "Ten minutes of honest questions about your money. In return, a Wealth Report of the things worth a planner conversation."
       },
       {
         "key": "details_title",
@@ -3411,15 +3411,15 @@ export const microcopy: MicrocopyGroup[] = [
       },
       {
         "key": "details_description",
-        "value": "Your contact details so we can send your shortlist."
+        "value": "Your contact details so we can send your Wealth Report."
       },
       {
         "key": "summary_title",
-        "value": "Your considered picture — Real Wealth"
+        "value": "Your Wealth Report — Real Wealth"
       },
       {
         "key": "summary_description",
-        "value": "A clear, illustrative picture of what's worth a first conversation."
+        "value": "A clear, illustrative Wealth Report of what's worth a first conversation."
       },
       {
         "key": "demo_raw_title",
@@ -3487,7 +3487,7 @@ export const microcopy: MicrocopyGroup[] = [
       },
       {
         "key": "band_26_50",
-        "value": "Halfway through the picture"
+        "value": "Halfway through your Wealth Report"
       },
       {
         "key": "band_51_80",

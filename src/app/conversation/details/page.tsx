@@ -51,7 +51,7 @@ export default function DetailsPage() {
   const primaryButton = pageValue<string>(
     'data-capture',
     'primary_button',
-    'See your picture →',
+    'See my Wealth Report →',
   );
   const honestyLine = pageValue<string>('data-capture', 'honesty_line', '');
 

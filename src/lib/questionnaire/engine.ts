@@ -50,6 +50,7 @@ import {
 } from './session';
 import { evaluateTrigger } from './triggers';
 import { isCompliancePublishable } from '../provocations/catalogue';
+import { sectionMeta } from '../sections';
 
 export type TierSlug = 'quick' | 'standard' | 'thorough';
 
@@ -94,6 +95,14 @@ export interface EngineState {
   canCompleteFlow: boolean;
   canAdvance: boolean;
   tier: TierSlug;
+  /** Section chip shown in the header. Derived by walking the visible flow
+      up to the current position and holding a running max over
+      `sectionMeta(screen.section).step`, so the chip never regresses when a
+      later screen happens to be tagged with an earlier section (e.g. the
+      "Happy place" screen is tagged `life_shape` but sits after `assets`).
+      Null on awareness screens — the page renders a neutral "Insight" chip
+      itself in that case. */
+  chipMeta: { step: number; label: string } | null;
   /** Provocations to render inline below the current content screen. */
   inlineProvocations: Provocation[];
   /** Awareness checks the user has already answered. */
@@ -436,6 +445,27 @@ export function useQuestionnaireEngine(tier: TierSlug): EngineState & EngineActi
     return eligibleProvocations.slice(0, 1);
   }, [currentScreen, activeAwareness, eligibleProvocations]);
 
+  /* Section chip (running max). See the `chipMeta` doc comment on
+     EngineState for the rationale. Driven off the visible flow, not off the
+     current screen's own section tag, so a screen whose section step is
+     lower than what the user has already reached holds the higher step and
+     label. Null on awareness screens (the page renders its own "Insight"
+     chip for those). */
+  const chipMeta = useMemo<{ step: number; label: string } | null>(() => {
+    if (activeAwareness || !currentScreen || rawIndex < 0) return null;
+    let bestStep = 0;
+    let bestLabel = '';
+    for (let i = 0; i <= rawIndex; i += 1) {
+      const s = visibleScreens[i];
+      const meta = sectionMeta(s.section as never);
+      if (meta && meta.step >= bestStep) {
+        bestStep = meta.step;
+        bestLabel = meta.label;
+      }
+    }
+    return bestStep > 0 ? { step: bestStep, label: bestLabel } : null;
+  }, [activeAwareness, currentScreen, rawIndex, visibleScreens]);
+
   /* A screen is "advanceable" if every required + visible input has a value,
      OR if it's a transition / intro screen that has no inputs. Hidden inputs
      (those gated by a conditional_reveal whose predicate is currently false)
@@ -555,6 +585,7 @@ export function useQuestionnaireEngine(tier: TierSlug): EngineState & EngineActi
     canCompleteFlow,
     canAdvance,
     tier,
+    chipMeta,
     inlineProvocations,
     firedAwareness,
     firedProvocations,

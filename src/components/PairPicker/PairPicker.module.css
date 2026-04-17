@@ -40,22 +40,10 @@
   background: var(--teal-tint-10);
   color: var(--brand-teal);
   font-weight: 600;
-}
-
-.half[data-selected='true']::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border: 2px solid var(--brand-orange);
-  border-radius: inherit;
-  pointer-events: none;
-}
-
-.half[data-side='left'][data-selected='true']::after {
-  border-right-width: 1px;
-}
-.half[data-side='right'][data-selected='true']::after {
-  border-left-width: 1px;
+  /* Inset ring instead of a positioned ::after — keeps the outline flush
+     with the outer rounded container and avoids the mitre mismatch that
+     previously showed as a leaky orange box on the selected half. */
+  box-shadow: inset 0 0 0 1px var(--brand-teal);
 }
 
 @keyframes pairIn {

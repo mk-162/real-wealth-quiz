@@ -19,7 +19,7 @@
   font-family: var(--font-heading);
   font-weight: 300;
   font-style: italic;
-  font-size: clamp(2rem, 3.5vw + 0.5rem, 3rem);
+  font-size: clamp(1.75rem, 2.5vw + 0.6rem, 2.5rem);
   line-height: 1.1;
   color: var(--brand-teal);
   margin: 0;
@@ -36,117 +36,7 @@
   max-width: 520px;
 }
 
-/* ==== Transition ============================================== */
-
-.transition {
-  position: relative;
-  background: var(--gradient-teal);
-  color: var(--paper);
-  padding: clamp(3rem, 8vw, 6rem) var(--gutter);
-  text-align: center;
-  min-height: 360px;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  animation: fadeIn var(--duration-slow) var(--ease-default) both;
-  isolation: isolate;
-}
-.transition::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: radial-gradient(60% 50% at 50% 30%, rgba(255, 255, 255, 0.18), transparent 70%);
-  pointer-events: none;
-}
-
-@media (min-width: 768px) {
-  .transition {
-    min-height: 460px;
-  }
-}
-
-.transitionInner {
-  max-width: 680px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
-  align-items: center;
-}
-
-.transitionKicker {
-  font-family: var(--font-body);
-  font-size: var(--fs-micro);
-  font-weight: 700;
-  letter-spacing: var(--ls-wider);
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.75);
-  margin: 0;
-}
-
-.transitionBody {
-  font-family: var(--font-heading);
-  font-style: italic;
-  font-weight: 300;
-  font-size: clamp(1.875rem, 3vw + 0.5rem, 2.75rem);
-  line-height: 1.2;
-  color: var(--paper);
-  margin: 0;
-  text-wrap: balance;
-}
-
-/* ==== Centred ================================================= */
-
-.centred {
-  max-width: 760px;
-  margin: 0 auto;
-  padding: var(--space-xl) var(--gutter) var(--space-xxl);
-  animation: fadeUp var(--duration-slow) var(--ease-default) both;
-}
-
-.centredHead {
-  text-align: center;
-  margin-bottom: var(--space-xl);
-}
-
-.centredHeadline {
-  font-family: var(--font-heading);
-  font-weight: 300;
-  font-style: italic;
-  font-size: clamp(1.875rem, 3vw + 0.5rem, 2.5rem);
-  line-height: 1.15;
-  color: var(--ink);
-  margin: 0 0 var(--space-sm);
-  letter-spacing: -0.01em;
-  text-wrap: balance;
-}
-
-.centredSub {
-  font-family: var(--font-body);
-  font-size: var(--fs-body);
-  color: var(--ink-muted);
-  line-height: 1.55;
-  max-width: 520px;
-  margin: 0 auto;
-}
-
-.centredPanel {
-  background: var(--paper);
-  border: var(--rule-fine);
-  border-radius: var(--radius-md);
-  padding: var(--space-md);
-  box-shadow: var(--shadow-sm);
-}
-
-@media (min-width: 768px) {
-  .centredPanel {
-    padding: var(--space-lg);
-    box-shadow: var(--shadow-card);
-  }
-}
-
-/* ==== Asymmetric panel-sub ==================================== */
+/* ==== Panel sub — short body sentence above the inputs ======= */
 
 .panelSub {
   font-family: var(--font-body);
@@ -156,25 +46,16 @@
   margin: 0 0 var(--space-md);
 }
 
-/* ==== Input slot — the single wrapper for every input on a      =
-   screen. Consecutive slots get a generous gap + hairline rule   =
-   so grouped screens (two or more inputs) clearly separate each  =
-   question from the one above. Without the unified wrapper the   =
-   adjacent-sibling selector on .inputBlock can't fire because    =
-   conditional inputs are wrapped in <SlideSwap>.                 = */
+/* ==== Input slot — the single wrapper for every input on a
+   screen. Consecutive slots get a generous gap + hairline rule so
+   grouped screens (two or more inputs) clearly separate each
+   question from the one above. Without the unified wrapper the
+   adjacent-sibling selector on .inputBlock can't fire because
+   conditional inputs are wrapped in <SlideSwap>. */
 .inputSlot + .inputSlot {
   margin-top: var(--space-xl);
   padding-top: var(--space-xl);
   border-top: var(--rule-fine);
-}
-
-/* Aside slot for centred layouts — sits below the panel, centred and
-   matched to the centred panel's max-width so it reads as a
-   continuation of the column rather than floating loose. */
-.centredAside {
-  max-width: var(--content-max);
-  margin: var(--space-lg) auto 0;
-  padding: 0 var(--gutter);
 }
 
 /* A slot whose conditional content is currently hidden collapses
@@ -235,13 +116,5 @@
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
   }
 }

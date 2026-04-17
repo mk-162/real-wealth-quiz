@@ -16,14 +16,12 @@
 
 import { Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { ScreenRenderer } from '@/components/ScreenRenderer';
-import { ProgressBar } from '@/components/ProgressBar';
+import { ScreenRenderer, ActionRow } from '@/components/ScreenRenderer';
 import { Logo } from '@/components/Logo';
 import { SlideSwap } from '@/components/SlideSwap';
-import { Button } from '@/components/Button';
+import { QuestionShell } from '@/components/QuestionShell';
 import { AwarenessCheck } from '@/components/AwarenessCheck';
 import { ProvocationCard } from '@/components/ProvocationCard';
-import { sectionMeta } from '@/lib/sections';
 import { useQuestionnaireEngine, type TierSlug } from '@/lib/questionnaire';
 import styles from './page.module.css';
 
@@ -43,7 +41,6 @@ function Questionnaire() {
   const engine = useQuestionnaireEngine(tierParam);
   const {
     active,
-    currentScreen,
     answers,
     segmentId,
     progress,
@@ -51,6 +48,7 @@ function Questionnaire() {
     isLast,
     canCompleteFlow,
     canAdvance,
+    chipMeta,
     inlineProvocations,
     firedAwareness,
   } = engine;
@@ -66,17 +64,17 @@ function Questionnaire() {
   }
 
   /* Chrome (section chip) behaviour:
-     - On a content screen, show that screen's section with its step number.
+     - On a content screen, show the engine's running-max chipMeta. This
+       prevents a lower-numbered section label from appearing after the
+       user has already passed through a higher-numbered one (e.g. the
+       "Happy place" screen is tagged `life_shape` but appears after the
+       `assets` block — without the running max the chip would regress
+       from "04 Assets" back to "02 Your life").
      - On an awareness screen, show a neutral "Insight" chip with no step
-       number so the user isn't given the impression of a step regression
-       (e.g. a pension-related awareness interrupt while still inside the
-       "Your life" section reading "02 Your life"). */
+       number so the user isn't given the impression of a step regression. */
   const isAwareness = active.kind === 'awareness';
-  const screenForChrome = active.kind === 'content' ? active.screen : currentScreen;
-  const section = screenForChrome
-    ? sectionMeta(screenForChrome.section as never)
-    : null;
-  const sectionNumber = section?.step ?? 1;
+  const sectionNumber = chipMeta?.step ?? 1;
+  const sectionLabel = chipMeta?.label ?? 'Conversation';
 
   const handleNext = () => {
     /* Route to the details page only when the user is on the last
@@ -104,7 +102,7 @@ function Questionnaire() {
         </div>
         <div className={styles.headRight}>
           <SlideSwap
-            swapKey={isAwareness ? 'awareness' : section?.id ?? 'none'}
+            swapKey={isAwareness ? 'awareness' : `chip:${sectionNumber}`}
           >
             {isAwareness ? (
               <span
@@ -120,7 +118,7 @@ function Questionnaire() {
                   {String(sectionNumber).padStart(2, '0')}
                 </span>
                 <span className={styles.sectionLabel}>
-                  {section?.label ?? 'Conversation'}
+                  {sectionLabel}
                 </span>
               </span>
             )}
@@ -166,7 +164,7 @@ function Questionnaire() {
             isFirst={isFirst}
             isLast={isLast}
             canAdvance={canAdvance}
-            continueLabel={isLast ? 'Continue to details →' : 'Continue →'}
+            continueLabel={'Continue →'}
             aside={
               inlineProvocations.length > 0 ? (
                 <div className={styles.inlineProv}>
@@ -195,7 +193,9 @@ function Questionnaire() {
 }
 
 /* ================================================================ */
-/* Awareness virtual screen                                          */
+/* Awareness virtual screen — routes through the same QuestionShell   */
+/* + ActionRow that every content screen uses so the user doesn't     */
+/* feel a visual jump when an awareness interrupt fires.              */
 /* ================================================================ */
 
 interface AwarenessScreenProps {
@@ -221,29 +221,21 @@ function AwarenessScreen({
   canAdvance,
 }: AwarenessScreenProps) {
   return (
-    <section style={{ maxWidth: 'var(--content-max)', margin: '0 auto' }}>
+    <QuestionShell kicker="Insight" stem={stem}>
       <AwarenessCheck
-        topic={stem}
         value={level}
         onChange={onChange}
         body={body}
         complianceTag={complianceTag}
       />
-      <div
-        className={styles.actions}
-        style={{ maxWidth: 'var(--content-max)', margin: '0 auto', padding: '0 var(--space-md)' }}
-      >
-        <div className={styles.actionsLeft} />
-        <div className={styles.actionsRight}>
-          <Button variant="text" onClick={onBack}>
-            ← Back
-          </Button>
-          <Button onClick={onNext} disabled={!canAdvance}>
-            Continue →
-          </Button>
-        </div>
-      </div>
-    </section>
+      <ActionRow
+        screen={null}
+        onBack={onBack}
+        onNext={onNext}
+        canAdvance={canAdvance}
+        why="We tune the next part of the conversation based on how familiar this idea already is — honest answers are the useful ones."
+      />
+    </QuestionShell>
   );
 }
 

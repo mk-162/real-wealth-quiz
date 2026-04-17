@@ -40,12 +40,17 @@
   margin: 0 0 var(--space-lg);
 }
 
+/* Mirrors Button.module.css .btn + .secondary exactly so the CTA in
+   this card has identical geometry to FinalCTA's ladder-variant button
+   (which uses .btn + .outline-primary). The two peer cards then differ
+   only in brand colour — teal here, orange there — which is the
+   intended primary/secondary signal. Any change to .btn / .secondary
+   in Button.module.css should be mirrored here. */
 .button {
-  /* Matches the realwealth.co.uk CTA vocabulary: 6px radius, 1.5px
-     brand-teal ring, gelica ExtraLight, no shadow, no pill. */
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: var(--space-xs);
   align-self: flex-start;
   padding: 8px 24px;
   min-height: 44px;
@@ -53,22 +58,38 @@
   font-family: var(--font-heading);
   font-style: normal;
   font-weight: 200;
-  font-size: 1.05rem;
+  font-size: 1.125rem;
   line-height: 1.2;
+  letter-spacing: 0;
   color: var(--brand-teal);
   background: var(--paper);
   border: 1.5px solid var(--brand-teal);
   border-radius: var(--radius-cta);
   text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
   transition:
     color var(--duration-default) var(--ease-default),
     background var(--duration-default) var(--ease-default),
     border-color var(--duration-default) var(--ease-default);
 }
 
+@media (min-width: 768px) {
+  .button {
+    font-size: 1.25rem;
+    min-height: 48px;
+    padding: 8px 28px;
+  }
+}
+
 .button:hover {
   color: var(--paper);
   background: var(--brand-teal);
+}
+
+.button:active {
+  background: var(--brand-teal-deep);
+  border-color: var(--brand-teal-deep);
 }
 
 .button:focus-visible {

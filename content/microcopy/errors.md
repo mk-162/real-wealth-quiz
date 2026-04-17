@@ -7,13 +7,13 @@ entries:
   - key: email_invalid
     value: "That email doesn't look quite right — a typo somewhere?"
   - key: email_blank
-    value: "We need an email so we can send you the picture."
+    value: "We need an email so we can send you your Wealth Report."
   - key: first_name_blank
     value: "A first name helps us address you properly."
   - key: phone_invalid
     value: "That number doesn't look like a UK mobile — try again or leave it blank."
   - key: consent_unchecked
-    value: "We need your consent to send the shortlist — this box is how we confirm it."
+    value: "We need your consent to send the Wealth Report — this box is how we confirm it."
   - key: slider_default
     value: "Move the slider to where feels right for you — any value is fine."
   - key: number_out_of_range

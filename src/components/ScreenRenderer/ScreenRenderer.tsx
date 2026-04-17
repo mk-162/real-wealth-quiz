@@ -1,11 +1,18 @@
 /**
  * ScreenRenderer — renders any Screen from the content catalogue by
- * dispatching on its layout type (intro / transition / centred / asymmetric)
- * and its inputs.
+ * dispatching on its layout type (intro / centred / asymmetric) and its
+ * inputs.
  *
- * Keeps the layout decisions out of the page component and out of the engine.
- * The page component renders the sticky header and progress bar; this
- * component renders the stem + panel + inputs + reassurance strip.
+ * Every content layout (centred + asymmetric) now routes through the
+ * single QuestionShell — the two diverged in the past (centred had its
+ * own panel/headline, asymmetric had a two-column shell with lifestyle
+ * image) which made each question feel like its own design. One shell
+ * now means one stem style, one panel, one kicker, one action row.
+ *
+ * The `transition` layout is kept as a type so old content files still
+ * parse, but the engine already filters transition screens out of the
+ * flow (engine.ts:171); we render nothing rather than the old full-bleed
+ * interstitial.
  */
 'use client';
 
@@ -33,11 +40,10 @@ export interface ScreenRendererProps {
   /** Text shown inside the Continue button. */
   continueLabel?: string;
   /**
-   * Optional content rendered under the left column on asymmetric
-   * layouts, and beneath the panel on centred layouts. Used for inline
-   * provocation cards that used to render outside the panel via the
-   * conversation page. Keeping them inside ScreenRenderer lets the
-   * two-column grid reclaim the whitespace on the left. */
+   * Optional content rendered under the left column of QuestionShell on
+   * desktop, and beneath the panel on narrow viewports. Used for inline
+   * provocation cards so the two-column grid reclaims the whitespace on
+   * the left. */
   aside?: ReactNode;
 }
 
@@ -48,12 +54,13 @@ export function ScreenRenderer(props: ScreenRendererProps) {
     case 'intro':
       return <IntroLayout {...props} />;
     case 'transition':
-      return <TransitionLayout {...props} />;
+      /* Interstitials are filtered out by the engine; render nothing in
+         the unlikely case one reaches this component. */
+      return null;
     case 'centred':
-      return <CentredLayout {...props} />;
     case 'asymmetric':
     default:
-      return <AsymmetricLayout {...props} />;
+      return <QuestionLayout {...props} />;
   }
 }
 
@@ -77,103 +84,28 @@ function IntroLayout({ screen, onNext }: ScreenRendererProps) {
 }
 
 /* ================================================================ */
-/* Transition layout — full-bleed teal; auto-advances.                */
+/* Question layout — the single shell used for every question screen  */
+/* regardless of whether the content file declares centred or         */
+/* asymmetric. Kicker + stem + optional pullquote on the left;        */
+/* inputs + ActionRow inside a single panel on the right.             */
 /* ================================================================ */
 
-function TransitionLayout({ screen, onNext }: ScreenRendererProps) {
-  return (
-    <section
-      className={styles.transition}
-      onClick={onNext}
-      role="status"
-      aria-live="polite"
-    >
-      <div className={styles.transitionInner}>
-        <p className={styles.transitionKicker}>{screen.title}</p>
-        <p className={styles.transitionBody}>{screen.body ?? 'Continuing…'}</p>
-        <Button variant="outline-on-dark" onClick={onNext}>
-          Continue →
-        </Button>
-      </div>
-    </section>
-  );
-}
-
-/* ================================================================ */
-/* Centred layout — single column, all inputs below the stem.         */
-/* ================================================================ */
-
-function CentredLayout(props: ScreenRendererProps) {
-  const { screen, answers, onAnswer } = props;
-  const inputs = screen.inputs ?? [];
-  return (
-    <div className={styles.centred}>
-      <div className={styles.centredHead}>
-        {screen.headline ? <h1 className={styles.centredHeadline}>{screen.headline}</h1> : null}
-        {screen.sub ? <p className={styles.centredSub}>{screen.sub}</p> : null}
-      </div>
-
-      <div className={styles.centredPanel}>
-        {inputs.map((input) => {
-          const visible = shouldShowInput(input, inputs, answers);
-          const isConditional = isConditionalInput(input, inputs);
-          const rendered = visible ? (
-            <InputRenderer
-              input={input}
-              value={answers[input.id]}
-              onChange={(v) => onAnswer(input.id, v)}
-            />
-          ) : null;
-          return (
-            <div key={input.id} className={styles.inputSlot}>
-              {isConditional ? (
-                <SlideSwap swapKey={visible ? 'shown' : 'hidden'}>{rendered}</SlideSwap>
-              ) : (
-                rendered
-              )}
-            </div>
-          );
-        })}
-        <ActionRow {...props} />
-      </div>
-      {props.aside ? (
-        <div className={styles.centredAside}>{props.aside}</div>
-      ) : null}
-    </div>
-  );
-}
-
-/* ================================================================ */
-/* Asymmetric layout — two-column with lifestyle image left.          */
-/* ================================================================ */
-
-function AsymmetricLayout(props: ScreenRendererProps) {
+function QuestionLayout(props: ScreenRendererProps) {
   const { screen, answers, onAnswer, aside } = props;
   const section = sectionMeta(screen.section as never);
 
-  const imageSrc =
-    section?.image ??
-    'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1200&q=80';
-  const imageAlt = screen.image_direction ?? '';
   const kicker = section?.kicker ?? `STEP ${screen.screen_number}`;
   const pullquote = section?.pullquote;
-
-  /* The grouped-screen title sits inside the panel for two-column screens,
-     so the stem on the left column is the section-level line, not the card
-     headline. If we don't have a section pullquote, fall back to the sub. */
+  /* Grouped asymmetric screens historically used screen.title as the
+     stem (the section-level line) when headline was absent. Preserve
+     that fallback. */
   const stem = screen.headline ?? screen.title;
 
   return (
-    /* Reassurance copy ("Your answers stay with you" / "A real planner
-       reads every answer") was previously rendered here as a tile strip
-       beneath every question. It now lives in the global FCAFooter so
-       the form itself stays focused on the next action. */
     <QuestionShell
       kicker={kicker}
       stem={stem}
       pullquote={pullquote ?? screen.sub}
-      imageSrc={imageSrc}
-      imageAlt={imageAlt}
       aside={aside}
     >
       {screen.sub && screen.sub !== pullquote ? (
@@ -226,35 +158,49 @@ function isConditionalInput(
 }
 
 /* ================================================================ */
-/* Action row — Why we ask / Back / Continue. Consistent across       */
-/* centred and asymmetric layouts.                                    */
+/* Action row — Why we ask / Back / Continue. Exported so the         */
+/* awareness-check wrapper in conversation/page.tsx can share it      */
+/* instead of rebuilding its own row.                                 */
 /* ================================================================ */
 
-function ActionRow({
+export interface ActionRowProps {
+  /** The current Screen — used to pick the conditional_logic line for WhyAsk. */
+  screen?: Pick<Screen, 'conditional_logic'> | null;
+  onNext: () => void;
+  onBack: () => void;
+  isFirst?: boolean;
+  canAdvance: boolean;
+  continueLabel?: string;
+  /** Override for the WhyAsk body when there's no screen to read from. */
+  why?: string;
+}
+
+export function ActionRow({
   screen,
   onNext,
   onBack,
   isFirst,
-  isLast,
   canAdvance,
   continueLabel,
-}: ScreenRendererProps) {
+  why,
+}: ActionRowProps) {
   /* Pick a conditional_logic line for WhyAsk if the screen has one.
-     Otherwise fall back to a generic one based on the section. */
-  const why = screen.conditional_logic ??
+     Otherwise fall back to a generic one. */
+  const whyText = why ??
+    screen?.conditional_logic ??
     'Your answer shapes the rest of the conversation — we ask because it changes what a planner would talk about.';
 
   return (
     <div className={styles.actions}>
       <div className={styles.actionsLeft}>
-        <WhyAskToggle>{why}</WhyAskToggle>
+        <WhyAskToggle>{whyText}</WhyAskToggle>
       </div>
       <div className={styles.actionsRight}>
-        <Button variant="text" onClick={onBack} disabled={isFirst}>
+        <Button variant="text" onClick={onBack} disabled={!!isFirst}>
           ← Back
         </Button>
         <Button onClick={onNext} disabled={!canAdvance}>
-          {continueLabel ?? (isLast ? 'Continue to details →' : 'Continue →')}
+          {continueLabel ?? 'Continue →'}
         </Button>
       </div>
     </div>

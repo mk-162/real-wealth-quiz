@@ -24,7 +24,7 @@ If our fee is not good value for what you need, we will say so and point you to 
 
 We write in plain English. If we use a term we cannot explain in one sentence, we have used the wrong term.
 
-This tool is an example of the principle: it asks questions, it does not lecture. The shortlist you receive is the same language you would hear in a first meeting — short sentences, no jargon, no asterisks.
+This tool is an example of the principle: it asks questions, it does not lecture. The Wealth Report you receive is the same language you would hear in a first meeting — short sentences, no jargon, no asterisks.
 
 ## Consumer support
 

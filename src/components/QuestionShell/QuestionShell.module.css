@@ -1,13 +1,15 @@
 .shell {
   max-width: var(--container-max);
   margin: 0 auto;
-  padding: var(--space-lg) var(--gutter) var(--space-xxl);
+  /* Reduced from space-lg/space-xxl to space-md/space-lg to keep each
+     question fitting on one viewport on a 1080p laptop. */
+  padding: var(--space-md) var(--gutter) var(--space-lg);
   animation: fadeUp var(--duration-default) var(--ease-default) both;
 }
 
 @media (min-width: 768px) {
   .shell {
-    padding: var(--space-xl) var(--gutter) var(--space-xxl);
+    padding: var(--space-lg) var(--gutter) var(--space-xl);
   }
 }
 
@@ -44,8 +46,12 @@
   font-family: var(--font-heading);
   font-weight: 300;
   font-style: italic;
-  font-size: clamp(1.875rem, 2.6vw + 0.6rem, 2.75rem);
-  line-height: 1.1;
+  /* Reduced cap from 2.75rem (44px) to 2rem (32px). The old ceiling read
+     billboard-sized on a 1280px viewport and pushed the panel below the
+     fold on laptops. 24–32px preserves the serif display character
+     without dominating the screen. */
+  font-size: clamp(1.5rem, 1.4vw + 0.9rem, 2rem);
+  line-height: 1.15;
   letter-spacing: -0.01em;
   color: var(--ink);
   margin: 0;
@@ -63,61 +69,17 @@
   margin: var(--space-sm) 0 0;
 }
 
-/* Image — desktop: lives at the bottom of the left column */
-.figure {
-  margin: 0;
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  aspect-ratio: 4 / 3;
-  max-height: 280px;
-  margin-top: var(--space-md);
-  display: none; /* hidden on mobile by default; shown via figureBelow */
-}
-
-@media (min-width: 1024px) {
-  .figure {
-    display: block;
-  }
-}
-
-.img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  transition: transform 700ms var(--ease-default);
-  /* Shared rounded-rect clip-path (see src/components/HeroMaskDefs). */
-  clip-path: url(#rw-hero-small);
-}
-
-.img:hover {
-  transform: scale(1.02);
-}
-
 .leftExtras {
   margin-top: var(--space-sm);
 }
 
-/* Aside — inline provocations / alert cards that sit under the left
-   column on desktop (grid row 2, column 1) so they read directly
-   below the lifestyle image rather than jammed under the panel. On
-   narrow viewports the grid collapses to a single column and the
-   aside falls naturally to the bottom.
-
-   The `align-self: start` stops the aside stretching to match the
-   right column's height on tall panels — keeps the card its natural
-   size at the foot of the image. */
+/* Aside — inline provocations / alert cards rendered inside the left
+   column, directly under the pullquote. Previously lived in grid row 2
+   column 1, which produced a large empty gap on desktop because row 1
+   height was stretched to match the tall right-hand panel. Now it
+   simply flows as the last child of `.left`. */
 .aside {
-  align-self: start;
-  margin-top: var(--space-sm);
-}
-
-@media (min-width: 1024px) {
-  .aside {
-    grid-column: 1;
-    grid-row: 2;
-    margin-top: var(--space-md);
-  }
+  margin-top: var(--space-md);
 }
 
 /* Right column (the interaction panel). */
@@ -157,7 +119,6 @@
     transform: translateY(0);
   }
 }
-
 @keyframes panelIn {
   from {
     opacity: 0;
@@ -166,28 +127,5 @@
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-/* Mobile-only image placement: appears after the panel as a quiet rest. */
-.figureBelow {
-  display: none;
-}
-@media (max-width: 1023px) {
-  .figureBelow {
-    display: block;
-    margin: var(--space-lg) 0 0;
-    border-radius: var(--radius-md);
-    overflow: hidden;
-    aspect-ratio: 16 / 9;
-    max-height: 280px;
-  }
-  .figureBelow img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    /* Same rounded-rect mask as the desktop-column image. */
-    clip-path: url(#rw-hero-small);
-    display: block;
   }
 }

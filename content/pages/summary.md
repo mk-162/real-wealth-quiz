@@ -17,10 +17,10 @@ emotional_intros:
   retirement_less: "Here are the things that can still improve the shape of retirement — even after you've stopped work."
   s1_early: "Here are the basics that usually make the biggest difference at your stage — small moves now that compound later."
   s9_hnw: "Here are the structural questions that usually matter most at this level — trusts, timing, and the 2027 pension change."
-  fallback: "Here's what we noticed, based on what you told us. None of this is advice yet — it's a shortlist of conversations that would be valuable for someone in your situation."
+  fallback: "Here's what we noticed, based on what you told us. None of this is advice yet — it's your Wealth Report, a shortlist of conversations that would be valuable for someone in your situation."
 considered_list:
   section_heading: "THINGS WORTH A CONVERSATION"
-  intro: "Here's what we noticed, based on what you told us. None of this is advice yet — it's a shortlist of conversations that would be valuable for someone in your situation."
+  intro: "Here's what we noticed, based on what you told us. None of this is advice yet — it's your Wealth Report, a shortlist of conversations that would be valuable for someone in your situation."
   max_cards: 5
   min_cards: 3
   final_line: "We'll save this list against your name. If you book a call, we'll bring it to the conversation so you don't have to."

@@ -9,7 +9,7 @@ button_link: "calendly.com/real-wealth-standard-call-placeholder"
 A first conversation.
 
 # Body
-Twenty minutes to walk through what you've told us — no preparation needed on your side, no obligation on ours. We'll share the shortlist and point out the moves that move the needle.
+Twenty minutes to walk through what you've told us — no preparation needed on your side, no obligation on ours. We'll share your Wealth Report and point out the moves that move the needle.
 
 # Button
 Book a 20-minute call

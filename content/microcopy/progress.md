@@ -5,7 +5,7 @@ entries:
   - key: band_0_25
     value: "Just getting started"
   - key: band_26_50
-    value: "Halfway through the picture"
+    value: "Halfway through your Wealth Report"
   - key: band_51_80
     value: "Nearly there"
   - key: band_81_99

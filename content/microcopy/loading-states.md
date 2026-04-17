@@ -5,7 +5,7 @@ entries:
   - key: initial_load
     value: "Bringing the page together — one moment."
   - key: summary_computing
-    value: "Putting the picture together."
+    value: "Putting your Wealth Report together."
     note: "Skeleton state — only shown if the considered list takes more than 500ms."
   - key: offline_banner
     value: "You've gone offline. We'll keep your place — come back when you're connected."

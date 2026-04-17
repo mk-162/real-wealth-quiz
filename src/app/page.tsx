@@ -8,8 +8,6 @@
  */
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { Button } from '@/components/Button';
 import { TierTile, type TierId } from '@/components/TierTile';
 import { FCAFooter } from '@/components/FCAFooter';
@@ -39,9 +37,6 @@ interface HeroPillContent {
 }
 
 export default function Home() {
-  const router = useRouter();
-  const [tier, setTier] = useState<TierId>('standard');
-
   /* Copy sourced from content/pages/homepage.md. */
   const headline = pageValue<string>('homepage', 'hero.headline', '');
   const sub = pageValue<string>('homepage', 'hero.sub', '');
@@ -52,8 +47,12 @@ export default function Home() {
   const tierHeading = pageValue<string>('homepage', 'tier_picker.heading', '');
   const tierSub = pageValue<string>('homepage', 'tier_picker.sub', '');
   const tierTiles = pageValue<TierTileContent[]>('homepage', 'tier_picker.tiles', []);
-  const tierPrimary = pageValue<string>('homepage', 'tier_picker.primary_button', 'Begin →');
-  const tierHelper = pageValue<string>('homepage', 'tier_picker.helper', '');
+  /* `tier_picker.primary_button` and `tier_picker.helper` are still in
+     content/pages/homepage.md but no longer rendered — each tile now
+     carries its own Start → affordance and navigates on click, so the
+     secondary-step Begin button is gone. The content fields remain for
+     now so the authoring tree isn't mutated from code; they can be
+     removed at the next content:build sweep. */
 
   const freedomText = pageValue<string>('homepage', 'freedom_quote.text', '');
 
@@ -142,9 +141,16 @@ export default function Home() {
               {tierHeading}
             </h2>
             <p className={styles.tierSub}>{tierSub}</p>
+            {/* Group of three action cards (each tile is an <a> that
+                navigates). Uses role="group" + aria-labelledby so screen
+                readers announce the section heading once, then let the
+                user tab through three clearly-labelled "Start the X
+                conversation" links. Previously rendered as a radiogroup
+                with a separate Begin button — users clicked a tile and
+                got stuck because the second step wasn't obvious. */}
             <div
               className={`${styles.tiles} ${styles.tileStagger}`}
-              role="radiogroup"
+              role="group"
               aria-labelledby="tier-heading"
             >
               {tierTiles.map((t) => (
@@ -155,19 +161,8 @@ export default function Home() {
                   name={t.name ?? ''}
                   description={t.description ?? ''}
                   featured={t.featured === true}
-                  selected={tier === t.id}
-                  onSelect={setTier}
                 />
               ))}
-            </div>
-            <div className={styles.tierCta}>
-              <Button
-                onClick={() => router.push(`/conversation?tier=${tier}`)}
-                aria-label={`Begin the ${tier} conversation`}
-              >
-                {tierPrimary}
-              </Button>
-              <p className={styles.helper}>{tierHelper}</p>
             </div>
           </div>
         </section>

@@ -161,14 +161,17 @@
   }
 }
 
-/* Desktop type scale */
+/* Desktop type scale — capped smaller than before. Previous values
+   (display 64px, h1 36px, question 30px) combined with generous block
+   paddings produced 1.5-screen question pages on 1080p laptops. Cap at
+   44/30/26 so every question screen fits on one viewport. */
 @media (min-width: 768px) {
   :root {
-    --fs-display: 64px;
-    --fs-h1: 36px;
-    --fs-h2: 30px;
-    --fs-h3: 24px;
-    --fs-h4: 20px;
-    --fs-question: 30px;
+    --fs-display: 44px;
+    --fs-h1: 30px;
+    --fs-h2: 26px;
+    --fs-h3: 22px;
+    --fs-h4: 18px;
+    --fs-question: 26px;
   }
 }

@@ -56,10 +56,11 @@
 }
 
 /* Ladder variant — peer card matched to BriefingCard for the
-   end-of-page action ladder grid. Same frame as the briefing (paper
-   surface, subtle border, 9px radius) with an orange top stripe to
-   mark primary intent. Headline sits at the card-level rung so both
-   cards in the ladder read as peers. */
+   end-of-page action ladder grid. Same frame (paper surface, subtle
+   border, 12px radius, matched padding), same headline register, same
+   button geometry. The primary-intent signal is carried by the orange
+   button colour rather than a stripe on one card and nothing on the
+   other — keeps the two cards reading as symmetric peers. */
 .ladder {
   position: relative;
   display: flex;
@@ -79,18 +80,6 @@
   .ladder {
     padding: var(--space-xl);
   }
-}
-
-.ladder::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  /* Solid brand-orange, no gradient — keeps the card vocabulary in
-     step with realwealth.co.uk which doesn't use gradient accents. */
-  background: var(--brand-orange);
 }
 
 .ladder .preamble {
@@ -125,6 +114,18 @@
   text-align: left;
   font-size: var(--fs-small);
   margin-top: var(--space-md);
+}
+
+/* When the "Get in touch instead" link is folded into the helper line
+   (ladder variant) it inherits the helper's smaller size + muted tone
+   and loses its block padding so the whole line stays as one visual row.
+   This keeps the below-button content in the ladder card to a single
+   line, matching BriefingCard so the primary buttons align across the
+   two peer cards. */
+.ladder .alt .secondary {
+  padding: 0;
+  font-size: inherit;
+  font-weight: 500;
 }
 
 /* Action row — primary Calendly button + secondary "Get in touch" link.
@@ -209,27 +210,14 @@
   color: var(--brand-teal);
 }
 
-/* Enhanced — previously re-skinned the card with a teal gradient for
-   advised_but_looking users. That made the FinalCTA clash with the
-   BriefingCard next to it in the action-ladder grid (two cards, two
-   completely different surfaces). The "highest intent" signal is
-   already carried by the headline/body copy; keeping the same ladder
-   frame means both cards read as peers and the page feels composed.
-
-   A single orange eyebrow above the headline marks the highest-intent
-   state without restyling the whole card — subtle, consistent with
-   the SpotlightFlag eyebrow used elsewhere on the page. */
-.enhanced::after {
-  content: 'THE HIGHEST-INTENT CONVERSATION';
-  display: block;
-  order: -1;
-  margin: 0 0 var(--space-sm);
-  font-family: var(--font-body);
-  font-size: var(--fs-micro);
-  font-weight: 700;
-  letter-spacing: var(--ls-wider);
-  color: var(--brand-orange);
-}
+/* Enhanced — previously injected a separate "THE HIGHEST-INTENT
+   CONVERSATION" kicker via ::after on the highest-intent segment,
+   which produced an asymmetric card in the ladder grid (left card
+   gained a kicker, right card didn't). The "highest intent" signal is
+   now carried entirely by the headline + body copy written in the
+   segment's content file, so both peer cards stay symmetric. The
+   .enhanced class remains as a hook for future per-segment treatments
+   but currently adds nothing visual. */
 
 @keyframes fadeUp {
   from {

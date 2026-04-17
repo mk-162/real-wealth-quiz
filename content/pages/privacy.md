@@ -24,9 +24,9 @@ We do not collect special-category data, payment details, or anything you have n
 
 We use this information for three reasons:
 
-- To send you the shortlist of things worth a conversation, in the format you asked for.
+- To send you your Wealth Report — the things worth a conversation, in the format you asked for.
 - To prepare for a first call with one of our planners, if you book one.
-- To improve the tool — so the next person who uses it gets a clearer picture.
+- To improve the tool — so the next person who uses it gets a clearer Wealth Report.
 
 We do not sell your information. We do not pass it to third parties for marketing.
 

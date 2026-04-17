@@ -37,49 +37,59 @@
 
 @media (max-width: 767px) {
   .topnav {
-    padding: 0 6px;
+    /* Mobile padding uses --gutter so the logo's left edge aligns with
+       the hero card + tier cards below. The live site uses 6px here,
+       but in this app the content columns below sit at --gutter (~16px)
+       so 6px here would leave the logo visibly indented less than the
+       cards it sits above. */
+    padding: 0 var(--gutter);
     min-height: 58px;
     --logo-width: 152px;
   }
 }
 
+/* Mirrors realwealth.co.uk's "Let's talk about you" CTA: white
+   surface, 1.5px orange ring, gelica ExtraLight text, 6px radius,
+   no shadow. Hover inverts to solid orange on white rather than
+   pushing the element up. Kept visible on mobile (with tighter
+   padding + type) so the primary conversion action is always within
+   reach from the top chrome rather than forcing users to scroll. */
 .topnavCta {
-  display: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: var(--paper);
+  color: var(--brand-orange);
+  border: 1.5px solid var(--brand-orange);
+  border-radius: var(--radius-cta);
+  font-family: var(--font-heading);
+  font-style: normal;
+  font-weight: 200;
+  font-size: 0.95rem;
+  line-height: 1.2;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background-color var(--duration-default) var(--ease-default),
+    color var(--duration-default) var(--ease-default);
 }
+.topnavCta:hover {
+  background: var(--brand-orange);
+  color: var(--paper);
+}
+.topnavCta::after {
+  content: '›';
+  font-style: normal;
+  font-size: 1.15em;
+  line-height: 0.8;
+  transform: translateY(-1px);
+}
+
 @media (min-width: 600px) {
-  /* Mirrors realwealth.co.uk's "Let's talk about you" CTA: white
-     surface, 1.5px orange ring, gelica ExtraLight text, 6px radius,
-     no shadow. Hover inverts to solid orange on white rather than
-     pushing the element up. */
   .topnavCta {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
     padding: 8px 24px;
-    background: var(--paper);
-    color: var(--brand-orange);
-    border: 1.5px solid var(--brand-orange);
-    border-radius: var(--radius-cta);
-    font-family: var(--font-heading);
-    font-style: normal;
-    font-weight: 200;
     font-size: 1.05rem;
-    line-height: 1.2;
-    text-decoration: none;
-    transition:
-      background-color var(--duration-default) var(--ease-default),
-      color var(--duration-default) var(--ease-default);
-  }
-  .topnavCta:hover {
-    background: var(--brand-orange);
-    color: var(--paper);
-  }
-  .topnavCta::after {
-    content: '›';
-    font-style: normal;
-    font-size: 1.15em;
-    line-height: 0.8;
-    transform: translateY(-1px);
   }
 }
 

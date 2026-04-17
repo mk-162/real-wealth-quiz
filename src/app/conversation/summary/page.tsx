@@ -298,8 +298,8 @@ function Summary() {
           <p className={styles.heroFrame}>
             The gap between the life you described and the money working
             quietly behind it is usually made of small, fixable things.
-            Below is a shortlist of what we&rsquo;d talk through with you —
-            and a free 30-minute conversation if you want one.
+            Below is your Wealth Report — what we&rsquo;d talk through with
+            you — and a free 30-minute conversation if you want one.
           </p>
           <div className={styles.heroActions}>
             {primaryCtaHref ? (
@@ -678,7 +678,7 @@ function buildConsideredList(segmentId: string, inputs: SummaryInputs): ListItem
   let trimmed: ListItem[];
   if (process.env.NODE_ENV === 'production') {
     const approvedOnly = deduped.filter((item) => item.compliance === 'ok');
-    trimmed = approvedOnly.length > 0 ? approvedOnly.slice(0, 5) : deduped.slice(0, 5);
+    trimmed = approvedOnly.length > 0 ? approvedOnly.slice(0, 5) : productionFallbackItems();
   } else {
     trimmed = deduped.slice(0, 5);
   }
@@ -694,6 +694,38 @@ function buildConsideredList(segmentId: string, inputs: SummaryInputs): ListItem
   });
 
   return withCharts;
+}
+
+function productionFallbackItems(): ListItem[] {
+  return [
+    {
+      id: 'fallback.report_scope',
+      category: 'WEALTH REPORT',
+      headline: 'The briefing has enough shape to be useful.',
+      body: 'A planner would use your answers to focus the first conversation on the areas most likely to matter.',
+      close: 'Worth a conversation.',
+      compliance: 'ok',
+      rank: 900,
+    },
+    {
+      id: 'fallback.missing_detail',
+      category: 'PLANNING AREAS',
+      headline: 'There are a few places to fill in the detail.',
+      body: 'The next step is to check the numbers, documents and priorities behind the answers you gave here.',
+      close: 'Not advice yet.',
+      compliance: 'ok',
+      rank: 901,
+    },
+    {
+      id: 'fallback.next_step',
+      category: 'NEXT STEP',
+      headline: 'A short call would make the report more specific.',
+      body: 'We would talk through what you shared, confirm what is missing, and agree whether a full planning conversation would help.',
+      close: 'No preparation needed.',
+      compliance: 'ok',
+      rank: 902,
+    },
+  ];
 }
 
 interface Derived {

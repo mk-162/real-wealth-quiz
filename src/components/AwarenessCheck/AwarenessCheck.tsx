@@ -1,21 +1,28 @@
 /**
  * AwarenessCheck — an aware/partial/unaware triad.
- * Shown as a screen type inside the questionnaire flow. The answer tunes
- * the tone of the subsequent provocation and never blames the user.
  *
- * After the user picks a level, the matching body (aware / partial /
- * unaware) is revealed inline beneath the options. The continue button on
- * the surrounding screen advances once the user has chosen.
+ * Previously this component rendered its own heading, micro-copy, and a
+ * custom option grid with an orange selected border. In the consistency
+ * pass it's been pared down to just the three options + the revealed body.
  *
- * See Design Agent Prompt — Wealth Conversation.md for the pattern.
+ * The outer shell (kicker, stem, panel, ActionRow) is supplied by the
+ * surrounding QuestionShell in conversation/page.tsx. The options
+ * themselves now reuse CardGrid so the selected state matches every
+ * other selectable box on the site (teal tint + inset teal ring, no
+ * border-width swap, no orange).
  */
+import { CardGrid, type CardGridItem } from '@/components/CardGrid';
 import styles from './AwarenessCheck.module.css';
 
 export type AwarenessLevel = 'aware' | 'partial' | 'unaware';
 
 export interface AwarenessCheckProps {
-  /** The headline question (the part that follows "Had you come across…?"). */
-  topic: string;
+  /**
+   * Retained for backward compatibility — callers used to pass this as
+   * the awareness stem. The wrapper in conversation/page.tsx now hoists
+   * the stem into QuestionShell, so the topic is ignored here.
+   */
+  topic?: string;
   value?: AwarenessLevel;
   onChange: (level: AwarenessLevel) => void;
   /** Body to show after the user has picked a response. */
@@ -32,8 +39,8 @@ const LEVELS: { id: AwarenessLevel; label: string; description: string }[] = [
   },
   {
     id: 'partial',
-    label: "Vaguely — not the detail",
-    description: "I know the shape but not the specifics.",
+    label: 'Vaguely — not the detail',
+    description: 'I know the shape but not the specifics.',
   },
   {
     id: 'unaware',
@@ -42,42 +49,36 @@ const LEVELS: { id: AwarenessLevel; label: string; description: string }[] = [
   },
 ];
 
+const ITEMS: CardGridItem[] = LEVELS.map((l) => ({
+  value: l.id,
+  title: l.label,
+  description: l.description,
+}));
+
 export function AwarenessCheck({
-  topic,
   value,
   onChange,
   body,
   complianceTag,
 }: AwarenessCheckProps) {
+  const selected = value ? [value] : [];
   return (
-    <section className={styles.container} aria-label="Awareness check">
+    <div className={styles.container}>
       {complianceTag ? (
         <span className={styles.tag} aria-label={`Compliance status: ${complianceTag}`}>
           {complianceTag.toUpperCase()}
         </span>
       ) : null}
-      <h2 className={styles.question}>
-        <span className={styles.topic}>{topic}</span>
-      </h2>
       <p className={styles.micro}>
         Honest answer — &ldquo;new to me&rdquo; is as useful as &ldquo;yes&rdquo;.
       </p>
-      <div className={styles.options} role="radiogroup">
-        {LEVELS.map((level) => (
-          <button
-            key={level.id}
-            type="button"
-            role="radio"
-            aria-checked={value === level.id}
-            data-selected={value === level.id}
-            className={styles.option}
-            onClick={() => onChange(level.id)}
-          >
-            <span className={styles.label}>{level.label}</span>
-            <span className={styles.description}>{level.description}</span>
-          </button>
-        ))}
-      </div>
+      <CardGrid
+        items={ITEMS}
+        selected={selected}
+        mode="single"
+        onToggle={(v) => onChange(v as AwarenessLevel)}
+        columns={3}
+      />
       {value && body ? (
         /*
          * aria-live="polite" + aria-atomic so that assistive tech announces the
@@ -98,6 +99,6 @@ export function AwarenessCheck({
           )}
         </div>
       ) : null}
-    </section>
+    </div>
   );
 }

@@ -59,8 +59,11 @@
 
 .label {
   font-family: var(--font-body);
-  font-size: var(--fs-body);
-  font-weight: 500;
+  /* --fs-ui (16px) to match CardGrid + AwarenessCheck labels. Body
+     scale (17–18px) was reserved for prose and read oversized on
+     selectable rows next to 16px CardGrid titles. */
+  font-size: var(--fs-ui);
+  font-weight: 600;
   color: var(--ink);
   line-height: 1.35;
 }
