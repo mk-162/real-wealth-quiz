@@ -5,7 +5,7 @@ hero:
   eyebrow: "A CONVERSATION WITH REAL WEALTH"
   headline: "The life you're planning for."
   sub: "Ten minutes of honest questions about your money and your plans. You'll finish with a clear shortlist of things worth talking to a planner about. No advice — just a picture."
-  primary_cta: "Free report."
+  primary_cta: "Free report"
   reassurance_line: "Your answers stay with us. We won't share them. You can stop any time."
   pills:
     - icon: "user-x"
