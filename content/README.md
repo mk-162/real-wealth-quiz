@@ -46,6 +46,8 @@ Worth a conversation.
 | `segments/` | The 9 summary-page CTAs + 2 overlays | When a segment's closing call-to-action changes |
 | `microcopy/` | Errors, toasts, modals, meta, ARIA, emails | When small interstitial strings change |
 
+Each content subfolder now has its own `README.md` with the field dictionary for that folder. Start there if you need to know what a frontmatter key does before editing it.
+
 ## The compiled master doc
 
 Prefer reading the whole thing in one document? Run:

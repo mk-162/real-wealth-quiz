@@ -68,6 +68,28 @@ export function HeroMaskDefs() {
         >
           <rect x={0} y={0} width={1} height={1} rx={0.0344} ry={0.0344} fill="white" />
         </mask>
+
+        {/* Two-leaves hero cutout — lifts the actual petal geometry
+            from real-wealth-logo-mark.svg (two opposite sharp corners +
+            two curved edges) and stacks two mirrored copies vertically
+            to echo the symbol. Top petal has its sharp corners at the
+            top-left and bottom-right; bottom petal is a horizontal
+            mirror (sharp corners at top-right and bottom-left), so the
+            two lean in opposite directions the way the live site does.
+            A thin horizontal band of the host surface shows between.
+
+            Source petal (logo mark, local coords, 26.962 × 17.875):
+              M 0 -17.875 L -9.087 -17.875
+              C -9.087 -8.003 -1.085 0 8.787 0
+              L 17.875 0
+              C 17.875 -9.872 9.872 -17.875 0 -17.875
+            Normalized to a 1 × 0.48 box (top leaf) by shifting
+            (+9.087, +17.875) and scaling (/26.962, ×0.48/17.875). The
+            bottom leaf applies (x → 1-x) then shifts y by +0.52. */}
+        <clipPath id="rw-hero-2-leaves" clipPathUnits="objectBoundingBox">
+          <path d="M 0.337 0 L 0 0 C 0 0.265 0.297 0.48 0.663 0.48 L 1 0.48 C 1 0.215 0.703 0 0.337 0 Z" />
+          <path d="M 0.663 0.52 L 1 0.52 C 1 0.785 0.703 1 0.337 1 L 0 1 C 0 0.735 0.297 0.52 0.663 0.52 Z" />
+        </clipPath>
       </defs>
     </svg>
   );

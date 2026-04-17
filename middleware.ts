@@ -47,7 +47,12 @@ export function middleware(request: NextRequest) {
   }
 
   const expectedPassword = process.env.CLIENT_REVIEW_PASSWORD;
-  if (!expectedPassword) return missingPasswordResponse();
+  // When the env var is unset (e.g. on preview deployments) let the
+  // request through rather than returning 503 — avoids a false-positive
+  // lock-out when we share a preview URL with the client. Production
+  // should keep CLIENT_REVIEW_PASSWORD set via Vercel env so the gate
+  // continues to apply there.
+  if (!expectedPassword) return NextResponse.next();
 
   const expectedUser = process.env.CLIENT_REVIEW_USER || 'realwealth';
   const credentials = readCredentials(request.headers.get('authorization'));

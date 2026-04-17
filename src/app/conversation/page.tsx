@@ -14,7 +14,7 @@
  */
 'use client';
 
-import { Suspense } from 'react';
+import { Suspense, useEffect, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ScreenRenderer, ActionRow } from '@/components/ScreenRenderer';
 import { Logo } from '@/components/Logo';
@@ -52,6 +52,65 @@ function Questionnaire() {
     inlineProvocations,
     firedAwareness,
   } = engine;
+
+  /* Browser-back integration.
+     ----------------------------------------------------------------
+     Without this effect, the browser/device back button navigates the
+     user out of the questionnaire to whatever page they arrived from
+     (usually the homepage) — even when they are mid-flow. Users
+     reasonably expect back to step them one question backward, same
+     as the in-page ← Back button.
+
+     How it works:
+       1. On mount we push a marker history entry ("sentinel") on top
+          of the current /conversation entry. The URL does not change;
+          this entry is only there to catch the next back press.
+       2. When popstate fires (user pressed browser back), we inspect
+          the *new* top-of-stack state.
+            a. If it carries our sentinel, the user is returning to
+               /conversation from /conversation/details — leave them
+               on whatever question they last saw.
+            b. Otherwise our sentinel has just been popped, meaning
+               the user is trying to step back within the flow. If
+               the engine can step back, do it and re-arm the
+               sentinel. If not (they are on the first question), fall
+               through — the browser will advance the back one more
+               step and take them home. */
+  const engineRef = useRef(engine);
+  useEffect(() => {
+    engineRef.current = engine;
+  });
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const SENTINEL = { __wc_back_sentinel: true };
+    try {
+      window.history.pushState(SENTINEL, '');
+    } catch {
+      /* Some embeddings (iframes with strict sandbox) disallow
+         pushState — fail open rather than crash the page. */
+      return;
+    }
+    const onPopState = (e: PopStateEvent) => {
+      const state = e.state as { __wc_back_sentinel?: boolean } | null;
+      // Case (a): user returned from /conversation/details — sentinel
+      // is the new top. Leave engine untouched.
+      if (state && state.__wc_back_sentinel) return;
+      // Case (b): sentinel was popped. Step back in-flow if we can.
+      const eng = engineRef.current;
+      if (!eng.isFirst && eng.active) {
+        eng.back();
+        try {
+          window.history.pushState(SENTINEL, '');
+        } catch {
+          /* ignore */
+        }
+      }
+      // If isFirst, we let the browser keep going back to the prior
+      // page (homepage or wherever they came from).
+    };
+    window.addEventListener('popstate', onPopState);
+    return () => window.removeEventListener('popstate', onPopState);
+  }, []);
 
   if (!active) {
     return (
@@ -94,6 +153,18 @@ function Questionnaire() {
   const activeKey =
     active.kind === 'awareness' ? `awareness:${active.check.id}` : active.screen.id;
 
+  /* Dev-only: what question/screen are we on? Prefer q_refs (e.g. "Q2.1,
+     Q2.2") since those are the labels used in the segmentation matrix and
+     in most conversations with the client. Fall back to the screen id for
+     intro / transition-style screens that have no q_refs, and to the
+     awareness check id on virtual awareness screens. */
+  const debugScreenLabel =
+    active.kind === 'awareness'
+      ? `aware:${active.check.id}`
+      : (active.screen.q_refs && active.screen.q_refs.length > 0
+          ? active.screen.q_refs.join(',')
+          : active.screen.id);
+
   return (
     <div className={styles.shell}>
       <header className={styles.header}>
@@ -126,7 +197,7 @@ function Questionnaire() {
           <span className={styles.progressLabel}>
             {process.env.NODE_ENV === 'production'
               ? `${Math.round(progress * 100)}%`
-              : `${tierParam} · ${Math.round(progress * 100)}%${segmentId ? ` · ${segmentId}` : ''}`}
+              : `${tierParam} · ${debugScreenLabel} · ${segmentId ?? '—'}`}
           </span>
         </div>
       </header>

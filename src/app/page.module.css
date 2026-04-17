@@ -222,18 +222,21 @@
   order: 1;
   margin: 0;
   position: relative;
-  aspect-ratio: 1 / 1;
-  box-shadow: 0 50px 80px -40px rgba(0, 0, 0, 0.45);
-  background: var(--paper);
-  border: 1px solid rgba(255, 255, 255, 0.45);
-  border-radius: 22px;
-  overflow: hidden;
+  /* Taller-than-wide so the two stacked petals read as the logo
+     mark — matches the proportions on realwealth.co.uk, where the
+     cutout block occupies the full hero height. */
+  aspect-ratio: 5 / 6;
+  width: 100%;
 }
 @media (min-width: 1024px) {
   .heroMedia {
     order: 2;
-    width: min(100%, 560px);
-    justify-self: end;
+    width: 100%;
+    justify-self: stretch;
+    /* Allow the right-hand curves to extend toward the viewport edge
+       like the live site, where the leaves are cropped by the page
+       container rather than centred in a boxed figure. */
+    margin-right: calc(-1 * var(--gutter));
   }
 }
 
@@ -243,6 +246,7 @@
   height: 100%;
   object-fit: cover;
   object-position: center 62%;
+  clip-path: url(#rw-hero-2-leaves);
 }
 
 /* ===== Tier picker =============================================== */
@@ -417,6 +421,7 @@
   line-height: 1.3;
   color: var(--ink);
   margin: 0 0 var(--space-xs);
+ 
   letter-spacing: -0.005em;
 }
 

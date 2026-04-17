@@ -120,8 +120,8 @@ export default function Home() {
 
             <figure className={styles.heroMedia}>
               <img
-                src="/homepage-summary-preview.png"
-                alt="Real Wealth summary page showing conversation prompts and chart examples"
+                src="/welcome-image.png"
+                alt="A couple reviewing their Real Wealth report on a laptop"
                 className={styles.heroPreviewImage}
                 loading="eager"
               />

@@ -360,16 +360,12 @@ function buildIndex() {
   <section class="hero">
     <div class="hero-copy">
       <p class="eyebrow">Client review website</p>
-      <h1>Wealth Conversation service review.</h1>
+      <h1>Wealth report - admin guide</h1>
       <p class="lead">A branded guide to the Real Wealth lead-magnet service: what the user experiences, how the question flow adapts, what content can trigger, and what needs to happen before public launch.</p>
       <div class="hero-actions">
         <a class="btn primary" href="/">View demo</a>
         <a class="btn ghost" href="#documents">Review source docs</a>
       </div>
-    </div>
-    <div class="hero-visual" aria-label="Service screenshots">
-      <figure class="shot shot-main"><img src="/client-review/assets/summary-page.png" alt="Real Wealth summary page with personalised conversation prompts and chart examples"><figcaption>Summary page</figcaption></figure>
-      <figure class="shot shot-small"><img src="/client-review/assets/summary-detail.png" alt="Real Wealth summary chart examples"><figcaption>Chart examples</figcaption></figure>
     </div>
   </section>
 
@@ -377,16 +373,16 @@ function buildIndex() {
     <div class="section-head">
       <p class="eyebrow">How the service works</p>
       <h2>It is a guided conversation, not a score quiz.</h2>
-      <p>The visitor chooses a depth, answers a conversational form, receives tailored prompts and a summary, then can book a call with Real Wealth. The system is designed to make the first planner conversation warmer, more specific, and easier to prepare for.</p>
+      <p>The visitor moves from the landing page into a chosen questionnaire length, opening questions, the segment gate, and then an adaptive flow. Triggered insights are not a separate step: provocations, awareness checks, and overlays are peppered through the system where the answers make them relevant. The final screen displays the wealth report with a clear call to action.</p>
     </div>
     <div class="journey-grid">
       ${[
-        ['1', 'Landing page', 'Explains the promise, lets the visitor choose quick, standard, or thorough.'],
-        ['2', 'Opening questions', 'Sets tone and captures what real wealth means to the person.'],
-        ['3', 'Segment gate', 'Age, household, work status, income, and estate band assign a planning segment.'],
-        ['4', 'Adaptive flow', 'The segment matrix decides which later questions are shown, conditional, or skipped.'],
-        ['5', 'Triggered insight', 'Answer patterns can show provocations, awareness checks, and summary overlays.'],
-        ['6', 'Next step', 'The visitor submits details and moves into booking, CRM, and adviser follow-up.'],
+        ['1', 'Landing page', 'Explains the promise and routes the visitor into the report flow.'],
+        ['2', 'Questionnaire length', 'The visitor chooses quick, standard, or thorough, setting how deep the flow goes.'],
+        ['3', 'Opening questions', 'Sets the tone and captures what real wealth means to the person.'],
+        ['4', 'Segment gate', 'Age, household, work status, income, and estate band assign a planning segment.'],
+        ['5', 'Adaptive flow', 'The segment matrix decides which later questions are shown, conditional, or skipped. Triggered insights appear inside this flow where relevant.'],
+        ['6', 'Display wealth report', 'Shows the tailored wealth report and presents the Real Wealth call to action.'],
       ].map(([n, h, p]) => `<article class="journey-card"><span>${n}</span><h3>${h}</h3><p>${p}</p></article>`).join('\n')}
     </div>
   </section>
@@ -493,7 +489,7 @@ function buildIndex() {
 <script src="/client-review/app.js"></script>`;
 
   return pageShell({
-    title: 'Wealth Conversation Service Review',
+    title: 'Wealth report - admin guide',
     description: 'Client review website for the Real Wealth Wealth Conversation service.',
     body,
   });
@@ -549,7 +545,7 @@ a { color: inherit; }
 .site-nav a:hover { color: var(--teal); border-color: rgba(12,115,114,0.24); }
 .site-nav .service-link { color: #fff; background: var(--orange); border-color: var(--orange); }
 main { width: min(1220px, calc(100% - 32px)); margin: 0 auto; }
-.hero { min-height: calc(100svh - 72px); display: grid; grid-template-columns: minmax(0, 1fr) minmax(360px, 0.92fr); gap: 54px; align-items: center; padding: 56px 0 72px; }
+.hero { min-height: calc(100svh - 72px); display: grid; grid-template-columns: minmax(0, 1fr); align-items: center; padding: 56px 0 72px; }
 .eyebrow { margin: 0 0 12px; color: var(--teal); font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.13em; font-weight: 900; }
 h1, h2, h3 { margin: 0; line-height: 1.08; letter-spacing: 0; color: #18383b; }
 h1, h2 { font-family: var(--heading); font-weight: 500; }
@@ -562,7 +558,6 @@ h3 { font-size: 1.08rem; }
 .btn.primary { background: var(--orange); color: #fff; border-color: var(--orange); }
 .btn.secondary { background: #fff; color: var(--teal); border-color: var(--teal); }
 .btn.ghost { background: #fff; color: var(--stone); border-color: var(--line); }
-.hero-visual { position: relative; min-height: 560px; }
 .shot { position: absolute; margin: 0; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 10px; box-shadow: var(--shadow); }
 .shot img { display: block; width: 100%; border-radius: 7px; border: 1px solid var(--line); }
 .shot figcaption { color: var(--stone); font-size: 0.76rem; font-weight: 800; padding: 8px 2px 0; }
@@ -573,7 +568,7 @@ h3 { font-size: 1.08rem; }
 .section-head p:last-child, .split > div:first-child p { color: var(--stone); margin: 18px 0 0; }
 .journey-grid, .gate-grid, .delivery-grid, .docs-grid, .next-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
 .journey-card, .gate-card, .delivery-grid article, .doc-card, .next-grid p { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; box-shadow: 0 8px 24px rgba(13,42,46,0.05); }
-.journey-card span, .gate-card span { width: 34px; height: 34px; display: grid; place-items: center; border-radius: var(--radius); color: #fff; background: var(--teal); font-weight: 900; margin-bottom: 14px; }
+.journey-card span, .gate-card span { min-width: 52px; height: 34px; padding: 0 10px; display: inline-grid; place-items: center; box-sizing: border-box; border-radius: var(--radius); color: #fff; background: var(--teal); font-weight: 900; line-height: 1; white-space: nowrap; margin-bottom: 14px; }
 .journey-card p, .gate-card p, .delivery-grid p, .doc-card p { color: var(--stone); margin: 8px 0 0; font-size: 0.94rem; }
 .split { display: grid; grid-template-columns: minmax(250px, 0.4fr) minmax(0, 0.6fr); gap: 42px; align-items: start; }
 .status-list { border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: #fff; }
@@ -635,7 +630,6 @@ code, .trigger-code { font-family: Consolas, "Liberation Mono", monospace; font-
 .doc-body th, .doc-body td { border-top: 1px solid var(--line); padding: 10px; vertical-align: top; }
 @media (max-width: 980px) {
   .hero, .section-head, .split { grid-template-columns: 1fr; }
-  .hero-visual { min-height: 470px; }
   .journey-grid, .gate-grid, .delivery-grid, .docs-grid, .next-grid, .provocation-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .status-row, .rule-card { grid-template-columns: 1fr; }
 }
