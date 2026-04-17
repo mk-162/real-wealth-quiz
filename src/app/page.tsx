@@ -45,7 +45,7 @@ export default function Home() {
   /* Copy sourced from content/pages/homepage.md. */
   const headline = pageValue<string>('homepage', 'hero.headline', '');
   const sub = pageValue<string>('homepage', 'hero.sub', '');
-  const primaryCta = pageValue<string>('homepage', 'hero.primary_cta', 'Start the conversation');
+  const primaryCta = pageValue<string>('homepage', 'hero.primary_cta', 'Free report.');
   const reassurance = pageValue<string>('homepage', 'hero.reassurance_line', '');
   const pills = pageValue<HeroPillContent[]>('homepage', 'hero.pills', []);
 
@@ -80,7 +80,7 @@ export default function Home() {
               ?.scrollIntoView({ behavior: 'smooth' });
           }}
         >
-          Start the conversation
+          Free report.
         </a>
       </header>
 
