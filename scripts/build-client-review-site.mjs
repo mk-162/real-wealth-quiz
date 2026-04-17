@@ -110,6 +110,8 @@ const provocations = [
 ];
 
 const docs = [
+  { slug: 'how-it-is-managed', title: 'How the App Is Managed', summary: 'Plain-English, step-by-step guide to editing the service after launch — where the master lives, what to change for common client requests, and how changes reach production safely.', source: join(appRoot, 'HOW_IT_IS_MANAGED.md') },
+  { slug: 'content-brief', title: 'Content Brief — Wealth Conversation', summary: 'Screen-by-screen content specification with verbatim copy, grouped question screens, awareness checks, and summary page narrative. The primary client review document.', source: join(workspaceRoot, 'Content Brief - Wealth Conversation.md') },
   { slug: 'content-readme', title: 'Content README', summary: 'How copy is edited in the content folder and validated before shipping.', source: join(appRoot, 'content', 'README.md') },
   { slug: 'wealth-conversation-spec', title: 'Wealth Conversation Spec', summary: 'The core service specification for the lead magnet and client journey.', source: join(workspaceRoot, 'Lead Magnet - Wealth Conversation Spec.md') },
   { slug: 'prototype-action-plan', title: 'Prototype Action Plan', summary: 'The build plan, trigger matrix, data flow, and pilot plan.', source: join(workspaceRoot, 'Lead Magnet - Prototype Action Plan.md') },
@@ -330,7 +332,7 @@ function pageShell({ title, description, body }) {
       <a href="/client-review#question-flow">Question flow</a>
       <a href="/client-review#delivery">Delivery</a>
       <a href="/client-review#documents">Docs</a>
-      <a class="service-link" href="/">Open service</a>
+      <a class="service-link" href="/">View demo</a>
     </nav>
   </header>
   ${body}
@@ -361,8 +363,7 @@ function buildIndex() {
       <h1>Wealth Conversation service review.</h1>
       <p class="lead">A branded guide to the Real Wealth lead-magnet service: what the user experiences, how the question flow adapts, what content can trigger, and what needs to happen before public launch.</p>
       <div class="hero-actions">
-        <a class="btn primary" href="/">Open the service</a>
-        <a class="btn secondary" href="/conversation?tier=standard">Start standard conversation</a>
+        <a class="btn primary" href="/">View demo</a>
         <a class="btn ghost" href="#documents">Review source docs</a>
       </div>
     </div>

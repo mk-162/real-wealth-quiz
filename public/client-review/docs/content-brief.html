@@ -1,0 +1,1646 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Content Brief — Wealth Conversation - Real Wealth Client Review</title>
+  <meta name="description" content="Screen-by-screen content specification with verbatim copy, grouped question screens, awareness checks, and summary page narrative. The primary client review document.">
+  <link rel="stylesheet" href="/client-review/site.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="logo-link" href="/client-review" aria-label="Real Wealth client review home">
+      <img src="/real-wealth-logo-wordmark.svg" alt="Real Wealth">
+    </a>
+    <nav class="site-nav" aria-label="Primary navigation">
+      <a href="/client-review#service">Service</a>
+      <a href="/client-review#question-flow">Question flow</a>
+      <a href="/client-review#delivery">Delivery</a>
+      <a href="/client-review#documents">Docs</a>
+      <a class="service-link" href="/">View demo</a>
+    </nav>
+  </header>
+  
+<main class="doc-page">
+  <a class="back-link" href="/client-review#documents">Back to review library</a>
+  <article class="doc-article">
+    <header class="doc-hero">
+      <p class="eyebrow">Source document</p>
+      <h1>Content Brief — Wealth Conversation</h1>
+      <p>Screen-by-screen content specification with verbatim copy, grouped question screens, awareness checks, and summary page narrative. The primary client review document.</p>
+    </header>
+    <div class="doc-body"><p><em>The screen-by-screen content specification for the Wealth Conversation lead magnet. Verbatim copy, grouped question screens, segmentation logic, awareness-check wording, summary-page narrative, microcopy, and error states. Dual-purpose: the engineering agent builds from this; the client reviews and edits the same document. When the two disagree, the client&#039;s edits win on copy; the developer&#039;s notes win on implementation detail.</em></p>
+<p><em>Version 0.1 — 16 April 2026. Owner: Matt / programme team. Status: <strong>first draft — expect copy changes</strong>. Supersedes Question Design Options §6 for production copy, Pitfall Awareness Library §4 for awareness-check wording, and Segmentation Design Companion §4–§6 for gate ordering. The other documents remain the source of truth for rationale and engineering logic.</em></p>
+<p>---</p>
+<h3>How to read and edit this document</h3>
+<p>This is a <strong>first draft</strong>. The content in here is drawn from existing Real Wealth project files (brand voice, 35-question catalogue, pitfall library, segmentation logic, Stitch design patterns), but the final wording will come from the firm. Anywhere you see a question, a provocation, or a final-page paragraph, treat it as a starting point — rewrite it in your own voice and we will take your edits as the definitive version.</p>
+<p><strong>For the client (Real Wealth):</strong> read linearly. The document follows the user&#039;s journey. Make inline edits or comments where the wording doesn&#039;t sound like you. Pay particular attention to:</p>
+<ul>
+<li>Awareness-check tone (§5) — we&#039;ve softened the stock &quot;Were you aware…&quot; formula; check it lands right.</li>
+<li>Provocation copy (§6) — every provocation should get a Chartered Financial Planner + Compliance Officer read before shipping.</li>
+<li>Segment-specific calls to action (§8) — the nine segments each get their own CTA framing. Check the distinctions match how you route clients internally.</li>
+<li>Consent and privacy wording (§7) — plain-English by design, but needs a compliance read.</li>
+</ul>
+<p><strong>For the engineering agent:</strong> treat this as the content spec, not the engineering spec. For stack, routing, state management, and rules logic, see <code>Claude Code Prompt - App Build.md</code> and <code>Claude Code Prompt - Master Template.md</code>. For segment assignment, see <code>Question Segment Master.xlsx</code>.</p>
+<p><strong>Creative brief on form grouping:</strong> the questionnaire deliberately <strong>does not</strong> follow the one-question-per-screen convention. Lots of small forms feel like admin. Where two or three questions belong together (age + household, income + spend, pensions + investments), we group them on a single screen with a calm, editorial layout — one evocative image on the left, a grouped card of inputs on the right, per the Stitch &quot;Digital Private Suite&quot; pattern. Each group is specified below with a note on layout, image direction, and input pattern. Holding image markers (<em>IMAGE: …</em>) are placeholders — the design team will source or commission on sign-off.</p>
+<p>---</p>
+<h3>Table of contents</h3>
+<ol>
+<li>Homepage</li>
+<li>Questionnaire shell — global form patterns</li>
+<li>The Gate — five questions that decide the segment</li>
+<li>Segment-aware question catalogue</li>
+<li>Awareness checks — library of 20</li>
+<li>Provocation cards — library</li>
+<li>Data capture screen</li>
+<li>Summary page — with nine segment-specific variants</li>
+<li>Global microcopy — errors, toasts, metadata, ARIA</li>
+<li>Transparency — what&#039;s invented here vs. drawn from existing files</li>
+</ol>
+<p>---</p>
+<h3>1. Homepage</h3>
+<p>The homepage is the one page every user sees. It has four stacked sections — hero, tier picker, brand freedom moment, benefit cards — and a standing footer. The aesthetic is Real Wealth&#039;s &quot;Digital Private Suite&quot; — generous whitespace, serif headlines in gelica ExtraLight Italic, no 1px borders, tonal layering instead.</p>
+<h4>1.1 Hero</h4>
+<p>Full-width teal gradient, 96px vertical padding desktop, 48px mobile. Typography-led, no hero photography.</p>
+<p><strong>Eyebrow</strong> <em>(uppercase, letter-spaced 0.08em, off-white, area-normal 13px)</em></p>
+<blockquote>A CONVERSATION WITH REAL WEALTH</blockquote>
+<p><strong>Headline</strong> <em>(gelica ExtraLight Italic, 56px desktop / 40px mobile, white, max-width 880px, left-aligned with 30% right margin for breathing room)</em></p>
+<blockquote><em>The life you&#039;re planning for.</em></blockquote>
+<p><strong>Sub-headline</strong> <em>(area-normal regular, 19px desktop / 17px mobile, white at 90% opacity, max-width 560px)</em></p>
+<blockquote>Ten minutes of honest questions about your money and your plans. You&#039;ll finish with a clear shortlist of things worth talking to a planner about. No advice — just a picture.</blockquote>
+<p><strong>Primary CTA</strong> <em>(orange button, 48px height, area-normal medium, 16px, <code>--brand-orange</code> background, <code>--paper</code> text)</em></p>
+<blockquote>Start the conversation</blockquote>
+<p>The CTA scrolls to (or reveals) the tier picker directly below. It never jumps straight into question one.</p>
+<p><strong>Reassurance line</strong> <em>(area-normal regular, 14px, white at 70%, 24px below the CTA)</em></p>
+<blockquote>Your answers stay with us. We won&#039;t share them. You can stop any time.</blockquote>
+<p><strong>Two reassurance pills below the reassurance line</strong> <em>(chip style, paper background at 10% opacity, white text, 13px, each with a small lucide icon on the left)</em></p>
+<ul>
+<li><code>user-x</code> — <em>No sign-in needed</em></li>
+<li><code>shield-check</code> — <em>FCA regulated firm</em></li>
+</ul>
+<p>No time pill. The time claim lives inside the tier picker tiles, not in the hero.</p>
+<h4>1.2 Tier picker</h4>
+<p>The second section of the homepage. The full specification is in <code>Design Agent Prompt - Tier Picker.md</code> — that document is the source of truth and takes precedence over what follows. The verbatim copy sits here for client review convenience.</p>
+<p><strong>Section heading</strong> <em>(gelica ExtraLight, 40px desktop / 32px mobile, teal, centred)</em></p>
+<blockquote><em>How deep would you like to go?</em></blockquote>
+<p><strong>Sub-heading</strong> <em>(area-normal regular, 18px, ink at 70% opacity, centred, max-width 520px)</em></p>
+<blockquote>Three lengths, same honest conversation. Stop whenever you like — your answers are saved.</blockquote>
+<p><strong>Three tiles, left to right on desktop, stacked on mobile.</strong> Each tile has: small lucide icon (teal, 20px, top-left), uppercase time label (letter-spaced, 13px, stone), tier name (gelica, 28px, ink), one-sentence description (area-normal, 16px, ink at 80%).</p>
+<p><strong>Tile 1 — Quick picture</strong></p>
+<ul>
+<li>Icon: <code>zap</code></li>
+<li>Time label: THREE MINUTES</li>
+<li>Name: <em>Quick picture</em></li>
+<li>Description: <em>A handful of questions and a short list of things worth a conversation. Enough for a feel.</em></li>
+</ul>
+<p><strong>Tile 2 — Standard dive</strong> <em>(preselected, 3px teal border, 5% teal tint background)</em></p>
+<ul>
+<li>Ribbon above the tile: MOST PEOPLE START HERE</li>
+<li>Icon: <code>bar-chart-3</code></li>
+<li>Time label: SEVEN MINUTES</li>
+<li>Name: <em>Standard dive</em></li>
+<li>Description: <em>A proper shortlist, with illustrative examples — the shape of what a first call might cover.</em></li>
+</ul>
+<p><strong>Tile 3 — Thorough</strong></p>
+<ul>
+<li>Icon: <code>book-open</code></li>
+<li>Time label: TWELVE MINUTES</li>
+<li>Name: <em>Thorough</em></li>
+<li>Description: <em>Enough of a picture that you&#039;ll save half your first call. Best if you&#039;re close to wanting one.</em></li>
+</ul>
+<p><strong>Primary button</strong> <em>(orange, centred below the tile row)</em></p>
+<blockquote>Let&#039;s begin →</blockquote>
+<p><strong>Helper line</strong> <em>(area-normal, stone, 14px, centred, directly below the button)</em></p>
+<blockquote>Not sure? Start with Standard — you can always stop early.</blockquote>
+<h4>1.3 Brand freedom moment</h4>
+<p>A full-width quiet section between the tier picker and the benefit cards. Paper background. 96px vertical padding top and bottom. Centred single-column text at max-width 680px. This is the single most important sentence in Real Wealth&#039;s voice, so it gets its own breathing room.</p>
+<p><strong>Quote</strong> <em>(gelica ExtraLight Italic, 36px desktop / 28px mobile, teal, centred)</em></p>
+<blockquote><em>Real wealth isn&#039;t just about money — it&#039;s about freedom. Freedom to choose how you live, work, and spend your time.</em></blockquote>
+<p>No attribution. No decorative quotation-mark glyphs. Just the sentence, sitting on paper.</p>
+<h4>1.4 Three benefit cards</h4>
+<p>Below the brand freedom moment. Three equal-width cards on desktop (24px gap), stacked on mobile. Each card: paper background, 5% tonal shift from the section background (no border), 24px internal padding, 8px corner radius, soft shadow.</p>
+<p>Each card has: small lucide icon (top, teal, 28px), headline (gelica, 24px, ink), sub (area-normal, 16px, ink at 80%).</p>
+<p><strong>Card 1 — People, not products</strong></p>
+<ul>
+<li>Icon: <code>heart-handshake</code></li>
+<li>Headline: <em>Built around people, not products.</em></li>
+<li>Sub: <em>Financial planning that starts with your life, not your portfolio.</em></li>
+</ul>
+<p><strong>Card 2 — A mirror, not a scorecard</strong></p>
+<ul>
+<li>Icon: <code>refresh-ccw</code></li>
+<li>Headline: <em>A mirror, not a scorecard.</em></li>
+<li>Sub: <em>A reflection tool, not an exam. There are no right or wrong answers — just a clearer picture.</em></li>
+</ul>
+<p><strong>Card 3 — FCA authorised planners</strong></p>
+<ul>
+<li>Icon: <code>shield-check</code></li>
+<li>Headline: <em>FCA authorised financial planners.</em></li>
+<li>Sub: <em>Regulated professional advice based in Manchester and Taunton.</em></li>
+</ul>
+<h4>1.5 Footer</h4>
+<p>Minimal. Two lines plus two small links, centred, area-normal 13px, ink at 60%.</p>
+<blockquote>Real Wealth is a trading name of [entity]. Authorised and regulated by the Financial Conduct Authority. FCA register number: [xxxxxx].</blockquote>
+<blockquote>This tool provides general guidance and does not constitute a personal recommendation or financial advice.</blockquote>
+<p>Below, two links (14px, teal, 24px gap):</p>
+<ul>
+<li><em>Privacy</em></li>
+<li><em>How we meet our Consumer Duty obligations</em></li>
+</ul>
+<p>The Consumer Duty link points to <code>/consumer-duty</code> — placeholder page for v1.0.</p>
+<p>---</p>
+<h3>2. Questionnaire shell — global form patterns</h3>
+<p>This section covers the structural and behavioural patterns that apply across every questionnaire screen. Individual screens are specified in §3 and §4.</p>
+<h4>2.1 Layout language</h4>
+<p>Two layouts alternate through the form — asymmetric and centred.</p>
+<p><strong>Asymmetric two-column (the default)</strong> — most question screens. Evocative image (or typographic moment) on the left at ~40% of the width, input card on the right at ~55% with 5% gutter. This is the Stitch <em>Regent&#039;s Reserve</em> pattern; it reads as editorial rather than transactional and gives the question room to land.</p>
+<ul>
+<li>Left column: a single large photograph or illustration, full-height of the viewport section. Muted, atmospheric — morning light, a coastal walk, a kitchen table, a garden. Never stock photography of people in suits. See §2.8 for image direction.</li>
+<li>Right column: input card. Paper background, 1px ghost border (outline-variant at 20%), 12px radius, <code>--shadow-sm</code>. Internal padding 32px.</li>
+</ul>
+<p><strong>Centred single-column</strong> — used for:</p>
+<ul>
+<li>The intro screen (before the first question).</li>
+<li>Section transition screens (full-bleed teal, gelica headline announcing the next section).</li>
+<li>Awareness-check screens (quieter pattern — see §2.6).</li>
+<li>The data capture screen (centred form card, see §7).</li>
+</ul>
+<h4>2.2 Progress indicator</h4>
+<p>Percentage-based, not numbered. The per-user question count varies from ~12 (S1 Early Accumulator) to ~30 (S5/S6 business owners with all conditionals), so <em>&quot;Question 4 of 15&quot;</em> is wrong in every case.</p>
+<p><strong>Visual</strong> — thin teal progress bar sitting on top of the viewport, 4px tall. The gradient fills left-to-right as the user advances. No percentage number is displayed — the bar alone communicates progress. The bar re-calibrates silently when the segment is assigned (a Tier B user whose gate resolves to S9 may suddenly have more questions to answer; the bar retreats smoothly rather than jumping).</p>
+<p><strong>No step count ever visible.</strong> If the user hovers the bar, a small tooltip can show <em>&quot;About halfway&quot;</em> or <em>&quot;Nearly there&quot;</em> — plain-English rather than a number. Optional, not required for v1.0.</p>
+<p><strong>Motion</strong> — width transitions in 250ms using <code>--ease-default</code>. Respect <code>prefers-reduced-motion: reduce</code>.</p>
+<h4>2.3 Navigation</h4>
+<p>Every question screen has three controls:</p>
+<p><strong>Back</strong> <em>(ghost button, top-left, area-normal 14px, teal, prefixed with <code>←</code>)</em> — returns to the previous screen. Never rewrites the user&#039;s answer. On the first screen, hidden.</p>
+<p><strong>Save &amp; close</strong> <em>(ghost button, top-right, area-normal 14px, ink at 70%)</em> — saves the session to localStorage and returns to the homepage. Shows a toast <em>(see §9.2)</em>. Users can close the tab instead and the session persists either way — this button exists for the psychological permission, not the technical need.</p>
+<p><strong>Continue</strong> <em>(primary orange button, bottom-right of the input card, 48px height)</em> — saves the answer and advances. Disabled when required fields are empty; micro-copy below the button explains what&#039;s missing <em>(see §9.1 for error patterns)</em>.</p>
+<p>No &quot;skip&quot; button. A user who doesn&#039;t want to answer uses the <em>&quot;Prefer not to say&quot;</em> option that every question offers where relevant (banded radios, card selects). Text fields can be left blank if the question is optional — the Continue button enables anyway.</p>
+<h4>2.4 Save and resume</h4>
+<p>Every answer writes to localStorage on Continue. If the user closes the tab and reopens the URL within 30 days, the form resumes at the next unanswered question. On resume, a brief banner at the top of the screen <em>(area-normal 14px, paper background at 40% opacity, teal icon)</em>:</p>
+<blockquote><em>Welcome back. Picking up where you left off.</em></blockquote>
+<p>Banner dismisses after 4 seconds or on first interaction.</p>
+<p>A <em>&quot;Start over&quot;</em> link sits at the bottom of the summary page <em>(see §8)</em>. Clicking it clears localStorage with a confirmation modal <em>(see §9.3)</em>.</p>
+<h4>2.5 Section transitions</h4>
+<p>Between each major section <em>(between the Gate and the main catalogue, before the business-owner branch, before the final-page)</em>, a full-bleed teal screen pauses the form for a beat. Typography-led. No interaction other than an automatic or manual advance.</p>
+<p><strong>Visual</strong> — full viewport height, teal gradient background. A short serif heading centred vertically, 40px desktop / 32px mobile, gelica ExtraLight Italic, white. A small orange lucide icon above the heading. No sub-heading. No progress bar visible on transition screens.</p>
+<p><strong>Example transition copy</strong> <em>(each section gets its own — specified in §4)</em></p>
+<blockquote><em>Now — let&#039;s talk about your money.</em></blockquote>
+<p>Auto-advances after 2.5s, or on any key press / click. Respect <code>prefers-reduced-motion</code> — in reduced mode, the transition screen is skipped and the user goes straight to the next question.</p>
+<h4>2.6 Awareness-check pattern</h4>
+<p>Different visual register from a question. Centred single column, max-width 680px. Paper background. The awareness check reads as a moment of reflection rather than a data input — consistent with the mechanism&#039;s intent.</p>
+<p><strong>Eyebrow</strong> <em>(uppercase, letter-spaced, 12px, stone)</em></p>
+<blockquote>SOMETHING WORTH NOTICING</blockquote>
+<p><strong>Stem</strong> <em>(gelica regular, 28px desktop / 22px mobile, ink, max-width 620px, centred)</em></p>
+<blockquote><em>{{Awareness-check question text — see §5}}</em></blockquote>
+<p><strong>Three-option radio group</strong> <em>(stacked vertically, 16px gap, each option in a paper card with a 1px ghost border, 12px radius, 56px min height)</em></p>
+<ul>
+<li><em>Yes — I knew that</em></li>
+<li><em>I&#039;d heard of it, but not the detail</em></li>
+<li><em>No — this is news to me</em></li>
+</ul>
+<p><strong>On select, the option animates to a teal-tinted state (5% teal background, 2px teal border)</strong>, and the correct response copy reveals below the group in a quiet paper card with a teal left accent <em>(3px, full height of the revealed card)</em>. Continue button enables.</p>
+<p><strong>Ack / clarification / provocation copy</strong> — each awareness check has three verbatim bodies; see §5. The body reveals with a 250ms slide-fade using <code>--ease-default</code>. Respect <code>prefers-reduced-motion</code>.</p>
+<h4>2.7 Provocation card pattern</h4>
+<p>A provocation is not a question — it&#039;s a quiet observation triggered by an earlier answer. It interrupts the questionnaire with one screen, then continues.</p>
+<p><strong>Visual</strong> — centred single-column, max-width 640px. Paper background. A single orange accent line <em>(2px, 40px long)</em> sits above the headline. No input controls other than the Continue button.</p>
+<p><strong>Headline</strong> <em>(gelica regular, 28px desktop / 22px mobile, ink)</em> — 4-6 words, specific.</p>
+<blockquote><em>{{Provocation headline, e.g. &quot;The £2m cliff.&quot;}}</em></blockquote>
+<p><strong>Body</strong> <em>(area-normal regular, 17px, ink at 85%, max-width 560px, max two sentences)</em></p>
+<blockquote><em>{{Provocation body — see §6. Never more than two sentences plus the close.}}</em></blockquote>
+<p><strong>Close</strong> <em>(area-normal regular italic, 15px, stone, 16px below the body)</em></p>
+<blockquote><em>{{Soft conversational prompt, e.g. &quot;Worth a conversation.&quot;}}</em></blockquote>
+<p><strong>Continue button</strong> — same as a question screen, right-aligned below the card.</p>
+<p>No &quot;acknowledge&quot; checkbox. No rating. The user reads and continues.</p>
+<h4>2.8 Image direction</h4>
+<p>Images are a core part of the questionnaire&#039;s feel. They are the still, human side of an otherwise cerebral form. The brand is &quot;Digital Private Suite&quot; — so the imagery should be Digital Private Suite too. <strong>No stock imagery of people in business suits. No glossy financial metaphors (rising bar charts, piggy banks, coins).</strong></p>
+<p>The visual vocabulary is closer to a Sunday supplement or an editorial lifestyle magazine. Still lifes, landscapes, domestic scenes from a slight distance, morning light, late-afternoon shadows. The user should feel the image is about the <em>life</em> the question concerns, not the <em>money</em>.</p>
+<p>For v1.0 draft, every image below is marked <em>IMAGE: [description + direction]</em>. These are holding images — the design team will commission or source on sign-off. Provenance notes and licensing details go in the final design handoff.</p>
+<p><strong>Grouped images into image-families for consistency:</strong></p>
+<ul>
+<li>Family 1 — <em>&quot;Life shape&quot;</em> — household scenes. A breakfast table with two mugs. A kitchen after dinner. A garden in late spring. Warm, lived-in, not posed.</li>
+<li>Family 2 — <em>&quot;Money today&quot;</em> — still lifes of objects. A notebook with a pencil. A framed photograph on a desk. A key on a ring. Never banknotes, never a calculator, never a card reader.</li>
+<li>Family 3 — <em>&quot;Legacy&quot;</em> — long-horizon landscapes. Coastal paths. Fields at dawn. An empty beach. A quiet room with winter light.</li>
+<li>Family 4 — <em>&quot;Business&quot;</em> — workbench, drawing board, workshop, office at first light. Never a boardroom.</li>
+<li>Family 5 — <em>&quot;Retirement&quot;</em> — walking shoes by a door. A pot of tea. A book left open on an arm of a chair. Avoid the &quot;golfing retiree&quot; stereotype.</li>
+</ul>
+<p>Each image specified below in §4 names the family it belongs to. The holding image description in each spec is a direction, not a prescription — the design team may replace with a better-fitting image from the same family.</p>
+<h4>2.9 Form pattern principles — grouping</h4>
+<p>Where two or three questions concern the same part of the user&#039;s life, they are grouped onto a single screen. This is the app&#039;s most important UX principle, and the reason the form feels like a conversation rather than admin.</p>
+<p>Grouping follows three rules:</p>
+<ol>
+<li><strong>Same decision, different facet.</strong> <em>&quot;Age + household&quot;</em> is one screen — the user is telling us about the shape of their life. <em>&quot;Income + essential spend + non-essential spend&quot;</em> is one screen — the user is telling us about the shape of their monthly money. <em>&quot;Pensions + investments + estate&quot;</em> is one screen — the user is telling us the shape of their assets. Three inputs max per screen.</li>
+</ol>
+<ol>
+<li><strong>Single card, visually grouped.</strong> Grouped inputs live inside one paper card — not three stacked cards. Each input has its own label, but the whole group has one headline at the top of the card and one Continue button at the bottom.</li>
+</ol>
+<ol>
+<li><strong>Sliders and banded radios mix freely.</strong> A screen may carry an age slider <em>and</em> a multi-select <em>and</em> a banded radio. The input types match each question; grouping is about the subject, not the control.</li>
+</ol>
+<p>Screens that remain single-question: awareness checks (the pattern demands a solo moment), Q1.1 <em>&quot;What brought you here today?&quot;</em> (intent-setter, deserves its own beat), Q2.4 <em>&quot;Happy place&quot;</em> short-text (emotional anchor), Q10.2 <em>&quot;One thing to act on&quot;</em> (the closing commitment).</p>
+<p>Everything else groups. The per-screen counts drop from ~35 for Tier A to roughly ~18 screens — a significantly lighter perceived journey for the same information density.</p>
+<p>---</p>
+<h3>3. The Gate — the first five questions</h3>
+<p>The Gate is the fixed opening of the form. Every user sees every gating question in the same order. By the end of the Gate, the segment is assigned and the rest of the form adapts.</p>
+<p>The Gate is designed to feel like the start of a conversation, not an interrogation. It opens with intent and tone <em>(what brought you here, what does real wealth mean)</em>, then moves into the five hard questions that drive segmentation <em>(age, household, work status, income, total estate)</em>. We group these five into three screens.</p>
+<h4>Screen 3.0 — Intro</h4>
+<p>Shown once, between the tier picker click and the first question. Single centred column, paper background, max-width 560px.</p>
+<p><strong>Small eyebrow</strong> <em>(uppercase, letter-spaced, 12px, stone)</em></p>
+<blockquote>BEFORE WE START</blockquote>
+<p><strong>Headline</strong> <em>(gelica ExtraLight Italic, 36px desktop / 28px mobile, teal)</em></p>
+<blockquote><em>Let&#039;s talk about the life you&#039;re planning for.</em></blockquote>
+<p><strong>Body</strong> <em>(area-normal regular, 17px, ink at 85%, 24px below headline)</em></p>
+<blockquote>A few honest questions. No right answers, no scorecard — just a clearer picture by the end. You can stop any time; we&#039;ll save what you&#039;ve told us so far.</blockquote>
+<p><strong>Primary button</strong> <em>(orange, centred)</em></p>
+<blockquote>Begin →</blockquote>
+<p>No back button on this screen.</p>
+<h4>Screen 3.1 — What brought you here</h4>
+<p>Asymmetric layout. Left: <em>IMAGE: Family 1 — a kitchen table at morning, two mugs, soft light through a window. A sense of &quot;before the day begins.&quot; Holding image OK for v1.0.</em> Right: input card.</p>
+<p><strong>Card headline</strong> <em>(gelica regular, 28px, ink)</em></p>
+<blockquote><em>What brought you here today?</em></blockquote>
+<p><strong>Card sub</strong> <em>(area-normal regular, 15px, ink at 70%, 12px below headline)</em></p>
+<blockquote>No wrong answer — we ask so we can pitch the rest of the conversation properly.</blockquote>
+<p><strong>Input: card-select (single), 2 columns × 3 rows on desktop, stacked on mobile.</strong> Each card carries a single short label in area-normal regular 16px, ink, centred, 64px min height, paper background, 1px ghost border, 12px radius. On hover — 2px teal border. On select — 2px teal border, 5% teal tint.</p>
+<ul>
+<li><em>Curious — just having a look</em></li>
+<li><em>I&#039;ve got a specific question in mind</em></li>
+<li><em>A life change is coming up</em></li>
+<li><em>I want to check I&#039;m on track</em></li>
+<li><em>Someone suggested it</em></li>
+<li><em>Something else</em></li>
+</ul>
+<p><strong>Conditional reveal</strong> — <em>&quot;A life change is coming up&quot;</em> reveals a short-text input below the grid <em>(area-normal 16px, full-width, paper with ghost border)</em>. Label: <em>What&#039;s coming up — in your own words?</em> Placeholder: <em>e.g. retirement in 18 months, selling the business, first child.</em> Max 140 chars. Optional.</p>
+<p><strong>Q ref:</strong> Q1.1. <strong>Logged as:</strong> <code>intent</code>.</p>
+<h4>Screen 3.2 — What real wealth means</h4>
+<p>Asymmetric layout. Left: <em>IMAGE: Family 3 — a coastal path at late afternoon, long shadows, one figure walking into the distance. Not identifiable. Conveys horizon.</em> Right: input card.</p>
+<p><strong>Card headline</strong> <em>(gelica regular, 28px, ink)</em></p>
+<blockquote><em>When you picture a life that feels genuinely wealthy to you — which comes closest?</em></blockquote>
+<p><strong>Card sub</strong> <em>(area-normal regular, 15px, ink at 70%)</em></p>
+<blockquote>Pick the one that resonates most. You can tell us <em>&quot;it&#039;s all six&quot;</em> on the call.</blockquote>
+<p><strong>Input: card-select (single), 2 columns × 3 rows + 1 full-width &quot;other&quot;.</strong> Each card has a small lucide icon (teal, 20px, top-left) plus a short label.</p>
+<ul>
+<li><code>infinity</code> — <em>Freedom over my time</em></li>
+<li><code>shield</code> — <em>Security for my family</em></li>
+<li><code>briefcase</code> — <em>Choice in how I work</em></li>
+<li><code>map</code> — <em>Experiences and travel</em></li>
+<li><code>sprout</code> — <em>Legacy and impact</em></li>
+<li><code>feather</code> — <em>Peace of mind</em></li>
+</ul>
+<p>A seventh full-width card: <em>Something else — I&#039;ll say it in my own words</em> reveals a short-text input (140 chars max).</p>
+<p><strong>Q ref:</strong> Q1.2. <strong>Logged as:</strong> <code>wealth_definition</code>.</p>
+<h4>Screen 3.3 — About you <em>(GROUPED)</em></h4>
+<p>The first of the hard-fact screens. Groups Q2.1 <em>Age</em> and Q2.2 <em>Household</em> on one card. This is the most important grouping decision in the form — these two questions are the strongest single-screen segmentation signal.</p>
+<p>Asymmetric layout. Left: <em>IMAGE: Family 1 — a domestic scene, a Sunday newspaper on a breakfast table, two place settings. Warm, unpeopled.</em> Right: grouped input card.</p>
+<p><strong>Card headline</strong> <em>(gelica regular, 26px, ink)</em></p>
+<blockquote><em>Tell us a little about you.</em></blockquote>
+<p><strong>Card sub</strong> <em>(area-normal regular, 15px, ink at 70%, 12px below headline)</em></p>
+<blockquote>Two quick ones — they shape everything that follows.</blockquote>
+<p><strong>Input 1 — Age</strong> <em>(label area-normal medium 14px, stone, 8px below the sub)</em></p>
+<blockquote>Your age</blockquote>
+<p><strong>Control — slider</strong>, range 25–80, default 45, snap to whole years. Large display value in gelica 36px, teal, above the slider track. Orange slider thumb on a teal track (per the Stitch pattern). Endpoint labels area-normal 13px stone — <em>25</em> and <em>80</em>.</p>
+<p><em>Accessibility:</em> the slider has an adjacent keyboard-focused numeric input for assistive users who prefer typing — 3-digit <code>type=&quot;number&quot;</code> with min=18 max=100.</p>
+<p><strong>Input 2 — Household</strong> <em>(label area-normal medium 14px, stone, 24px below the slider&#039;s end label)</em></p>
+<blockquote>Who else is part of the plan?</blockquote>
+<p><strong>Control — multi-select checkbox grid, 2 columns × 3 rows.</strong> Each option is a paper card with a small icon and short label.</p>
+<ul>
+<li><code>heart</code> — <em>A partner</em></li>
+<li><code>baby</code> — <em>Dependent children</em></li>
+<li><code>users</code> — <em>Adult children</em></li>
+<li><code>heart-hand</code> — <em>An elderly parent or relative we support</em></li>
+<li><code>user</code> — <em>Nobody else — just me</em></li>
+<li><code>more-horizontal</code> — <em>It&#039;s complicated — I&#039;ll explain</em></li>
+</ul>
+<p>Multi-select. Selecting <em>Nobody else — just me</em> deselects everything else and vice versa.</p>
+<p><strong>Conditional reveal</strong> — <em>&quot;Dependent children&quot;</em> selected reveals a small nested control below the grid: banded radios for youngest child&#039;s age — <em>Under 5 / 5–11 / 12–17</em>.</p>
+<p><strong>Q refs:</strong> Q2.1, Q2.2, Q2.2a. <strong>Logged as:</strong> <code>age</code>, <code>household</code>, <code>youngest_child_band</code>.</p>
+<h4>Screen 3.4 — Your working life <em>(SINGLE but Gate-critical)</em></h4>
+<p>Asymmetric layout. Left: <em>IMAGE: Family 4 — a workbench with a single worn tool on it, late-afternoon light. Conveys craft and stewardship rather than &quot;business.&quot;</em> Right: input card.</p>
+<p><strong>Card headline</strong> <em>(gelica regular, 28px, ink)</em></p>
+<blockquote><em>How would you describe your working life right now?</em></blockquote>
+<p><strong>Input — radio buttons (single), stacked.</strong> Each option is a paper card with ghost border, 56px min height, label area-normal 17px ink centred-left with 24px left padding.</p>
+<ul>
+<li><em>Employed</em></li>
+<li><em>Self-employed</em></li>
+<li><em>I run a business</em></li>
+<li><em>Partly retired — still working some</em></li>
+<li><em>Fully retired</em></li>
+<li><em>Between roles or taking a break</em></li>
+</ul>
+<p><strong>Q ref:</strong> Q2.3. <strong>Logged as:</strong> <code>work_status</code>. <strong>Gates:</strong> the business-owner branch <em>(if &quot;I run a business&quot; or &quot;Self-employed&quot;)</em> and the retirement branch <em>(if &quot;Fully retired&quot; or &quot;Partly retired&quot;)</em>.</p>
+<h4>Screen 3.5 — Money today <em>(GROUPED)</em></h4>
+<p>Groups Q3.1 <em>Household income</em> and Q4.5 <em>Total estate</em> on one card — the two questions that carry the most segmentation weight. We ask them together because they&#039;re the numbers a user thinks about together: <em>&quot;what we earn, what we&#039;re worth.&quot;</em></p>
+<p>Asymmetric layout. Left: <em>IMAGE: Family 2 — a still life. A leather notebook, a fountain pen, a fresh coffee cup, a stack of unopened mail. The texture of an adult life.</em> Right: grouped input card.</p>
+<p><strong>Card headline</strong> <em>(gelica regular, 26px, ink)</em></p>
+<blockquote><em>A picture of where your money sits.</em></blockquote>
+<p><strong>Card sub</strong> <em>(area-normal regular, 15px, ink at 70%)</em></p>
+<blockquote>Rough is fine. Nobody&#039;s checking maths.</blockquote>
+<p><strong>Input 1 — Household income, before tax</strong> <em>(label area-normal medium 14px, stone)</em></p>
+<blockquote>Your household&#039;s annual income, before tax</blockquote>
+<p><strong>Control — banded radio, single column.</strong> Each band as a paper card, 48px height, area-normal 17px ink.</p>
+<ul>
+<li><em>Under £50,000</em></li>
+<li><em>£50,000 – £100,000</em></li>
+<li><em>£100,000 – £125,000</em></li>
+<li><em>£125,000 – £200,000</em></li>
+<li><em>£200,000 or more</em></li>
+<li><em>I&#039;d rather not say</em></li>
+</ul>
+<p>Below the band list, a small inline link: <em>Know the exact number? Tell us instead →</em> Click reveals a numeric £ input (replaces the band list for this question). <em>&quot;I&#039;d rather band it&quot;</em> link swaps it back.</p>
+<p><strong>Input 2 — Total estate (everything added up)</strong> <em>(label area-normal medium 14px, stone, 32px below the income control)</em></p>
+<blockquote>If you added everything up — home, pensions, investments, business — where would you land?</blockquote>
+<p>Small helper line below the label <em>(area-normal 13px, stone italic)</em>:</p>
+<blockquote><em>Rough orders of magnitude are fine. Nobody has this memorised.</em></blockquote>
+<p><strong>Control — banded radio, single column.</strong> Same card style as above.</p>
+<ul>
+<li><em>Under £500,000</em></li>
+<li><em>£500,000 – £1m</em></li>
+<li><em>£1m – £2m</em></li>
+<li><em>£2m – £3m</em></li>
+<li><em>£3m – £5m</em></li>
+<li><em>£5m or more</em></li>
+<li><em>Not sure</em></li>
+</ul>
+<p><strong>Q refs:</strong> Q3.1, Q4.5. <strong>Logged as:</strong> <code>income_band</code>, <code>estate_band</code>. <strong>Both gate-critical.</strong></p>
+<p><strong>Conditional on Q3.1</strong> — if <em>£100k+</em> selected, reveals a small follow-up question at the bottom of the card: <em>Is that across one earner or two?</em> <em>(radio, One / Two or more)</em>. Tucked below the second control, visually subordinate.</p>
+<h4>Screen 3.6 — Section transition</h4>
+<p>Full-bleed teal transition. Auto-advances after 2.5s.</p>
+<blockquote><em>Now — let&#039;s talk about the rest of your life.</em></blockquote>
+<p>Small orange lucide icon above the heading: <code>sparkles</code>.</p>
+<p>At this point the segment is assigned. The decision happens silently between Screen 3.5 and Screen 3.6; the section transition doubles as the moment the rules engine fires. From here on, the question set is tailored.</p>
+<p>---</p>
+<h3>4. Segment-aware question catalogue</h3>
+<p>From the section transition onwards, the questions the user sees depend on their assigned segment. The segmentation rules are in <code>Question Segment Master.xlsx</code>; the content below names, for each grouped screen, the segments it serves and the conditional logic that controls whether it fires.</p>
+<p>Screens are organised into four thematic blocks, each with its own section transition:</p>
+<ul>
+<li><strong>Block A — Your life today</strong> <em>(Money + Assets + Happy place)</em></li>
+<li><strong>Block B — The people in your plan</strong> <em>(Household deeper, Legacy, Protection)</em></li>
+<li><strong>Block C — The horizon</strong> <em>(Retirement picture, Business if applicable)</em></li>
+<li><strong>Block D — What matters, what&#039;s next</strong> <em>(Trade-offs, Priorities, Urgency)</em></li>
+</ul>
+<p>Awareness checks <em>(§5)</em> and provocations <em>(§6)</em> are interleaved throughout, triggered by answers within these blocks. They are specified by trigger, not by position — the engine places them at the nearest section boundary after they fire.</p>
+<h4>Block A — Your life today</h4>
+<p>Full-bleed teal transition before Block A starts.</p>
+<blockquote><em>Now — let&#039;s talk about your money.</em></blockquote>
+<p>Icon above: <code>coins</code>.</p>
+<h5>Screen 4.A.1 — Monthly shape <em>(GROUPED; skipped for S1)</em></h5>
+<p>Groups Q3.2 <em>Essential monthly spend</em> and Q3.3 <em>Non-essential monthly spend</em> on one card. Skipped entirely for S1 Early Accumulator <em>(the lightest segment)</em> and for Tier C.</p>
+<p>Asymmetric layout. Left: <em>IMAGE: Family 2 — a still life of a household&#039;s Sunday, a kettle, a bowl of fruit, a diary left open.</em> Right: grouped input card.</p>
+<p><strong>Card headline</strong> <em>(gelica regular, 26px, ink)</em></p>
+<blockquote><em>A feel for a typical month.</em></blockquote>
+<p><strong>Card sub</strong> <em>(area-normal regular, 15px, ink at 70%)</em></p>
+<blockquote>Bands are easier than exact numbers. No need to get the calculator out.</blockquote>
+<p><strong>Input 1 — Essentials</strong> <em>(label)</em></p>
+<blockquote>Monthly essentials — mortgage or rent, bills, food, transport, childcare</blockquote>
+<p><strong>Control — banded radio, 2 columns × 3 rows.</strong></p>
+<ul>
+<li><em>Under £2,000</em></li>
+<li><em>£2,000 – £3,500</em></li>
+<li><em>£3,500 – £5,000</em></li>
+<li><em>£5,000 – £7,500</em></li>
+<li><em>£7,500 – £12,000</em></li>
+<li><em>£12,000 or more</em></li>
+</ul>
+<p><strong>Input 2 — The nice-to-haves</strong> <em>(label, 24px below)</em></p>
+<blockquote>Monthly on holidays, meals out, hobbies, subscriptions</blockquote>
+<p><strong>Control — banded radio, 2 columns × 3 rows.</strong></p>
+<ul>
+<li><em>Under £500</em></li>
+<li><em>£500 – £1,000</em></li>
+<li><em>£1,000 – £2,000</em></li>
+<li><em>£2,000 – £4,000</em></li>
+<li><em>£4,000 or more</em></li>
+<li><em>Not sure</em></li>
+</ul>
+<p><strong>Q refs:</strong> Q3.2, Q3.3. <strong>Segments served:</strong> S2, S3, S4, S5, S6, S7, S8, S9. <strong>Skip:</strong> S1, Tier C.</p>
+<h5>Screen 4.A.2 — Confidence and mindset <em>(GROUPED; skipped for Tier C)</em></h5>
+<p>Groups Q3.4 <em>Saving confidence</em> and Q3.5 <em>Money mindset</em> on one card. The two questions are thematically close — both soft, both about feeling. Grouping them keeps the emotional register continuous.</p>
+<p>Layout is visually different from the hard-fact screens. <strong>Centred single-column, max-width 720px, no image.</strong> The change of register is intentional — we&#039;re asking how the user <em>feels</em> about their money, and the centred layout gives that breathing room.</p>
+<p><strong>Screen headline</strong> <em>(gelica regular, 32px, ink, centred)</em></p>
+<blockquote><em>How it sits with you.</em></blockquote>
+<p><strong>Screen sub</strong> <em>(area-normal regular, 16px, ink at 70%, centred, max-width 540px)</em></p>
+<blockquote>Two questions about feeling rather than figures. They matter more than most people expect.</blockquote>
+<p><strong>Input 1 — Saving confidence</strong> <em>(as its own paper card, 24px below the sub)</em></p>
+<p>Label <em>(area-normal medium, 14px, stone, centred)</em></p>
+<blockquote>How confident are you that you&#039;re saving enough for the life you want?</blockquote>
+<p><strong>Control — 5-point scale</strong>, endpoints labelled <em>Not at all confident</em> (left) and <em>Very confident</em> (right). Horizontal pill-style scale, five circular nodes, centred. Selected node fills with teal, 2px orange ring.</p>
+<p><strong>Input 2 — Money mindset</strong> <em>(its own paper card, 24px below Input 1)</em></p>
+<p>Label <em>(area-normal medium, 14px, stone)</em></p>
+<blockquote>When you think about money, which comes closest?</blockquote>
+<p><strong>Control — card-select (single), 2 columns × 3 rows.</strong> Each card has a short label, area-normal regular 15px, ink, 48px min height.</p>
+<ul>
+<li><em>A tool for freedom</em></li>
+<li><em>Security for the people I love</em></li>
+<li><em>Something I&#039;d rather not dwell on</em></li>
+<li><em>A scorecard of what I&#039;ve built</em></li>
+<li><em>Honestly — a source of stress</em></li>
+<li><em>No strong feelings either way</em></li>
+</ul>
+<p><strong>Q refs:</strong> Q3.4, Q3.5. <strong>Segments served:</strong> S1, S2, S3, S4, S5, S6, S7, S8, S9. <strong>Skip:</strong> Tier C.</p>
+<h5>Screen 4.A.3 — Assets at a glance <em>(GROUPED)</em></h5>
+<p>Groups Q4.1 <em>Main home</em>, Q4.3 <em>Pensions — how many pots</em>, and Q4.4 <em>Investments and cash</em> on one card. This is a denser grouping — three inputs — but it reads well because each is a quick banded choice, and they share a subject.</p>
+<p>Asymmetric layout. Left: <em>IMAGE: Family 3 — a coastal horizon at dawn, grey-green water meeting paler sky. Long view, calm.</em> Right: grouped input card.</p>
+<p><strong>Card headline</strong> <em>(gelica regular, 26px, ink)</em></p>
+<blockquote><em>What you&#039;ve built so far.</em></blockquote>
+<p><strong>Card sub</strong> <em>(area-normal regular, 15px, ink at 70%)</em></p>
+<blockquote>A quick shape of the big pots. Rough bands are fine.</blockquote>
+<p><strong>Input 1 — Home</strong></p>
+<p>Label: <em>Your main home — own or rent?</em></p>
+<p><strong>Control — radio, stacked.</strong></p>
+<ul>
+<li><em>Own outright</em></li>
+<li><em>Own, with a mortgage</em></li>
+<li><em>Renting</em></li>
+<li><em>Living with family</em></li>
+<li><em>It&#039;s more complicated</em></li>
+</ul>
+<p><strong>Input 2 — Pensions</strong> <em>(24px below)</em></p>
+<p>Label: <em>Pension pots across your career so far</em></p>
+<p><strong>Control — radio, 2 columns × 3 rows.</strong></p>
+<ul>
+<li><em>None yet</em></li>
+<li><em>One</em></li>
+<li><em>Two or three</em></li>
+<li><em>Four to six</em></li>
+<li><em>More than six</em></li>
+<li><em>Genuinely no idea</em></li>
+</ul>
+<p><strong>Input 3 — Savings and investments outside pensions</strong> <em>(24px below)</em></p>
+<p>Label: <em>Savings and investments outside pensions and property</em></p>
+<p><strong>Control — radio, stacked.</strong></p>
+<ul>
+<li><em>Under £50,000</em></li>
+<li><em>£50,000 – £250,000</em></li>
+<li><em>£250,000 – £1m</em></li>
+<li><em>£1m – £3m</em></li>
+<li><em>£3m or more</em></li>
+<li><em>I&#039;d rather not say</em></li>
+</ul>
+<p><strong>Conditional reveal on Input 1</strong> — <em>Own, with a mortgage</em> reveals a small banded follow-up <em>(stacked below the home radio, visually subordinate)</em>: <em>Roughly how much is left on the mortgage?</em> bands <em>Under £100k / £100k–£250k / £250k–£500k / £500k+ / Prefer not to say</em>.</p>
+<p><strong>Conditional reveal on Input 2</strong> — <em>Four to six</em> or <em>More than six</em> reveals a banded follow-up below: <em>Any sense of the combined value?</em> bands <em>Under £100k / £100k–£250k / £250k–£500k / £500k+ / No idea — that&#039;s part of what I&#039;d like to know</em>.</p>
+<p><strong>Q refs:</strong> Q4.1, Q4.1a, Q4.3, Q4.3a, Q4.4. <strong>Segments served:</strong> S2, S3, S4, S5, S6, S7, S8, S9. <strong>Skip:</strong> S1 only sees Q4.3 and Q4.4 (no home question).</p>
+<h5>Screen 4.A.4 — Other property <em>(conditional; S3+, S4+, S6+, S9 only)</em></h5>
+<p>Single question. Asymmetric. Left: <em>IMAGE: Family 3 — row of coastal cottages at mid-afternoon, lived-in, English.</em> Right: input card.</p>
+<p><strong>Card headline</strong> <em>(gelica regular, 28px, ink)</em></p>
+<blockquote><em>Any other property — a second place, a rental, something inherited?</em></blockquote>
+<p><strong>Input — radio, stacked.</strong></p>
+<ul>
+<li><em>No — just the main home</em></li>
+<li><em>One other</em></li>
+<li><em>Two or more</em></li>
+<li><em>A portfolio — three or more</em></li>
+<li><em>It&#039;s complicated — I&#039;ll explain on the call</em></li>
+</ul>
+<p><strong>Conditional reveal</strong> — <em>Two or more</em> or <em>A portfolio</em> reveals a follow-up <em>(radio, stacked below)</em>: <em>Is any of it held in a limited company?</em> <em>Yes / No / Not sure — that&#039;s what I&#039;d like to know</em>.</p>
+<p><strong>Q refs:</strong> Q4.2, Q4.2a. <strong>Segments served:</strong> S3 (if wealthy enough), S4, S6, S7, S9. <strong>Skip:</strong> S1, S2, S5, S8.</p>
+<h5>Screen 4.A.5 — Happy place <em>(SINGLE, emotional anchor)</em></h5>
+<p>One of the rare single-question screens. This question deserves its own beat because its answer drives the aspiration echo on the summary page — the single most emotional copy in the app.</p>
+<p>Asymmetric layout. Left: <em>IMAGE: Family 1 — a long, warm photograph of an ordinary-life scene. A beach at low tide with footprints. A kitchen in evening light. A garden hedge with flowers breaking through. The image should be unpretentious and human-scale. This image family matters most — brief the design team carefully.</em> Right: input card.</p>
+<p><strong>Card headline</strong> <em>(gelica ExtraLight Italic, 28px, teal)</em></p>
+<blockquote><em>Describe your ideal normal week.</em></blockquote>
+<p><strong>Card sub</strong> <em>(area-normal regular, 15px, ink at 70%)</em></p>
+<blockquote>Not a holiday — just your ordinary life, at its best. Whatever comes to mind.</blockquote>
+<p><strong>Control — short text, 140 char max.</strong> Single paper input card, area-normal regular 17px ink, surface-container-highest background, 72px height on mobile / 56px on desktop (taller on mobile to encourage writing), soft teal focus glow.</p>
+<p><strong>Placeholder</strong> <em>(area-normal regular italic, 16px, ink at 40%)</em></p>
+<blockquote>e.g. Mornings outside, lunch with my partner, the grandchildren round on Sundays, no work after four.</blockquote>
+<p>Counter <em>(bottom-right of input, area-normal 12px, stone)</em>: <em>0 / 140</em>.</p>
+<p>The field is <strong>optional</strong> — Continue is enabled without a value. But most users write something. The placeholder itself is a provocation — it&#039;s the life we&#039;re asking them to picture.</p>
+<p><strong>Q ref:</strong> Q2.4. <strong>Segments served:</strong> all. <strong>Skip:</strong> none. <strong>This is the only question that is universal across every segment and every tier, Tier C included.</strong></p>
+<h4>Block B — The people in your plan</h4>
+<p>Full-bleed teal transition.</p>
+<blockquote><em>Now — the people.</em></blockquote>
+<p>Icon: <code>users</code>.</p>
+<h5>Screen 4.B.1 — Dependants today <em>(conditional)</em></h5>
+<p>Only fires if Q2.2 included <em>Dependent children</em> or <em>Adult children</em>.</p>
+<p>Asymmetric. Left: <em>IMAGE: Family 1 — children&#039;s drawings pinned to a kitchen wall, slightly askew, warm afternoon light. Or teenage trainers left by a hallway door. No faces.</em> Right: input card.</p>
+<p><strong>Card headline</strong> <em>(gelica regular, 28px, ink)</em></p>
+<blockquote><em>How dependent are they on you at the moment?</em></blockquote>
+<p><strong>Card sub</strong> <em>(area-normal regular, 15px, ink at 70%)</em></p>
+<blockquote>Their financial picture shapes yours.</blockquote>
+<p><strong>Input — radio, stacked.</strong></p>
+<ul>
+<li><em>Fully dependent — many years ahead</em></li>
+<li><em>Fully dependent — nearing independence</em></li>
+<li><em>Partly, shared with a co-parent</em></li>
+<li><em>Occasionally — e.g. helping through university</em></li>
+<li><em>They&#039;re adults, but we still help out</em></li>
+</ul>
+<p><strong>Q ref:</strong> Q6.1. <strong>Segments served:</strong> any with dependants selected. <strong>Skip:</strong> if Q2.2 doesn&#039;t include children.</p>
+<h5>Screen 4.B.2 — Legacy <em>(GROUPED)</em></h5>
+<p>Groups Q6.2 <em>Passing on</em> and Q6.3 <em>Will and LPA</em> on one card. Both sit in the same part of the user&#039;s mind: <em>what happens later.</em> Grouping feels natural and avoids the &quot;one more will question&quot; drag.</p>
+<p>Asymmetric. Left: <em>IMAGE: Family 3 — a long horizon, perhaps a path across fields in autumn. Conveys duration.</em> Right: grouped input card.</p>
+<p><strong>Card headline</strong> <em>(gelica regular, 26px, ink)</em></p>
+<blockquote><em>What happens later.</em></blockquote>
+<p><strong>Input 1 — Legacy intent</strong> <em>(label)</em></p>
+<blockquote>When you think about what you&#039;d want to pass on, which feels closest?</blockquote>
+<p><strong>Control — card-select (single), 2 columns × 3 rows.</strong></p>
+<ul>
+<li><em>As much as possible to family</em></li>
+<li><em>A boost for them, not a free ride</em></li>
+<li><em>Experiences and memories more than money</em></li>
+<li><em>A charity or cause matters to me</em></li>
+<li><em>I haven&#039;t thought about this much</em></li>
+<li><em>It&#039;s complicated — I need help with it</em></li>
+</ul>
+<p><strong>Input 2 — Will and LPA status</strong> <em>(24px below, label)</em></p>
+<blockquote>Which of these do you have in place today?</blockquote>
+<p><strong>Control — multi-select checkboxes, 2 columns × 3 rows.</strong> Small lucide icon top-left of each.</p>
+<ul>
+<li><code>file-text</code> — <em>A will, reviewed in the last 2 years</em></li>
+<li><code>file-text</code> — <em>A will, older than that</em></li>
+<li><code>x-circle</code> — <em>No will yet</em></li>
+<li><code>heart-pulse</code> — <em>Lasting Power of Attorney — health</em></li>
+<li><code>banknote</code> — <em>Lasting Power of Attorney — finance</em></li>
+<li><code>help-circle</code> — <em>Not sure what LPA is</em></li>
+</ul>
+<p><strong>Inline education — if &quot;Not sure what LPA is&quot; is ticked</strong>, a small paper callout appears below the grid <em>(area-normal 14px, teal left accent 3px)</em>:</p>
+<blockquote>A Lasting Power of Attorney lets someone you trust make decisions for you if you can&#039;t. Two types — one for money, one for health. Separate documents, registered with the Office of the Public Guardian.</blockquote>
+<p>Ticking this does not disable the other checkboxes — the user is still allowed to say <em>&quot;I have LPA&quot;</em> alongside <em>&quot;Not sure what LPA is&quot;</em> if they have one but don&#039;t understand it. That&#039;s a high-signal answer we want to preserve.</p>
+<p><strong>Q refs:</strong> Q6.2, Q6.3. <strong>Segments served:</strong> S2, S3, S4, S5, S6, S7, S8, S9. <strong>Skip:</strong> S1.</p>
+<h5>Screen 4.B.3 — Protection <em>(GROUPED; conditional)</em></h5>
+<p>Groups Q8.1 <em>Earnings protection confidence</em> and Q8.2 <em>Life cover in place</em>. Only fires if the user has dependants selected at Q2.2.</p>
+<p>Asymmetric. Left: <em>IMAGE: Family 1 — a bike leaning against a fence, a coat on a hook, a quiet hallway. Conveys ordinary life that would be disrupted by the unexpected.</em> Right: grouped input card.</p>
+<p><strong>Card headline</strong> <em>(gelica regular, 26px, ink)</em></p>
+<blockquote><em>If something unexpected happened.</em></blockquote>
+<p><strong>Card sub</strong> <em>(area-normal regular, 15px, ink at 70%)</em></p>
+<blockquote>A quieter subject, but worth asking.</blockquote>
+<p><strong>Input 1 — Earnings confidence</strong> <em>(label)</em></p>
+<blockquote>If the main earner couldn&#039;t work for a year — injury, illness — how confident are you the family could maintain its lifestyle?</blockquote>
+<p><strong>Control — 5-point scale</strong> <em>(same pattern as Screen 4.A.2)</em>. Endpoints: <em>Not at all confident</em> / <em>Very confident</em>.</p>
+<p><strong>Input 2 — Life cover</strong> <em>(24px below, label)</em></p>
+<blockquote>Any life insurance or critical illness cover in place?</blockquote>
+<p><strong>Control — radio, stacked.</strong></p>
+<ul>
+<li><em>Yes — through work only</em></li>
+<li><em>Yes — a personal policy</em></li>
+<li><em>Both personal and work</em></li>
+<li><em>No</em></li>
+<li><em>Not sure what we have</em></li>
+</ul>
+<p><strong>Q refs:</strong> Q8.1, Q8.2. <strong>Segments served:</strong> any with dependants. <strong>Skip:</strong> S1, S8, any segment without dependants. <strong>Skip in Tier C.</strong></p>
+<h4>Block C — The horizon</h4>
+<p>Full-bleed teal transition.</p>
+<blockquote><em>Now — what comes next.</em></blockquote>
+<p>Icon: <code>sunrise</code>.</p>
+<h5>Screen 4.C.1 — The retirement picture <em>(GROUPED)</em></h5>
+<p>Groups Q7.1 <em>Target age</em> and Q7.2 <em>Retirement picture</em>. A hard number and a soft feeling on one card — the grouping makes the soft question land harder because it&#039;s asked right after the date.</p>
+<p>Asymmetric. Left: <em>IMAGE: Family 5 — walking shoes by a door, a wool coat on a peg, a waterproof. Conveys &quot;the day you don&#039;t have to go in.&quot;</em> Right: grouped input card.</p>
+<p><strong>Card headline</strong> <em>(gelica regular, 26px, ink)</em></p>
+<blockquote><em>The day you don&#039;t have to go to work.</em></blockquote>
+<p><strong>Input 1 — Target age</strong> <em>(label)</em></p>
+<blockquote>At what age would you ideally stop <em>needing</em> to work for money?</blockquote>
+<p><strong>Control — slider</strong>, range from the user&#039;s current age (from Q2.1) to 75, snap to whole years. Same visual pattern as the age slider: gelica 36px teal display above an orange-thumbed teal track. Endpoint labels area-normal 13px stone.</p>
+<p>If the user picks <em>&quot;I&#039;ll never fully stop&quot;</em> on the next question, this slider is de-emphasised — a faint helper line appears below it: <em>That&#039;s fine — park the number, the feeling is what we&#039;ll work from.</em> Slider value still logged.</p>
+<p><strong>Input 2 — Retirement feel</strong> <em>(24px below, label)</em></p>
+<blockquote>When you picture not working, what comes up first?</blockquote>
+<p><strong>Control — card-select (single), 2 columns × 3 rows.</strong></p>
+<ul>
+<li><em>Can&#039;t wait</em></li>
+<li><em>A mix of excitement and nerves</em></li>
+<li><em>A bit uneasy — I don&#039;t know who I am without work</em></li>
+<li><em>Hard to imagine — I&#039;ll never fully stop</em></li>
+<li><em>Already there, and it&#039;s good</em></li>
+<li><em>Already there — and it&#039;s less than I hoped</em></li>
+</ul>
+<p><strong>Q refs:</strong> Q7.1, Q7.2. <strong>Segments served:</strong> S2, S3, S4, S5, S6, S7, S8, S9. <strong>Skip:</strong> S1, Tier C.</p>
+<h5>Screen 4.C.2 — State pension <em>(SINGLE; conditional)</em></h5>
+<p>Only fires if Q2.1 age ≥ 45. Acts as the trigger for the NI-gaps awareness check <em>(§5)</em>.</p>
+<p>Centred single-column, max-width 620px.</p>
+<p><strong>Headline</strong> <em>(gelica regular, 28px, ink, centred)</em></p>
+<blockquote><em>Do you know when you&#039;ll get the full new state pension — and how much it will be?</em></blockquote>
+<p><strong>Control — radio, stacked, centred max-width 480px.</strong></p>
+<ul>
+<li><em>Yes — I&#039;ve checked it</em></li>
+<li><em>Roughly</em></li>
+<li><em>No — I should check</em></li>
+<li><em>Not relevant to me yet</em></li>
+</ul>
+<p><strong>Q ref:</strong> Q7.3. <strong>Segments served:</strong> any with age ≥ 45. <strong>Skip:</strong> anyone younger, Tier C.</p>
+<h4>Block C1 — Business <em>(conditional section; only for business owners and self-employed — S5, S6, S3/S4 if self-employed overlay)</em></h4>
+<p>Only fires if Q2.3 = <em>I run a business</em> or <em>Self-employed</em>. Has its own brief transition screen.</p>
+<blockquote><em>Now — about your business.</em></blockquote>
+<p>Icon: <code>briefcase</code>.</p>
+<h5>Screen 4.C1.1 — Your role</h5>
+<p>Single question, asymmetric. Left: <em>IMAGE: Family 4 — a drawing board, a set of keys on a bench, a work jacket. Workshop light.</em> Right: input card.</p>
+<p><strong>Card headline</strong> <em>(gelica regular, 28px, ink)</em></p>
+<blockquote><em>What&#039;s your role in the business?</em></blockquote>
+<p><strong>Control — radio, stacked.</strong></p>
+<ul>
+<li><em>Sole director / owner</em></li>
+<li><em>Co-founder or partner</em></li>
+<li><em>Majority shareholder</em></li>
+<li><em>Minority shareholder</em></li>
+<li><em>Freelancer or sole trader</em></li>
+</ul>
+<p><strong>Q ref:</strong> Q5.1. <strong>Segments served:</strong> S5, S6, S3 and S4 if self-employed. <strong>Skip:</strong> everyone else.</p>
+<h5>Screen 4.C1.2 — Taking money out <em>(GROUPED)</em></h5>
+<p>Groups Q5.2 <em>Extraction mix</em> and Q5.3 <em>Succession</em> on one card. The two &quot;what do I do with the business&quot; questions, together.</p>
+<p>Asymmetric. Left: <em>IMAGE: Family 4 — an open ledger on a desk, morning coffee, a pen. Working life.</em> Right: grouped input card.</p>
+<p><strong>Card headline</strong> <em>(gelica regular, 26px, ink)</em></p>
+<blockquote><em>The business, today and later.</em></blockquote>
+<p><strong>Input 1 — Extraction mix</strong> <em>(label)</em></p>
+<blockquote>How are you currently taking money from the business?</blockquote>
+<p><strong>Control — multi-select checkboxes, 2 columns.</strong></p>
+<ul>
+<li><em>Salary</em></li>
+<li><em>Dividends</em></li>
+<li><em>Employer pension contributions</em></li>
+<li><em>Director&#039;s loan</em></li>
+<li><em>I leave it in the business</em></li>
+<li><em>My accountant handles it</em></li>
+</ul>
+<p><strong>Input 2 — Succession</strong> <em>(24px below, label)</em></p>
+<blockquote>When you think about what happens to the business next, which comes closest?</blockquote>
+<p><strong>Control — card-select (single), stacked, 48px min height per card.</strong></p>
+<ul>
+<li><em>Documented plan, reviewed recently</em></li>
+<li><em>Informal plan — we&#039;ve talked about it</em></li>
+<li><em>No plan — but I&#039;ve been thinking about it</em></li>
+<li><em>No plan — and it&#039;s not a priority</em></li>
+<li><em>I want out in the next 5 years</em></li>
+<li><em>I&#039;ll never leave until I have to</em></li>
+</ul>
+<p><strong>Q refs:</strong> Q5.2, Q5.3. <strong>Segments served:</strong> S5, S6. <strong>Skip:</strong> freelancer/sole-trader sub-segment skips succession; everyone else in business branch sees both.</p>
+<h4>Block D — What matters, what&#039;s next</h4>
+<p>Full-bleed teal transition.</p>
+<blockquote><em>Last stretch — what matters most.</em></blockquote>
+<p>Icon: <code>compass</code>.</p>
+<h5>Screen 4.D.1 — Trade-offs <em>(SINGLE, visually rich)</em></h5>
+<p>The most distinctive screen in the questionnaire. Based on Stitch&#039;s <em>lifestyle ranking</em> pattern but re-interpreted — three pairs of opposing options, user picks the direction they lean in each pair.</p>
+<p>Centred single-column, max-width 720px. No side image — the layout itself carries the visual weight.</p>
+<p><strong>Headline</strong> <em>(gelica regular, 32px, ink, centred)</em></p>
+<blockquote><em>If you had to choose…</em></blockquote>
+<p><strong>Sub</strong> <em>(area-normal regular, 16px, ink at 70%, centred, max-width 520px)</em></p>
+<blockquote>Three pairs. Pick the side you lean towards. You can still want the other — just tell us which way your hand moves first.</blockquote>
+<p><strong>Control — three horizontal pair-pickers stacked with 32px gaps.</strong> Each pair is a single wide paper card, 80px height, divided visually into two halves (paper + slightly darker paper tonal shift, per the no-line rule). Selecting a half animates it to 5% teal tint and a teal 2px border on that half only.</p>
+<p><strong>Pair 1</strong></p>
+<ul>
+<li>Left half: <em>Enjoy more now</em></li>
+<li>Right half: <em>Retire earlier</em></li>
+</ul>
+<p><strong>Pair 2</strong></p>
+<ul>
+<li>Left half: <em>Leave more to family</em></li>
+<li>Right half: <em>Spend more on us</em></li>
+</ul>
+<p><strong>Pair 3</strong></p>
+<ul>
+<li>Left half: <em>Simplify my life</em></li>
+<li>Right half: <em>Grow the pot</em></li>
+</ul>
+<p>No &quot;neither&quot; option — the question is designed to force a direction. A &quot;neither&quot; would collapse the signal.</p>
+<p><strong>Q ref:</strong> Q10.1. <strong>Segments served:</strong> all. <strong>Skip:</strong> Tier C only.</p>
+<h5>Screen 4.D.2 — The one thing <em>(SINGLE; the closing commitment)</em></h5>
+<p>Single-question screen. The question that drives the follow-up email subject line and the summary-page CTA framing.</p>
+<p>Centred single-column, max-width 620px. No image.</p>
+<p><strong>Headline</strong> <em>(gelica ExtraLight Italic, 32px, teal, centred)</em></p>
+<blockquote><em>If you could only tackle one thing this year — which would it be?</em></blockquote>
+<p><strong>Sub</strong> <em>(area-normal regular, 16px, ink at 70%, centred)</em></p>
+<blockquote>Pick one. We&#039;ll start the conversation there.</blockquote>
+<p><strong>Control — radio, stacked, centred max-width 480px.</strong> Each option is a paper card, 56px min height, with a small lucide icon.</p>
+<ul>
+<li><code>layers</code> — <em>Pull everything into one picture</em></li>
+<li><code>scissors</code> — <em>Reduce my tax</em></li>
+<li><code>sunrise</code> — <em>Sort retirement properly</em></li>
+<li><code>scroll</code> — <em>Sort the estate — what happens next</em></li>
+<li><code>shield</code> — <em>Protect my family</em></li>
+<li><code>door-open</code> — <em>Plan the exit from my business</em></li>
+<li><code>compass</code> — <em>I don&#039;t know — that&#039;s why I&#039;m here</em></li>
+</ul>
+<p>Business-exit option only shown if Q2.3 = business owner.</p>
+<p><strong>Q ref:</strong> Q10.2. <strong>Segments served:</strong> all. <strong>Skip:</strong> Tier C only.</p>
+<h5>Screen 4.D.3 — Urgency <em>(SINGLE)</em></h5>
+<p>Single-question. Drives the CTA booking slot offered on the summary page.</p>
+<p>Centred single-column, max-width 560px.</p>
+<p><strong>Headline</strong> <em>(gelica regular, 28px, ink, centred)</em></p>
+<blockquote><em>When would you want this conversation?</em></blockquote>
+<p><strong>Control — radio, stacked.</strong></p>
+<ul>
+<li><em>This week</em></li>
+<li><em>Within a month</em></li>
+<li><em>Within three months</em></li>
+<li><em>Sometime this year</em></li>
+<li><em>Just exploring for now</em></li>
+</ul>
+<p><strong>Q ref:</strong> Q10.3. <strong>Segments served:</strong> all segments and all tiers, including Tier C.</p>
+<h5>Screen 4.D.4 — Advice today <em>(GROUPED; Tier A and Tier B only)</em></h5>
+<p>Groups Q9.1 <em>Current advice</em> and Q9.2 <em>What&#039;s missing</em> on one card. Skipped entirely for Tier C.</p>
+<p>Asymmetric. Left: <em>IMAGE: Family 2 — a handshake across a table, still life only (hands, cuffs, a coffee cup in the foreground). Or a boardroom chair from behind, empty. Conveys a conversation about to happen.</em> Right: grouped input card.</p>
+<p><strong>Card headline</strong> <em>(gelica regular, 26px, ink)</em></p>
+<blockquote><em>The conversation you&#039;re already having — or aren&#039;t.</em></blockquote>
+<p><strong>Input 1 — Current adviser</strong> <em>(label)</em></p>
+<blockquote>Do you currently work with a financial adviser or planner?</blockquote>
+<p><strong>Control — radio, stacked.</strong></p>
+<ul>
+<li><em>Yes — and I&#039;m happy with them</em></li>
+<li><em>Yes — but I&#039;m looking</em></li>
+<li><em>I used to, not currently</em></li>
+<li><em>Never have</em></li>
+<li><em>My accountant handles this side of things</em></li>
+</ul>
+<p><strong>Input 2 — What&#039;s missing</strong> <em>(conditional on Input 1 ≠ &quot;Yes — and happy&quot;, 24px below, label)</em></p>
+<blockquote>What would you want a planner to help with that isn&#039;t being helped today? <em>(Up to three.)</em></blockquote>
+<p><strong>Control — multi-select checkboxes, max 3, 2 columns.</strong></p>
+<ul>
+<li><em>Pulling everything into one picture</em></li>
+<li><em>Tax efficiency</em></li>
+<li><em>Retirement modelling</em></li>
+<li><em>Estate and inheritance planning</em></li>
+<li><em>Business extraction or exit</em></li>
+<li><em>Protection for my family</em></li>
+<li><em>Someone to challenge my thinking</em></li>
+<li><em>I don&#039;t know — I just know something&#039;s missing</em></li>
+</ul>
+<p><strong>Q refs:</strong> Q9.1, Q9.2. <strong>Segments served:</strong> Tier A and Tier B, all segments. <strong>Skip:</strong> Tier C.</p>
+<p><strong>Overlay flag:</strong> if Q9.1 = <em>Yes — but I&#039;m looking</em>, set <code>advised_but_looking = true</code>. This overrides the segment-specific CTA on the summary page and routes to senior-partner booking <em>(see §8)</em>.</p>
+<p>---</p>
+<h3>5. Awareness checks — library of 20</h3>
+<p>Awareness checks are the app&#039;s quiet engine. They interrupt the questionnaire with a single moment of reflection — <em>&quot;here&#039;s something most people don&#039;t know about&quot;</em> — and log the user&#039;s response as <code>aware</code>, <code>partial</code>, or <code>unaware</code>. The result is a pre-call brief for the planner and a shortlist on the summary page.</p>
+<p><strong>Stock pattern reminder</strong> <em>(see §2.6 for visual spec)</em>:</p>
+<ul>
+<li>Eyebrow: <em>SOMETHING WORTH NOTICING</em></li>
+<li>Stem: the question, in gelica 28px</li>
+<li>Three radio options: <em>Yes — I knew that</em> / <em>I&#039;d heard of it, but not the detail</em> / <em>No — this is news to me</em></li>
+<li>On select, the relevant body reveals below</li>
+</ul>
+<p><strong>Tone rewrite.</strong> The source library uses a stock stem — <em>&quot;Were you aware that…&quot;</em> — repeated 20 times. Repetition of the same stem across a session becomes a tic. We keep the three-option response pattern <em>(which is the load-bearing mechanism)</em> but <strong>vary the stems</strong> to suit each check. Some stems use <em>&quot;Were you aware&quot;</em>, some don&#039;t. All of them read like a question a senior planner might ask at a kitchen table.</p>
+<p>Every entry below is specified as:</p>
+<ul>
+<li><strong>ID</strong> — the log key</li>
+<li><strong>CORE</strong> tag if it&#039;s in the top-ten ranked list</li>
+<li><strong>Trigger</strong> — the answer(s) that fire it</li>
+<li><strong>Stem</strong> — the awareness question itself</li>
+<li><strong>Aware body</strong> — the acknowledgement shown when the user selects <em>&quot;Yes, I knew&quot;</em></li>
+<li><strong>Partial body</strong> — the clarification shown when the user selects <em>&quot;I&#039;d heard of it&quot;</em></li>
+<li><strong>Unaware body</strong> — the full provocation shown when the user selects <em>&quot;No, this is news&quot;</em></li>
+<li><strong>Source</strong> — factual citation</li>
+<li><strong>Placement note</strong> — where in the form it appears</li>
+</ul>
+<h4>Category 1 — Income tax</h4>
+<h5>5.1 — The £100k tax trap <em><code>pitfall.income_trap_100k</code></em> [CORE]</h5>
+<p><strong>Trigger:</strong> income band = £100k – £125k.</p>
+<p><strong>Stem</strong> <em>(gelica 28px, ink, centred)</em></p>
+<blockquote><em>Between £100,000 and £125,140, there&#039;s a quiet band where the effective tax rate is closer to 60% than 40%. Were you aware of that?</em></blockquote>
+<p><strong>Aware body</strong> <em>(paper card, teal left accent)</em></p>
+<blockquote>Good — you&#039;re in rare company. Only about three in ten people in that earnings band know about it.</blockquote>
+<p><strong>Partial body</strong></p>
+<blockquote>The detail: for every £2 you earn above £100,000, you lose £1 of your personal allowance. Added to the higher-rate band and NI, the effective rate on that slice comes out around 60%. It&#039;s a band, not a cliff — it ends at £125,140.</blockquote>
+<p><strong>Unaware body</strong></p>
+<blockquote>A £15,000 pay rise from £100,000 to £115,000 costs roughly £9,000 in tax and NI. If you&#039;ve got young children, you may also lose up to £10,000 of tax-free childcare. A £15,000 raise can cost £19,000. The usual fix is a pension contribution or salary sacrifice — and most people in this band haven&#039;t used it. Worth a conversation.</blockquote>
+<p><strong>Source:</strong> HMRC personal allowance taper rules; <em>Tax Trap — Non-NHS — Insight Paper v0.01</em>.</p>
+<p><strong>Placement:</strong> after Screen 3.5 (the income question), before Block A opens.</p>
+<h5>5.2 — Tapered annual allowance <em><code>pitfall.tapered_annual_allowance</code></em></h5>
+<p><strong>Trigger:</strong> income ≥ £260k <em>(<code>pitfall.income_trap_100k</code> is suppressed above this threshold — this check replaces it for higher earners).</em></p>
+<p><strong>Stem</strong></p>
+<blockquote><em>Above £260,000 of adjusted income, the amount you can put into a pension each year starts tapering down — and it keeps falling. Were you aware of that?</em></blockquote>
+<p><strong>Aware body</strong></p>
+<blockquote>You&#039;ll know the mechanics then. The live question is usually carry-forward — whether you&#039;ve got unused allowance from prior years that&#039;s about to expire.</blockquote>
+<p><strong>Partial body</strong></p>
+<blockquote>The taper reduces the £60,000 standard annual allowance by £1 for every £2 of adjusted income above £260,000, all the way down to a £10,000 floor at £360,000. Carry-forward from the previous three years can still add to it if you were a member of a UK scheme each year.</blockquote>
+<p><strong>Unaware body</strong></p>
+<blockquote>At your income, the standard £60,000 annual allowance probably doesn&#039;t apply to you in full. Carry-forward is often the difference between a tax-efficient year and a painful one — and very few people at this income level use it deliberately. That&#039;s usually the first conversation.</blockquote>
+<p><strong>Source:</strong> HMRC tapered annual allowance 2024/25.</p>
+<p><strong>Placement:</strong> same slot as 5.1, triggered instead for the higher-income band.</p>
+<h4>Category 2 — Savings and investment tax</h4>
+<h5>5.3 — Tax on savings, dividends, and investments <em><code>pitfall.savings_tax_efficiency</code></em> [CORE]</h5>
+<p><strong>Trigger:</strong> investable assets ≥ £100k OR income ≥ £50k.</p>
+<p><strong>Stem</strong></p>
+<blockquote><em>Most people pay more tax on their savings and investments than they need to — because the three allowances that reduce it don&#039;t tend to be used together. Any sense of whether you&#039;re using yours?</em></blockquote>
+<p><strong>Aware body</strong></p>
+<blockquote>Good. Most of our happiest clients started from this position. The question then is usually whether the mix still fits <em>this</em> tax year.</blockquote>
+<p><strong>Partial body</strong></p>
+<blockquote>The three levers: £20,000 annual ISA, £3,000 CGT annual exempt amount, and £500 dividend allowance. Used together across a couple, that&#039;s £46,500 of tax-protected capacity a year. Most couples use less than half.</blockquote>
+<p><strong>Unaware body</strong></p>
+<blockquote>On £100,000 of investments outside an ISA, moving £20,000 a year inside over five years protects the whole amount from tax on future growth. The technique&#039;s called <em>&quot;Bed and ISA&quot;</em> and it&#039;s one of the most common first-year conversations we have.</blockquote>
+<p><strong>Source:</strong> HMRC ISA rules; HMRC CGT annual exempt amount 2024/25 (£3,000); dividend allowance £500 2024/25.</p>
+<p><strong>Placement:</strong> after Block A Screen 4.A.3 (assets at a glance).</p>
+<h5>5.4 — Fund fee layering <em><code>pitfall.fund_fee_stack</code></em></h5>
+<p><strong>Trigger:</strong> investable assets ≥ £250k.</p>
+<p><strong>Stem</strong></p>
+<blockquote><em>On a £500,000 portfolio, the difference between a 1.0% and a 0.4% all-in annual cost is roughly £70,000 over twenty years. Were you aware the all-in cost is usually higher than the quoted figure?</em></blockquote>
+<p><strong>Aware body</strong></p>
+<blockquote>Then you&#039;re in the minority. Most investors never add up their fee stack.</blockquote>
+<p><strong>Partial body</strong></p>
+<blockquote>All-in cost is platform fee + fund OCF + adviser fee + transaction costs. It&#039;s rarely quoted as one number — you usually have to add it up yourself or ask for it in that form.</blockquote>
+<p><strong>Unaware body</strong></p>
+<blockquote>On a £500,000 pot growing at 5% gross for 20 years with no contributions, the difference between 1.0% and 0.4% all-in annual charges is roughly £70,000 of terminal value. Most investors have never been shown their all-in fee stack as a single number. That&#039;s often the first useful conversation.</blockquote>
+<p><strong>Source:</strong> FCA platform cost and value assessment framework; compound interest maths (verified).</p>
+<p><strong>Placement:</strong> Tier A only, after Block A if triggered.</p>
+<h4>Category 3 — Pensions, accumulation</h4>
+<h5>5.5 — Pension consolidation <em><code>pitfall.pension_consolidation</code></em> [CORE]</h5>
+<p><strong>Trigger:</strong> pension pots ≥ 4.</p>
+<p><strong>Stem</strong></p>
+<blockquote><em>Most people with four or more pension pots find, on consolidation, at least one old workplace scheme with charges more than double their best current one. Does that ring a bell?</em></blockquote>
+<p><strong>Aware body</strong></p>
+<blockquote>Then you&#039;ll know the drill. What usually matters is whether the maths of consolidating favours you — some old schemes carry guarantees worth more than the charge saving.</blockquote>
+<p><strong>Partial body</strong></p>
+<blockquote>Old workplace pensions often carry 1–1.5% annual charges; modern equivalents are 0.2–0.5%. But a handful of older schemes have valuable safeguarded benefits (guaranteed annuity rates, protected tax-free cash) that would be lost on transfer. The answer is rarely <em>&quot;consolidate everything&quot;</em> — it&#039;s <em>&quot;consolidate the right ones.&quot;</em></blockquote>
+<p><strong>Unaware body</strong></p>
+<blockquote>Four or more pots often hides something forgotten. The average new client we work with finds £40,000–£60,000 across old workplace schemes they hadn&#039;t tracked. The right question isn&#039;t <em>&quot;can I consolidate&quot;</em> — it&#039;s <em>&quot;should I, and in what order.&quot;</em></blockquote>
+<p><strong>Source:</strong> FCA Retirement Income Market Data 2023; Pensions Dashboards Programme research.</p>
+<p><strong>Placement:</strong> after Block A Screen 4.A.3, conditional on pot count.</p>
+<h5>5.6 — Carry-forward pension allowance <em><code>pitfall.carry_forward</code></em></h5>
+<p><strong>Trigger:</strong> income ≥ £100k AND pension pots ≥ 1.</p>
+<p><strong>Stem</strong></p>
+<blockquote><em>There&#039;s a way to carry forward up to three years of unused pension annual allowance — meaning a single one-off contribution of up to about £200,000 is sometimes possible. Were you aware of that?</em></blockquote>
+<p><strong>Aware body</strong></p>
+<blockquote>Then you know the gift. Most people in this bracket don&#039;t.</blockquote>
+<p><strong>Partial body</strong></p>
+<blockquote>The mechanics: you use the current year&#039;s allowance first, then step backwards across the previous three tax years&#039; unused allowance, provided you were a member of a UK pension scheme in each year.</blockquote>
+<p><strong>Unaware body</strong></p>
+<blockquote>A one-off £200,000 pension contribution using carry-forward can save roughly £80,000–£90,000 of income tax in a single year for a higher-rate earner. Most business-owner clients we work with do this in a year where profits are unusually good. The window is three years — use it, or lose it.</blockquote>
+<p><strong>Source:</strong> HMRC pension annual allowance carry-forward rules (PTM055100).</p>
+<p><strong>Placement:</strong> Tier A only, after the income/pension stack fires.</p>
+<h4>Category 4 — Pensions, decumulation</h4>
+<h5>5.7 — The MPAA trap <em><code>pitfall.mpaa</code></em></h5>
+<p><strong>Trigger:</strong> age ≥ 50 AND pension pots ≥ 1.</p>
+<p><strong>Stem</strong></p>
+<blockquote><em>Once you take </em>any<em> taxable income from a pension — even a small amount — you lose 72% of your ability to contribute in future, from £60,000 a year down to £10,000. Were you aware of that?</em></blockquote>
+<p><strong>Aware body</strong></p>
+<blockquote>Then you&#039;ll recognise this as the money-purchase annual allowance trap.</blockquote>
+<p><strong>Partial body</strong></p>
+<blockquote>Taking the 25% tax-free lump sum by itself doesn&#039;t trigger it. It&#039;s the first time you take <em>taxable</em> income from a flexi-access drawdown that crystallises the MPAA — and once triggered, it doesn&#039;t unwind.</blockquote>
+<p><strong>Unaware body</strong></p>
+<blockquote>A surprising number of people we meet took £5,000 of <em>&quot;just to test it&quot;</em> pension income in their 50s and capped their future contributions at £10,000 a year for the rest of their working life. The decision is reversible in the sense that you can stop — but not in the sense that you can reinstate the £60,000 allowance.</blockquote>
+<p><strong>Source:</strong> HMRC Money Purchase Annual Allowance rules (PTM056500).</p>
+<p><strong>Placement:</strong> Tier A only, after Block C if triggered.</p>
+<h4>Category 5 — Inheritance tax</h4>
+<h5>5.8 — IHT mitigation exists <em><code>pitfall.iht_mitigation</code></em> [CORE]</h5>
+<p><strong>Trigger:</strong> estate ≥ £1m OR (estate &quot;Not sure&quot; AND investable assets ≥ £500k).</p>
+<p><strong>Stem</strong></p>
+<blockquote><em>There are well-established, legal ways to reduce — sometimes to nothing — the inheritance tax bill on an estate of your size. Were you aware of that?</em></blockquote>
+<p><strong>Aware body</strong></p>
+<blockquote>Good. The question then is usually whether the plan you have still matches the rules as they are <em>now</em>, not as they were when you set it up.</blockquote>
+<p><strong>Partial body</strong></p>
+<blockquote>The toolkit has four main parts: gifting within the seven-year rule; trust structures (discretionary, life interest); Business Relief on qualifying shares and AIM portfolios; and the residence nil-rate band if you leave the home to direct descendants. Each has specific rules, and the 2024 Budget changed several of them.</blockquote>
+<p><strong>Unaware body</strong></p>
+<blockquote>At an estate of your size, the default IHT bill is typically 40% of everything above £325,000 (or £500,000 if the residence nil-rate band applies and you qualify). For a £2m estate, that&#039;s £540,000–£700,000. With 2–5 years of structured planning, most families we work with reduce that by £150,000–£400,000. It&#039;s the most common senior-planner conversation we have.</blockquote>
+<p><strong>Source:</strong> HMRC IHT rates and thresholds 2024/25; nil-rate band frozen to 2028; Autumn 2024 Budget IHT changes.</p>
+<p><strong>Placement:</strong> after Block B if triggered.</p>
+<h5>5.9 — The £2m RNRB cliff <em><code>pitfall.rnrb_taper</code></em> [CORE]</h5>
+<p><strong>Trigger:</strong> estate ≥ £2m.</p>
+<p><strong>Stem</strong></p>
+<blockquote><em>Above £2 million of total estate, the residence nil-rate band starts tapering away — £1 of relief lost for every £2 over. Were you aware of that?</em></blockquote>
+<p><strong>Aware body</strong></p>
+<blockquote>Then you&#039;ll know — an estate at £2.35m per person loses the whole RNRB. The question is usually how to keep the estate below the cliff.</blockquote>
+<p><strong>Partial body</strong></p>
+<blockquote>The RNRB is £175,000 per person (£350,000 for a married couple). It tapers at £1 for every £2 over £2m, fully gone at £2.35m per person. The £2m threshold counts <em>all</em> assets — including pensions from April 2027.</blockquote>
+<p><strong>Unaware body</strong></p>
+<blockquote>A typical £2.5m family estate (house plus investments) can easily pay £200,000–£500,000 more IHT than necessary because of this taper alone. The fix is rarely <em>&quot;spend more&quot;</em> — it&#039;s usually about timing gifts, or using Business Relief-qualifying investments to move the estate below the cliff.</blockquote>
+<p><strong>Source:</strong> HMRC RNRB rules; Finance Act 2017; Autumn 2024 Budget extension of freeze.</p>
+<p><strong>Placement:</strong> after 5.8 if triggered.</p>
+<h5>5.10 — Pensions and IHT from April 2027 <em><code>pitfall.pension_iht_2027</code></em> [CORE]</h5>
+<p><strong>Trigger:</strong> pension pots ≥ 2 AND estate ≥ £1m.</p>
+<p><strong>Stem</strong></p>
+<blockquote><em>From April 2027, unused pension funds are expected to fall </em>inside<em> the estate for inheritance tax — reversing a fifteen-year-old planning position. Were you aware of that change?</em></blockquote>
+<p><strong>Aware body</strong></p>
+<blockquote>Then you&#039;re probably already thinking about the 2026–27 planning window.</blockquote>
+<p><strong>Partial body</strong></p>
+<blockquote>Currently, most pensions pass outside the estate. The 2024 Budget announced that from April 2027, defined-contribution pension wealth will be included for IHT purposes. Draft legislation is expected in 2025 — the detail will matter.</blockquote>
+<p><strong>Unaware body</strong></p>
+<blockquote>This one&#039;s live. For a family with £500,000+ in pensions and a £1m+ estate, the decision you&#039;d have made in 2024 — <em>&quot;draw from ISAs first, keep the pension for inheritance&quot;</em> — may become exactly the wrong decision from April 2027. The planning window is now, not later.</blockquote>
+<p><strong>Source:</strong> Autumn 2024 Budget announcement; HMRC technical consultation on pensions and IHT (Oct 2024).</p>
+<p><strong>Placement:</strong> after 5.9 if triggered.</p>
+<h4>Category 6 — Estate planning beyond IHT</h4>
+<h5>6.1 — Will currency <em><code>pitfall.will_currency</code></em></h5>
+<p><strong>Trigger:</strong> has will AND &gt; 2 years old, OR no will.</p>
+<p><strong>Stem</strong></p>
+<blockquote><em>A will more than five years old is often out of date before anyone realises. Life moves — houses, children, business stakes, relationships — without a nudge to update the document. When did you last look at yours?</em></blockquote>
+<p><em>(The stem deliberately invites reflection rather than a yes/no — the three radio options still apply.)</em></p>
+<p><strong>Aware body</strong></p>
+<blockquote>Then the only question is when you last re-read yours.</blockquote>
+<p><strong>Partial body</strong></p>
+<blockquote>The common triggers for a will review: marriage or divorce, new child, house purchase, business stake, gift above £3,000, or the death of a named beneficiary. If none of those have happened since the last review, the will probably still works.</blockquote>
+<p><strong>Unaware body</strong></p>
+<blockquote>The commonest will problem we see isn&#039;t <em>&quot;no will&quot;</em> — it&#039;s <em>&quot;an old will that no longer reflects what the family actually looks like.&quot;</em> The cost of updating is usually a few hundred pounds. The cost of not updating it can be a seven-figure dispute.</blockquote>
+<p><strong>Source:</strong> The Law Society will review guidance; Private Client Section best practice.</p>
+<p><strong>Placement:</strong> after Block B if triggered.</p>
+<h5>6.2 — Lasting Power of Attorney <em><code>pitfall.lpa</code></em></h5>
+<p><strong>Trigger:</strong> does NOT include LPA (either type) AND age ≥ 50.</p>
+<p><strong>Stem</strong></p>
+<blockquote><em>Without a Lasting Power of Attorney in place, your family can&#039;t legally manage your money or your health decisions if you lose capacity. The alternative — going through the Court of Protection — typically takes 6+ months and £3,000–£5,000 in fees. Were you aware of that?</em></blockquote>
+<p><strong>Aware body</strong></p>
+<blockquote>Then the only question is whether the ones you have are the right ones.</blockquote>
+<p><strong>Partial body</strong></p>
+<blockquote>Two LPAs: one for property and financial affairs, one for health and welfare. Separate documents, registered with the Office of the Public Guardian (£82 per LPA currently). Without them, the alternative is a deputyship through the Court of Protection.</blockquote>
+<p><strong>Unaware body</strong></p>
+<blockquote>We see a handful of families a year who discover, in the worst month of their lives, that a parent&#039;s stroke or dementia means the bank won&#039;t let anyone pay the mortgage. Court of Protection deputyship takes 6+ months, costs £3,000–£5,000, and is supervised every year after. A pair of LPAs cost £164 and can be done in a month.</blockquote>
+<p><strong>Source:</strong> Office of the Public Guardian; Court of Protection fees 2024.</p>
+<p><strong>Placement:</strong> after Block B if triggered.</p>
+<h4>Category 7 — Protection</h4>
+<h5>7.1 — Group life cover fragility <em><code>pitfall.group_life_fragility</code></em> [CORE]</h5>
+<p><strong>Trigger:</strong> life cover = <em>through work only</em> AND has dependants.</p>
+<p><strong>Stem</strong></p>
+<blockquote><em>Life cover through work ends on the day you leave the job. The cover you have today isn&#039;t the cover you&#039;ll have if you change employer. Were you aware of that?</em></blockquote>
+<p><strong>Aware body</strong></p>
+<blockquote>Then it&#039;s worth checking whether there&#039;s any personal cover to carry between jobs.</blockquote>
+<p><strong>Partial body</strong></p>
+<blockquote>Group life is typically 3–4× salary and ends when employment ends. Critical illness and income protection in group schemes usually work the same way. Personal cover, set up while you&#039;re young and healthy, is often cheaper than people assume.</blockquote>
+<p><strong>Unaware body</strong></p>
+<blockquote>Most families we work with had assumed their <em>&quot;work benefit&quot;</em> was lifelong cover. It isn&#039;t. A personal £500,000 life and £50,000 income protection policy for a healthy 40-year-old typically costs under £40 a month — less than most broadband bills. It&#039;s the cheapest big decision on most family balance sheets.</blockquote>
+<p><strong>Source:</strong> ABI Group Risk Report 2023; Royal London income protection premium benchmarks.</p>
+<p><strong>Placement:</strong> after Block B Screen 4.B.3 if triggered.</p>
+<h5>7.2 — Sick pay reality <em><code>pitfall.ssp_gap</code></em></h5>
+<p><strong>Trigger:</strong> earnings-protection scale ≤ 3.</p>
+<p><strong>Stem</strong></p>
+<blockquote><em>Statutory Sick Pay is £116.75 a week — about £505 a month — and most employer sick pay schemes run out at six months. Were you aware the gap is that steep?</em></blockquote>
+<p><strong>Aware body</strong></p>
+<blockquote>Then you&#039;ll know why income protection is the planning cousin everyone forgets.</blockquote>
+<p><strong>Partial body</strong></p>
+<blockquote>The ladder: full pay for up to 6 months (if lucky) → half pay → SSP → nothing. For most households with a mortgage, the <em>&quot;half-pay&quot;</em> line is already below essential outgoings.</blockquote>
+<p><strong>Unaware body</strong></p>
+<blockquote>If the main earner is off sick for a year, most families we meet find their sick-pay arrangement covers the first 3–6 months at best, then crashes to £505 a month statutory. That&#039;s rarely enough to cover the mortgage. Income protection closes the gap — and because the event is more likely than early death, it&#039;s much cheaper than life insurance.</blockquote>
+<p><strong>Source:</strong> HMRC SSP rates 2024/25; ABI income protection data.</p>
+<p><strong>Placement:</strong> Tier A only, conditional on the confidence-score answer.</p>
+<h4>Category 8 — Property and mortgage</h4>
+<h5>8.1 — Overpayment vs. cash <em><code>pitfall.overpayment_vs_cash</code></em></h5>
+<p><strong>Trigger:</strong> has mortgage AND cash ≥ £20k above the emergency-fund proxy.</p>
+<p><strong>Stem</strong></p>
+<blockquote><em>Mortgage overpayment gives a guaranteed return equal to your mortgage rate. At today&#039;s rates, that often beats the after-tax return on a cash savings account. Were you aware of the comparison?</em></blockquote>
+<p><strong>Aware body</strong></p>
+<blockquote>Then it&#039;s usually just a question of redemption penalties and how much liquidity you want to keep.</blockquote>
+<p><strong>Partial body</strong></p>
+<blockquote>The maths: overpaying a 5% mortgage is equivalent, in after-tax terms, to earning about 7% on a savings account taxed at basic rate (or about 9% taxed at higher rate). Most cash accounts don&#039;t offer that. The counterargument is liquidity — money in the house is harder to access.</blockquote>
+<p><strong>Unaware body</strong></p>
+<blockquote>On a £300,000 mortgage at 5%, overpaying £500 a month for five years saves around £27,000 in interest and clears the mortgage about three years early. The same £500 in a taxed savings account, at 4.5% gross for a higher-rate taxpayer, is worth a lot less after tax. The decision depends on your emergency fund and redemption penalties — that&#039;s the planner conversation.</blockquote>
+<p><strong>Source:</strong> Bank of England base rate 2024; money.co.uk savings rate data.</p>
+<p><strong>Placement:</strong> Tier A only.</p>
+<h5>8.2 — Buy-to-let incorporation <em><code>pitfall.btl_incorporation</code></em></h5>
+<p><strong>Trigger:</strong> other property ≥ 2 AND NOT held in limited company.</p>
+<p><strong>Stem</strong></p>
+<blockquote><em>Buy-to-let properties held personally lose most of their mortgage interest as a tax-deductible expense. Those held in a limited company don&#039;t. Were you aware of the difference?</em></blockquote>
+<p><strong>Aware body</strong></p>
+<blockquote>Then you&#039;ll know the <em>&quot;should I incorporate&quot;</em> question has about eight follow-ups.</blockquote>
+<p><strong>Partial body</strong></p>
+<blockquote>Section 24 of the Finance Act 2015 replaced personal-name mortgage interest relief with a flat 20% tax credit. For higher and additional-rate taxpayers with mortgaged BTLs, that effectively raises the tax rate on rent. Incorporation avoids it, but the transfer itself triggers CGT and SDLT.</blockquote>
+<p><strong>Unaware body</strong></p>
+<blockquote>After Section 24, a higher-rate landlord with a heavily-mortgaged BTL can end up paying tax on income they didn&#039;t actually earn. Incorporation is the common fix — but the transfer triggers CGT and SDLT unless structured carefully. It&#039;s a £5,000–£15,000 decision for most portfolio landlords, and we tend to run it alongside your accountant rather than over the top of them.</blockquote>
+<p><strong>Source:</strong> Finance Act 2015 Section 24; HMRC BTL tax guidance.</p>
+<p><strong>Placement:</strong> Tier A only, after Block A Screen 4.A.4.</p>
+<h4>Category 9 — Investments</h4>
+<h5>9.1 — Glide-path and risk-drift <em><code>pitfall.glide_path</code></em></h5>
+<p><strong>Trigger:</strong> (target retirement age − current age) ≤ 10 AND investable assets ≥ £250k.</p>
+<p><strong>Stem</strong></p>
+<blockquote><em>Most DC pension default funds don&#039;t automatically reduce equity risk as you approach retirement — the </em>&quot;lifestyling&quot;<em> you may be assuming often isn&#039;t switched on. Worth a look?</em></blockquote>
+<p><strong>Aware body</strong></p>
+<blockquote>Then you&#039;ll have checked your fund&#039;s glide path against your plan.</blockquote>
+<p><strong>Partial body</strong></p>
+<blockquote>Since freedom-and-choice in 2015, many default funds assume drawdown rather than annuity purchase — which means they hold equity risk for longer. That isn&#039;t wrong in itself — but it matters whether it fits <em>your</em> plan.</blockquote>
+<p><strong>Unaware body</strong></p>
+<blockquote>A 58-year-old five years from planned retirement may still be 80%+ in equities inside a <em>&quot;default&quot;</em> fund. A 25% equity fall at 62 is very different from the same fall at 35. The question isn&#039;t <em>&quot;is equity risk bad&quot;</em> — it&#039;s <em>&quot;is this risk profile right for your plan.&quot;</em> Most near-retirees we meet have never had this conversation about their default fund.</blockquote>
+<p><strong>Source:</strong> FCA DC Default Fund Design Thematic Review 2022.</p>
+<p><strong>Placement:</strong> Tier A only, conditional after Block C.</p>
+<h4>Category 10 — Business, extraction</h4>
+<h5>10.1 — Extraction mix <em><code>pitfall.extraction_mix</code></em> [CORE]</h5>
+<p><strong>Trigger:</strong> extraction mix = salary only OR = <em>my accountant handles it</em>.</p>
+<p><strong>Stem</strong></p>
+<blockquote><em>Most business-owner clients we review are paying more tax on extraction than they need to — often because the salary, dividend and pension mix hasn&#039;t been revisited for a few years. How confident are you yours has been?</em></blockquote>
+<p><strong>Aware body</strong></p>
+<blockquote>Then the test is whether the current mix still fits the current tax year — 2024/25 tightened the dividend allowance again.</blockquote>
+<p><strong>Partial body</strong></p>
+<blockquote>The classic optimisation: salary up to the NI threshold, dividends to the basic-rate band, then employer pension contribution for the rest. Exact numbers shift every tax year. <em>&quot;My accountant handles it&quot;</em> often means the default mix hasn&#039;t been revisited for several years.</blockquote>
+<p><strong>Unaware body</strong></p>
+<blockquote>On £100,000 drawn as pure salary versus a typical salary/dividend/employer-pension mix, the tax bill can differ by £15,000–£20,000 — per year. Whether that&#039;s you depends on your company structure and your accountant&#039;s current advice. We run this jointly with the accountant rather than over the top of them.</blockquote>
+<p><strong>Source:</strong> HMRC income tax, NI and dividend rates 2024/25; ICAEW owner-manager benchmarks.</p>
+<p><strong>Placement:</strong> after Block C1 if triggered.</p>
+<h5>10.2 — Pension as extraction <em><code>pitfall.pension_as_extraction</code></em></h5>
+<p><strong>Trigger:</strong> business owner AND pension pots ≤ 1.</p>
+<p><strong>Stem</strong></p>
+<blockquote><em>Employer pension contributions from your company reduce corporation tax, avoid NI, and don&#039;t count as dividend income — often the most tax-efficient way to take profit out. Were you aware of that lever?</em></blockquote>
+<p><strong>Aware body</strong></p>
+<blockquote>Then you&#039;ll know it mostly comes down to annual allowance and your exit plan.</blockquote>
+<p><strong>Partial body</strong></p>
+<blockquote>An employer pension contribution is a deductible business expense — the company saves corporation tax. No income tax or NI at the time of contribution. You pay income tax on the way out at retirement, usually at a lower rate than in-work extraction.</blockquote>
+<p><strong>Unaware body</strong></p>
+<blockquote>Very few business owners with one or zero pension pots are using employer pension contributions as an extraction lever. On a £60,000 employer contribution, a 25% corporation-tax-paying company saves £15,000, and you save the NI and income tax you&#039;d have paid on the equivalent dividend. The after-tax value is often 20–30% higher than an equivalent dividend.</blockquote>
+<p><strong>Source:</strong> HMRC pension employer contribution tax treatment; corporation tax rate 2024/25.</p>
+<p><strong>Placement:</strong> Tier A only, after Block C1.</p>
+<h4>Category 11 — Business, succession</h4>
+<h5>11.1 — BADR rate transition <em><code>pitfall.badr_timing</code></em></h5>
+<p><strong>Trigger:</strong> succession = <em>&quot;I want out in the next 5 years&quot;</em>.</p>
+<p><strong>Stem</strong></p>
+<blockquote><em>Business Asset Disposal Relief gives a 10% CGT rate on qualifying business sales up to a £1m lifetime limit. But the rate is rising — to 14% from April 2025 and 18% from April 2026. Were you aware of the transition?</em></blockquote>
+<p><strong>Aware body</strong></p>
+<blockquote>Then the question is purely whether your timeline matches the rate step-up.</blockquote>
+<p><strong>Partial body</strong></p>
+<blockquote>BADR applies on qualifying shares (5%+ holding for 2 years, working in the business). Lifetime limit £1m. Rate: 10% to April 2025, 14% from April 2025, 18% from April 2026. The 2024 Budget confirmed the step-up.</blockquote>
+<p><strong>Unaware body</strong></p>
+<blockquote>On a £1m qualifying gain, BADR at 10% is £100,000 of tax; at 18% it&#039;s £180,000. That&#039;s £80,000 of CGT decided by the date of completion. Most business sales take 18–24 months from decision to close. The conversation about whether to accelerate into the 14% year, the 18% year, or split consideration is one most sellers have too late.</blockquote>
+<p><strong>Source:</strong> HMRC BADR rules; Autumn 2024 Budget CGT changes.</p>
+<p><strong>Placement:</strong> after Block C1 if triggered. High priority for S6.</p>
+<h4>Category 12 — Cash</h4>
+<h5>12.1 — Emergency fund sizing <em><code>pitfall.emergency_fund_sizing</code></em></h5>
+<p><strong>Trigger:</strong> cash &lt; 3 × essential monthly spend (estimated from bands).</p>
+<p><strong>Stem</strong></p>
+<blockquote><em>The commonly-quoted three months of essential spending as an emergency fund is usually too thin for households with a mortgage, dependants and a single primary earner. Does that land?</em></blockquote>
+<p><strong>Aware body</strong></p>
+<blockquote>Then the question is whether the 3–6 month range fits your specific job security and household shape.</blockquote>
+<p><strong>Partial body</strong></p>
+<blockquote>The rule of thumb: 3 months for a dual-earner, no-dependants household; 6 months for a single-earner; 9–12 months for self-employed or commission-based earners. It&#039;s judgement, not formula.</blockquote>
+<p><strong>Unaware body</strong></p>
+<blockquote>For a single-earner household with two children and an £1,800 mortgage, a 3-month emergency fund is often under-sized. The cost of getting it wrong: a forced sale of long-term investments at a bad time, or a high-interest loan in a crisis. Most planners we know land on 6 months for employed clients with dependants, more for business owners.</blockquote>
+<p><strong>Source:</strong> FCA Financial Lives Survey 2024; Money and Pensions Service benchmarks.</p>
+<p><strong>Placement:</strong> Tier A only, after Block A if triggered.</p>
+<h4>Category 13 — State pension and later life</h4>
+<h5>13.1 — State pension NI gaps <em><code>pitfall.ni_gaps</code></em> [CORE]</h5>
+<p><strong>Trigger:</strong> age ≥ 45 AND state pension awareness ≠ <em>Yes — I&#039;ve checked</em>.</p>
+<p><strong>Stem</strong></p>
+<blockquote><em>To get the full new state pension — currently about £11,500 a year — you need 35 qualifying years of National Insurance. Gaps can be filled voluntarily, but usually only looking back six years. Have you checked your record?</em></blockquote>
+<p><strong>Aware body</strong></p>
+<blockquote>Then you&#039;ll have looked at gov.uk/check-state-pension.</blockquote>
+<p><strong>Partial body</strong></p>
+<blockquote>Voluntary Class 3 NI contributions are currently £17.45 a week (about £900 a year). Each year of contributions adds roughly £328 a year to the state pension — a payback period under three years. Normal look-back is six years; the extended window to April 2025 allowed look-back to 2006.</blockquote>
+<p><strong>Unaware body</strong></p>
+<blockquote>Around 60% of people in their late 40s and 50s have never checked their NI record. The most common surprise is a 2–5 year gap from self-employment, a career break, or time overseas. Each gap filled voluntarily typically returns 10–15× over retirement. gov.uk/check-state-pension takes about 90 seconds.</blockquote>
+<p><strong>Source:</strong> DWP state pension rates 2024/25; HMRC Class 3 NI rates.</p>
+<p><strong>Placement:</strong> after Block C Screen 4.C.2 (state pension question) if triggered.</p>
+<h5>13.2 — Later-life care funding <em><code>pitfall.care_funding</code></em></h5>
+<p><strong>Trigger:</strong> household includes elderly parent / relative OR age ≥ 60.</p>
+<p><strong>Stem</strong></p>
+<blockquote><em>Long-term residential care in the UK typically costs £60,000–£100,000+ a year. It&#039;s not free at the point of use once assets pass £23,250 — and that includes the value of a home not occupied by a spouse. Were you aware of those thresholds?</em></blockquote>
+<p><strong>Aware body</strong></p>
+<blockquote>Then the only question is which members of the family this is likely to affect, and when.</blockquote>
+<p><strong>Partial body</strong></p>
+<blockquote>The means-test thresholds in England: lower capital limit £14,250, upper £23,250. A home is disregarded if a spouse or partner still lives there. The <em>&quot;care cost cap&quot;</em> reform announced for October 2025 was paused in 2024.</blockquote>
+<p><strong>Unaware body</strong></p>
+<blockquote>The average stay in residential care is about 30 months; 50% of people admitted will pay the full cost. A £90,000-a-year care home bill erodes a £450,000 house in five years. Families who plan this (immediate-needs annuities, deputyship, property structures) routinely preserve £100,000–£300,000 of the estate. It&#039;s the conversation that comes up too late.</blockquote>
+<p><strong>Source:</strong> Laing Buisson <em>Care of Older People UK Market Report 2024</em>; DHSC charging guidance.</p>
+<p><strong>Placement:</strong> Tier A only, after Block B if triggered.</p>
+<h4>Category 14 — The advice industry itself</h4>
+<h5>14.1 — Independent vs. restricted <em><code>pitfall.independent_restricted</code></em></h5>
+<p><strong>Trigger:</strong> currently advised (<em>Yes, and happy</em> OR <em>Yes, but looking</em>).</p>
+<p><strong>Stem</strong></p>
+<blockquote><em>A &quot;financial adviser&quot; can be either independent or restricted — and a restricted adviser can only recommend products from a limited range, sometimes a single provider. Did you know whether yours is independent?</em></blockquote>
+<p><strong>Aware body</strong></p>
+<blockquote>Then you&#039;ll have asked your current adviser which they are.</blockquote>
+<p><strong>Partial body</strong></p>
+<blockquote>The FCA requires advisers to disclose their status. <em>Independent</em> means they can recommend across the whole of market. <em>Restricted</em> can mean anything from <em>&quot;limited to one provider&quot;</em> to <em>&quot;whole of market except annuities.&quot;</em> The scope sits on the first page of their initial disclosure document.</blockquote>
+<p><strong>Unaware body</strong></p>
+<blockquote>About 60% of UK advice firms are restricted. Not knowing the scope of your current adviser&#039;s restriction isn&#039;t a problem in itself — but it&#039;s a question worth asking if you&#039;ve never looked at the initial disclosure document. Real Wealth is independent and FCA-regulated, which means we&#039;re free to look across the whole market.</blockquote>
+<p><strong>Source:</strong> FCA Retail Distribution Review; FCA Handbook COBS 6.2A.</p>
+<p><strong>Placement:</strong> after Block D Screen 4.D.4 if triggered.</p>
+<h5>14.2 — Adviser fee all-in cost <em><code>pitfall.adviser_fee_total</code></em></h5>
+<p><strong>Trigger:</strong> currently advised (same as 14.1).</p>
+<p><strong>Stem</strong></p>
+<blockquote><em>The all-in cost of ongoing advice is typically quoted as just the adviser fee — but the total (adviser + platform + fund) is usually 1.5–2× that number. Have you ever seen yours as a single figure?</em></blockquote>
+<p><strong>Aware body</strong></p>
+<blockquote>Then you&#039;ve probably seen the breakdown for your own arrangement.</blockquote>
+<p><strong>Partial body</strong></p>
+<blockquote>Three cost layers: adviser ongoing (roughly 0.5–1.0%), platform (0.15–0.35%), fund OCF (0.05–0.9%). Totals usually land between 0.7% and 2.0%. Consumer Duty obliges advisers to demonstrate value for the <em>total</em> fee, not just their slice.</blockquote>
+<p><strong>Unaware body</strong></p>
+<blockquote>It&#039;s not that advice is wrong to cost money. It&#039;s that the total cost is often quoted as a single line that happens to only include one of three layers. A Consumer Duty-compliant review of your current arrangement asks: what is the total, what am I getting for it, is it defensible. Useful even when the answer is <em>&quot;yes, fine.&quot;</em></blockquote>
+<p><strong>Source:</strong> FCA Consumer Duty (2023); FCA Assessing Suitability review.</p>
+<p><strong>Placement:</strong> after 14.1 if triggered.</p>
+<h4>Category 15 — Behavioural</h4>
+<h5>15.1 — Couples and alignment <em><code>pitfall.couples_alignment</code></em></h5>
+<p><strong>Trigger:</strong> household includes <em>A partner</em> AND confidence ≤ 3.</p>
+<p><strong>Stem</strong></p>
+<blockquote><em>Couples who have a structured conversation about money once a year — not about the bills, but about the plan — report much higher satisfaction with their finances than couples who don&#039;t. Do you and your partner?</em></blockquote>
+<p><strong>Aware body</strong></p>
+<blockquote>Then you&#039;re in the minority — only about 1 in 3 couples we meet actually do.</blockquote>
+<p><strong>Partial body</strong></p>
+<blockquote>What the research points to is simpler than it sounds: a shared retirement picture, agreement on gifting to children, alignment on risk, and one person who knows the passwords. It&#039;s not about the numbers — it&#039;s about not being surprised.</blockquote>
+<p><strong>Unaware body</strong></p>
+<blockquote>The single highest-value thing that happens in a planner meeting with a couple isn&#039;t the tax or the pension maths — it&#039;s the conversation they end up having with each other that they hadn&#039;t yet had at home. Most couples thank us for that after the first meeting, before we&#039;ve advised on anything.</blockquote>
+<p><strong>Source:</strong> Aviva Family Finances Report 2023; Relate research on money and relationships.</p>
+<p><strong>Placement:</strong> Tier A only, after Block B if triggered.</p>
+<h4>Rate limiting and placement</h4>
+<p>A maximum of 5 awareness checks fire per session (Tier A); 4 per session for Tier B; 2 per session for Tier C. Ranking when more are eligible:</p>
+<ol>
+<li><code>income_trap_100k</code> (or <code>tapered_annual_allowance</code>)</li>
+<li><code>pension_iht_2027</code></li>
+<li><code>rnrb_taper</code></li>
+<li><code>savings_tax_efficiency</code></li>
+<li><code>extraction_mix</code></li>
+<li><code>group_life_fragility</code></li>
+<li><code>pension_consolidation</code></li>
+<li><code>ni_gaps</code></li>
+<li><code>lpa</code></li>
+<li><code>will_currency</code></li>
+</ol>
+<p>Unfired-but-triggered checks still populate the planner&#039;s CRM brief and the summary-page shortlist as <em>&quot;we noticed this one too&quot;</em> items — they do not disappear silently.</p>
+<p>---</p>
+<h3>6. Provocation cards — library</h3>
+<p>Provocations are the quiet observations fired by <em>answers</em> within the main question set, not by the awareness-check mechanism. Where an awareness check stops and asks the user <em>&quot;did you know…&quot;</em>, a provocation simply says <em>&quot;here&#039;s a thing, you may want to think about it.&quot;</em> One interrupting screen, read, continue.</p>
+<p>Format is specified in §2.7. Every entry below specifies the trigger, the headline, the body (max two sentences), and the close (soft conversational prompt). Each is tagged for compliance sign-off before shipping.</p>
+<p>All provocation copy is subject to Chartered Financial Planner + Compliance Officer co-sign per <code>Pitfall Awareness Library.md</code> §4. The wording below is the draft for review.</p>
+<h4>6.1 Sandwich generation — <code>prov.sandwich_gen</code></h4>
+<p><strong>Trigger:</strong> household includes <em>Dependent children</em> AND <em>An elderly parent or relative we support</em>.</p>
+<p><strong>Headline:</strong> <em>Both ways at once.</em></p>
+<p><strong>Body:</strong> Families supporting children <em>and</em> a parent at the same time are the planning group we see most stretched for time. The tools that matter here — LPAs for your parents, protection for you, a will that accounts for both — are the ones that get put off until they&#039;re urgent.</p>
+<p><strong>Close:</strong> <em>Worth thirty minutes with us.</em></p>
+<h4>6.2 Pension consolidation tease — <code>prov.pension_pots_tease</code></h4>
+<p><strong>Trigger:</strong> age 55–60 AND pension pots ≥ 3.</p>
+<p><strong>Headline:</strong> <em>The forgotten pots.</em></p>
+<p><strong>Body:</strong> Most professionals in their late 50s can&#039;t name their total pension value within 20%. The average new client we work with finds £40,000–£60,000 across old workplace schemes they&#039;d forgotten.</p>
+<p><strong>Close:</strong> <em>A good conversation to have before any decisions.</em></p>
+<h4>6.3 Self-employed pension shortfall — <code>prov.self_employed_pension</code></h4>
+<p><strong>Trigger:</strong> work_status = <em>Self-employed</em> AND income ≥ £75k AND pension pots ≤ 1.</p>
+<p><strong>Headline:</strong> <em>The quiet gap.</em></p>
+<p><strong>Body:</strong> Self-employed people at your income typically fund a pension about 60% less than employed peers earning the same. It&#039;s nobody&#039;s fault — no employer nudging, no auto-enrolment — and it&#039;s the single commonest thing self-employed clients come to us to fix.</p>
+<p><strong>Close:</strong> <em>One of the fastest wins we work on.</em></p>
+<h4>6.4 Savings-to-income ratio — <code>prov.spending_ratio</code></h4>
+<p><strong>Trigger:</strong> essential monthly spend &gt; 50% of income band midpoint.</p>
+<p><strong>Headline:</strong> <em>The shape of a month.</em></p>
+<p><strong>Body:</strong> You&#039;ve told us roughly what comes in and what goes out on essentials. At that ratio, in our experience, households find it hardest to accelerate their saving — even when they want to. It&#039;s not usually about willpower; it&#039;s usually about the design of the plan.</p>
+<p><strong>Close:</strong> <em>Worth a conversation about the levers.</em></p>
+<h4>6.5 Non-essential over a decade — <code>prov.lifestyle_decade</code></h4>
+<p><strong>Trigger:</strong> non-essential spend ≥ £2k/month.</p>
+<p><strong>Headline:</strong> <em>Ten years of the nice-to-haves.</em></p>
+<p><strong>Body:</strong> At the level you&#039;ve told us, the non-essential line adds up to between £240,000 and £480,000 across a decade. That&#039;s not a criticism — it&#039;s a figure most people haven&#039;t sat with. What it&#039;s buying you is the real question.</p>
+<p><strong>Close:</strong> <em>Worth asking out loud, once.</em></p>
+<h4>6.6 Portfolio landlord — <code>prov.btl_portfolio</code></h4>
+<p><strong>Trigger:</strong> other property ≥ 2 AND NOT held in limited company.</p>
+<p><strong>Headline:</strong> <em>The incorporation question.</em></p>
+<p><strong>Body:</strong> For portfolio landlords holding two or more properties personally with mortgages, the Section 24 tax change has made <em>&quot;should I incorporate&quot;</em> one of the most common planning questions we hear. The answer is <em>&quot;it depends&quot;</em> for about 60% of cases, and clearly yes or no for the rest.</p>
+<p><strong>Close:</strong> <em>We usually run this jointly with your accountant.</em></p>
+<h4>6.7 IHT at £2m+ — <code>prov.iht_2m_cliff</code></h4>
+<p><strong>Trigger:</strong> estate ≥ £2m AND RNRB taper awareness check did NOT fire (rate-limit displaced it).</p>
+<p><strong>Headline:</strong> <em>The £2m cliff.</em></p>
+<p><strong>Body:</strong> Above £2m of total estate, the residence nil-rate band starts tapering — £1 of relief lost for every £2 over. A typical £2.5m family estate can end up paying £200,000–£500,000 more inheritance tax than necessary without planning.</p>
+<p><strong>Close:</strong> <em>One of the conversations most families come to us for.</em></p>
+<h4>6.8 Estate &quot;not sure&quot; + high assets — <code>prov.estate_unsure</code></h4>
+<p><strong>Trigger:</strong> estate = <em>Not sure</em> AND investable assets ≥ £500k.</p>
+<p><strong>Headline:</strong> <em>Worth adding it up.</em></p>
+<p><strong>Body:</strong> Most people we meet haven&#039;t added up their total estate recently — the house, the pensions, the investments, the business share. For households in your range, the number often crosses the £2m threshold where the inheritance tax maths changes shape.</p>
+<p><strong>Close:</strong> <em>We can do the adding up on the call.</em></p>
+<h4>6.9 IHT + unplanned — <code>prov.iht_no_plan</code></h4>
+<p><strong>Trigger:</strong> estate ≥ £1m AND passing-on intent = <em>I haven&#039;t thought about it much</em>.</p>
+<p><strong>Headline:</strong> <em>Most of our clients said the same, first meeting.</em></p>
+<p><strong>Body:</strong> The question isn&#039;t <em>&quot;how much.&quot;</em> It&#039;s <em>&quot;what do I want them to be able to do with it.&quot;</em> Getting that question answered once — between you, with a third party to hold the pen — is usually where the useful planning starts.</p>
+<p><strong>Close:</strong> <em>Worth half an hour together.</em></p>
+<h4>6.10 No will + estate — <code>prov.no_will_estate</code></h4>
+<p><strong>Trigger:</strong> no will in Q6.3 AND estate ≥ £500k.</p>
+<p><strong>Headline:</strong> <em>Intestate is a bad default.</em></p>
+<p><strong>Body:</strong> Without a will, the intestacy rules decide who gets what — and the outcome rarely matches what you&#039;d have chosen. For estates over £500,000, an unmarried partner can inherit nothing, and children inherit equal shares at 18.</p>
+<p><strong>Close:</strong> <em>The fix is usually a few hundred pounds and a morning.</em></p>
+<h4>6.11 Already advised but looking — <code>prov.advised_looking</code></h4>
+<p><strong>Trigger:</strong> current adviser = <em>Yes, but I&#039;m looking</em>.</p>
+<p><strong>Headline:</strong> <em>You already know the answer.</em></p>
+<p><strong>Body:</strong> You&#039;ve told us you&#039;re already working with someone and you&#039;re looking. That&#039;s the highest-intent signal we see in this form — the decision is mostly made, it&#039;s about the fit.</p>
+<p><strong>Close:</strong> <em>Speak to one of our senior partners directly.</em></p>
+<h4>6.12 Close to retirement, low assets — <code>prov.close_to_line</code></h4>
+<p><strong>Trigger:</strong> (target retirement age − current age) &lt; 10 AND investable assets + pensions band &lt; £500k.</p>
+<p><strong>Headline:</strong> <em>The honest arithmetic.</em></p>
+<p><strong>Body:</strong> You&#039;ve given yourself a specific timeline to the day you don&#039;t have to work. Based on what you&#039;ve told us, the monthly saving rate that implies is worth looking at — sooner is better than later, either way.</p>
+<p><strong>Close:</strong> <em>The conversation most people wish they&#039;d had five years sooner.</em></p>
+<h4>6.13 Retirement unease — <code>prov.retirement_unease</code></h4>
+<p><strong>Trigger:</strong> retirement feel = <em>A bit uneasy</em> OR <em>Hard to imagine — I&#039;ll never fully stop</em>.</p>
+<p><strong>Headline:</strong> <em>It&#039;s not about when you stop.</em></p>
+<p><strong>Body:</strong> Over half of our business-owner and senior-professional clients said the same thing in their first meeting. Planning isn&#039;t about <em>&quot;when do I stop&quot;</em> — it&#039;s about <em>&quot;when could I stop if I wanted to.&quot;</em> The freedom, not the date.</p>
+<p><strong>Close:</strong> <em>A conversation about optionality, not retirement.</em></p>
+<h4>6.14 Already retired, less than hoped — <code>prov.retired_short</code></h4>
+<p><strong>Trigger:</strong> retirement feel = <em>Already there — and it&#039;s less than I hoped</em>.</p>
+<p><strong>Headline:</strong> <em>Still a plan to make.</em></p>
+<p><strong>Body:</strong> The phase after work often needs more planning, not less — drawdown strategy, tax efficiency, the pension-IHT change coming in 2027. It&#039;s rarely too late to improve the shape of it.</p>
+<p><strong>Close:</strong> <em>Worth a planner&#039;s second opinion.</em></p>
+<h4>6.15 Stress mindset — <code>prov.money_stress</code></h4>
+<p><strong>Trigger:</strong> money mindset = <em>Honestly — a source of stress</em>.</p>
+<p><strong>Headline:</strong> <em>A note from us.</em></p>
+<p><strong>Body:</strong> We work with people whose money was making them anxious. In our experience, a plan changes what money does to you — not because the numbers change, but because the unknowns do.</p>
+<p><strong>Close:</strong> <em>We&#039;d be glad to talk.</em></p>
+<h4>6.16 Sole director, single pot — <code>prov.director_single_pot</code></h4>
+<p><strong>Trigger:</strong> role = <em>Sole director / owner</em> AND pension pots ≤ 1.</p>
+<p><strong>Headline:</strong> <em>The quiet tax lever.</em></p>
+<p><strong>Body:</strong> A 25% corporation-tax-paying company making a £60,000 employer pension contribution for its sole director saves £15,000 of corporation tax and avoids NI and income tax on the equivalent dividend. Most sole directors with one pension pot aren&#039;t using this at scale.</p>
+<p><strong>Close:</strong> <em>We run this jointly with your accountant.</em></p>
+<h4>6.17 Five-year exit window — <code>prov.exit_window</code></h4>
+<p><strong>Trigger:</strong> succession = <em>I want out in the next 5 years</em>.</p>
+<p><strong>Headline:</strong> <em>Two years, not six months.</em></p>
+<p><strong>Body:</strong> The typical business sale takes 18–24 months from decision to close. Most sellers tell us they wished they&#039;d started the tax and estate planning at least two years before that — not six months.</p>
+<p><strong>Close:</strong> <em>The succession conversation is one of our signature strengths.</em></p>
+<h4>6.18 Business, no plan — <code>prov.business_no_plan</code></h4>
+<p><strong>Trigger:</strong> succession = <em>No plan — but I&#039;ve been thinking about it</em>.</p>
+<p><strong>Headline:</strong> <em>Thinking is the planning starting.</em></p>
+<p><strong>Body:</strong> There&#039;s no such thing as a bad first succession conversation — even <em>&quot;I don&#039;t know what I want yet&quot;</em> is a starting position. Most of the owners we work with came to us exactly there.</p>
+<p><strong>Close:</strong> <em>Thirty minutes to start the thinking in the open.</em></p>
+<h4>6.19 Protection gap — dependants, low confidence — <code>prov.protection_gap</code></h4>
+<p><strong>Trigger:</strong> earnings-protection scale ≤ 2 AND has dependants.</p>
+<p><strong>Headline:</strong> <em>The 3-month line.</em></p>
+<p><strong>Body:</strong> Most families find there&#039;s a 3–6 month gap between sick pay and savings running out. Income protection is rarely the first thing people list — and it&#039;s the one most of our clients say they wished they&#039;d sorted earlier.</p>
+<p><strong>Close:</strong> <em>The cheapest big decision on most family balance sheets.</em></p>
+<h4>6.20 Work cover only — <code>prov.work_cover_only</code></h4>
+<p><strong>Trigger:</strong> life cover = <em>Yes — through work only</em> AND has dependants.</p>
+<p><strong>Headline:</strong> <em>Cover tied to the job.</em></p>
+<p><strong>Body:</strong> We&#039;ve seen families find out in the worst month of their life that the protection they thought they had was tied to a job they no longer held. Personal cover, set up while you&#039;re young and healthy, is usually cheaper than people assume.</p>
+<p><strong>Close:</strong> <em>Worth checking you&#039;ve got something that doesn&#039;t end when the job does.</em></p>
+<h4>6.21 High-net-worth pathway — <code>prov.hnw_pathway</code></h4>
+<p><strong>Trigger:</strong> investable assets ≥ £1m AND estate ≥ £3m (S9).</p>
+<p><strong>Headline:</strong> <em>A different conversation.</em></p>
+<p><strong>Body:</strong> At your level of assets, the planning conversation is usually less about growth and more about structure — trusts, generational gifting, Business Relief portfolios, the 2027 pension IHT change. Our senior partners handle this end of the firm directly.</p>
+<p><strong>Close:</strong> <em>We&#039;ll book you with one of the seniors straight away.</em></p>
+<h4>6.22 Trade-off surfaced — <code>prov.tradeoff_bigpot</code></h4>
+<p><strong>Trigger:</strong> trade-offs = <em>Grow the pot</em> AND investable assets + pensions &lt; £500k.</p>
+<p><strong>Headline:</strong> <em>Growing the pot.</em></p>
+<p><strong>Body:</strong> You told us you lean towards growing the pot over simplifying life. At your current shape, a conversation about contribution capacity (pension, ISA, carry-forward) is usually where the biggest difference sits — bigger than investment selection.</p>
+<p><strong>Close:</strong> <em>The easy wins are usually the first 45 minutes.</em></p>
+<h4>6.23 &quot;I don&#039;t know&quot; closing answer — <code>prov.dont_know_priority</code></h4>
+<p><strong>Trigger:</strong> one-thing Q10.2 = <em>I don&#039;t know — that&#039;s why I&#039;m here</em>.</p>
+<p><strong>Headline:</strong> <em>Most of our best client relationships started here.</em></p>
+<p><strong>Body:</strong> <em>&quot;I don&#039;t know what I don&#039;t know&quot;</em> is the most common way our strongest relationships begin. A first call is often half about what <em>you</em> think, half about what we show <em>you</em> — and the shape usually becomes obvious inside twenty minutes.</p>
+<p><strong>Close:</strong> <em>A good reason to book.</em></p>
+<h4>6.24 High urgency — <code>prov.urgency_week</code></h4>
+<p><strong>Trigger:</strong> urgency = <em>This week</em>.</p>
+<p><strong>Headline:</strong> <em>We can move quickly.</em></p>
+<p><strong>Body:</strong> You&#039;ve told us this is urgent. We hold a small number of 48-hour slots for exactly this — a senior planner, next-day where possible, no prep needed from your side.</p>
+<p><strong>Close:</strong> <em>Let&#039;s pick a time.</em></p>
+<h4>Compliance tags</h4>
+<p>Every provocation entry, when stored in the app&#039;s JSON library, carries:</p>
+<ul>
+<li><code>compliance_status</code>: <em>draft</em> | <em>cfp_signed</em> | <em>compliance_signed</em> | <em>approved_to_ship</em></li>
+<li><code>cfp_signoff_date</code>: ISO date</li>
+<li><code>compliance_signoff_date</code>: ISO date</li>
+<li><code>version</code>: semver, bumped on any copy change</li>
+<li><code>source_refs</code>: array of citation keys</li>
+</ul>
+<p>No provocation ships without <code>approved_to_ship</code> status. The app refuses to render unapproved provocations at run-time; they log as <code>{state: suppressed, reason: not_approved}</code> and appear only in the CRM brief as <em>&quot;triggered but not shown.&quot;</em></p>
+<p>---</p>
+<h3>7. Data capture screen</h3>
+<p>Between the last questionnaire screen and the summary page, a single data-capture screen. Minimal, short, friendly. No account is ever created; these fields populate the session record that the planner sees.</p>
+<p>Centred single-column, max-width 480px. Paper background on a slightly darker section background (tonal shift, no border).</p>
+<h4>7.1 Copy</h4>
+<p><strong>Eyebrow</strong> <em>(uppercase, letter-spaced, 12px, stone)</em></p>
+<blockquote>LAST THING</blockquote>
+<p><strong>Headline</strong> <em>(gelica regular, 32px, ink)</em></p>
+<blockquote><em>Where shall we send your shortlist?</em></blockquote>
+<p><strong>Sub</strong> <em>(area-normal regular, 16px, ink at 70%, 12px below headline)</em></p>
+<blockquote>We&#039;ll email you your picture and, if you&#039;d like, hold a slot for a first conversation. No account to create, no password to remember.</blockquote>
+<h4>7.2 Inputs</h4>
+<p>Paper card, 32px internal padding. Four fields stacked, 20px gaps.</p>
+<p><strong>First name</strong> <em>(text, required)</em></p>
+<ul>
+<li>Label <em>(area-normal medium, 13px, stone)</em>: <em>First name</em></li>
+<li>Placeholder <em>(ink at 40%)</em>: <em>What your friends call you</em></li>
+</ul>
+<p><strong>Email</strong> <em>(email, required)</em></p>
+<ul>
+<li>Label: <em>Email</em></li>
+<li>Placeholder: <em>name@example.com</em></li>
+</ul>
+<p><strong>Mobile number</strong> <em>(tel, optional)</em></p>
+<ul>
+<li>Label: <em>Mobile number (optional — only if you&#039;d prefer a call or text to arrange a time)</em></li>
+<li>Placeholder: <em>07…</em></li>
+</ul>
+<p><strong>Consent</strong> <em>(checkbox, required)</em></p>
+<ul>
+<li>Paper tile, 56px height, 1px ghost border, 12px radius. Checkbox left, label right.</li>
+<li>Label <em>(area-normal regular, 15px, ink, max-width 380px)</em>:</li>
+</ul>
+<blockquote><em>I&#039;d like Real Wealth to contact me about booking a call and to send occasional planning insights. I can unsubscribe any time.</em></blockquote>
+<p>Below the consent tile, a small line <em>(area-normal 13px, ink at 60%)</em>:</p>
+<blockquote><em>See our <a href="/privacy">privacy notice</a> for the detail — plain English.</em></blockquote>
+<h4>7.3 Primary button</h4>
+<p>Orange, full-width on mobile, right-aligned desktop. 48px height.</p>
+<blockquote>See your picture →</blockquote>
+<h4>7.4 Honesty line</h4>
+<p>Below the button, small <em>(area-normal 13px, stone, centred)</em>:</p>
+<blockquote><em>We won&#039;t share your details with anyone outside Real Wealth.</em></blockquote>
+<p>---</p>
+<h3>8. Summary page — nine segment-specific variants</h3>
+<p>The summary page is where the form pays off. It has a single structural shape for every user; the <em>content</em> adapts to the assigned segment, the answers given, the awareness checks that fired, and the overlays (<code>advised_but_looking</code>, <code>sandwich_gen</code>, urgency).</p>
+<h4>8.1 Structure (universal)</h4>
+<p>The summary page is a single long-scroll page with six sections in this order:</p>
+<ol>
+<li>Aspiration echo <em>(top-of-page emotional anchor)</em></li>
+<li>Your considered list <em>(the 3–6 provocations)</em></li>
+<li>Illustrative charts <em>(one or two static SVGs)</em></li>
+<li>Segment-tailored CTA block</li>
+<li>FCA footer</li>
+<li><em>&quot;View the captured data&quot;</em> link <em>(demo only; see Claude Code Prompt - App Build)</em></li>
+</ol>
+<p>Layout: centred single column, max-width 720px, paper background. Plenty of vertical padding between sections (96px desktop, 48px mobile).</p>
+<h4>8.2 Aspiration echo</h4>
+<p>The first thing the user sees after completing the form. A single quiet gelica sentence that blends keywords from their <em>&quot;happy place&quot;</em> answer (Q2.4) with a hand-curated template matched to their wealth-definition answer (Q1.2).</p>
+<p><strong>Visual</strong> — centred, gelica ExtraLight Italic, 44px desktop / 32px mobile, teal, max-width 640px. 96px vertical padding above, 48px below. No decorative treatment beyond the typography.</p>
+<p><strong>Copy pattern</strong> — <em>&quot;The life you&#039;re planning for: [verb-phrase from their happy place], [noun-phrase from their happy place], [verb-phrase grounded in their wealth definition].&quot;</em></p>
+<p><strong>Worked examples</strong></p>
+<p>User picked <em>Freedom over my time</em>; wrote <em>&quot;mornings outside, lunch with my wife, the grandchildren round on Sundays, no work after four.&quot;</em></p>
+<blockquote><em>The life you&#039;re planning for: mornings outside, Sundays with the grandchildren, time you actually own.</em></blockquote>
+<p>User picked <em>Security for my family</em>; wrote <em>&quot;knowing the mortgage is paid, the kids through uni, the family safe if anything happens.&quot;</em></p>
+<blockquote><em>The life you&#039;re planning for: the mortgage paid, the kids through uni, a family held steady whatever comes.</em></blockquote>
+<p>User picked <em>Choice in how I work</em>; wrote <em>&quot;a couple of days a week, on my own terms, the flexibility to say no.&quot;</em></p>
+<blockquote><em>The life you&#039;re planning for: a couple of days a week, your own terms, the freedom to say no.</em></blockquote>
+<p><strong>Fallback</strong> — if Q2.4 left blank, the echo is a single sentence drawn from Q1.2 alone:</p>
+<blockquote><em>The life you&#039;re planning for: freedom over your time.</em> <em>(or the equivalent for each wealth-definition option)</em>.</blockquote>
+<p><strong>Below the echo</strong> <em>(area-normal regular italic, 15px, stone, centred)</em>:</p>
+<blockquote><em>— in your words, gently rephrased.</em></blockquote>
+<h4>8.3 Your considered list</h4>
+<p>The heart of the summary page. A list of 3–6 items the user should think about, drawn from the awareness checks and provocations that fired during their session.</p>
+<p><strong>Section heading</strong> <em>(area-normal medium, 14px, uppercase letter-spaced, teal)</em></p>
+<blockquote>THINGS WORTH A CONVERSATION</blockquote>
+<p><strong>Intro copy</strong> <em>(gelica regular, 22px, ink, max-width 620px)</em></p>
+<blockquote><em>Here&#039;s what we noticed, based on what you told us. None of this is advice yet — it&#039;s a shortlist of conversations that would be valuable for someone in your situation.</em></blockquote>
+<p><strong>List format</strong> — stacked paper cards, 24px vertical gap, 20px internal padding, 8px radius, 1px ghost border <em>(outline-variant at 20%)</em>. Each card contains:</p>
+<ul>
+<li><em>Eyebrow</em> (area-normal medium, 12px, stone): a category tag — e.g. <em>INHERITANCE TAX</em>, <em>PENSION CONSOLIDATION</em>, <em>PROTECTION</em>.</li>
+<li><em>Headline</em> (gelica regular, 22px, ink): one-line framing of the topic — e.g. <em>&quot;The £2m cliff, and what to do about it.&quot;</em></li>
+<li><em>Body</em> (area-normal regular, 15px, ink at 85%, 2–3 lines): specific to the user&#039;s situation, re-presenting the provocation they saw.</li>
+<li><em>Soft close</em> (area-normal italic, 14px, stone): a phrase like <em>&quot;Worth a conversation.&quot;</em> / <em>&quot;A planner can walk through the trade-offs.&quot;</em></li>
+</ul>
+<p><strong>Card ordering</strong> (how the 3–6 items are selected and sorted):</p>
+<ol>
+<li>Every <code>unaware</code> awareness check that fired → rendered as a card, highest priority.</li>
+<li>Every <code>partial</code> awareness check that fired → rendered as a card.</li>
+<li>Every triggered-but-rate-limited awareness check <em>(not_asked, reason: rate_limit)</em> → rendered with the prefix <em>&quot;We also noticed…&quot;</em> in its eyebrow.</li>
+<li>Every fired provocation <em>(§6)</em> → rendered as a card if it hasn&#039;t already been covered by an awareness check on the same topic.</li>
+</ol>
+<p>Total capped at 6 cards. If more than 6 qualify, the ranking follows the rate-limit order from §5. Minimum 3; if fewer than 3 qualify, pad from the non-fired <em>partial</em> and <code>not_asked</code> library entries ranked against the user&#039;s segment.</p>
+<p><strong>Final line below the list</strong> <em>(area-normal regular, 15px, ink at 70%, max-width 620px)</em></p>
+<blockquote><em>We&#039;ll save this list against your name. If you book a call, we&#039;ll bring it to the conversation so you don&#039;t have to.</em></blockquote>
+<h4>8.4 Illustrative charts</h4>
+<p>One or two SVG charts — decorative, not personalised. Every chart carries the uppercase brand-orange <em>&quot;Illustrative example&quot;</em> label above its title, per <code>Voice and Tone.md</code> §Final page voice.</p>
+<p><strong>Section heading</strong> <em>(area-normal medium, 14px, uppercase letter-spaced, teal)</em></p>
+<blockquote>THE SHAPE OF IT</blockquote>
+<p><strong>Intro</strong> <em>(gelica regular, 22px, ink, max-width 620px)</em></p>
+<blockquote><em>Not your numbers — nobody&#039;s numbers. The shape of the question.</em></blockquote>
+<p><strong>Chart selection logic</strong> — the engine picks 1–2 from this library based on the segment:</p>
+<ul>
+<li><strong>S1, S2</strong> — <em>&quot;The compounding line&quot;</em> — pension growth curve over 40 years, one example contribution rate vs. a slightly higher one. Label: <em>What an extra £100/month looks like over 30 years.</em></li>
+<li><strong>S3, S4</strong> — <em>&quot;The £100k trap&quot;</em> — stepped tax rate chart from £50k to £150k showing the 60% band. Label: <em>The band between £100k and £125k.</em></li>
+<li><strong>S5</strong> — <em>&quot;Extraction mix&quot;</em> — bar chart comparing three extraction approaches on £100k of profit. Label: <em>Three ways to take £100k from a company.</em></li>
+<li><strong>S6</strong> — <em>&quot;BADR rate transition&quot;</em> — step chart showing 10% → 14% → 18% CGT on a £1m sale. Label: <em>The cost of the date on the contract.</em></li>
+<li><strong>S7, S8</strong> — <em>&quot;Drawdown paths&quot;</em> — two gently-diverging lines showing pot longevity under different drawdown rates. Label: <em>Same pot, two paces.</em></li>
+<li><strong>S9</strong> — <em>&quot;IHT on a £3m estate&quot;</em> — before/after bar chart showing indicative IHT with and without planning. Label: <em>What planning does to the bill.</em></li>
+</ul>
+<p>Each chart: 320px tall, paper background, ink gridlines at 10% opacity, two-colour palette <em>(teal primary, stone secondary)</em>, no legend within the chart — instead a small caption below <em>(area-normal regular, 13px, ink at 70%)</em>.</p>
+<p><strong>Standard disclaimer below each chart</strong> <em>(area-normal regular, 13px, stone, max-width 620px)</em></p>
+<blockquote><em>These are not projections of your personal numbers. They show the shape of the question for a typical household. Your numbers, your plan, your answer — that&#039;s a conversation.</em></blockquote>
+<h4>8.5 CTA block — nine segment variants</h4>
+<p>The CTA block is the heart of the summary-page&#039;s commercial job. It varies by assigned segment, by the <em>urgency</em> overlay, and by the <em>advised_but_looking</em> overlay.</p>
+<p><strong>Universal structure</strong> — a single paper card, centred, max-width 560px, 32px padding, soft shadow.</p>
+<ul>
+<li><strong>Headline</strong> <em>(gelica ExtraLight Italic, 32px, teal)</em></li>
+<li><strong>Body</strong> <em>(area-normal regular, 16px, ink at 85%, max 2 sentences)</em></li>
+<li><strong>Primary button</strong> <em>(orange, 48px height, area-normal medium 16px)</em></li>
+<li><strong>Helper line below button</strong> <em>(area-normal regular, 13px, stone, 12px below button)</em></li>
+</ul>
+<p>All booking links use placeholder Calendly URLs for the v1.0 demo. Real URLs are wired on integration.</p>
+<h5>S1 — Early Accumulator</h5>
+<blockquote><em>Keep in touch.</em></blockquote>
+<blockquote>We&#039;re not quite the fit for your current stage — you&#039;ll save money by sorting the basics first (pension, ISA, emergency fund). But we send a short, thoughtful monthly briefing, and we&#039;d be glad to have you on it.</blockquote>
+<p><strong>Button:</strong> <em>Join our monthly briefing</em></p>
+<p><strong>Link:</strong> <code>calendly.com/real-wealth-nurture-signup-placeholder</code></p>
+<p><strong>Helper:</strong> <em>No spam, no selling. Unsubscribe any time.</em></p>
+<h5>S2 — Mass-Affluent Mid-Career</h5>
+<blockquote><em>A first conversation.</em></blockquote>
+<blockquote>Twenty minutes to walk through what you&#039;ve told us — no preparation needed on your side, no obligation on ours. We&#039;ll share the shortlist and point out the moves that move the needle.</blockquote>
+<p><strong>Button:</strong> <em>Book a 20-minute call</em></p>
+<p><strong>Link:</strong> <code>calendly.com/real-wealth-standard-call-placeholder</code></p>
+<p><strong>Helper:</strong> <em>We&#039;ll hold a slot this week and next.</em></p>
+<h5>S3 — High-Earner Mid-Career</h5>
+<blockquote><em>A first conversation.</em></blockquote>
+<blockquote>You&#039;re in the band where the difference between acting and drifting is biggest — the £100k tax trap, pension carry-forward, ISA sequencing. Twenty minutes to show you the shape; no preparation needed on your side.</blockquote>
+<p><strong>Button:</strong> <em>Book a 20-minute call</em></p>
+<p><strong>Link:</strong> <code>calendly.com/real-wealth-standard-call-placeholder</code></p>
+<p><strong>Helper:</strong> <em>Planners who work with your segment routinely.</em></p>
+<h5>S4 — Senior Professional</h5>
+<blockquote><em>A first conversation.</em></blockquote>
+<blockquote>We work with partners, consultants, and senior executives every week — the tapered allowance, carry-forward, and extraction questions come up often. Twenty minutes to walk through yours.</blockquote>
+<p><strong>Button:</strong> <em>Book a 20-minute call</em></p>
+<p><strong>Link:</strong> <code>calendly.com/real-wealth-standard-call-placeholder</code></p>
+<p><strong>Helper:</strong> <em>With a planner experienced in your situation.</em></p>
+<h5>S5 — Business Owner, Growth</h5>
+<blockquote><em>A first conversation.</em></blockquote>
+<blockquote>Most of the levers for a growing business sit at the intersection of pension, extraction, and structure — and they move every tax year. Twenty minutes to look at yours, jointly with your accountant if you&#039;d like.</blockquote>
+<p><strong>Button:</strong> <em>Book a 20-minute call</em></p>
+<p><strong>Link:</strong> <code>calendly.com/real-wealth-standard-call-placeholder</code></p>
+<p><strong>Helper:</strong> <em>We work alongside accountants, not over them.</em></p>
+<h5>S6 — Business Owner, Exit-Minded</h5>
+<blockquote><em>The succession conversation.</em></blockquote>
+<blockquote>The BADR rate transition and the 18–24 month sale timeline mean the conversation about <em>when</em> is usually as important as the conversation about <em>how much</em>. Our senior partners handle exits directly.</blockquote>
+<p><strong>Button:</strong> <em>Book a succession-focused call</em></p>
+<p><strong>Link:</strong> <code>calendly.com/real-wealth-succession-call-placeholder</code></p>
+<p><strong>Helper:</strong> <em>A 30-minute call with a senior partner.</em></p>
+<h5>S7 — Pre-Retiree Affluent</h5>
+<blockquote><em>A first conversation.</em></blockquote>
+<blockquote>You&#039;re at the stage where drawdown design, the 2027 pension IHT change, and state pension sequencing start mattering more than contribution decisions. Twenty minutes to walk through what you&#039;ve told us.</blockquote>
+<p><strong>Button:</strong> <em>Book a 20-minute call</em></p>
+<p><strong>Link:</strong> <code>calendly.com/real-wealth-standard-call-placeholder</code></p>
+<p><strong>Helper:</strong> <em>With a planner who specialises in decumulation.</em></p>
+<h5>S8 — Retired, In Decumulation</h5>
+<blockquote><em>A second-opinion conversation.</em></blockquote>
+<blockquote>Even a well-designed retirement plan is worth a second look when rules change — and the pensions IHT change in 2027, plus the 2024 Budget CGT step-ups, are significant. Twenty minutes, no pressure.</blockquote>
+<p><strong>Button:</strong> <em>Book a 20-minute call</em></p>
+<p><strong>Link:</strong> <code>calendly.com/real-wealth-standard-call-placeholder</code></p>
+<p><strong>Helper:</strong> <em>A second opinion, nothing more.</em></p>
+<h5>S9 — HNW / Multi-Generational</h5>
+<blockquote><em>Meet a senior partner.</em></blockquote>
+<blockquote>At your shape of assets, the planning conversation is about structure — trusts, generational gifting, Business Relief, the 2027 pension IHT change. Our senior partners take this end of the firm themselves.</blockquote>
+<p><strong>Button:</strong> <em>Book with a senior partner</em></p>
+<p><strong>Link:</strong> <code>calendly.com/real-wealth-senior-partner-placeholder</code></p>
+<p><strong>Helper:</strong> <em>A 45-minute call with a senior partner.</em></p>
+<h5>Overlay — <code>advised_but_looking = true</code></h5>
+<p>Overrides the segment CTA regardless of segment.</p>
+<blockquote><em>The highest-intent conversation we have.</em></blockquote>
+<blockquote>You&#039;ve told us you&#039;re already working with someone and you&#039;re looking. That&#039;s the clearest signal we see. Our senior partners handle the conversations about a change of planner directly.</blockquote>
+<p><strong>Button:</strong> <em>Book with a senior partner</em></p>
+<p><strong>Link:</strong> <code>calendly.com/real-wealth-senior-partner-placeholder</code></p>
+<p><strong>Helper:</strong> <em>45 minutes, no preparation on your side.</em></p>
+<h5>Overlay — urgency = <em>This week</em></h5>
+<p>Adds a small line above the main CTA card, in every variant:</p>
+<blockquote><em>You said this week — we&#039;ve held a small number of next-day slots for exactly this. Click through to see them.</em></blockquote>
+<p>Does not change the button text or target; changes the slot filter on Calendly.</p>
+<h4>8.6 FCA footer</h4>
+<p>Centred single column, max-width 640px, area-normal regular 13px, ink at 60%. 48px top padding. No border.</p>
+<blockquote>Real Wealth is a trading name of [entity]. Authorised and regulated by the Financial Conduct Authority. FCA register number: [xxxxxx]. This tool provides general guidance and does not constitute a personal recommendation or financial advice. A regulated conversation with one of our planners is required before acting on anything discussed here.</blockquote>
+<p>Below, three small links <em>(area-normal regular, 13px, teal, 24px gap)</em>:</p>
+<ul>
+<li><em>Privacy</em></li>
+<li><em>How we meet our Consumer Duty obligations</em></li>
+<li><em>Start over</em></li>
+</ul>
+<p>The <em>&quot;Start over&quot;</em> link clears localStorage and returns to the homepage (confirmation modal — see §9.3).</p>
+<h4>8.7 View the captured data <em>(demo only)</em></h4>
+<p>Below the FCA footer, a small link <em>(area-normal regular, 13px, ink at 40%, centred, 48px below the footer)</em>:</p>
+<blockquote>View the captured data</blockquote>
+<p>Clicking opens a modal (or routes to <code>/demo/raw</code>) showing the full session as pretty-printed JSON with a <em>Download as JSON</em> button. See <code>Claude Code Prompt - App Build.md</code> §&quot;The view-raw-data feature&quot; for the engineering spec.</p>
+<p>At the top of the modal, a short note in area-normal 14px, stone italic:</p>
+<blockquote><em>Demo only. In production this view would not exist — the data would flow to the firm&#039;s systems via HubSpot or an equivalent. This page exists so IT can see the shape of what we capture.</em></blockquote>
+<p>---</p>
+<h3>9. Global microcopy</h3>
+<p>The strings the user never reads in isolation but that shape the whole feel of the thing — error messages, toasts, modal buttons, page titles, ARIA labels. Every line below is on brand and passes the banned-word list. If a string is missing and the developer needs one, write it in the same register and flag it for client review.</p>
+<h4>9.1 Field validation and error messages</h4>
+<p>Error messages apologise for the system&#039;s lack of clarity, not for the user&#039;s mistake. They are quiet, specific, and actionable. Never red-and-bold shouting.</p>
+<p><strong>Pattern:</strong> single sentence, area-normal 14px, <code>--ink-muted</code>, small <code>alert-circle</code> icon left. Inline below the field it refers to. Appears on blur or on submit, whichever comes first. Dismissed when the user starts typing again.</p>
+<div class="doc-table-wrap"><table><thead><tr><th>Field / situation</th><th>Message</th></tr></thead><tbody><tr><td>Required field left blank (generic)</td><td><em>We&#039;ll need an answer here to continue.</em></td></tr><tr><td>Email format invalid</td><td><em>That email doesn&#039;t look quite right — a typo somewhere?</em></td></tr><tr><td>Email blank</td><td><em>We need an email so we can send you the picture.</em></td></tr><tr><td>First name blank</td><td><em>A first name helps us address you properly.</em></td></tr><tr><td>Mobile invalid format</td><td><em>That number doesn&#039;t look like a UK mobile — try again or leave it blank.</em></td></tr><tr><td>Consent box unchecked</td><td><em>We need your consent to send the shortlist — this box is how we confirm it.</em></td></tr><tr><td>Range slider left at default on a required question</td><td><em>Move the slider to where feels right for you — any value is fine.</em></td></tr><tr><td>Number outside sensible range (e.g. age &lt; 18 or &gt; 105)</td><td><em>That sits outside what this tool is built for — give us your best estimate.</em></td></tr><tr><td>Radio group left unanswered</td><td><em>Pick whichever feels closest — there&#039;s no wrong answer.</em></td></tr><tr><td>Network error on submit</td><td><em>Something on our end got stuck. Give it a moment and try again.</em></td></tr><tr><td>Session expired / resumed after 30+ days</td><td><em>Welcome back. It&#039;s been a while, so we&#039;ve started a fresh session — your old answers are gone.</em></td></tr></tbody></table></div>
+<p>No message ever includes the words <em>error</em>, <em>invalid</em>, <em>wrong</em>, <em>failed</em>. No message uses the exclamation mark. No message uses the second person in a critical register (<em>&quot;you forgot to…&quot;</em>).</p>
+<h4>9.2 Toasts and inline confirmations</h4>
+<p>Toasts live top-right, paper background with soft shadow (per the No-Line Rule), 4 second auto-dismiss unless user interacts, 300ms fade.</p>
+<div class="doc-table-wrap"><table><thead><tr><th>Trigger</th><th>Toast copy</th></tr></thead><tbody><tr><td>Answer saved mid-flow <em>(auto, throttled to once per session)</em></td><td><em>Saved. You can close this and come back.</em></td></tr><tr><td>User clicks &quot;Save and come back later&quot; <em>(if we add the affordance)</em></td><td><em>All saved. We&#039;ll remember where you were.</em></td></tr><tr><td>Summary page data copied to clipboard</td><td><em>Copied.</em></td></tr><tr><td>Download JSON <em>(demo)</em></td><td><em>Session JSON downloaded.</em></td></tr><tr><td>Resume detected on page load</td><td><em>Welcome back — we&#039;ve picked up where you left off.</em></td></tr></tbody></table></div>
+<h4>9.3 Modal dialogues</h4>
+<p><strong>Start over confirmation modal</strong> <em>(from summary page footer link and from any page via the browser back-button trap)</em></p>
+<ul>
+<li>Headline <em>(gelica 28px)</em>: <em>Clear this and start again?</em></li>
+<li>Body <em>(area-normal 16px)</em>: <em>We&#039;ll clear your answers and take you back to the homepage. Nothing is stored beyond your browser.</em></li>
+<li>Primary button <em>(orange)</em>: <em>Yes, start over</em></li>
+<li>Secondary button <em>(ghost teal)</em>: <em>Keep what I have</em></li>
+</ul>
+<p><strong>Leave-mid-flow modal</strong> <em>(fires if the user hits browser-back or closes the tab with unsaved answers — optional, only on tier Thorough where abandonment is costliest)</em></p>
+<ul>
+<li>Headline: <em>Come back to it?</em></li>
+<li>Body: <em>Your answers are saved in this browser. Close the tab if you&#039;d like — they&#039;ll be here when you return.</em></li>
+<li>Primary button: <em>Keep going</em></li>
+<li>Secondary button <em>(ghost)</em>: <em>Close anyway</em></li>
+</ul>
+<p><strong>Consent detail modal</strong> <em>(opens from the &quot;What this means&quot; link on the data capture screen)</em></p>
+<ul>
+<li>Headline: <em>What we do with your answers</em></li>
+<li>Body: three short paragraphs in area-normal 16px, per §7.1 below — consent wording.</li>
+<li>Primary button: <em>Got it</em></li>
+</ul>
+<h4>9.4 Progress indicator copy</h4>
+<p>The progress bar is percentage-based, not numbered. The label sits above the bar, area-normal regular 13px, <code>--stone</code>.</p>
+<ul>
+<li>0–25%: <em>Just getting started</em></li>
+<li>26–50%: <em>Halfway through the picture</em></li>
+<li>51–80%: <em>Nearly there</em></li>
+<li>81–99%: <em>One or two more</em></li>
+<li>100% <em>(on data capture screen)</em>: <em>Last step</em></li>
+</ul>
+<p>The bar itself is a thin 4px track, <code>--surface-container-low</code> background, filled with the brand teal gradient. No animation on load beyond a 300ms fill-to-value on step advance.</p>
+<h4>9.5 Page titles and meta descriptions</h4>
+<p>Every route sets both. Titles are quiet, descriptions avoid superlatives.</p>
+<div class="doc-table-wrap"><table><thead><tr><th>Route</th><th><code>&lt;title&gt;</code></th><th><code>&lt;meta description&gt;</code></th></tr></thead><tbody><tr><td><code>/</code> Homepage</td><td><em>The Wealth Conversation — Real Wealth</em></td><td><em>Ten minutes of honest questions about your money. You&#039;ll finish with a shortlist of things worth a planner conversation.</em></td></tr><tr><td><code>/start</code> Questionnaire intro</td><td><em>Start the conversation — Real Wealth</em></td><td><em>A short, considered set of questions. No sign-in. Stop whenever you like.</em></td></tr><tr><td><code>/questions/*</code> Questionnaire body</td><td><em>The Wealth Conversation — Real Wealth</em></td><td><em>(same as homepage)</em></td></tr><tr><td><code>/details</code> Data capture</td><td><em>Where shall we send it? — Real Wealth</em></td><td><em>Your contact details so we can send your shortlist.</em></td></tr><tr><td><code>/summary</code> Summary page</td><td><em>Your considered picture — Real Wealth</em></td><td><em>A clear, illustrative picture of what&#039;s worth a first conversation.</em></td></tr><tr><td><code>/demo/raw</code> <em>(demo)</em></td><td><em>Session data — Real Wealth (demo)</em></td><td><em>Demo-only view of the captured session.</em></td></tr></tbody></table></div>
+<p>Open Graph image: the homepage hero image, never the user&#039;s data.</p>
+<h4>9.6 ARIA and screen-reader strings</h4>
+<p>Every interactive element has a meaningful accessible name. The strings below govern what screen readers announce. They follow the same voice rules as visible copy.</p>
+<p><strong>Primary navigation / landmarks</strong></p>
+<ul>
+<li><code>role=&quot;banner&quot;</code> → <em>Real Wealth — The Wealth Conversation</em></li>
+<li><code>role=&quot;main&quot;</code> → <em>Main content</em></li>
+<li><code>role=&quot;contentinfo&quot;</code> → <em>Footer, including regulatory information</em></li>
+</ul>
+<p><strong>Tier picker</strong></p>
+<ul>
+<li>Radiogroup <code>aria-labelledby</code> → the section heading <em>&quot;How deep would you like to go?&quot;</em></li>
+<li>Tile 1 <code>aria-label</code> → <em>Quick picture, three minutes. A handful of questions.</em></li>
+<li>Tile 2 <code>aria-label</code> → <em>Standard dive, seven minutes. Most people start here. A proper shortlist.</em></li>
+<li>Tile 3 <code>aria-label</code> → <em>Thorough, twelve minutes. Enough for a full first-call picture.</em></li>
+<li>Primary button <code>aria-label</code> → <em>Begin the conversation with your selected depth.</em></li>
+</ul>
+<p><strong>Progress bar</strong></p>
+<ul>
+<li><code>role=&quot;progressbar&quot;</code>, <code>aria-valuemin=&quot;0&quot;</code>, <code>aria-valuemax=&quot;100&quot;</code>, <code>aria-valuenow=&quot;{n}&quot;</code></li>
+<li><code>aria-label</code> → <em>Progress through the conversation.</em></li>
+</ul>
+<p><strong>Awareness-check cards</strong></p>
+<ul>
+<li>The card wrapper has <code>role=&quot;group&quot;</code> with <code>aria-labelledby</code> pointing to the question. The three response buttons have visible labels. No extra ARIA needed.</li>
+</ul>
+<p><strong>Provocation cards</strong></p>
+<ul>
+<li><code>role=&quot;note&quot;</code> on the container. <code>aria-labelledby</code> points to the card headline. A <em>&quot;Continue&quot;</em> button advances. No dismiss — provocations are sequential, not closable.</li>
+</ul>
+<p><strong>Data capture inputs</strong></p>
+<ul>
+<li>Each input has a <code>&lt;label&gt;</code> as its accessible name — not <code>aria-label</code>. Error messages are linked via <code>aria-describedby</code>.</li>
+<li>The consent checkbox <code>aria-label</code> is the full consent paragraph, not the shortened tick label.</li>
+</ul>
+<p><strong>Summary page</strong></p>
+<ul>
+<li>Considered-list items have <code>role=&quot;article&quot;</code> and <code>aria-labelledby</code> on their headline.</li>
+<li>Illustrative chart images have <code>alt</code> text that describes the shape, not the data — e.g. <em>&quot;A curve showing growth accelerating sharply in the final decade — illustrative only.&quot;</em></li>
+<li>The &quot;View the captured data&quot; link has <code>aria-label</code> → <em>Open the demo-only raw-data view.</em></li>
+</ul>
+<p><strong>All icons</strong></p>
+<ul>
+<li>Decorative icons: <code>aria-hidden=&quot;true&quot;</code>.</li>
+<li>Functional icons (used alone as a control, rare): always paired with a visible or ARIA label.</li>
+</ul>
+<h4>9.7 Loading, empty, and edge states</h4>
+<ul>
+<li><strong>Initial load</strong> (Next.js server components should render synchronously — this state should be rare): a single centred line, area-normal regular 16px, stone: <em>Bringing the page together — one moment.</em></li>
+<li><strong>Between screens</strong> (sub-second fade): no loading state, just a 250ms cross-fade.</li>
+<li><strong>Summary page computing</strong>: if the considered list takes longer than 500ms to assemble, show a calm skeleton — three rounded rectangles in <code>--surface-container-low</code>, no spinner.</li>
+<li><strong>Offline / network lost</strong>: a small paper-background banner at the top of the viewport, ink text, 14px: <em>You&#039;ve gone offline. We&#039;ll keep your place — come back when you&#039;re connected.</em> Dismisses on reconnect.</li>
+</ul>
+<h4>9.8 Email stubs <em>(for the production build — not wired in demo)</em></h4>
+<p>The app will eventually send two emails. The copy for both is stubbed below so the firm can review the voice. No HTML template yet — prose only.</p>
+<p><strong>Email 1 — confirmation and shortlist</strong></p>
+<ul>
+<li>Subject: <em>Your considered picture, {first_name}</em></li>
+<li>Preview: <em>The shortlist from your conversation, plus a link to book a first call.</em></li>
+<li>Body <em>(plain text, first paragraph only — full body drafted with compliance before wiring)</em>: <em>{first_name}, thank you for spending ten minutes with us. Below is the shortlist we promised — the same one you saw on screen — along with a link to book a first conversation whenever you&#039;re ready. We won&#039;t chase you.</em></li>
+</ul>
+<p><strong>Email 2 — gentle nudge, sent at +7 days if no booking</strong></p>
+<ul>
+<li>Subject: <em>Still thinking it over?</em></li>
+<li>Preview: <em>No pressure. Your shortlist is here whenever you want it.</em></li>
+<li>Body (first paragraph): <em>{first_name}, we saw you hadn&#039;t picked a time yet — that&#039;s completely fine. Here&#039;s your shortlist again, in case it&#039;s useful. If the moment isn&#039;t right, it isn&#039;t right. When it is, we&#039;re here.</em></li>
+</ul>
+<p>Both emails end with the same regulatory block as the summary-page FCA footer.</p>
+<h4>9.9 Tone and voice guardrails for auto-generated strings</h4>
+<p>Where the developer needs to invent a string that isn&#039;t specified here, the string must:</p>
+<ul>
+<li>Use sentence case. No Title Case on buttons except proper nouns.</li>
+<li>Avoid exclamation marks entirely.</li>
+<li>Avoid the banned-word list in Voice and Tone §4.</li>
+<li>Avoid the advice verbs — <em>recommend</em>, <em>advise</em>, <em>suggest you</em>, <em>should</em>, <em>must</em>. Use <em>consider</em>, <em>worth a conversation</em>, <em>you might</em>, <em>we&#039;d talk about</em>.</li>
+<li>Prefer the active voice. <em>&quot;We saved your answers&quot;</em> beats <em>&quot;Your answers have been saved.&quot;</em></li>
+<li>Prefer contractions. <em>&quot;We won&#039;t&quot;</em> not <em>&quot;We will not.&quot;</em></li>
+<li>Max 15 words per sentence on any interactive element. 25 words anywhere else unless the content is intentionally narrative.</li>
+<li>Never use emoji, never use exclamation marks, never use <em>!</em> or <em>:)</em>.</li>
+</ul>
+<p>If any of those rules is hard to meet, flag the string in the README for a human edit rather than smuggling in a bad line.</p>
+<p>---</p>
+<h3>10. Transparency — what&#039;s invented here vs. drawn from existing files</h3>
+<p>This section exists so that Matt and the Real Wealth team can see, at a glance, which content in this brief is <strong>lifted directly</strong> from earlier project files (and therefore already discussed and endorsed), which is <strong>derived with adaptation</strong> from those files (same intent, new phrasing for brand/voice reasons), and which is <strong>freshly invented here</strong> (and needs a closer read before it ships).</p>
+<h4>10.1 Lifted directly</h4>
+<p>These items are reproductions — the phrasing already appears in the project files and was brought across unchanged, or with only typographic adjustment.</p>
+<ul>
+<li><strong>Hero CTA copy</strong> <em>(Start the conversation)</em> — <code>Homepage Prompt for Agent.md</code> and the tier picker prompt.</li>
+<li><strong>Tier picker tile copy</strong> — <em>Quick picture, Standard dive, Thorough</em>, with the three descriptions, the ribbon wording <em>MOST PEOPLE START HERE</em>, the primary button <em>Let&#039;s begin →</em>, and the helper line — all taken verbatim from <code>Design Agent Prompt - Tier Picker.md</code>.</li>
+<li><strong>Brand freedom quote</strong> — <em>&quot;Real wealth isn&#039;t just about money…&quot;</em> — from the homepage prompt.</li>
+<li><strong>The 35-question catalogue skeleton</strong> — question IDs, input types, answer ranges, and which-tier-gets-what — from <code>Question Design Options.md</code> §7.</li>
+<li><strong>The nine segments, the five-question gate, the Y/C/— matrix, the segment assignment rule order, the overlay flags</strong> — from <code>Segmentation Design Companion.md</code> §2–§6.</li>
+<li><strong>Pitfall awareness library structure</strong> — the 20 topics, their three-option response pattern, the rate-limit ranking, and the three-state logging model — from <code>Pitfall Awareness Library.md</code>.</li>
+<li><strong>FCA footer wording</strong> — paraphrased from Voice and Tone §&quot;Consumer Duty and FCA compliance&quot; and the existing compliance block in the homepage prompt.</li>
+<li><strong>Design system rules</strong> — the No-Line Rule, the tonal-layering approach, the gelica + area-normal pairing, the 135° teal gradient, the <code>--brand-orange</code> CTA reservation — all from the Stitch <code>DESIGN.md</code> and <code>Brand Assets/tokens.css</code>.</li>
+</ul>
+<h4>10.2 Derived with adaptation</h4>
+<p>These items retain the meaning and structure of the source but the copy has been rewritten here to tighten voice or address a specific brand concern. The source material remains the source of truth for rationale; this document supersedes it for production wording.</p>
+<ul>
+<li><strong>Question stems (§4)</strong> — each question&#039;s intent and input type is from <code>Question Design Options.md</code>, but the verbatim wording has been reviewed against Voice and Tone and tightened. In particular, plain-English substitutions have been applied (no <em>optimise</em>, <em>leverage</em>, <em>maximise</em>). Where the source file had two or three phrasing options, this document picks one.</li>
+<li><strong>Awareness-check stems (§5)</strong> — the source library uses <em>&quot;Were you aware that…&quot;</em> 20 times. This document varies the stems so the cadence doesn&#039;t become a tic. The three-option response pattern (<em>aware / partial / unaware</em>) is unchanged. The behavioural intent of each check — what it surfaces and why — is unchanged.</li>
+<li><strong>Provocation card copy (§6)</strong> — the triggers and intents are from the source tables (Question Design Options §8 and Pitfall Awareness Library §&quot;Worked examples&quot;). The headlines and body copy have been rewritten in the provocation voice pattern from Voice and Tone (<em>observation → implication → invitation</em>). Every card is flagged for CFP + Compliance sign-off before shipping.</li>
+<li><strong>Summary page aspiration echo (§8.2)</strong> — the idea of echoing the user&#039;s own words is from Voice and Tone §&quot;Final page voice&quot;. The blending template and the worked examples for the three wealth-definition types are newly drafted here.</li>
+<li><strong>Nine segment-specific CTAs (§8.5)</strong> — the mapping of segment to CTA target is from <code>Segmentation Design Companion.md</code> §7. The distinct headline, body, and helper line for each segment are newly drafted here to avoid repetition across the nine variants.</li>
+</ul>
+<h4>10.3 Freshly invented here</h4>
+<p>These items did not appear in any earlier file and are drafted for the first time in this brief. Read them closely.</p>
+<ul>
+<li><strong>Grouped form screens (§4)</strong> — the source files specified one question per screen or were silent on layout. This document introduces grouped-question screens (e.g. age + household, income + total estate, pensions + investments + home) with an asymmetric two-column image/input layout drawn from the Stitch &quot;Digital Private Suite&quot; vocabulary. This is a creative direction, not a previously-endorsed decision.</li>
+<li><strong>The five image families (§2.4)</strong> — Life shape, Money today, Legacy, Business, Retirement — with the per-question image direction notes. New.</li>
+<li><strong>Holding-image placeholders (IMAGE: …)</strong> throughout §4 — design direction only; the firm&#039;s design team will commission or source the final images.</li>
+<li><strong>All microcopy in §9</strong> — error messages, toast copy, modal dialogues, progress labels, page titles, meta descriptions, ARIA strings, email stubs. The voice rules are from Voice and Tone; the specific strings are new.</li>
+<li><strong>Data capture screen copy (§7)</strong> — the structure is from Question Design Options (one screen, four inputs, consent tick), but the verbatim copy — <em>&quot;Where shall we send your shortlist?&quot;</em>, the four labels, the consent paragraph, the button — is new.</li>
+<li><strong>Start-over modal, leave-mid-flow modal, consent detail modal (§9.3)</strong> — new.</li>
+<li><strong>Overlay behaviour for urgency and <code>advised_but_looking</code> on the summary CTA (§8.5)</strong> — the flag logic is from Segmentation Design Companion; the visible copy change on the CTA card is new.</li>
+<li><strong>&quot;View the captured data&quot; demo affordance (§8.7)</strong> — the engineering spec is in <code>Claude Code Prompt - App Build.md</code>; the framing note <em>&quot;Demo only. In production this view would not exist…&quot;</em> is drafted here.</li>
+</ul>
+<h4>10.4 Known gaps for the client to fill</h4>
+<p>Flagged here so nothing drifts.</p>
+<ul>
+<li><strong>FCA register number and legal entity name</strong> — placeholders in the footer; the firm supplies.</li>
+<li><strong>Typekit kit ID</strong> — TODO in <code>tokens.css</code>; we&#039;re running on <code>serif</code>/<code>sans-serif</code> fallbacks until it lands.</li>
+<li><strong>Final Calendly URLs</strong> — all nine segment-CTA links are <code>calendly.com/...-placeholder</code>. Production wiring needs real URLs.</li>
+<li><strong>Email template HTML</strong> — the §9.8 prose is a voice brief only; the templates themselves are not drafted.</li>
+<li><strong>HubSpot field mapping</strong> — out of scope for this brief. When HubSpot is chosen (or not), a separate mapping document will bolt onto §7 for the production build.</li>
+<li><strong>Compliance sign-off on provocations</strong> — every card in §6 needs a CFP + Compliance Officer read. The <code>compliance_status</code> field in each card&#039;s metadata is currently <code>draft</code> across the board.</li>
+<li><strong>Chart designs</strong> — §8.4 specifies one or two illustrative charts per segment, with the framing label <em>&quot;Illustrative example&quot;</em>. The actual chart shapes are direction only; the design team will produce the SVGs.</li>
+<li><strong>The five-question gate ordering</strong> — the current ordering (age → household → work status → income → estate) is from Segmentation Design Companion §3, but the firm may want to test alternative orderings for abandonment. Flagged for the A19 warm-pilot analytics.</li>
+</ul>
+<p>---</p>
+<p><em>End of Content Brief. Version 0.1 — 16 April 2026.</em></p></div>
+  </article>
+</main>
+  <footer class="site-footer">
+    <div>
+      <img src="/real-wealth-logo-wordmark.svg" alt="Real Wealth">
+      <p>Manchester / Taunton | 0161 768 7722 | hello@realwealth.co.uk</p>
+    </div>
+    <p>This client review website is for internal review only. Public launch requires final compliance sign-off and production data integrations.</p>
+  </footer>
+</body>
+</html>

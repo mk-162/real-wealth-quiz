@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>How the App Is Managed - Real Wealth Client Review</title>
+  <meta name="description" content="Plain-English, step-by-step guide to editing the service after launch — where the master lives, what to change for common client requests, and how changes reach production safely.">
+  <link rel="stylesheet" href="/client-review/site.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="logo-link" href="/client-review" aria-label="Real Wealth client review home">
+      <img src="/real-wealth-logo-wordmark.svg" alt="Real Wealth">
+    </a>
+    <nav class="site-nav" aria-label="Primary navigation">
+      <a href="/client-review#service">Service</a>
+      <a href="/client-review#question-flow">Question flow</a>
+      <a href="/client-review#delivery">Delivery</a>
+      <a href="/client-review#documents">Docs</a>
+      <a class="service-link" href="/">View demo</a>
+    </nav>
+  </header>
+  
+<main class="doc-page">
+  <a class="back-link" href="/client-review#documents">Back to review library</a>
+  <article class="doc-article">
+    <header class="doc-hero">
+      <p class="eyebrow">Source document</p>
+      <h1>How the App Is Managed</h1>
+      <p>Plain-English, step-by-step guide to editing the service after launch — where the master lives, what to change for common client requests, and how changes reach production safely.</p>
+    </header>
+    <div class="doc-body"><p>A plain-English, step-by-step guide to editing the Wealth Conversation service after launch — where the master lives, what to change for a given client request, and how changes get safely to production.</p>
+<p>Read this first if someone asks &quot;can you tweak that question?&quot; or &quot;change the CTA for retirees&quot; and you are not sure which file to open.</p>
+<p>---</p>
+<h3>1. The big picture</h3>
+<p>The service is a Next.js app (folder: <code>master_template/</code>). Every piece of user-facing content is stored as a markdown file under <code>master_template/content/</code>. A build script validates those files, compiles them into typed code, and the app reads from that. One spreadsheet — <code>Question Segment Master.xlsx</code> — still controls one thing only: which questions each of the 9 segments sees.</p>
+<p>So there are exactly <strong>two places</strong> where &quot;the source of truth&quot; lives:</p>
+<ol>
+<li><strong><code>master_template/content/</code></strong> — all wording, options, CTAs, error messages, tone copy.</li>
+<li><strong><code>Question Segment Master.xlsx</code></strong> (Sheet 2) — the Y / C / N matrix that decides which questions appear for each segment.</li>
+</ol>
+<p>Everything else (the catalogues the app imports, the JSON matrix, the rendered HTML for the client review site) is <strong>generated</strong>. Do not edit generated files by hand — they will be overwritten on the next build.</p>
+<p>---</p>
+<h3>2. Golden rules before you edit anything</h3>
+<ol>
+<li>Work on the <code>dev</code> branch. Never commit to <code>main</code> directly — <code>main</code> is what Vercel ships to production.</li>
+<li>Pull the latest <code>dev</code> before you start: <code>git pull origin dev</code>.</li>
+<li>Edit only the source files described below. If a file has a comment saying &quot;auto-generated, do not edit&quot;, close it.</li>
+<li>When done, run the validation suite (Section 8) before pushing.</li>
+<li>If in doubt, create a new branch off <code>dev</code> (e.g. <code>dev-client-edits-2026-04</code>) and open a PR back into <code>dev</code>.</li>
+</ol>
+<p>---</p>
+<h3>3. Common client requests — what to edit</h3>
+<p>Use the table below as a lookup. File paths are relative to <code>master_template/</code>.</p>
+<div class="doc-table-wrap"><table><thead><tr><th>Client says...</th><th>Edit this</th><th>How to do it</th></tr></thead><tbody><tr><td>&quot;Change the wording of Q3.1&quot;</td><td><code>content/screens/3.1-*.md</code></td><td>Edit the headline, sub, or inputs in the markdown body. Save.</td></tr><tr><td>&quot;Add a new answer option to Q2.3&quot;</td><td><code>content/screens/2.3-*.md</code></td><td>Add an item under the <code>inputs</code> frontmatter block.</td></tr><tr><td>&quot;Change what shows on the retiree&#039;s summary CTA&quot;</td><td><code>content/segments/s8-*.md</code></td><td>Edit the CTA heading and body.</td></tr><tr><td>&quot;Update the error message when someone skips a required field&quot;</td><td><code>content/microcopy/errors.md</code></td><td>Edit the entry for the relevant error key.</td></tr><tr><td>&quot;Change the homepage hero line&quot;</td><td><code>content/pages/home.md</code></td><td>Edit the hero block.</td></tr><tr><td>&quot;Add a compliance callout when someone answers X&quot;</td><td><code>content/provocations/&lt;slug&gt;.md</code></td><td>Create a new file. Set <code>compliance_status: draft</code> until signed off.</td></tr><tr><td>&quot;Change who sees Q5.3 (business exit)&quot;</td><td><code>Question Segment Master.xlsx</code> (Sheet 2), then run <code>npm run parse:matrix</code></td><td>Flip the Y/C/N cell for the segment.</td></tr><tr><td>&quot;Change how the 5 gating answers decide the segment&quot;</td><td><code>src/lib/segmentation/rules.ts</code></td><td>Edit the ranked predicates. Engineering change — not content.</td></tr><tr><td>&quot;Change which question comes next after Q2.4&quot;</td><td><code>src/lib/segmentation/engine.ts</code> or the screen frontmatter</td><td>Ordering is driven by matrix + frontmatter; ask an engineer if unsure.</td></tr><tr><td>&quot;Update the Voice and Tone rules&quot;</td><td><code>../Brand Assets/Voice and Tone.md</code> (parent folder)</td><td>Edit the source. Run <code>npm run client-review:build</code> to refresh the review site.</td></tr></tbody></table></div>
+<p>---</p>
+<h3>4. Step-by-step: editing a question</h3>
+<p>This is the most common request. Example: the client wants to soften the wording of Q1.1 (&quot;What brought you here today?&quot;).</p>
+<ol>
+<li>Open a terminal in <code>master_template/</code>.</li>
+<li>Make sure you are on <code>dev</code>:</li>
+</ol>
+<pre><code>   git status
+   git checkout dev
+   git pull</code></pre>
+<ol>
+<li>Open <code>content/screens/1.1-what-brought-you.md</code> in your editor.</li>
+<li>Edit the headline or sub-copy. Do not change the <code>id</code> field in the frontmatter — the app uses it to find the screen.</li>
+<li>Save the file.</li>
+<li>In the terminal, validate:</li>
+</ol>
+<pre><code>   npm run content:check</code></pre>
+<p>If this fails, the error message names the file and the field. Fix it before moving on.</p>
+<ol>
+<li>Preview locally:</li>
+</ol>
+<pre><code>   npm run dev</code></pre>
+<p>Open http://localhost:3000/conversation and walk to Q1.1.</p>
+<ol>
+<li>Commit:</li>
+</ol>
+<pre><code>   git add content/screens/1.1-what-brought-you.md
+   git commit -m &quot;Soften Q1.1 headline per client feedback&quot;
+   git push origin dev</code></pre>
+<ol>
+<li>Vercel will build a preview deployment for the <code>dev</code> branch. Share that preview link with the client for sign-off.</li>
+<li>Only when the client approves: open a PR from <code>dev</code> to <code>main</code>. Merging to <code>main</code> ships to production.</li>
+</ol>
+<p>---</p>
+<h3>5. Step-by-step: changing which segments see a question</h3>
+<p>This is a matrix change, not a content change. Example: the client decides S1 (Early Accumulator) should also see Q3.2 (monthly essential spending).</p>
+<ol>
+<li>Open <code>Question Segment Master.xlsx</code> (in the <code>Real Wealth/</code> folder, one level above <code>master_template/</code>).</li>
+<li>Go to Sheet 2. Find the Q3.2 row and the S1 column. Change the cell from <code>N</code> to <code>Y</code>.</li>
+<li>Save and close the file.</li>
+<li>Regenerate the matrix JSON:</li>
+</ol>
+<pre><code>   npx tsx scripts/parse-segment-master.ts</code></pre>
+<ol>
+<li>This writes <code>content/generated/matrix.json</code>. Do not edit that file by hand.</li>
+<li>Run the full content check:</li>
+</ol>
+<pre><code>   npm run content:build</code></pre>
+<ol>
+<li>Preview locally and confirm S1 users now see Q3.2. (Easiest way: use the dev-only segment override URL parameter — ask an engineer if you do not remember it.)</li>
+<li>Commit both the xlsx and the regenerated matrix.json:</li>
+</ol>
+<pre><code>   git add &quot;../Question Segment Master.xlsx&quot; content/generated/matrix.json
+   git commit -m &quot;S1 now sees Q3.2 per client request&quot;
+   git push origin dev</code></pre>
+<p>---</p>
+<h3>6. Step-by-step: adding or editing a provocation</h3>
+<p>Provocations are the short commercial callouts that fire on specific answer patterns (e.g. &quot;the GBP 2m cliff&quot; for estates over GBP 2m). Every provocation needs CFP and Compliance sign-off before it can render in production.</p>
+<ol>
+<li>Open <code>content/provocations/</code> and either edit an existing file or copy one as a template.</li>
+<li>Name the new file with a clear slug, e.g. <code>content/provocations/new-pension-allowance.md</code>.</li>
+<li>Fill in the frontmatter: <code>id</code>, <code>name</code>, <code>trigger</code>, <code>segments</code>, <code>compliance_status</code>.</li>
+<li>Set <code>compliance_status: draft</code> while you are drafting.</li>
+<li>Write the body copy in markdown.</li>
+<li>Run <code>npm run content:check</code>.</li>
+<li>Send the file to the CFP and the Compliance reviewer. They review the body and the trigger logic.</li>
+<li>When both approve, change <code>compliance_status</code> to <code>approved_to_ship</code>. <strong>This is the flag that lets it render in production.</strong></li>
+<li>Commit and push on <code>dev</code>. PR to <code>main</code> only after sign-off is captured in the commit history (e.g. co-author tags or a linked approval).</li>
+</ol>
+<p>---</p>
+<h3>7. How a change flows to production</h3>
+<pre><code>Your edit (markdown / xlsx)
+   ↓
+npm run content:build (validates + compiles)
+   ↓
+src/lib/content/catalogue.ts (auto-generated typed objects)
+   ↓
+npm run dev / npm run build (Next.js reads the catalogue)
+   ↓
+Commit on dev → Vercel preview deploy
+   ↓
+Client sign-off
+   ↓
+PR dev → main → merge → Vercel production deploy</code></pre>
+<p>Key points:</p>
+<ul>
+<li><strong><code>dev</code> is safe to break.</strong> If a build fails on <code>dev</code>, production is untouched.</li>
+<li><strong><code>main</code> is production.</strong> Anything merged there deploys immediately. Never push directly to <code>main</code>.</li>
+<li><strong>Content validation is a build gate.</strong> If a markdown file is malformed, <code>npm run build</code> fails — so a broken content file cannot reach production.</li>
+</ul>
+<p>---</p>
+<h3>8. The full validation suite</h3>
+<p>Before pushing anything non-trivial, run all of these in <code>master_template/</code>:</p>
+<pre><code>npm run content:check     # validates every content file against the schema
+npm run lint              # ESLint
+npm run typecheck         # TypeScript
+npm run build             # full Next.js production build
+npm run voice:check       # flags banned phrases against the Voice and Tone rules
+npx playwright test       # end-to-end user journey tests</code></pre>
+<p>The safe dev checkpoint at commit <code>0eaa2a4</code> passed all of the above. If your change breaks any of them, fix it before pushing or revert to the checkpoint.</p>
+<p>---</p>
+<h3>9. Refreshing the client review site</h3>
+<p>The <code>/client-review</code> dashboard (at <code>http://localhost:3000/client-review</code>) is a static bundle generated from the markdown docs. If you edit any of the source documents it links to — README, Decision Log, Voice and Tone, this guide, etc. — rebuild it:</p>
+<pre><code>npm run client-review:build</code></pre>
+<p>Then commit the regenerated files under <code>public/client-review/</code> along with the source markdown.</p>
+<p>---</p>
+<h3>10. Key files map</h3>
+<div class="doc-table-wrap"><table><thead><tr><th>File or folder</th><th>What it controls</th></tr></thead><tbody><tr><td><code>content/screens/*.md</code></td><td>Question wording, options, layout</td></tr><tr><td><code>content/pages/*.md</code></td><td>Homepage, data-capture, summary structure</td></tr><tr><td><code>content/segments/*.md</code></td><td>Segment-specific CTAs and overlays</td></tr><tr><td><code>content/provocations/*.md</code></td><td>Compliance-gated callouts</td></tr><tr><td><code>content/awareness-checks/*.md</code></td><td>&quot;Something worth noticing&quot; educational prompts</td></tr><tr><td><code>content/microcopy/*.md</code></td><td>Errors, toasts, emails, ARIA labels</td></tr><tr><td><code>content/schema.ts</code></td><td>Validation rules for every content type</td></tr><tr><td><code>Question Segment Master.xlsx</code> (Sheet 2)</td><td>Which questions each segment sees (Y / C / N)</td></tr><tr><td><code>scripts/parse-segment-master.ts</code></td><td>Reads the xlsx and writes <code>matrix.json</code></td></tr><tr><td><code>scripts/content-build.ts</code></td><td>Validates and compiles all markdown into typed code</td></tr><tr><td><code>scripts/build-client-review-site.mjs</code></td><td>Rebuilds the <code>/client-review</code> dashboard</td></tr><tr><td><code>src/lib/segmentation/rules.ts</code></td><td>How answers map to one of 9 segments</td></tr><tr><td><code>src/lib/segmentation/engine.ts</code></td><td>Conditional question-display logic</td></tr><tr><td><code>src/lib/content/catalogue.ts</code></td><td><strong>Auto-generated</strong> — do not edit</td></tr><tr><td><code>src/lib/content/generated-order.ts</code></td><td><strong>Auto-generated</strong> — do not edit</td></tr><tr><td><code>content/generated/matrix.json</code></td><td><strong>Auto-generated</strong> — do not edit</td></tr></tbody></table></div>
+<p>---</p>
+<h3>11. Who owns what</h3>
+<div class="doc-table-wrap"><table><thead><tr><th>Area</th><th>Owner</th></tr></thead><tbody><tr><td>Copy, tone, voice</td><td>Real Wealth content lead</td></tr><tr><td>Provocations and awareness checks</td><td>Real Wealth CFP + Compliance (must sign off)</td></tr><tr><td>Segment rules and engine</td><td>Engineering</td></tr><tr><td>Question-segment matrix (xlsx)</td><td>Real Wealth content lead, with engineering review</td></tr><tr><td>Visual design and brand assets</td><td>Real Wealth brand + design</td></tr><tr><td>Deployment (Vercel) and infrastructure</td><td>Engineering</td></tr></tbody></table></div>
+<p>---</p>
+<h3>12. If something goes wrong</h3>
+<ul>
+<li><strong>Local build fails after an edit:</strong> read the error output. The validator names the file and field. Revert your change with <code>git checkout -- &lt;file&gt;</code> if stuck.</li>
+<li><strong>Preview deployment looks wrong:</strong> confirm you pushed to <code>dev</code>, not a feature branch Vercel is not watching.</li>
+<li><strong>Production looks wrong:</strong> revert the merge commit on <code>main</code>. Do not hotfix on <code>main</code> — fix on <code>dev</code> and PR again.</li>
+<li><strong>You are not sure which file a piece of copy lives in:</strong> search for the visible text:</li>
+</ul>
+<pre><code>  grep -r &quot;the exact phrase from the UI&quot; content/</code></pre>
+<p>---</p>
+<h3>13. Quick reference</h3>
+<pre><code># Start work
+git checkout dev &amp;&amp; git pull
+
+# Edit files under content/ or the xlsx
+
+# Validate
+npm run content:check
+npm run lint &amp;&amp; npm run typecheck
+
+# Preview
+npm run dev              # http://localhost:3000
+
+# Ship
+git add . &amp;&amp; git commit -m &quot;...&quot; &amp;&amp; git push origin dev
+# Then PR dev → main when client approves</code></pre>
+<p>That is the whole system.</p></div>
+  </article>
+</main>
+  <footer class="site-footer">
+    <div>
+      <img src="/real-wealth-logo-wordmark.svg" alt="Real Wealth">
+      <p>Manchester / Taunton | 0161 768 7722 | hello@realwealth.co.uk</p>
+    </div>
+    <p>This client review website is for internal review only. Public launch requires final compliance sign-off and production data integrations.</p>
+  </footer>
+</body>
+</html>
