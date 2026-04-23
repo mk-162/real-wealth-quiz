@@ -1,0 +1,168 @@
+/* Compass report — brand theme tokens.
+ *
+ * Mirrors the tokens from the Chart Pages finished layout at
+ *   C:/Users/matty/Downloads/Chart Pages/Chart Pages.html
+ *
+ * Imported once at the top of each Compass route (layout.tsx). Every report
+ * component reads from these custom properties via its own CSS Module, so the
+ * whole system can be themed by changing one file.
+ */
+
+@import url('https://use.typekit.net/ayo5bxu.css');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:ital,wght@1,300&display=swap');
+
+:root {
+  /* -- Brand palette -- */
+  --rw-teal: #0c7372;
+  --rw-teal-mid: #11a09f;
+  --rw-teal-deep: #09595a;
+  --rw-teal-tint-05: rgba(12, 115, 114, 0.06);
+  --rw-teal-tint-10: rgba(12, 115, 114, 0.10);
+  --rw-orange: #ff6801;
+  --rw-orange-soft: #fff1e6;
+  --rw-navy: #333566;
+  --rw-gold: #ffd33a;
+
+  /* -- Paper + ink -- */
+  --rw-paper: #ffffff;
+  --rw-paper-warm: #faf7f2;
+  --rw-paper-cool: #f4f1ec;
+  --rw-ink: #353535;
+  --rw-ink-soft: #5a5a5a;
+  --rw-ink-muted: #707070;
+  --rw-stone: #b2b2b2;
+  --rw-border-subtle: rgba(0, 0, 0, 0.08);
+  --rw-border-teal: rgba(12, 115, 114, 0.22);
+
+  --rw-gradient-teal: linear-gradient(135deg, #0c7372 5%, #11a09f 32%, #0c7372 100%);
+  --rw-gradient-teal-soft: linear-gradient(145deg, #0c7372 0%, #11a09f 50%, #0c7372 100%);
+
+  /* -- Typography -- */
+  --rw-font-display: 'gelica', 'Fraunces', Georgia, 'Times New Roman', serif;
+  --rw-font-body: 'area-normal', 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* -- Shape + depth -- */
+  --rw-radius-sm: 6px;
+  --rw-radius-md: 9px;
+  --rw-radius-lg: 16px;
+  --rw-radius-pill: 9999px;
+
+  --rw-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --rw-shadow-card: 0 2px 12px rgba(0, 0, 0, 0.05);
+  --rw-shadow-lift: 0 4px 24px rgba(0, 0, 0, 0.08);
+
+  /* -- Status chip colours (sparingly, on chips only) -- */
+  --status-good-bg: #e8f3ef;
+  --status-good-fg: #0a6b4b;
+  --status-review-bg: #fff6e1;
+  --status-review-fg: #8a5a00;
+  --status-attention-bg: #fde8d8;
+  --status-attention-fg: #a33a00;
+  --status-info-bg: #e7eef5;
+  --status-info-fg: #2b4a68;
+  --status-neutral-bg: #efece6;
+  --status-neutral-fg: #6b6558;
+}
+
+/* ------------------------------------------------------------------- */
+/*  Shared report-wide element styles                                   */
+/* ------------------------------------------------------------------- */
+
+.rw-doc {
+  /* Container for the A4 pages. */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 16px;
+  gap: 28px;
+  background: var(--rw-paper-cool);
+  color: var(--rw-ink);
+  font-family: var(--rw-font-body);
+  font-size: 13px;
+  line-height: 1.55;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@media print {
+  .rw-doc {
+    padding: 0;
+    gap: 0;
+    background: #fff;
+  }
+}
+
+/* Typography helpers — can be used directly without a CSS Module */
+.rw-eyebrow {
+  display: inline-block;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--rw-teal);
+  position: relative;
+  padding-left: 28px;
+  line-height: 1;
+}
+
+.rw-eyebrow::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 20px;
+  height: 1px;
+  background: currentColor;
+  transform: translateY(-50%);
+}
+
+.rw-h-section {
+  font-family: var(--rw-font-display);
+  font-style: italic;
+  font-weight: 300;
+  font-size: 30px;
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  color: var(--rw-ink);
+  margin: 12px 0 8px;
+}
+
+.rw-h-section--teal { color: var(--rw-teal); }
+
+.rw-intro {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--rw-ink-soft);
+  margin: 0 0 14px;
+  max-width: 62ch;
+}
+
+/* Status chip */
+.rw-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: var(--rw-radius-pill);
+  line-height: 1;
+}
+
+.rw-chip::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  display: inline-block;
+}
+
+.rw-chip--good      { background: var(--status-good-bg);      color: var(--status-good-fg); }
+.rw-chip--review    { background: var(--status-review-bg);    color: var(--status-review-fg); }
+.rw-chip--attention { background: var(--status-attention-bg); color: var(--status-attention-fg); }
+.rw-chip--neutral   { background: var(--status-neutral-bg);   color: var(--status-neutral-fg); }
+.rw-chip--info      { background: var(--status-info-bg);      color: var(--status-info-fg); }

@@ -1,32 +1,35 @@
 /**
- * NetWorthDonut — Page-1 large asset-allocation donut.
+ * NetWorthDonut — Page-1 donut of assets by type.
  *
- * Renders property / pension / savings / investments / business slices from
- * the computed balance sheet. Slices with zero value are filtered out so
- * small-pot clients (S1) don't get a sparse-looking chart.
+ * Pure SVG donut built with `stroke-dasharray` rather than recharts, so it
+ * matches the Chart Pages design exactly and renders server-side without
+ * client hydration. Slices with zero value are filtered out so a small-pot
+ * client doesn't get an empty-looking chart.
  */
 
-'use client';
-
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import type { BalanceSheet } from '@/lib/compass/types';
 import { gbp } from '@/lib/compass/format';
 import styles from './NetWorthDonut.module.css';
 
 export interface NetWorthDonutProps {
   balanceSheet: BalanceSheet;
+  /** Optional card title override. */
+  title?: string;
 }
 
 const SLICE_COLOURS = {
-  property:    '#0284c7', // sky-600
-  pension:     '#67e8f9', // cyan-300
-  savings:     '#2563eb', // blue-600
-  investments: '#f97316', // orange-500
-  business:    '#a855f7', // purple-500
+  property:    '#0c7372',
+  pension:     '#67e8f9',
+  savings:     '#2563eb',
+  investments: '#f97316',
+  business:    '#8b5cf6',
 } as const;
 
-export function NetWorthDonut({ balanceSheet }: NetWorthDonutProps) {
-  const data = [
+// Circumference of a circle with r=70 (matches SVG below).
+const CIRCUMFERENCE = 2 * Math.PI * 70;
+
+export function NetWorthDonut({ balanceSheet, title = 'What you own.' }: NetWorthDonutProps) {
+  const slices = [
     { name: 'Property',    value: balanceSheet.assets.property,    colour: SLICE_COLOURS.property },
     { name: 'Pension',     value: balanceSheet.assets.pension,     colour: SLICE_COLOURS.pension },
     { name: 'Savings',     value: balanceSheet.assets.savings,     colour: SLICE_COLOURS.savings },
@@ -34,33 +37,50 @@ export function NetWorthDonut({ balanceSheet }: NetWorthDonutProps) {
     { name: 'Business',    value: balanceSheet.assets.business,    colour: SLICE_COLOURS.business },
   ].filter(s => s.value > 0);
 
+  const totalShown = slices.reduce((a, s) => a + s.value, 0);
+
+  // Build each slice as (dash, gap) + offset rotation.
+  let cursor = 0;
+  const svgSlices = slices.map((s) => {
+    const frac = totalShown > 0 ? s.value / totalShown : 0;
+    const dash = frac * CIRCUMFERENCE;
+    const offset = -cursor;
+    cursor += dash;
+    return { ...s, dash, offset };
+  });
+
   return (
-    <div className={styles.root} aria-label="Net worth by asset type">
-      <div className={styles.chartWrap}>
-        <ResponsiveContainer width="100%" height="100%">
-          <PieChart>
-            <Pie
-              data={data}
-              dataKey="value"
-              innerRadius="62%"
-              outerRadius="100%"
-              stroke="none"
-              startAngle={90}
-              endAngle={-270}
-            >
-              {data.map((s, i) => <Cell key={i} fill={s.colour} />)}
-            </Pie>
-            <Tooltip formatter={(v) => gbp(Number(v))} />
-          </PieChart>
-        </ResponsiveContainer>
-        <div className={styles.centre}>
-          <div className={styles.centreKicker}>Net worth</div>
-          <div className={styles.centreNumber}>{gbp(balanceSheet.netWorth)}</div>
-        </div>
+    <section className={styles.card} aria-label="Net worth by asset type">
+      <header className={styles.header}>
+        <p className={styles.kicker}>What you own</p>
+        <h3 className={styles.title}>{title}</h3>
+      </header>
+
+      <div className={styles.wrap} aria-hidden="true">
+        <svg viewBox="0 0 200 200">
+          <g transform="translate(100,100) rotate(-90)">
+            {svgSlices.map((s, i) => (
+              <circle
+                key={i}
+                r="70"
+                fill="none"
+                stroke={s.colour}
+                strokeWidth="30"
+                strokeDasharray={`${s.dash} ${CIRCUMFERENCE - s.dash}`}
+                strokeDashoffset={s.offset}
+              />
+            ))}
+          </g>
+        </svg>
+      </div>
+
+      <div className={styles.heroNum}>
+        <span className={styles.heroBig}>{gbp(balanceSheet.netWorth)}</span>
+        <span className={styles.heroUnit}>net worth</span>
       </div>
 
       <div className={styles.legend}>
-        {data.map(s => (
+        {slices.map(s => (
           <div key={s.name} className={styles.legendRow}>
             <span className={styles.swatch} style={{ background: s.colour }} aria-hidden="true" />
             <span className={styles.legendLabel}>{s.name}</span>
@@ -68,6 +88,6 @@ export function NetWorthDonut({ balanceSheet }: NetWorthDonutProps) {
           </div>
         ))}
       </div>
-    </div>
+    </section>
   );
 }

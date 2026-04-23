@@ -1,157 +1,151 @@
-/* HealthGauge — horizontal target-coverage bar.
+/* HealthGauge — half-circle arc gauge with hero numeral.
  *
- * Four colour zones (red / amber / green / blue) split at 0-70, 70-90,
- * 90-115, 115-150. Needle position = score/150 (capped at 100% of bar).
- * Score above 150 peg to the right end; pill shows actual value.
+ * Matches the Chart Pages design: SVG arc (0c7372→11a09f with status-colour
+ * gradient stops), needle rotating from 0% (left) to 150%+ (right), hero
+ * numeral beneath the arc, thin coloured scale bar, body copy below.
  */
 
-.root {
-  position: relative;
-  padding: 6px 0 32px;
-}
-
-.head {
+.card {
+  background: var(--rw-paper);
+  border: 1px solid var(--rw-border-subtle);
+  border-radius: var(--rw-radius-md);
+  padding: 18px 20px 16px;
+  box-shadow: var(--rw-shadow-sm);
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 24px;
-  margin-bottom: 16px;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.scoreWrap {
-  flex: 0 0 auto;
-  min-width: 170px;
+.header {
+  display: flex;
+  flex-direction: column;
 }
 
 .kicker {
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #64748b;
-  font-weight: 600;
-}
-
-.bigNumber {
-  font-size: 2.8rem;
-  font-weight: 800;
-  line-height: 1;
-  color: #0f172a;
-  font-feature-settings: "tnum";
-}
-
-.modeLabel {
-  font-size: 0.85rem;
-  color: #475569;
-  margin-top: 2px;
-}
-
-.interpretation {
-  flex: 1 1 auto;
-  font-size: 0.95rem;
-  color: #334155;
-  line-height: 1.5;
-  max-width: 60ch;
-}
-
-.barWrap {
-  position: relative;
-  padding-top: 34px;
-}
-
-.bar {
-  position: relative;
-  height: 44px;
-  border-radius: 8px;
-  overflow: hidden;
-  background: linear-gradient(to right,
-    #fca5a5 0%, #fca5a5 46.67%,
-    #fcd34d 46.67%, #fcd34d 60%,
-    #6ee7b7 60%, #6ee7b7 76.67%,
-    #93c5fd 76.67%, #93c5fd 100%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), inset 0 -1px 0 rgba(0, 0, 0, 0.08);
-}
-
-.zoneLabel {
-  position: absolute;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 0.72rem;
+  font-size: 9.5px;
   font-weight: 700;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(15, 23, 42, 0.55);
-  pointer-events: none;
-  white-space: nowrap;
+  color: var(--rw-teal);
+  margin: 0 0 4px;
 }
+
+.title {
+  font-family: var(--rw-font-display);
+  font-style: italic;
+  font-weight: 300;
+  font-size: 20px;
+  line-height: 1.2;
+  color: var(--rw-ink);
+  margin: 0 0 8px;
+}
+
+.figure {
+  position: relative;
+  width: 200px;
+  height: 115px;
+  margin: 0 auto;
+}
+
+.figure svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.heroNum {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 2px 0 0;
+  font-family: var(--rw-font-display);
+  font-style: italic;
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  color: var(--rw-ink);
+  line-height: 0.95;
+}
+
+.heroBig { font-size: 76px; }
+
+.heroUnit {
+  font-family: var(--rw-font-body);
+  font-style: normal;
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--rw-ink-muted);
+  transform: translateY(-14px);
+}
+
+.heroDelta {
+  font-family: var(--rw-font-body);
+  font-style: normal;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  transform: translateY(-14px);
+}
+
+.deltaGood { color: var(--status-good-fg); }
+.deltaWarn { color: var(--status-review-fg); }
+.deltaRisk { color: var(--status-attention-fg); }
+.deltaInfo { color: var(--status-info-fg); }
+
+.scale {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  border-radius: var(--rw-radius-pill);
+  overflow: hidden;
+  height: 10px;
+  position: relative;
+  margin-top: 12px;
+}
+
+.seg { height: 10px; }
+
+.marks {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  margin-top: 4px;
+}
+
+.marks span {
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--rw-ink-muted);
+  text-align: left;
+}
+
+.marks span:last-child { text-align: right; }
 
 .needle {
   position: absolute;
-  top: -6px;
-  bottom: -6px;
-  width: 3px;
-  background: #0f172a;
-  border-radius: 2px;
-  transform: translateX(-50%);
-  z-index: 3;
-}
-
-.needle::before, .needle::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0;
-  height: 0;
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-}
-
-.needle::before {
-  top: -2px;
-  border-bottom: 8px solid #0f172a;
+  top: -4px;
+  width: 2px;
+  height: 18px;
+  background: var(--rw-ink);
+  z-index: 2;
+  border-radius: 1px;
 }
 
 .needle::after {
-  bottom: -2px;
-  border-top: 8px solid #0f172a;
-}
-
-.scorePill {
-  position: absolute;
-  bottom: 100%;
-  margin-bottom: 10px;
-  background: #0f172a;
-  color: white;
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-weight: 800;
-  font-size: 0.9rem;
-  transform: translateX(-50%);
-  white-space: nowrap;
-  z-index: 4;
-}
-
-.scorePill::after {
   content: '';
   position: absolute;
-  top: 100%;
+  top: -5px;
   left: 50%;
   transform: translateX(-50%);
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-top: 5px solid #0f172a;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--rw-ink);
 }
 
-.ticks {
-  position: relative;
-  height: 20px;
-  margin-top: 6px;
-}
-
-.tick {
-  position: absolute;
-  transform: translateX(-50%);
-  font-size: 0.7rem;
-  color: #64748b;
-  font-feature-settings: "tnum";
+.body {
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--rw-ink-soft);
+  margin: 10px 0 0;
 }

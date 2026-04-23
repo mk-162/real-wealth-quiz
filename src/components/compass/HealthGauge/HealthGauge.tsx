@@ -1,83 +1,109 @@
 /**
- * HealthGauge — Page-1 full-width "target coverage" gauge.
+ * HealthGauge — Page-1 financial health gauge.
  *
- * Replaces the legacy Compass 0-100 ring. Shows a horizontal bar with four
- * colour zones (Shortfall / Behind / On track / Ahead) and a needle at the
- * client's score. Interprets the score as:
+ * Half-circle arc gauge with a needle, a hero numeral underneath, and a
+ * thin coloured scale bar at the bottom. Matches the Chart Pages design.
  *
- *   - `target`   → projected retirement wealth ÷ wealth needed for stated spend
- *   - `lifetime` → years of runway ÷ expected remaining lifetime (drawdown mode)
+ * The arc gradient transitions:
+ *   red (shortfall) → amber (behind) → green (on track) → deep teal (ahead).
  *
- * See `PROMPT_design_agent.md` §4 "Financial Health gauge" for the UX intent.
+ * The needle rotates from -88° (0%) to +88° (150%+), clamped at both ends.
+ *
+ * `mode` switches semantics:
+ *   - `target`   "X% of your retirement target"
+ *   - `lifetime` "X% of expected remaining lifetime covered" (drawdown)
  */
 
 import styles from './HealthGauge.module.css';
 
 export interface HealthGaugeProps {
-  /** Integer score. 0-150 rendered on-bar; >150 pegs to the right with pill showing actual value. */
+  /** Integer percentage. Display shows actual value; arc needle clamps to [0, 150]. */
   score: number;
-  /** `target` for accumulators, `lifetime` for drawdown (already-retired) clients. */
+  /** `target` for accumulators, `lifetime` for drawdown clients. */
   mode: 'target' | 'lifetime';
-  /** Plain-English one-sentence interpretation shown alongside the big number. */
+  /** Friendly short title e.g. "You're on track — and time is on your side." */
+  title: string;
+  /** Plain-English one-sentence interpretation below the arc + numeral. */
   interpretation: string;
 }
 
-const ZONE_LABELS: Array<{ text: string; leftPct: number }> = [
-  { text: 'Shortfall', leftPct: 23 },
-  { text: 'Behind',    leftPct: 53 },
-  { text: 'On track',  leftPct: 68 },
-  { text: 'Ahead',     leftPct: 88 },
-];
+function bandFor(score: number): { label: string; delta: string; toneClass: string } {
+  if (score < 70)  return { label: 'Shortfall', delta: '• Shortfall', toneClass: 'deltaRisk' };
+  if (score < 90)  return { label: 'Behind',    delta: '• Behind',    toneClass: 'deltaWarn' };
+  if (score <= 115) return { label: 'On track',  delta: '• On track',  toneClass: 'deltaGood' };
+  return { label: 'Ahead', delta: '• Ahead', toneClass: 'deltaGood' };
+}
 
-const TICKS: Array<{ value: string; leftPct: number }> = [
-  { value: '0%',    leftPct: 0 },
-  { value: '70%',   leftPct: 46.67 },
-  { value: '90%',   leftPct: 60 },
-  { value: '115%',  leftPct: 76.67 },
-  { value: '150%+', leftPct: 100 },
-];
+export function HealthGauge({ score, mode, title, interpretation }: HealthGaugeProps) {
+  // Needle rotation: map 0→150 to -88→+88 degrees. Clamp score > 150.
+  const clamped = Math.min(Math.max(score, 0), 150);
+  const rotateDeg = -88 + (clamped / 150) * 176;
 
-export function HealthGauge({ score, mode, interpretation }: HealthGaugeProps) {
-  const capped = Math.min(Math.max(score, 0), 150);
-  const needleLeftPct = (capped / 150) * 100;
-  const modeLabel = mode === 'lifetime'
-    ? 'of expected remaining lifetime covered'
-    : 'of your retirement target';
+  // Scale bar needle position as a percentage (clamps same way)
+  const needleLeftPct = (clamped / 150) * 100;
+
+  const band = bandFor(score);
+  const modeLabel = mode === 'lifetime' ? 'of lifetime covered' : 'of target';
 
   return (
-    <section className={styles.root} aria-label="Financial health gauge">
-      <div className={styles.head}>
-        <div className={styles.scoreWrap}>
-          <div className={styles.kicker}>Financial Health</div>
-          <div className={styles.bigNumber}>{score}%</div>
-          <div className={styles.modeLabel}>{modeLabel}</div>
-        </div>
-        <p className={styles.interpretation}>{interpretation}</p>
+    <section className={styles.card} aria-label="Financial health">
+      <header className={styles.header}>
+        <p className={styles.kicker}>Financial health</p>
+        <h3 className={styles.title}>{title}</h3>
+      </header>
+
+      <div className={styles.figure} aria-hidden="true">
+        <svg viewBox="0 0 200 115" width="200" height="115">
+          <defs>
+            <linearGradient id="rwGaugeFill" x1="0" x2="1" y1="0" y2="0">
+              <stop offset="0%"   stopColor="#c95a2b" />
+              <stop offset="35%"  stopColor="#e8a23a" />
+              <stop offset="65%"  stopColor="#3aa37a" />
+              <stop offset="100%" stopColor="#0c7372" />
+            </linearGradient>
+          </defs>
+          {/* Background track */}
+          <path
+            d="M15,100 A85,85 0 0 1 185,100"
+            fill="none" stroke="#efece6" strokeWidth="18" strokeLinecap="round"
+          />
+          {/* Coloured arc */}
+          <path
+            d="M15,100 A85,85 0 0 1 185,100"
+            fill="none" stroke="url(#rwGaugeFill)" strokeWidth="18" strokeLinecap="round"
+          />
+          {/* Needle */}
+          <g transform={`translate(100,100) rotate(${rotateDeg})`}>
+            <line x1="0" y1="0" x2="0" y2="-82" stroke="#353535" strokeWidth="3" strokeLinecap="round" />
+            <circle cx="0" cy="0" r="6" fill="#353535" />
+            <circle cx="0" cy="0" r="2.5" fill="#faf7f2" />
+          </g>
+        </svg>
       </div>
 
-      <div className={styles.barWrap}>
-        <div className={styles.bar} role="img" aria-label={`Score ${score}% out of 150%+`}>
-          {ZONE_LABELS.map(z => (
-            <span
-              key={z.text}
-              className={styles.zoneLabel}
-              style={{ left: `${z.leftPct}%` }}
-              aria-hidden="true"
-            >
-              {z.text}
-            </span>
-          ))}
-          <div className={styles.needle} style={{ left: `${needleLeftPct}%` }}>
-            <span className={styles.scorePill}>{score}%</span>
-          </div>
+      <div className={styles.heroNum}>
+        <span className={styles.heroBig}>{score}%</span>
+        <span className={styles.heroUnit}>{modeLabel}</span>
+        <span className={`${styles.heroDelta} ${styles[band.toneClass]}`}>{band.delta}</span>
+      </div>
+
+      <div>
+        <div className={styles.scale} role="img" aria-label={`Score ${score}%, zone: ${band.label}`}>
+          <div className={styles.seg} style={{ background: '#c95a2b' }} />
+          <div className={styles.seg} style={{ background: '#e8a23a' }} />
+          <div className={styles.seg} style={{ background: '#d7b45a' }} />
+          <div className={styles.seg} style={{ background: '#3aa37a' }} />
+          <div className={styles.seg} style={{ background: '#0c7372' }} />
+          <div className={styles.needle} style={{ left: `calc(${needleLeftPct}% - 1px)` }} />
         </div>
-        <div className={styles.ticks}>
-          {TICKS.map(t => (
-            <span key={t.value} className={styles.tick} style={{ left: `${t.leftPct}%` }}>
-              {t.value}
-            </span>
-          ))}
+        <div className={styles.marks}>
+          <span>0%</span>
+          <span>70%</span>
+          <span>90%</span>
+          <span>115%</span>
+          <span>150%+</span>
         </div>
+        <p className={styles.body}>{interpretation}</p>
       </div>
     </section>
   );

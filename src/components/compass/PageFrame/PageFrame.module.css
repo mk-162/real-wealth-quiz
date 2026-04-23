@@ -1,0 +1,119 @@
+/* PageFrame — A4 report page with top/bottom chrome.
+ *
+ * Absolute positioning matches the Chart Pages design exactly:
+ *   - orange 4px accent strip at top edge
+ *   - chrome-top (logo + doc title) 56px
+ *   - body area 70px top, 70px bottom, 40px left/right
+ *   - chrome-bot (footer + page num) 56px
+ *   - optional illustrative-example tag (top-right of body)
+ *
+ * Page size 794x1123 at ~96dpi = A4. For print, CSS @page size: A4.
+ */
+
+.page {
+  position: relative;
+  width: 794px;
+  height: 1123px;
+  background: var(--rw-paper);
+  box-shadow: var(--rw-shadow-lift);
+  border-radius: 2px;
+  overflow: hidden;
+  page-break-after: always;
+  break-after: page;
+}
+
+.page:last-child {
+  page-break-after: auto;
+  break-after: auto;
+}
+
+@media print {
+  .page {
+    box-shadow: none;
+    border-radius: 0;
+    margin: 0;
+  }
+}
+
+.accent {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: var(--rw-orange);
+  z-index: 2;
+}
+
+.chromeTop {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 56px;
+  padding: 16px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--rw-paper);
+  z-index: 1;
+  font-size: 12px;
+  color: var(--rw-ink-muted);
+}
+
+.logo { height: 20px; width: auto; display: block; color: var(--rw-ink); }
+
+.docTitle {
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 10.5px;
+  color: var(--rw-ink-muted);
+}
+
+.illusTag {
+  position: absolute;
+  top: 58px; right: 40px;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  background: #fff;
+  border: 1px solid var(--rw-border-subtle);
+  color: var(--rw-ink-muted);
+  padding: 5px 9px 4px;
+  border-radius: var(--rw-radius-sm);
+  z-index: 3;
+}
+
+.illusTag::before {
+  content: '';
+  display: inline-block;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--rw-orange);
+  margin-right: 5px;
+  transform: translateY(-1px);
+}
+
+.body {
+  position: absolute;
+  top: 70px; bottom: 70px; left: 40px; right: 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+.chromeBot {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 56px;
+  padding: 18px 40px;
+  background: var(--rw-paper-warm);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--rw-ink-muted);
+  border-top: 1px solid var(--rw-border-subtle);
+}
+
+.pageNum {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}

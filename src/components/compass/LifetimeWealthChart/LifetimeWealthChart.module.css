@@ -1,12 +1,38 @@
-/* LifetimeWealthChart — container for the Page-2 stacked area chart. */
+/* LifetimeWealthChart — Page-3 stacked-area projection. */
 
-.root {
-  width: 100%;
+.card {
+  background: var(--rw-paper);
+  border: 1px solid var(--rw-border-subtle);
+  border-radius: var(--rw-radius-md);
+  padding: 16px 18px 14px;
+  box-shadow: var(--rw-shadow-sm);
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 16px;
+  margin-top: 8px;
+  font-size: 10.5px;
+  color: var(--rw-ink-soft);
+}
+
+.legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legendSwatch {
+  width: 12px;
+  height: 10px;
+  border-radius: 2px;
+  display: inline-block;
 }
 
 .tooltip {
   background: white;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--rw-border-subtle);
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   padding: 10px 12px;
@@ -16,22 +42,20 @@
 
 .tooltipHead {
   font-weight: 700;
-  color: #0f172a;
+  color: var(--rw-ink);
   padding-bottom: 6px;
   margin-bottom: 8px;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid var(--rw-border-subtle);
 }
 
-.tooltipYear {
-  color: #94a3b8;
-  font-weight: 400;
-}
+.tooltipYear { color: var(--rw-ink-muted); font-weight: 400; }
 
 .tooltipRow {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 2px 0;
+  color: var(--rw-ink-soft);
 }
 
 .tooltipRowLeft {
@@ -44,24 +68,16 @@
   width: 8px;
   height: 8px;
   border-radius: 2px;
-  display: inline-block;
 }
 
-.tooltipLabel {
-  color: #475569;
-}
-
-.tooltipValue {
-  color: #1e293b;
-  font-feature-settings: "tnum";
-}
+.tooltipValue { color: var(--rw-ink); font-feature-settings: "tnum"; }
 
 .tooltipTotal {
   display: flex;
   justify-content: space-between;
   padding-top: 8px;
   margin-top: 8px;
-  border-top: 1px solid #f1f5f9;
+  border-top: 1px solid var(--rw-border-subtle);
   font-weight: 700;
-  color: #0f172a;
+  color: var(--rw-ink);
 }

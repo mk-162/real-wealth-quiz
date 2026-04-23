@@ -1,0 +1,146 @@
+/* ReportView — Chart Pages layout applied across all 3 report pages.
+ *
+ * These styles are intentionally the "glue" — they arrange already-branded
+ * components inside the PageFrame body. All tokens come from the shared
+ * Compass theme CSS imported at the route level.
+ */
+
+.sectionTitle {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.sectionTitleTight {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 6px 0 6px;
+}
+
+.snapHead {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  gap: 16px;
+  margin-bottom: 14px;
+  align-items: stretch;
+}
+
+.eyebrow {
+  display: inline-block;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--rw-teal);
+  position: relative;
+  padding-left: 28px;
+  line-height: 1;
+}
+
+.eyebrow::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 50%;
+  width: 20px; height: 1px;
+  background: currentColor;
+  transform: translateY(-50%);
+}
+
+.hSection {
+  font-family: var(--rw-font-display);
+  font-style: italic;
+  font-weight: 300;
+  font-size: 30px;
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  color: var(--rw-ink);
+  margin: 12px 0 8px;
+}
+
+.intro {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--rw-ink-soft);
+  margin: 0 0 14px;
+  max-width: 62ch;
+}
+
+.balanceHead {
+  margin-top: 6px;
+}
+
+.pushBottom {
+  margin-top: auto;
+}
+
+.readGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 12px;
+  margin-bottom: 8px;
+}
+
+.readRow {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+  align-items: start;
+  padding: 8px 11px;
+  border: 1px solid var(--rw-border-subtle);
+  border-radius: var(--rw-radius-md);
+  background: var(--rw-paper);
+}
+
+.readRowTitle {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--rw-ink);
+  margin: 0 0 2px;
+}
+
+.readRowBody {
+  font-size: 11px;
+  line-height: 1.45;
+  color: var(--rw-ink-soft);
+  margin: 0;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: var(--rw-radius-pill);
+  line-height: 1;
+  margin-top: 2px;
+}
+
+.chip::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.chipGood      { background: var(--status-good-bg);      color: var(--status-good-fg); }
+.chipReview    { background: var(--status-review-bg);    color: var(--status-review-fg); }
+.chipAttention { background: var(--status-attention-bg); color: var(--status-attention-fg); }
+.chipInfo      { background: var(--status-info-bg);      color: var(--status-info-fg); }
+
+.stackGap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+@media (max-width: 640px) {
+  .snapHead { grid-template-columns: 1fr; }
+  .readGrid { grid-template-columns: 1fr; }
+}

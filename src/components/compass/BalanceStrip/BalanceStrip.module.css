@@ -1,51 +1,44 @@
-/* BalanceStrip — compact 3-cell headline for the balance sheet. */
+/* BalanceStrip — compact 3-cell balance-sheet headline (brand teal fill). */
 
 .strip {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 0;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
+  grid-template-columns: repeat(3, 1fr);
+  background: var(--rw-paper-warm);
+  border: 1px solid var(--rw-border-subtle);
+  border-radius: var(--rw-radius-md);
   overflow: hidden;
-  background: white;
 }
 
 .cell {
-  padding: 12px 16px;
-  border-right: 1px solid #e2e8f0;
+  padding: 14px 18px;
+  border-right: 1px solid var(--rw-border-subtle);
 }
 
 .cell:last-child {
-  border-right: none;
-  background: #0ea5e9;
-  color: white;
+  border-right: 0;
+  background: var(--rw-teal);
+  color: var(--rw-paper);
 }
 
 .kicker {
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #64748b;
-  font-weight: 600;
+  color: var(--rw-ink-muted);
+  margin-bottom: 4px;
 }
 
-.cell:last-child .kicker {
-  color: rgba(255, 255, 255, 0.85);
-}
+.cell:last-child .kicker { color: rgba(255, 255, 255, 0.8); }
 
-.num {
-  font-size: 1.5rem;
-  font-weight: 800;
+.val {
+  font-family: var(--rw-font-display);
+  font-style: italic;
+  font-weight: 300;
+  font-size: 28px;
   line-height: 1;
-  margin-top: 4px;
-  font-feature-settings: "tnum";
+  color: var(--rw-teal);
+  letter-spacing: -0.02em;
 }
 
-.numAssets      { color: #065f46; }
-.numLiabilities { color: #991b1b; }
-
-@media (max-width: 640px) {
-  .strip { grid-template-columns: 1fr; }
-  .cell  { border-right: none; border-bottom: 1px solid #e2e8f0; }
-  .cell:last-child { border-bottom: none; }
-}
+.cell:last-child .val { color: var(--rw-paper); }

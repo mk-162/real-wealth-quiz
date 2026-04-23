@@ -1,72 +1,107 @@
-/* NetWorthDonut — large donut with central net-worth label + side legend. */
+/* NetWorthDonut — Chart Pages donut card with side legend.
+ *
+ * Rewritten to match the brand visual language. Uses a raw SVG donut
+ * (three-slice stroke-dash technique) rather than recharts, matching the
+ * Chart Pages finished layout exactly.
+ */
 
-.root {
+.card {
+  background: var(--rw-paper);
+  border: 1px solid var(--rw-border-subtle);
+  border-radius: var(--rw-radius-md);
+  padding: 18px 20px;
+  box-shadow: var(--rw-shadow-sm);
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 10px;
 }
 
-.chartWrap {
-  position: relative;
-  width: 100%;
-  max-width: 280px;
-  margin: 0 auto;
-  aspect-ratio: 1 / 1;
-}
-
-.centre {
-  position: absolute;
-  inset: 0;
+.header {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
 }
 
-.centreKicker {
-  font-size: 0.7rem;
-  letter-spacing: 0.08em;
+.kicker {
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #64748b;
-  font-weight: 600;
+  color: var(--rw-teal);
+  margin: 0 0 4px;
 }
 
-.centreNumber {
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: #0f172a;
-  font-feature-settings: "tnum";
-  margin-top: 2px;
+.title {
+  font-family: var(--rw-font-display);
+  font-style: italic;
+  font-weight: 300;
+  font-size: 20px;
+  line-height: 1.2;
+  color: var(--rw-ink);
+  margin: 0;
+}
+
+.wrap {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  margin: 0 auto;
+}
+
+.wrap svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.heroNum {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 2px 0 0;
+  font-family: var(--rw-font-display);
+  font-style: italic;
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  color: var(--rw-ink);
+  line-height: 0.95;
+}
+
+.heroBig { font-size: 56px; }
+
+.heroUnit {
+  font-family: var(--rw-font-body);
+  font-style: normal;
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--rw-ink-muted);
+  transform: translateY(-10px);
 }
 
 .legend {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 6px 12px;
-  font-size: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .legendRow {
-  display: flex;
+  display: grid;
+  grid-template-columns: 14px 1fr auto;
+  gap: 10px;
   align-items: center;
-  gap: 8px;
+  font-size: 12px;
+  padding: 4px 0;
+  border-bottom: 1px dashed var(--rw-border-subtle);
 }
+
+.legendRow:last-child { border-bottom: 0; }
 
 .swatch {
   width: 10px;
   height: 10px;
   border-radius: 2px;
-  flex: 0 0 auto;
 }
 
-.legendLabel {
-  color: #334155;
-  font-weight: 500;
-}
-
-.legendValue {
-  color: #64748b;
-  margin-left: auto;
-  font-feature-settings: "tnum";
-}
+.legendLabel { color: var(--rw-ink); }
+.legendValue { font-weight: 700; color: var(--rw-ink); }

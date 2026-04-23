@@ -1,13 +1,11 @@
 /**
- * PlanningGrid — 4×3 status dashboard on Page 1.
+ * PlanningGrid — 12 universal tiles in a 3×4 layout.
  *
- * Twelve universal tiles covering retirement readiness, pension, state pension,
- * investment, tax, emergency cash, debt, mortgage, estate, IHT, protection,
- * and (owners) business exit / (others) income mix. Each tile is one of four
- * statuses: green / amber / red / grey (unknown or not applicable).
- *
- * See `PROMPT_design_agent.md` §4 "Planning grid" for the UX intent; the
- * universal tile set is defined in `TileKey` on `src/lib/compass/types.ts`.
+ * Status colours are a fundamentally different kind of signal from the rest
+ * of the report: they say "this area is good / worth reviewing / needs your
+ * attention / we didn't check". The chip colour is the primary carrier;
+ * "Attention" also gets an orange left-border band on the tile itself so a
+ * reader eyeballing the grid for reds sees them first.
  */
 
 import type { PlanningTile, TileStatus } from '@/lib/compass/types';
@@ -15,6 +13,8 @@ import styles from './PlanningGrid.module.css';
 
 export interface PlanningGridProps {
   tiles: PlanningTile[];
+  /** Show the colour-key legend above the grid. Default true. */
+  showKey?: boolean;
 }
 
 const STATUS_LABEL: Record<TileStatus, string> = {
@@ -24,24 +24,53 @@ const STATUS_LABEL: Record<TileStatus, string> = {
   grey: 'Not checked',
 };
 
-export function PlanningGrid({ tiles }: PlanningGridProps) {
+const STATUS_CHIP_CLASS: Record<TileStatus, string> = {
+  green: 'chipGood',
+  amber: 'chipReview',
+  red: 'chipAttention',
+  grey: 'chipNeutral',
+};
+
+export function PlanningGrid({ tiles, showKey = true }: PlanningGridProps) {
   return (
-    <div className={styles.grid} role="list" aria-label="Planning areas at a glance">
-      {tiles.map(t => (
-        <div
-          key={t.key}
-          role="listitem"
-          className={`${styles.tile} ${styles[t.status]}`}
-          aria-label={`${t.label}: ${STATUS_LABEL[t.status]}. ${t.note}`}
-        >
-          <div className={styles.band} aria-hidden="true" />
-          <div className={styles.body}>
-            <div className={styles.label}>{t.label}</div>
-            <div className={styles.status}>{STATUS_LABEL[t.status]}</div>
-            <div className={styles.note}>{t.note}</div>
-          </div>
+    <>
+      {showKey && (
+        <div className={styles.keyBar}>
+          <span className={styles.keyItem}>
+            <span className={styles.keyDot} style={{ background: 'var(--status-good-fg)' }} />
+            Good — no action needed
+          </span>
+          <span className={styles.keyItem}>
+            <span className={styles.keyDot} style={{ background: 'var(--status-review-fg)' }} />
+            Review — worth a closer look
+          </span>
+          <span className={styles.keyItem}>
+            <span className={styles.keyDot} style={{ background: 'var(--status-attention-fg)' }} />
+            Attention — action recommended
+          </span>
+          <span className={styles.keyItem}>
+            <span className={styles.keyDot} style={{ background: 'var(--status-neutral-fg)' }} />
+            Not checked
+          </span>
         </div>
-      ))}
-    </div>
+      )}
+
+      <div className={styles.grid} role="list" aria-label="Planning areas at a glance">
+        {tiles.map(t => (
+          <div
+            key={t.key}
+            role="listitem"
+            className={`${styles.tile} ${t.status === 'red' ? styles.attention : ''}`}
+            aria-label={`${t.label}: ${STATUS_LABEL[t.status]}. ${t.note}`}
+          >
+            <span className={`${styles.chip} ${styles[STATUS_CHIP_CLASS[t.status]]} ${styles.status}`}>
+              {STATUS_LABEL[t.status]}
+            </span>
+            <h4 className={styles.tileTitle}>{t.label}</h4>
+            <p className={styles.tileBody}>{t.note}</p>
+          </div>
+        ))}
+      </div>
+    </>
   );
 }
