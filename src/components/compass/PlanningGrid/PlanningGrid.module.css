@@ -1,0 +1,72 @@
+/* PlanningGrid — 4×3 grid of planning-area status tiles. */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.tile {
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  min-height: 96px;
+}
+
+.band {
+  height: 5px;
+}
+
+.body {
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.2;
+}
+
+.status {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.note {
+  font-size: 0.72rem;
+  color: #475569;
+  line-height: 1.35;
+  margin-top: 2px;
+}
+
+/* Status colour variants. Each sets both the band and the status text. */
+
+.green .band  { background: #10b981; }
+.green .status { color: #047857; }
+
+.amber .band  { background: #f59e0b; }
+.amber .status { color: #b45309; }
+
+.red .band    { background: #ef4444; }
+.red .status  { color: #b91c1c; }
+
+.grey .band   { background: #cbd5e1; }
+.grey .status { color: #475569; }
+
+/* Collapse to 3 columns on narrow viewports. */
+@media (max-width: 900px) {
+  .grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 640px) {
+  .grid { grid-template-columns: repeat(2, 1fr); }
+}

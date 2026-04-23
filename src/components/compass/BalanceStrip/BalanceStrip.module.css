@@ -1,0 +1,51 @@
+/* BalanceStrip — compact 3-cell headline for the balance sheet. */
+
+.strip {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+  background: white;
+}
+
+.cell {
+  padding: 12px 16px;
+  border-right: 1px solid #e2e8f0;
+}
+
+.cell:last-child {
+  border-right: none;
+  background: #0ea5e9;
+  color: white;
+}
+
+.kicker {
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.cell:last-child .kicker {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.num {
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1;
+  margin-top: 4px;
+  font-feature-settings: "tnum";
+}
+
+.numAssets      { color: #065f46; }
+.numLiabilities { color: #991b1b; }
+
+@media (max-width: 640px) {
+  .strip { grid-template-columns: 1fr; }
+  .cell  { border-right: none; border-bottom: 1px solid #e2e8f0; }
+  .cell:last-child { border-bottom: none; }
+}

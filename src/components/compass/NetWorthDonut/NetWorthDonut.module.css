@@ -1,0 +1,72 @@
+/* NetWorthDonut — large donut with central net-worth label + side legend. */
+
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.chartWrap {
+  position: relative;
+  width: 100%;
+  max-width: 280px;
+  margin: 0 auto;
+  aspect-ratio: 1 / 1;
+}
+
+.centre {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.centreKicker {
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.centreNumber {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #0f172a;
+  font-feature-settings: "tnum";
+  margin-top: 2px;
+}
+
+.legend {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px 12px;
+  font-size: 0.85rem;
+}
+
+.legendRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  flex: 0 0 auto;
+}
+
+.legendLabel {
+  color: #334155;
+  font-weight: 500;
+}
+
+.legendValue {
+  color: #64748b;
+  margin-left: auto;
+  font-feature-settings: "tnum";
+}
