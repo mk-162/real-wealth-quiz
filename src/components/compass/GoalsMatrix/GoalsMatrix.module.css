@@ -63,6 +63,14 @@
   line-height: 1.4;
 }
 
+.rationale {
+  font-size: 10.5px;
+  color: var(--rw-ink-muted);
+  line-height: 1.4;
+  margin-top: 4px;
+  font-style: italic;
+}
+
 .chip {
   display: inline-flex;
   align-items: center;

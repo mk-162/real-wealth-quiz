@@ -15,6 +15,8 @@ export interface PlanningGridProps {
   tiles: PlanningTile[];
   /** Show the colour-key legend above the grid. Default true. */
   showKey?: boolean;
+  /** Show the "what this tile checks" methodology line under each note. Default false. */
+  showMethodology?: boolean;
 }
 
 const STATUS_LABEL: Record<TileStatus, string> = {
@@ -31,7 +33,7 @@ const STATUS_CHIP_CLASS: Record<TileStatus, string> = {
   grey: 'chipNeutral',
 };
 
-export function PlanningGrid({ tiles, showKey = true }: PlanningGridProps) {
+export function PlanningGrid({ tiles, showKey = true, showMethodology = false }: PlanningGridProps) {
   return (
     <>
       {showKey && (
@@ -62,12 +64,18 @@ export function PlanningGrid({ tiles, showKey = true }: PlanningGridProps) {
             role="listitem"
             className={`${styles.tile} ${t.status === 'red' ? styles.attention : ''}`}
             aria-label={`${t.label}: ${STATUS_LABEL[t.status]}. ${t.note}`}
+            title={t.whatItChecks ? `What this checks: ${t.whatItChecks}` : undefined}
           >
             <span className={`${styles.chip} ${styles[STATUS_CHIP_CLASS[t.status]]} ${styles.status}`}>
               {STATUS_LABEL[t.status]}
             </span>
             <h4 className={styles.tileTitle}>{t.label}</h4>
             <p className={styles.tileBody}>{t.note}</p>
+            {showMethodology && t.whatItChecks && (
+              <p className={styles.tileMethod} title="What this tile checks">
+                {t.whatItChecks}
+              </p>
+            )}
           </div>
         ))}
       </div>

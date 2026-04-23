@@ -66,6 +66,7 @@ export function GoalsMatrix({ goals }: GoalsMatrixProps) {
           <div className={styles.text}>
             <span className={styles.title}>{g.goal}</span>
             <span className={styles.sub}>{g.capacity}</span>
+            {g.rationale && <span className={styles.rationale}>{g.rationale}</span>}
           </div>
           <span
             className={`${styles.chip} ${styles[CHIP_CLASS[g.alignment]]}`}

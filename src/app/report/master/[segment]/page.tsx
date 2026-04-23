@@ -1,5 +1,5 @@
 /**
- * /report/master/[segment] — the master 8-page Compass report.
+ * /report/master/[segment] — the master 9-page Compass report.
  *
  * Renders (in order):
  *   01 Cover                          — placeholder, copy from content team
@@ -7,23 +7,28 @@
  *   03 Planning grid + Goals          — chart page
  *   04 Projection + CTA               — chart page
  *   05 Where you are today            — narrative, content from markdown
- *   06 Five things worth a conversation — narrative
+ *   06 Five things worth a conversation — narrative (awareness-checks-expanded)
  *   07 Silent gaps + Planner's read   — narrative
  *   08 Next step                      — narrative + CTA
+ *   09 Methodology                    — the full assumptions + regulatory page
  *
- * Pages 05-08 are placeholders right now — the content agent's markdown
- * expansion will feed them. See MASTER_REPORT_PLAN.md for the content
- * integration contract.
+ * Pages 05-08 remain placeholder blocks until the content agent's narrative
+ * expansions are wired in. Page 09 reads from content/pdf-report/methodology.md.
+ *
+ * Chart pages (02-04) are enriched at SSG time from:
+ *   - content/pdf-report/planning-grid/tile-NN-*.md   → per-tile status + note + whatItChecks
+ *   - content/pdf-report/goals/S[n]-*.md              → goal capacity + rationale
+ *   - content/pdf-report/health-gauge.md              → zone-specific gauge copy
+ *   - content/pdf-report/takeaway-banners.md          → headline + supporting body
+ *
+ * See `src/lib/compass/pdf-content.ts` for the loader.
  */
 
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
-import {
-  FIXTURES, fixtureById,
-} from '@/lib/compass';
-import {
-  ReportView, PageFrame, CtaPanel,
-} from '@/components/compass';
+import { FIXTURES, fixtureById, buildReport } from '@/lib/compass';
+import { enrichSegmentView, loadMethodology } from '@/lib/compass/pdf-content';
+import { ReportView, PageFrame, CtaPanel } from '@/components/compass';
 import styles from './page.module.css';
 
 export function generateStaticParams() {
@@ -42,6 +47,8 @@ const SEGMENT_NAMES: Record<string, string> = {
   S9: 'Charles',
 };
 
+const TOTAL_PAGES = 9;
+
 export default async function MasterReport({
   params,
 }: {
@@ -51,24 +58,30 @@ export default async function MasterReport({
   const fixture = fixtureById(segment);
   if (!fixture) notFound();
 
+  // Enrich the fixture with content-agent markdown at SSG time.
+  const report = buildReport(fixture.inputs);
+  const enrichedView = enrichSegmentView(fixture.view, report.scores.targetCoveragePct);
+  const enrichedFixture = { ...fixture, view: enrichedView };
+
+  const methodology = loadMethodology();
+
   const name = SEGMENT_NAMES[fixture.view.segmentId] ?? 'your plan';
   const docTitle = `Your Wealth Report · ${name}`;
-  const TOTAL_PAGES = 8;
 
   return (
     <div className={`rw-doc ${styles.doc}`}>
       {/* 01 — Cover */}
       <CoverPage name={name} segmentLabel={fixture.view.segmentLabel} persona={fixture.view.persona} />
 
-      {/* 02-04 — Chart pages, rendered inline with PageFrame */}
+      {/* 02-04 — Chart pages, enriched with content-agent data */}
       <ReportView
-        fixture={fixture}
+        fixture={enrichedFixture}
         recipientName={name}
         startPageNum={2}
         totalPages={TOTAL_PAGES}
       />
 
-      {/* 05 — Where you are today (narrative, placeholder) */}
+      {/* 05 — Where you are today */}
       <PageFrame
         docTitle={docTitle}
         pageNum="05"
@@ -100,11 +113,11 @@ export default async function MasterReport({
         <NarrativePlaceholder
           eyebrow="What we&rsquo;d talk through"
           title="Five things worth a conversation."
-          intro="The provocation engine output, compliance-gated. Existing runtime: src/lib/provocations/catalogue.ts + content/provocations/*.md."
-          comingFrom="content/provocations/*.md (24 drafts) · filtered by segment and trigger DSL"
+          intro="The long-form awareness-check cards. 27 topics available; runtime selects 4-5 based on the user's answers and segment, with an additional compound-flag highlight for &ldquo;the fifth.&rdquo;"
+          comingFrom="content/pdf-report/awareness-checks-expanded/*.md (27 files, 3 paragraphs each)"
           blocks={[
-            { kicker: 'Top 4 provocations', body: 'One short headline + body per provocation, card format.' },
-            { kicker: 'The fifth', body: 'Highlight card — the "and one more" — segment-specific compound flag.' },
+            { kicker: 'Four standard cards', body: 'One paragraph intro + bordered card per selected topic. Selection is segment-weighted.' },
+            { kicker: 'The fifth', body: 'Highlight card — the compound flag — rendered with a larger border and orange accent.' },
           ]}
         />
       </PageFrame>
@@ -134,7 +147,7 @@ export default async function MasterReport({
         docTitle={docTitle}
         pageNum="08"
         totalPages={TOTAL_PAGES}
-        footer="Real Wealth Partners Ltd · Authorised and regulated by the Financial Conduct Authority"
+        footer="Manchester · Taunton · hello@realwealth.co.uk"
         label="Next step"
       >
         <div className={styles.sectionTitle}>
@@ -166,6 +179,63 @@ export default async function MasterReport({
           </p>
         </div>
       </PageFrame>
+
+      {/* 09 — Methodology */}
+      <PageFrame
+        docTitle={docTitle}
+        pageNum="09"
+        totalPages={TOTAL_PAGES}
+        footer="Real Wealth Partners Ltd · Authorised and regulated by the Financial Conduct Authority"
+        label="Methodology"
+        showIllusTag={false}
+      >
+        <div className={styles.sectionTitle}>
+          <span className={styles.eyebrow}>Methodology</span>
+          <h2 className={styles.hSection}>
+            {methodology?.pageHeading || 'How this report was built — and what it doesn\u2019t tell you.'}
+          </h2>
+          {methodology?.openingParagraph && (
+            <p className={styles.intro}>{methodology.openingParagraph}</p>
+          )}
+        </div>
+
+        {methodology ? (
+          <div className={styles.methodologySections}>
+            {methodology.sections.slice(0, 3).map((s, i) => (
+              <MethodologySection key={i} heading={s.heading} body={s.body} />
+            ))}
+          </div>
+        ) : (
+          <NarrativePlaceholder
+            eyebrow="Methodology"
+            title="Not yet loaded"
+            intro="Content file not found at content/pdf-report/methodology.md. Once it lands the page renders automatically."
+            comingFrom="content/pdf-report/methodology.md"
+            blocks={[]}
+          />
+        )}
+      </PageFrame>
+
+      {/* 09 continued — the rest of the methodology (split across pages if long) */}
+      {methodology && methodology.sections.length > 3 && (
+        <PageFrame
+          docTitle={docTitle}
+          pageNum="09"
+          totalPages={TOTAL_PAGES}
+          footer="Real Wealth Partners Ltd · Authorised and regulated by the Financial Conduct Authority"
+          label="Methodology (continued)"
+          showIllusTag={false}
+        >
+          <div className={styles.sectionTitle}>
+            <span className={styles.eyebrow}>Methodology — continued</span>
+          </div>
+          <div className={styles.methodologySections}>
+            {methodology.sections.slice(3).map((s, i) => (
+              <MethodologySection key={i} heading={s.heading} body={s.body} />
+            ))}
+          </div>
+        </PageFrame>
+      )}
     </div>
   );
 }
@@ -201,7 +271,7 @@ function CoverPage({ name, segmentLabel, persona }: { name: string; segmentLabel
         <div className={styles.coverMeta}>
           <span className={styles.coverMetaLabel}>WEALTH REPORT</span>
           <span className={styles.coverMetaDate}>
-            {new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })} · 8 pages
+            {new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })} · {TOTAL_PAGES} pages
           </span>
         </div>
       </div>
@@ -233,7 +303,7 @@ function CoverPage({ name, segmentLabel, persona }: { name: string; segmentLabel
 
       <div className={styles.coverBottom}>
         <span>realwealth.co.uk</span>
-        <span>01 · 08</span>
+        <span>01 · 0{TOTAL_PAGES}</span>
       </div>
     </section>
   );
@@ -274,4 +344,88 @@ function NarrativePlaceholder({
       </div>
     </>
   );
+}
+
+/** Renders one methodology section body as markdown-ish HTML (handles tables + lists). */
+function MethodologySection({ heading, body }: { heading: string; body: string }) {
+  // Basic inline Markdown → HTML for bold/italic + paragraphs + tables.
+  // Keep this narrow; methodology.md is a known shape.
+  const html = bodyToHtml(body);
+  return (
+    <section className={styles.methodologySection}>
+      <h3 className={styles.methodologyHeading}>{heading}</h3>
+      <div className={styles.methodologyBody} dangerouslySetInnerHTML={{ __html: html }} />
+    </section>
+  );
+}
+
+function bodyToHtml(md: string): string {
+  const lines = md.split(/\r?\n/);
+  const out: string[] = [];
+  let i = 0;
+  while (i < lines.length) {
+    const line = lines[i];
+
+    // Table start: "| col | col |"
+    if (/^\s*\|.*\|\s*$/.test(line) && i + 1 < lines.length && /^\s*\|?\s*[-:| ]+\|?\s*$/.test(lines[i + 1])) {
+      const tableLines: string[] = [];
+      while (i < lines.length && /^\s*\|.*\|/.test(lines[i])) {
+        tableLines.push(lines[i]);
+        i++;
+      }
+      out.push(renderTable(tableLines));
+      continue;
+    }
+
+    // H2
+    if (/^##\s+/.test(line)) {
+      out.push(`<h4>${escapeHtml(line.replace(/^##\s+/, ''))}</h4>`);
+      i++;
+      continue;
+    }
+
+    // Blank line
+    if (line.trim() === '') {
+      out.push('');
+      i++;
+      continue;
+    }
+
+    // Paragraph
+    const para: string[] = [line];
+    i++;
+    while (i < lines.length && lines[i].trim() !== '' && !/^##\s+/.test(lines[i]) && !/^\s*\|/.test(lines[i])) {
+      para.push(lines[i]);
+      i++;
+    }
+    out.push(`<p>${inline(para.join(' '))}</p>`);
+  }
+  return out.join('\n');
+}
+
+function renderTable(lines: string[]): string {
+  if (lines.length < 2) return '';
+  const header = splitCells(lines[0]);
+  const rows = lines.slice(2).map(splitCells);
+  const thead = `<thead><tr>${header.map(h => `<th>${inline(h)}</th>`).join('')}</tr></thead>`;
+  const tbody = `<tbody>${rows.map(r => `<tr>${r.map(c => `<td>${inline(c)}</td>`).join('')}</tr>`).join('')}</tbody>`;
+  return `<table class="${styles.methodologyTable}">${thead}${tbody}</table>`;
+}
+
+function splitCells(line: string): string[] {
+  return line
+    .trim()
+    .replace(/^\||\|$/g, '')
+    .split('|')
+    .map(c => c.trim());
+}
+
+function inline(s: string): string {
+  return escapeHtml(s)
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>');
+}
+
+function escapeHtml(s: string): string {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }

@@ -66,6 +66,17 @@
   margin: 0;
 }
 
+/* Tiny second-line metadata used as a methodology hint ("what this tile checks"). */
+.tileMethod {
+  font-size: 9.5px;
+  line-height: 1.4;
+  color: var(--rw-ink-muted);
+  margin: 4px 0 0;
+  padding-top: 4px;
+  border-top: 1px dashed var(--rw-border-subtle);
+  font-style: italic;
+}
+
 .attention {
   border-left: 3px solid var(--rw-orange);
   padding-left: 13px;
