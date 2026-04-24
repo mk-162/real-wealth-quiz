@@ -13,7 +13,7 @@ Last updated: 2026-04-24
 
 ## The project in one paragraph
 
-A Next.js 16 / React 19 / TypeScript app that walks a user through a short questionnaire, segments them into one of 9 wealth personas (S1–S9), runs a financial projection engine over their answers, and renders a personalised 9-page PDF-shaped report. Real-client copy lives in markdown under `content/`; the questionnaire engine uses a Y/C/N matrix from `Question Segment Master.xlsx`; the report's numbers come from a pure TypeScript engine at `src/lib/compass/`. An email-unlock gate sits between the questionnaire and the report.
+A Next.js 16 / React 19 / TypeScript app that walks a user through a short questionnaire, segments them into one of 9 wealth personas (S1–S9), runs a financial projection engine over their answers, and renders a personalised 9-page PDF-shaped report. Real-client copy lives in markdown under `content/`; the questionnaire engine reads a Y/C/N matrix from `content/generated/matrix.json` (the old `Question Segment Master.xlsx` pipeline is archived); the report's numbers come from a pure TypeScript engine at `src/lib/compass/`. An email-unlock gate sits between the questionnaire and the report.
 
 ## The three repos
 
@@ -129,9 +129,20 @@ Rules in `src/lib/segmentation/rules.ts`. Engine in `src/lib/segmentation/engine
 ## The two sources of truth
 
 1. **`master_template/content/`** — all copy, options, CTAs, tile prose. Zod-validated on build.
-2. **`Question Segment Master.xlsx` (Sheet 2)** — Y/C/N matrix deciding which questions each segment sees. Regenerated into `content/generated/matrix.json` by `scripts/parse-segment-master.ts`.
+2. **`content/generated/matrix.json`** — the Y/C/N matrix deciding which questions each segment sees. Edit directly (or via the admin app). The legacy `Question Segment Master.xlsx` + `scripts/parse-segment-master.ts` are archived — do not go through them any more; everything flows through `matrix.json`.
 
-Generated files (`src/lib/content/catalogue.ts`, `content/generated/*.json`) are read by the app but never edited by hand.
+Generated files under `src/lib/content/` are read by the app but never edited by hand. `matrix.json` is now authored, not generated — the "generated/" path is historical.
+
+## Matrix precedence — the rule non-obvious to new editors
+
+Two places appear to control "who sees this question":
+
+- A screen's frontmatter `segments_served: [all]` (or a specific list).
+- The matrix row's Y / C / N cell for each segment.
+
+**The matrix wins.** `segments_served` is declarative intent at the screen level; the matrix is the runtime gate. Policy as of 2026-04-24 (see `Lead Magnet App/MATRIX_POLICY_PROPOSAL.md`): screens stay `segments_served: [all]` in almost every case and the matrix does per-segment gating. This keeps the two layers single-purpose — screens describe *what the question is*, the matrix decides *who gets asked*.
+
+If a screen declares `segments_served: [S3, S4]` AND the matrix row has `Y` for S5, S5 is not asked. The matrix wins.
 
 ## Compliance gate
 
@@ -295,11 +306,7 @@ Tile statuses are computed in `src/lib/compass/tile-scoring.ts`. Each of the 12 
 1. Create `content/screens/<section>.<n>-<slug>.md` following the existing schema. Easiest path: copy an adjacent screen and adjust.
 2. Add the new `input.id` to `INPUT_QUESTION_IDS` in `src/lib/compass/inputs.ts` if the answer needs to feed the engine.
 3. If the answer maps to a `CompassInputs` enum band, add a label→band table (see `ESTATE_LABEL_TO_BAND` etc. for examples).
-4. If the screen is gated (only shown to certain segments), update `Question Segment Master.xlsx` Sheet 2 with a new Y/C/N row, then regenerate:
-
-   ```bash
-   npx tsx scripts/parse-segment-master.ts
-   ```
+4. If the screen is gated, add a new row to `content/generated/matrix.json` with a Y/C/N value for every segment. Either edit the JSON directly, or use the admin app's Matrix editor. If a C cell needs a runtime predicate, add it to `conditionals` in `src/lib/segmentation/engine.ts` (see the existing examples).
 
 5. Validate:
 
@@ -335,27 +342,23 @@ Files that must be approved for the 9-page report to render without the bypass:
 
 Tiles that aren't approved fall back to `grey / "Not checked"` — not fatal, just ugly.
 
-## Regenerate the matrix after xlsx edit
+## Edit the matrix (Y / C / N per question × segment)
 
-1. Edit `C:\Users\matty\Real Wealth\Question Segment Master.xlsx` (Sheet 2 — the Y/C/N grid).
-2. **Close Excel** before the next step (openpyxl can't write while it's open).
-3. From `master_template/`:
+The matrix lives at `content/generated/matrix.json`. It is now **authored**, not generated — the old xlsx-to-json pipeline is archived.
 
-   ```bash
-   npx tsx scripts/parse-segment-master.ts
-   ```
+Two ways to edit:
 
-4. Verify the regenerated files look right:
+1. **Admin app** — open the Matrix editor under Segments. Cycle cells, drag-to-bulk-set, Save. (Recommended for content leads.)
+2. **Direct JSON** — open `matrix.json` in your editor of choice. Each row is `{ questionId, S1, S2, …, S9 }` with values `Y | C | N`. Save, then:
 
    ```bash
    git diff content/generated/matrix.json
-   ```
-
-5. Run content:check — the matrix tests against the live screens:
-
-   ```bash
    npm run content:check
    ```
+
+Either path writes to the same file. `npm run content:check` catches structural errors (unknown qid, missing segment column, etc.).
+
+If you add a new `C` cell, make sure a predicate exists in `src/lib/segmentation/engine.ts` — the engine silently skips `C` cells with no predicate. Follow the shape of the existing entries (e.g. `'Q3.2': (a) => a.income !== 'prefer_not_to_say'`). Predicates that depend on follow-up answers (not `GatingAnswers`) can return `true` and let the screen's `conditional_reveal` do the runtime gating — see `Q4.3`, `Q4.C.2`, `Q4.1a`, `Q4.3a` for the pattern.
 
 ## Use the field-map debug view
 

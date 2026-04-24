@@ -1,16 +1,30 @@
 # Generated Content README
 
-This folder contains generated or imported routing support files.
-
-Do not edit these files casually. They are inputs or artefacts used to keep the questionnaire matrix and client-review guide aligned.
+This folder contains routing support files for the questionnaire.
 
 ## Files
 
 | File | What it does |
 |---|---|
-| `matrix.json` | Segment/question routing matrix. The app uses this to decide whether a referenced question is shown for a segment. |
+| `matrix.json` | Segment/question routing matrix. **Directly edited** — see below. |
 | `rules.json` | Segmentation rules used by the review documentation and routing explanation. |
 | `CATALOGUE_CHANGES.md` | Generated notes about catalogue changes. |
+
+## matrix.json — source of truth
+
+`matrix.json` is the **directly-edited source of truth** for segment/question routing. It is no longer generated from the `Question Segment Master.xlsx` spreadsheet.
+
+Each entry maps a `questionId` to nine segment flags (`S1`–`S9`) with three possible values:
+
+| Value | Meaning |
+|---|---|
+| `Y` | Question is shown for this segment |
+| `N` | Question is hidden for this segment |
+| `C` | Question is shown as conditional (contextual reveal) |
+
+**To add new question IDs**: add a new object to the array, positioned logically alongside related IDs. Use `Y` for all segments if `segments_served: [all]` in the screen file.
+
+`scripts/parse-segment-master.ts` was the previous generation script. It is now archived/unused — do not run it, as it would overwrite manual additions.
 
 ## Routing Note
 

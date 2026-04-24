@@ -8,14 +8,18 @@ Read this first if someone asks "can you tweak that question?" or "change the CT
 
 ## 1. The big picture
 
-The service is a Next.js app (folder: `master_template/`). Every piece of user-facing content is stored as a markdown file under `master_template/content/`. A build script validates those files, compiles them into typed code, and the app reads from that. One spreadsheet — `Question Segment Master.xlsx` — still controls one thing only: which questions each of the 9 segments sees.
+The service is a Next.js app (folder: `master_template/`). Every piece of user-facing content is stored as a markdown file under `master_template/content/`. A build script validates those files, compiles them into typed code, and the app reads from that. Segment visibility lives in one JSON file next to the markdown.
 
 So there are exactly **two places** where "the source of truth" lives:
 
 1. **`master_template/content/`** — all wording, options, CTAs, error messages, tone copy.
-2. **`Question Segment Master.xlsx`** (Sheet 2) — the Y / C / N matrix that decides which questions appear for each segment.
+2. **`master_template/content/generated/matrix.json`** — the Y / C / N matrix that decides which questions appear for each segment. Edit directly (or via the admin app's Matrix editor). The old `Question Segment Master.xlsx` pipeline is archived — do not go through it any more.
 
-Everything else (the catalogues the app imports, the JSON matrix, the rendered HTML for the client review site) is **generated**. Do not edit generated files by hand — they will be overwritten on the next build.
+Everything else (the catalogues the app imports, the rendered HTML for the client review site) is **generated** by the build. Do not edit those by hand — they are overwritten on the next build. Note that `matrix.json` lives under `content/generated/` historically but is now itself authored — it is the exception to that rule.
+
+### Matrix precedence — non-obvious rule
+
+A screen's `segments_served: [all]` (frontmatter) vs. the matrix row's Y/C/N — **the matrix wins**. Screens describe *what the question is*; the matrix decides *who gets asked*. If a screen is declared `[all]` but the matrix has `N` for S5, S5 is not asked. Keep screens at `[all]` in almost every case and use the matrix as the per-segment gate.
 
 ---
 
@@ -41,7 +45,7 @@ Use the table below as a lookup. File paths are relative to `master_template/`.
 | "Update the error message when someone skips a required field" | `content/microcopy/errors.md` | Edit the entry for the relevant error key. |
 | "Change the homepage hero line" | `content/pages/home.md` | Edit the hero block. |
 | "Add a compliance callout when someone answers X" | `content/provocations/<slug>.md` | Create a new file. Set `compliance_status: draft` until signed off. |
-| "Change who sees Q5.3 (business exit)" | `Question Segment Master.xlsx` (Sheet 2), then run `npm run parse:matrix` | Flip the Y/C/N cell for the segment. |
+| "Change who sees Q5.3 (business exit)" | `content/generated/matrix.json` | Flip the Y/C/N cell directly, or use the admin app's Matrix editor. |
 | "Change how the 5 gating answers decide the segment" | `src/lib/segmentation/rules.ts` | Edit the ranked predicates. Engineering change — not content. |
 | "Change which question comes next after Q2.4" | `src/lib/segmentation/engine.ts` or the screen frontmatter | Ordering is driven by matrix + frontmatter; ask an engineer if unsure. |
 | "Update the Voice and Tone rules" | `../Brand Assets/Voice and Tone.md` (parent folder) | Edit the source. Run `npm run client-review:build` to refresh the review site. |
@@ -87,25 +91,29 @@ This is the most common request. Example: the client wants to soften the wording
 
 This is a matrix change, not a content change. Example: the client decides S1 (Early Accumulator) should also see Q3.2 (monthly essential spending).
 
-1. Open `Question Segment Master.xlsx` (in the `Real Wealth/` folder, one level above `master_template/`).
-2. Go to Sheet 2. Find the Q3.2 row and the S1 column. Change the cell from `N` to `Y`.
-3. Save and close the file.
-4. Regenerate the matrix JSON:
-   ```bash
-   npx tsx scripts/parse-segment-master.ts
-   ```
-5. This writes `content/generated/matrix.json`. Do not edit that file by hand.
-6. Run the full content check:
-   ```bash
-   npm run content:build
-   ```
-7. Preview locally and confirm S1 users now see Q3.2. (Easiest way: use the dev-only segment override URL parameter — ask an engineer if you do not remember it.)
-8. Commit both the xlsx and the regenerated matrix.json:
-   ```bash
-   git add "../Question Segment Master.xlsx" content/generated/matrix.json
-   git commit -m "S1 now sees Q3.2 per client request"
-   git push origin dev
-   ```
+Two paths — pick whichever is faster for you:
+
+### Path A — Admin app (recommended for content leads)
+
+1. Open the admin app. Pick `master_template/` as the project folder.
+2. Go to **Segments** → **Matrix** tab.
+3. Find the Q3.2 row and the S1 column. Click the cell to cycle `N` → `C` → `Y`.
+4. Click **Save**.
+5. Commit from the terminal: `git add content/generated/matrix.json && git commit -m "S1 now sees Q3.2" && git push origin dev`.
+
+### Path B — Direct JSON edit (for engineers)
+
+1. Open `content/generated/matrix.json` in your editor.
+2. Find `{ "questionId": "Q3.2", ... }` and flip `"S1": "N"` to `"S1": "Y"`.
+3. Save.
+4. Run `npm run content:check` to catch shape errors.
+5. Commit + push as above.
+
+### Either path
+
+6. Vercel builds a preview on `dev`. Share with the client.
+7. If the new cell is `C`, make sure `src/lib/segmentation/engine.ts` has a predicate for it — the engine silently skips `C` cells without a predicate. For predicates that depend on a follow-up answer (not the 5 gating answers), return `true` and let the screen's `conditional_reveal` do runtime gating — see `Q4.C.2`, `Q4.1a`, `Q4.3a` for the pattern.
+8. Only when the client approves: PR `dev` → `main`.
 
 ---
 
@@ -191,15 +199,14 @@ Then commit the regenerated files under `public/client-review/` along with the s
 | `content/awareness-checks/*.md` | "Something worth noticing" educational prompts |
 | `content/microcopy/*.md` | Errors, toasts, emails, ARIA labels |
 | `content/schema.ts` | Validation rules for every content type |
-| `Question Segment Master.xlsx` (Sheet 2) | Which questions each segment sees (Y / C / N) |
-| `scripts/parse-segment-master.ts` | Reads the xlsx and writes `matrix.json` |
+| `content/generated/matrix.json` | **Authored.** Which questions each segment sees (Y / C / N). Edit direct or via admin app. |
 | `scripts/content-build.ts` | Validates and compiles all markdown into typed code |
 | `scripts/build-client-review-site.mjs` | Rebuilds the `/client-review` dashboard |
 | `src/lib/segmentation/rules.ts` | How answers map to one of 9 segments |
-| `src/lib/segmentation/engine.ts` | Conditional question-display logic |
+| `src/lib/segmentation/engine.ts` | Conditional (`C`) cell predicates — one per question-id |
 | `src/lib/content/catalogue.ts` | **Auto-generated** — do not edit |
 | `src/lib/content/generated-order.ts` | **Auto-generated** — do not edit |
-| `content/generated/matrix.json` | **Auto-generated** — do not edit |
+| `scripts/parse-segment-master.ts` | **Archived.** Kept for reference only; the xlsx pipeline is no longer in the loop. |
 
 ---
 
