@@ -10,6 +10,7 @@ Consolidated working documentation for the Real Wealth lead-magnet app.
 | **[OutstandingItems.md](./OutstandingItems.md)** | Known gaps, tech debt, MVP trade-offs, stale docs to reconcile. Read before planning the next piece of work. |
 | **[Guide.md](./Guide.md)** | Orientation. Part A — how the app works (architecture, data flow, file map). Part B — how to do things (recipes for common tasks). |
 | **[Testing.md](./Testing.md)** | How to test everything — automated suite, URL shortcuts to every page, paste-ready DevTools snippets to seed any of the 9 segments, visual QA checklist, compliance/production build verification. |
+| **[HardcodedNumbers.md](./HardcodedNumbers.md)** | Reference doc for Monday. Full audit of hardcoded numbers in tile notes (11 Category A, 10 Category B, 8 Category C), root-cause analysis, and 5 solution options with a recommendation. |
 
 ## What's NOT here
 
