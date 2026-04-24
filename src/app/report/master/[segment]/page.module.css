@@ -319,6 +319,88 @@
 
 .endNote strong { color: var(--rw-ink); font-weight: 700; }
 
+/* ---- Narrative pages (05, 07) ---- */
+
+.narrativePara {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--rw-ink);
+  margin: 0 0 12px 0;
+}
+
+.narrativePullquote {
+  margin: 16px 0 18px 0;
+  padding: 16px 22px;
+  border-left: 3px solid var(--rw-teal);
+  background: rgba(12, 115, 114, 0.04);
+  font-family: 'Fraunces', Georgia, serif;
+  font-style: italic;
+  font-size: 16.5px;
+  line-height: 1.45;
+  color: var(--rw-teal-deep);
+  border-radius: 2px;
+}
+
+.silentGapsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.silentGapCard {
+  padding: 14px 16px;
+  background: var(--rw-paper);
+  border: 1px solid var(--rw-border-subtle);
+  border-left: 3px solid var(--rw-orange);
+  border-radius: var(--rw-radius-md);
+}
+
+.silentGapTitle {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--rw-ink);
+  margin: 0 0 6px 0;
+  line-height: 1.35;
+}
+
+.silentGapBody {
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--rw-ink-soft);
+  margin: 0;
+}
+
+.plannersReadGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 14px;
+  margin-top: 8px;
+}
+
+.plannersReadCol {
+  padding: 14px 16px;
+  background: rgba(12, 115, 114, 0.03);
+  border-top: 2px solid var(--rw-teal);
+  border-radius: 2px;
+}
+
+.plannersReadKicker {
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--rw-teal);
+  margin-bottom: 6px;
+}
+
+.plannersReadBody {
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--rw-ink);
+  margin: 0;
+}
+
 /* ---- Methodology page ---- */
 
 .methodologySections {
