@@ -1467,7 +1467,7 @@ export const screens: Screen[] = [
     "title": "Your role in the business",
     "section": "business",
     "layout": "asymmetric",
-    "grouped": false,
+    "grouped": true,
     "gate_critical": false,
     "segments_served": [
       "S5",
@@ -1489,10 +1489,12 @@ export const screens: Screen[] = [
     "image_family": "family_4_business",
     "image_direction": "A drawing board, a set of keys on a bench, a work jacket. Workshop light.",
     "q_refs": [
-      "Q5.1"
+      "Q5.1",
+      "Q5.1a"
     ],
     "logged_as": [
-      "role"
+      "role",
+      "business_value_band"
     ],
     "inputs": [
       {
@@ -1521,6 +1523,56 @@ export const screens: Screen[] = [
           }
         ],
         "required": true
+      },
+      {
+        "id": "business_value_band",
+        "label": "Roughly, what's the business worth today — if you had to sell it and walk away?",
+        "label_helper": "Rough orders of magnitude are fine. Nobody has this memorised.",
+        "control": "radio",
+        "options": [
+          {
+            "value": "lt25k",
+            "label": "Under £25,000"
+          },
+          {
+            "value": "25k_to_100k",
+            "label": "£25,000 – £100,000"
+          },
+          {
+            "value": "100k_to_250k",
+            "label": "£100,000 – £250,000"
+          },
+          {
+            "value": "250k_to_500k",
+            "label": "£250,000 – £500,000"
+          },
+          {
+            "value": "500k_to_1m",
+            "label": "£500,000 – £1m"
+          },
+          {
+            "value": "1m_to_2m",
+            "label": "£1m – £2m"
+          },
+          {
+            "value": "2m_to_3m",
+            "label": "£2m – £3m"
+          },
+          {
+            "value": "gt3m",
+            "label": "£3m or more"
+          },
+          {
+            "value": "prefer_not",
+            "label": "I'd rather not say"
+          },
+          {
+            "value": "no_idea",
+            "label": "Honestly, no idea"
+          }
+        ],
+        "required": false,
+        "conditional_reveal": "only when work_status == business_owner"
       }
     ],
     "headline": "What's your role in the business?"

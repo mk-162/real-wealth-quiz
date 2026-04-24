@@ -77,6 +77,7 @@ export const INPUT_QUESTION_IDS = {
 
   // §7 Business branch (4.C1.1, 4.C1.2)
   role: 'role',
+  businessValue: 'business_value_band',
   extractionMix: 'extraction_mix',
   succession: 'succession',
 
@@ -143,6 +144,21 @@ const ESTATE_LABEL_TO_BAND: Record<string, WealthBand> = {
   '2m_to_3m': '2-3m',
   '3m_to_5m': '3m+',
   gt5m: '3m+',
+};
+
+/** Business value band — screen 4.C1.1 `business_value_band`. Only answered
+ *  when `work_status == business_owner`. `WealthBand | 0` matches the shape
+ *  of `CompassInputs.businessValue`, so `prefer_not` / `no_idea` / missing
+ *  all fall back to `0`. */
+const BUSINESS_LABEL_TO_BAND: Record<string, WealthBand | 0> = {
+  lt25k: '<25k',
+  '25k_to_100k': '25-100k',
+  '100k_to_250k': '100-250k',
+  '250k_to_500k': '250-500k',
+  '500k_to_1m': '500k-1m',
+  '1m_to_2m': '1-2m',
+  '2m_to_3m': '2-3m',
+  gt3m: '3m+',
 };
 
 /** Mortgage balance — 4.A.3 `mortgage_balance` (compound compact labels). */
@@ -309,6 +325,9 @@ export function buildCompassInputs(answers: PartialAnswersMap): CompassInputs {
   const hasMortgage = mainHomeAnswer === 'own_mortgage';
   const isRenting = mainHomeAnswer === 'rent' || mainHomeAnswer === 'with_family';
 
+  // -------- Business-owner gating -------------------------------------------
+  const isBusinessOwner = getStr(ids.workStatus) === 'business_owner';
+
   // Main home value — we don't have a direct question for it on the live form.
   // Fall back to the estate band as a coarse proxy when the client owns.
   const estateRaw = getStr(ids.totalEstate);
@@ -435,12 +454,13 @@ export function buildCompassInputs(answers: PartialAnswersMap): CompassInputs {
     cashSavings,
     isaBalance,
     giaBalance,
-    // TODO: no dedicated business-value question exists on the live questionnaire.
-    // The `estate_band` on 3.5 rolls business into the overall estate figure, and
-    // 4.C1.1/4.C1.2 only capture role / extraction mix / succession — not value.
-    // Add a standalone input (e.g. `business_value_band` on 4.C1.x) when the
-    // business-owner branch is expanded and wire it through here.
-    businessValue: 0,
+    // Business value — only surfaced on 4.C1.1 when work_status == business_owner.
+    // Non-owners, prefer_not, and no_idea all collapse to 0 so the engine's tile
+    // scoring (business concentration, exit-vs-income-mix) remains conservative
+    // when the signal is absent.
+    businessValue: isBusinessOwner
+      ? lookup(BUSINESS_LABEL_TO_BAND, getStr(ids.businessValue), 0)
+      : 0,
     otherAssets: 0,
 
     mainHomeMortgageBalance,
