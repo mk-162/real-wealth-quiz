@@ -9,6 +9,7 @@ Consolidated working documentation for the Real Wealth lead-magnet app.
 | **[Actions.md](./Actions.md)** | What you need to do right now. Grouped by urgency. Quick command + URL reference at the bottom. |
 | **[OutstandingItems.md](./OutstandingItems.md)** | Known gaps, tech debt, MVP trade-offs, stale docs to reconcile. Read before planning the next piece of work. |
 | **[Guide.md](./Guide.md)** | Orientation. Part A — how the app works (architecture, data flow, file map). Part B — how to do things (recipes for common tasks). |
+| **[Testing.md](./Testing.md)** | How to test everything — automated suite, URL shortcuts to every page, paste-ready DevTools snippets to seed any of the 9 segments, visual QA checklist, compliance/production build verification. |
 
 ## What's NOT here
 
