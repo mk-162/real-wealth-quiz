@@ -181,10 +181,20 @@ function normaliseStatus(raw: string | undefined, fallback: TileStatus = 'grey')
 
 export interface TileContent {
   key: TileKey;
+  /** Fallback label — used when a segment didn't author a `tile_label`. */
   label: string;
+  /** Fallback whatItChecks — used when the tile has a single variant. */
   whatItChecks: string;
   thresholds: Record<string, string>; // green/amber/red/grey → description
-  perSegment: Map<string, { status: TileStatus; note: string; label?: string; gaugeReframe?: string }>;
+  perSegment: Map<string, {
+    status: TileStatus;
+    note: string;
+    /** Per-segment label override. Sourced from `tile_label:` or `label:` body key. */
+    label?: string;
+    /** Per-segment whatItChecks override (picked from owners/others variant on tile 12). */
+    whatItChecks?: string;
+    gaugeReframe?: string;
+  }>;
 }
 
 const TILE_FILE_TO_KEY: Record<string, TileKey> = {
@@ -214,29 +224,58 @@ function loadTilesOnce(): TileContent[] {
 
     const raw = fs.readFileSync(full, 'utf8');
     const parsed = matter(raw);
+    // Tile frontmatter has either a single-shape (label + what_it_checks) or a
+    // dual-variant shape (label_owners/label_others + what_it_checks_owners/_others).
+    // Tile 12 uses the dual-variant shape because the tile means different things
+    // to owners (Business exit) vs others (Income mix).
     const fm = parsed.data as {
       label?: string;
+      label_owners?: string;
+      label_others?: string;
       what_it_checks?: string;
+      what_it_checks_owners?: string;
+      what_it_checks_others?: string;
       thresholds?: Record<string, string>;
     };
 
-    const perSegment = new Map<string, { status: TileStatus; note: string; label?: string; gaugeReframe?: string }>();
+    const fallbackLabel = fm.label ?? fm.label_others ?? fm.label_owners ?? String(key);
+    const fallbackWhatItChecks = fm.what_it_checks ?? fm.what_it_checks_others ?? fm.what_it_checks_owners ?? '';
+
+    /** Pick the matching whatItChecks variant for a per-segment label on a dual-variant tile. */
+    function pickWhatItChecks(perSegLabel: string | undefined): string {
+      if (!fm.what_it_checks_owners && !fm.what_it_checks_others) return fallbackWhatItChecks;
+      if (perSegLabel && fm.label_owners && perSegLabel === fm.label_owners) {
+        return fm.what_it_checks_owners ?? fallbackWhatItChecks;
+      }
+      return fm.what_it_checks_others ?? fallbackWhatItChecks;
+    }
+
+    const perSegment = new Map<string, {
+      status: TileStatus;
+      note: string;
+      label?: string;
+      whatItChecks?: string;
+      gaugeReframe?: string;
+    }>();
     for (const section of splitByH1(parsed.content)) {
       const segId = extractSegmentId(section.heading);
       if (!segId) continue;
       const kv = parseKeyValues(section.body);
+      // Per-segment label key: prefer `tile_label` (dual-variant convention), fall back to `label`.
+      const perSegLabel = kv.tile_label ?? kv.label;
       perSegment.set(segId, {
         status: normaliseStatus(kv.status),
         note: kv.note ?? '',
-        label: kv.label,
+        label: perSegLabel,
+        whatItChecks: pickWhatItChecks(perSegLabel),
         gaugeReframe: kv.gauge_reframe,
       });
     }
 
     out.push({
       key,
-      label: fm.label ?? String(key),
-      whatItChecks: fm.what_it_checks ?? '',
+      label: fallbackLabel,
+      whatItChecks: fallbackWhatItChecks,
       thresholds: fm.thresholds ?? {},
       perSegment,
     });
@@ -251,12 +290,17 @@ export function loadPlanningTiles(segmentId: string): PlanningTile[] {
   const tiles = loadTilesOnce();
   return tiles.map(t => {
     const seg = t.perSegment.get(segmentId);
+    // Per-segment label and whatItChecks win over tile-level fallback. This is
+    // what makes tile 12 flip to "Business exit" (owners) vs "Income mix" (others)
+    // depending on segment.
+    const label = seg?.label ?? t.label;
+    const whatItChecks = seg?.whatItChecks || t.whatItChecks || undefined;
     return {
       key: t.key,
-      label: seg?.label ?? t.label,
+      label,
       status: seg?.status ?? 'grey',
       note: seg?.note ?? 'Not checked',
-      whatItChecks: t.whatItChecks || undefined,
+      whatItChecks,
     };
   });
 }
