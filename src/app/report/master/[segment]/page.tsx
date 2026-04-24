@@ -256,13 +256,16 @@ function CoverPage({ name, segmentLabel, persona }: { name: string; segmentLabel
       <div className={styles.coverGlowTr} />
       <div className={styles.coverGlowBl} />
 
+      {/* Hero image. Path points at `cover-hero.jpg` — drop your chosen hero
+          image there to override the default. The logo-shaped clip-path
+          (rw-hero-2-leaves) is applied via CSS on .coverMediaImg. */}
       <figure className={styles.coverMedia}>
         <Image
-          src="/report-preview/assets/welcome-image.png"
-          alt="Welcome"
+          src="/report-preview/assets/cover-hero.jpg"
+          alt="Real Wealth — cover image"
           className={styles.coverMediaImg}
-          width={560}
-          height={420}
+          width={1400}
+          height={1000}
           priority
           unoptimized
         />

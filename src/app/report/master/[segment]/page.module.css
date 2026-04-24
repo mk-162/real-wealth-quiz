@@ -20,37 +20,47 @@
 
 .coverGlowTr {
   position: absolute;
-  top: -180px; right: -180px;
-  width: 420px; height: 420px;
+  top: -220px; right: -220px;
+  width: 520px; height: 520px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.18), transparent 65%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.22), transparent 65%);
   pointer-events: none;
+  z-index: 0;
 }
 
 .coverGlowBl {
   position: absolute;
-  bottom: -220px; left: -180px;
-  width: 480px; height: 480px;
+  bottom: -260px; left: -220px;
+  width: 560px; height: 560px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 211, 58, 0.22), transparent 65%);
+  background: radial-gradient(circle, rgba(255, 211, 58, 0.20), transparent 65%);
   pointer-events: none;
+  z-index: 0;
 }
 
+/* Big hero band — matches realwealth.co.uk homepage treatment.
+ * The image uses the logo-shaped `rw-hero-2-leaves` clip-path from
+ * HeroMaskDefs (mounted at the report layout root). Teal shows
+ * through between the two leaves, echoing the "S" of the logo. */
 .coverMedia {
   position: absolute;
-  top: 180px; right: 40px;
-  width: 320px; height: 320px;
+  top: 110px;
+  left: 48px;
+  right: 48px;
+  height: 540px;
   margin: 0;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  box-shadow: var(--rw-shadow-lift);
+  padding: 0;
+  overflow: visible;
+  z-index: 1;
+  pointer-events: none;
 }
 
 .coverMediaImg {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center 40%;
+  clip-path: url(#rw-hero-2-leaves);
   display: block;
 }
 
@@ -86,7 +96,9 @@
 
 .coverContent {
   position: absolute;
-  bottom: 120px; left: 40px; right: 380px;
+  bottom: 110px;
+  left: 48px;
+  right: 48px;
   z-index: 2;
 }
 
@@ -115,9 +127,9 @@
   font-family: var(--rw-font-display);
   font-style: italic;
   font-weight: 300;
-  font-size: 60px;
-  line-height: 1;
-  margin: 0 0 18px;
+  font-size: 68px;
+  line-height: 0.98;
+  margin: 0 0 16px;
   letter-spacing: -0.02em;
   color: var(--rw-paper);
 }
@@ -126,15 +138,17 @@
   font-size: 14px;
   line-height: 1.55;
   color: rgba(255, 255, 255, 0.92);
-  max-width: 44ch;
-  margin: 0 0 32px;
+  max-width: 56ch;
+  margin: 0 0 28px;
 }
 
 .coverMetaGrid {
   display: grid;
-  grid-template-columns: auto auto 1fr;
-  gap: 32px;
+  grid-template-columns: auto auto auto 1fr;
+  gap: 40px;
   color: var(--rw-paper);
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
 }
 
 .coverMetaItem {
