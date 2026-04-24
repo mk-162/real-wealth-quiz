@@ -16,6 +16,8 @@
   overflow: hidden;
   page-break-after: always;
   break-after: page;
+  page-break-inside: avoid;
+  break-inside: avoid;
 }
 
 .coverGlowTr {

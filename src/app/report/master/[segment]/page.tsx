@@ -174,9 +174,10 @@ export default async function MasterReport({
             eyebrow="Book your free 30-minute consultation"
             title={`Let's talk about you, ${name}.`}
             body="Bring this report. We&rsquo;ll go through the amber tiles first, the red ones next, then decide what&rsquo;s worth acting on together."
-            buttonLabel="Book the call"
+            buttonLabel="Book online"
             buttonHref="https://calendly.com/realwealth/intro"
-            contact="0161 768 7722 · hello@realwealth.co.uk"
+            phone="0161 768 7722"
+            contact="hello@realwealth.co.uk"
           />
         </div>
 

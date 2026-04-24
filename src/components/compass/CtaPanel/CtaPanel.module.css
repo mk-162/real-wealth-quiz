@@ -4,14 +4,16 @@
   position: relative;
   background: var(--rw-gradient-teal);
   border-radius: var(--rw-radius-lg);
-  padding: 22px 26px 24px;
+  padding: 24px 28px;
   color: var(--rw-paper);
   overflow: hidden;
   display: grid;
-  grid-template-columns: 1.4fr auto;
-  gap: 20px;
+  grid-template-columns: 1fr auto;
+  gap: 24px;
   align-items: center;
 }
+
+.left { min-width: 0; }
 
 .glow {
   position: absolute;
@@ -66,9 +68,41 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 8px;
+  gap: 10px;
   position: relative;
   z-index: 1;
+}
+
+/* Phone number — prominent, for print readers who can't click the button. */
+.phone {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  color: var(--rw-paper);
+  line-height: 1;
+  padding-top: 2px;
+}
+
+.phone svg {
+  transform: translateY(2px);
+  opacity: 0.75;
+}
+
+.phoneLabel {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.phoneNumber {
+  font-family: var(--rw-font-display);
+  font-style: italic;
+  font-weight: 300;
+  font-size: 22px;
+  letter-spacing: -0.01em;
+  color: var(--rw-paper);
+  font-feature-settings: "tnum";
 }
 
 .btn {

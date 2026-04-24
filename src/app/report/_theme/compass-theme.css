@@ -11,6 +11,20 @@
 @import url('https://use.typekit.net/ayo5bxu.css');
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:ital,wght@1,300&display=swap');
 
+/* ------------------------------------------------------------------- */
+/*  Print — A4 with zero margin                                         */
+/*                                                                      */
+/*  Without this, Chrome's print-to-PDF defaults to Letter (816 × 1056px*/
+/*  at 96dpi), which is 67px shorter than the .page container (1123px). */
+/*  Result: content spills onto phantom extra sheets between each real  */
+/*  page, splitting panels like the Takeaway mid-content.               */
+/*  Locking @page size to A4 makes browser paper match the .page box.   */
+/* ------------------------------------------------------------------- */
+@page {
+  size: A4;
+  margin: 0;
+}
+
 :root {
   /* -- Brand palette -- */
   --rw-teal: #0c7372;

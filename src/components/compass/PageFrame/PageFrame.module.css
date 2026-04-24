@@ -20,6 +20,9 @@
   overflow: hidden;
   page-break-after: always;
   break-after: page;
+  /* Don't let a single page-container's content split across two PDF sheets. */
+  page-break-inside: avoid;
+  break-inside: avoid;
 }
 
 .page:last-child {

@@ -21,8 +21,13 @@ export interface HealthGaugeProps {
   score: number;
   /** `target` for accumulators, `lifetime` for drawdown clients. */
   mode: 'target' | 'lifetime';
-  /** Friendly short title e.g. "You're on track — and time is on your side." */
-  title: string;
+  /**
+   * Friendly short title (e.g. "You're on track — and time is on your side.").
+   * Optional — if omitted, a zone-matched default ("You're on track" /
+   * "Behind target" / etc.) is derived from the score. This field is meant for
+   * ≤10-word copy; do not pass the long takeaway headline here.
+   */
+  title?: string;
   /** Plain-English one-sentence interpretation below the arc + numeral. */
   interpretation: string;
 }
@@ -32,6 +37,20 @@ function bandFor(score: number): { label: string; delta: string; toneClass: stri
   if (score < 90)  return { label: 'Behind',    delta: '• Behind',    toneClass: 'deltaWarn' };
   if (score <= 115) return { label: 'On track',  delta: '• On track',  toneClass: 'deltaGood' };
   return { label: 'Ahead', delta: '• Ahead', toneClass: 'deltaGood' };
+}
+
+function defaultTitle(score: number, mode: 'target' | 'lifetime'): string {
+  const band = bandFor(score);
+  if (mode === 'lifetime') {
+    if (score < 70)  return 'Your runway is short.';
+    if (score < 90)  return 'Your runway is close — not quite covered.';
+    if (score <= 115) return 'Your runway covers your lifetime.';
+    return 'Your runway carries into legacy.';
+  }
+  if (score < 70)  return 'You\u2019re behind target.';
+  if (score < 90)  return 'You\u2019re close to target.';
+  if (score <= 115) return 'You\u2019re on track.';
+  return 'You\u2019re ahead of target.';
 }
 
 export function HealthGauge({ score, mode, title, interpretation }: HealthGaugeProps) {
@@ -44,12 +63,13 @@ export function HealthGauge({ score, mode, title, interpretation }: HealthGaugeP
 
   const band = bandFor(score);
   const modeLabel = mode === 'lifetime' ? 'of lifetime covered' : 'of target';
+  const displayTitle = title ?? defaultTitle(score, mode);
 
   return (
     <section className={styles.card} aria-label="Financial health">
       <header className={styles.header}>
         <p className={styles.kicker}>Financial health</p>
-        <h3 className={styles.title}>{title}</h3>
+        <h3 className={styles.title}>{displayTitle}</h3>
       </header>
 
       <div className={styles.figure} aria-hidden="true">

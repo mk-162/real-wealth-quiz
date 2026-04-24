@@ -131,10 +131,14 @@ export function ReportView({
         </div>
 
         <div className={styles.snapHead}>
+          {/* HealthGauge.title is the short zone-matched headline (e.g.
+              "You're on track"). It is deliberately NOT the takeaway
+              banner — that long sentence is the Takeaway panel at the
+              bottom of this page. When no title is passed, HealthGauge
+              derives a zone-matched default from the score. */}
           <HealthGauge
             score={scores.targetCoveragePct}
             mode={scores.targetCoverageMode}
-            title={view.headline.title}
             interpretation={view.healthInterpretation}
           />
           <NetWorthDonut balanceSheet={balanceSheet} />
@@ -214,15 +218,15 @@ export function ReportView({
         </div>
 
         <div className={styles.stackGap} style={{ marginTop: 8 }}>
-          <Assumptions assumptions={assumptions} />
           <CtaPanel
-            eyebrow="Three things worth discussing"
+            eyebrow="Book a conversation"
             title={`Let's talk about you, ${name}.`}
-            body={view.nextSteps.join(' · ')}
-            buttonLabel="Book the call"
+            buttonLabel="Book online"
             buttonHref="https://calendly.com/realwealth/intro"
-            contact="0161 768 7722 · realwealth.co.uk"
+            phone="0161 768 7722"
+            contact="realwealth.co.uk"
           />
+          <Assumptions assumptions={assumptions} />
         </div>
       </Page>
     </>
