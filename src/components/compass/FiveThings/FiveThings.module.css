@@ -1,0 +1,190 @@
+/* FiveThings — Page 06 "Five things worth a conversation".
+ *
+ * Four compact standard cards in a 2×2 grid, plus one featured "fifth"
+ * highlight card with orange accent rule and optional illustration.
+ */
+
+.standardGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.card {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--rw-border-subtle);
+  border-radius: var(--rw-radius-md);
+  background: var(--rw-paper);
+  box-shadow: var(--rw-shadow-sm);
+  align-items: start;
+}
+
+.cardWithImage {
+  grid-template-columns: 56px 1fr;
+}
+
+.icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--rw-teal-tint-10);
+  color: var(--rw-teal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.icon svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.illus {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--rw-radius-sm);
+  overflow: hidden;
+  background: var(--rw-paper-warm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.illus img, .illus svg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.cardBody {
+  min-width: 0;
+}
+
+.cardTitle {
+  font-family: var(--rw-font-display);
+  font-style: italic;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 1.22;
+  color: var(--rw-teal);
+  margin: 0 0 3px;
+  letter-spacing: -0.01em;
+}
+
+.cardLead {
+  font-size: 10.5px;
+  line-height: 1.45;
+  color: var(--rw-ink-soft);
+  margin: 0;
+}
+
+/* ----- Featured "fifth" card ----- */
+
+.featured {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 16px;
+  padding: 16px 18px;
+  border: 1px solid var(--rw-border-subtle);
+  border-left: 3px solid var(--rw-orange);
+  border-radius: var(--rw-radius-md);
+  background: var(--rw-paper);
+  box-shadow: var(--rw-shadow-sm);
+  position: relative;
+}
+
+.featuredWithImage {
+  grid-template-columns: 96px 1fr;
+}
+
+.featuredKicker {
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--rw-orange);
+  margin-bottom: 4px;
+}
+
+.featuredIcon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--rw-orange-soft);
+  color: var(--rw-orange);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.featuredIcon svg {
+  width: 28px;
+  height: 28px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.featuredIllus {
+  width: 80px;
+  height: 80px;
+  border-radius: var(--rw-radius-sm);
+  overflow: hidden;
+  background: var(--rw-paper-warm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.featuredIllus img, .featuredIllus svg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.featuredTitle {
+  font-family: var(--rw-font-display);
+  font-style: italic;
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 1.2;
+  color: var(--rw-teal);
+  margin: 0 0 5px;
+  letter-spacing: -0.01em;
+}
+
+.featuredLead {
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--rw-ink-soft);
+  margin: 0 0 4px;
+}
+
+.featuredBridge {
+  font-size: 10.5px;
+  line-height: 1.5;
+  color: var(--rw-ink-muted);
+  font-style: italic;
+  margin: 6px 0 0;
+  padding-top: 6px;
+  border-top: 1px dashed var(--rw-border-subtle);
+}
+
+@media (max-width: 640px) {
+  .standardGrid { grid-template-columns: 1fr; }
+  .card { grid-template-columns: 40px 1fr; }
+  .featured, .featuredWithImage { grid-template-columns: 60px 1fr; }
+}

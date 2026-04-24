@@ -221,4 +221,12 @@ export interface SegmentView {
   goals: WellbeingGoal[];    // 3-5 goals
   nextSteps: string[];       // 3 advisor conversation starters
   bullets: { tone: 'good' | 'warn' | 'risk' | 'info'; text: string }[]; // page-2 chart commentary
+  /**
+   * Per-segment "Five things worth a conversation" selection. Up to 5 source_ids
+   * from content/awareness-checks/*.md (format `pitfall.<slug>`). Order matters:
+   * items 0-3 render as standard cards, item 4 as the featured "fifth" highlight.
+   * Hand-curated on fixtures today; will be derived by a DSL-driven resolver
+   * against the originals' `trigger` field once sessions produce real answers.
+   */
+  awarenessCheckIds?: string[];
 }

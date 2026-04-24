@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <!-- Paper -->
+  <rect x="20" y="16" width="52" height="68" rx="3" fill="#fff1e6" stroke="#ff6801" stroke-width="1.8"/>
+  <path d="M30 30h28M30 38h28M30 46h28M30 54h22M30 62h18" stroke="#ff6801" stroke-width="1.4" stroke-linecap="round" opacity="0.55"/>
+  <!-- Shield overlay -->
+  <path d="M60 52c0-3 2-5 5-6 2 0 5 1 6 2 2 2 3 4 3 8 0 7-4 12-9 14-5-2-9-7-9-14 0-3 1-4 4-4Z" fill="#0c7372" stroke="#09595a" stroke-width="1.5"/>
+  <path d="M63 66l3 3 5-6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Corner fold -->
+  <path d="M62 16v8h10" stroke="#ff6801" stroke-width="1.6" fill="none"/>
+</svg>

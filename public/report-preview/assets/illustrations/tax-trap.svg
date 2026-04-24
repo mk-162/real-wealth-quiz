@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <!-- Axis -->
+  <line x1="14" y1="82" x2="90" y2="82" stroke="#707070" stroke-width="1.5"/>
+  <line x1="14" y1="14" x2="14" y2="82" stroke="#707070" stroke-width="1.5"/>
+  <!-- Normal rate bars -->
+  <rect x="22" y="60" width="10" height="22" fill="#11a09f" opacity="0.85"/>
+  <rect x="34" y="54" width="10" height="28" fill="#11a09f" opacity="0.85"/>
+  <!-- Spike (60% band) -->
+  <rect x="46" y="24" width="10" height="58" fill="#ff6801"/>
+  <rect x="58" y="24" width="10" height="58" fill="#ff6801"/>
+  <!-- Return to normal -->
+  <rect x="70" y="44" width="10" height="38" fill="#11a09f" opacity="0.85"/>
+  <!-- Warning line -->
+  <path d="M14 24h76" stroke="#c95a2b" stroke-width="1.2" stroke-dasharray="3 3"/>
+  <!-- 60% label -->
+  <text x="54" y="18" font-family="DM Sans, sans-serif" font-size="10" font-weight="700" fill="#ff6801" text-anchor="middle">60%</text>
+  <!-- £100k marker -->
+  <text x="51" y="94" font-family="DM Sans, sans-serif" font-size="7" fill="#5a5a5a" text-anchor="middle">£100k</text>
+  <text x="73" y="94" font-family="DM Sans, sans-serif" font-size="7" fill="#5a5a5a" text-anchor="middle">£125k</text>
+</svg>

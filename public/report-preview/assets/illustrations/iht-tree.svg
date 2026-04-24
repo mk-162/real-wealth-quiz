@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <!-- Root (estate) -->
+  <circle cx="50" cy="22" r="11" fill="#0c7372"/>
+  <text x="50" y="26" font-family="DM Sans, sans-serif" font-size="10" font-weight="700" fill="#fff" text-anchor="middle">£6m</text>
+  <!-- Branches -->
+  <path d="M50 33 L26 56" stroke="#0c7372" stroke-width="1.6"/>
+  <path d="M50 33 L50 56" stroke="#ff6801" stroke-width="2.2"/>
+  <path d="M50 33 L74 56" stroke="#0c7372" stroke-width="1.6"/>
+  <!-- Children nodes (teal = heirs; orange = HMRC) -->
+  <circle cx="26" cy="64" r="8" fill="#11a09f"/>
+  <circle cx="50" cy="64" r="9" fill="#ff6801"/>
+  <circle cx="74" cy="64" r="8" fill="#11a09f"/>
+  <!-- Labels -->
+  <text x="26" y="88" font-family="DM Sans, sans-serif" font-size="8" fill="#353535" text-anchor="middle">Heirs</text>
+  <text x="50" y="88" font-family="DM Sans, sans-serif" font-size="8" font-weight="700" fill="#ff6801" text-anchor="middle">HMRC</text>
+  <text x="74" y="88" font-family="DM Sans, sans-serif" font-size="8" fill="#353535" text-anchor="middle">Heirs</text>
+  <!-- HMRC portion indicator -->
+  <text x="50" y="67" font-family="DM Sans, sans-serif" font-size="8" font-weight="700" fill="#fff" text-anchor="middle">£1.9m</text>
+</svg>

@@ -18,3 +18,4 @@ export * from './Takeaway';
 export * from './MilestoneStrip';
 export * from './Assumptions';
 export * from './CtaPanel';
+export * from './FiveThings';

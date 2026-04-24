@@ -27,8 +27,8 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { FIXTURES, fixtureById, buildReport } from '@/lib/compass';
-import { enrichSegmentView, loadMethodology } from '@/lib/compass/pdf-content';
-import { ReportView, PageFrame, CtaPanel } from '@/components/compass';
+import { enrichSegmentView, loadMethodology, loadFiveThings } from '@/lib/compass/pdf-content';
+import { ReportView, PageFrame, CtaPanel, FiveThings } from '@/components/compass';
 import styles from './page.module.css';
 
 export function generateStaticParams() {
@@ -64,6 +64,7 @@ export default async function MasterReport({
   const enrichedFixture = { ...fixture, view: enrichedView };
 
   const methodology = loadMethodology();
+  const fiveThings = loadFiveThings(enrichedView.awarenessCheckIds ?? []);
 
   const name = SEGMENT_NAMES[fixture.view.segmentId] ?? 'your plan';
   const docTitle = `Your Wealth Report · ${name}`;
@@ -110,16 +111,25 @@ export default async function MasterReport({
         footer="Manchester · Taunton · hello@realwealth.co.uk"
         label="Five things"
       >
-        <NarrativePlaceholder
-          eyebrow="What we&rsquo;d talk through"
-          title="Five things worth a conversation."
-          intro="The long-form awareness-check cards. 27 topics available; runtime selects 4-5 based on the user's answers and segment, with an additional compound-flag highlight for &ldquo;the fifth.&rdquo;"
-          comingFrom="content/pdf-report/awareness-checks-expanded/*.md (27 files, 3 paragraphs each)"
-          blocks={[
-            { kicker: 'Four standard cards', body: 'One paragraph intro + bordered card per selected topic. Selection is segment-weighted.' },
-            { kicker: 'The fifth', body: 'Highlight card — the compound flag — rendered with a larger border and orange accent.' },
-          ]}
-        />
+        <div className={styles.sectionTitle}>
+          <span className={styles.eyebrow}>What we&rsquo;d talk through</span>
+          <h2 className={styles.hSection}>Five things worth a conversation.</h2>
+          <p className={styles.intro}>
+            Four areas where a short conversation moves the dial — and one that tends to matter more
+            than people realise. Everything here comes from the detail of what you&rsquo;ve told us.
+          </p>
+        </div>
+        {fiveThings.standard.length === 0 ? (
+          <NarrativePlaceholder
+            eyebrow="What we&rsquo;d talk through"
+            title="Five things worth a conversation."
+            intro="No curated list is set for this segment yet. Once triggers fire against real answers, this page will show 4 cards + 1 featured."
+            comingFrom="content/pdf-report/awareness-checks-expanded/*.md via segmentView.awarenessCheckIds"
+            blocks={[]}
+          />
+        ) : (
+          <FiveThings selection={fiveThings} />
+        )}
       </PageFrame>
 
       {/* 07 — Silent gaps + Planner's read */}

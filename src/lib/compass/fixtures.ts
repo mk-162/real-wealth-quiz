@@ -106,6 +106,15 @@ const S1: Fixture = {
       'Automate a £50/month ISA top-up for one year, re-evaluate.',
       'Set a 35-year NI record goal — check gaps on gov.uk.',
     ],
+    // 5 "things worth a conversation" for S1 — items 0-3 render as standard cards,
+    // item 4 ("pitfall.ni_gaps") renders as the featured "fifth" highlight.
+    awarenessCheckIds: [
+      'pitfall.lpa',
+      'pitfall.pension_consolidation',
+      'pitfall.fund_fee_stack',
+      'pitfall.emergency_fund_sizing',
+      'pitfall.ni_gaps',
+    ],
     bullets: [
       { tone: 'good', text: 'You have 37 years of compounding ahead — the single biggest lever in the chart.' },
       { tone: 'warn', text: 'Pension at £12k is light for age 28. Capturing any employer match above 3% is the cheapest upgrade you can make.' },
@@ -165,6 +174,14 @@ const S2: Fixture = {
       'Set a diary note for age 57 to redirect the full mortgage payment into pension/ISA.',
       'Consider a one-off ISA top-up from savings above £10k emergency buffer.',
       'Check partner\'s pension — household-level planning usually adds 10-15% to retirement income.',
+    ],
+    // Family + mortgage stage — LPA + protection dominate; the "fifth" is will currency (kids make it urgent).
+    awarenessCheckIds: [
+      'pitfall.lpa',
+      'pitfall.ssp_gap',
+      'pitfall.couples_alignment',
+      'pitfall.pension_consolidation',
+      'pitfall.will_currency',
     ],
     bullets: [
       { tone: 'good', text: 'Comfortable retirement at 62 is achievable on current trajectory.' },
@@ -226,6 +243,14 @@ const S3: Fixture = {
       'Use full £20k ISA allowance and £3,000 CGT allowance each year.',
       'Review whether a VCT or EIS has a place in your mix — tax-led, not return-led.',
     ],
+    // High-earner — the 100k trap is the headline; "fifth" is income-100k-trap itself.
+    awarenessCheckIds: [
+      'pitfall.iht_mitigation',
+      'pitfall.savings_tax_efficiency',
+      'pitfall.fund_fee_stack',
+      'pitfall.carry_forward',
+      'pitfall.income_trap_100k',
+    ],
     bullets: [
       { tone: 'risk', text: '£100k tax trap: you lose £1 of Personal Allowance for every £2 earned over £100k — effective rate hits 60%.' },
       { tone: 'good', text: 'At 60, liquid wealth projects to ~£2.1m — roughly £90k/yr "safe" drawdown for 35 years.' },
@@ -285,6 +310,14 @@ const S4: Fixture = {
       'Max pension annual allowance before retirement (60k) — carry-forward the last 3 years if possible.',
       'Stress-test cash flow at 4% return (not 6%) — see if the retirement age still holds.',
       'Start the IHT conversation now while options (PETs, trusts, gifting) have time to work.',
+    ],
+    // Peak accumulation + IHT emerging. "Fifth" = iht_mitigation (the planning story).
+    awarenessCheckIds: [
+      'pitfall.pension_iht_2027',
+      'pitfall.rnrb_taper',
+      'pitfall.tapered_annual_allowance',
+      'pitfall.carry_forward',
+      'pitfall.iht_mitigation',
     ],
     bullets: [
       { tone: 'good', text: 'Retirement at 60 fully feasible; current liquid + pension accessible at 60 ~£1.4m.' },
@@ -346,6 +379,14 @@ const S5: Fixture = {
       'Start drawing a pension even if dividend-heavy — annual allowance otherwise evaporates.',
       'Model three exit scenarios: BADR-qualifying sale, EOT, or trade sale.',
     ],
+    // Business owner growth — "fifth" = extraction-mix (the owner's core decision).
+    awarenessCheckIds: [
+      'pitfall.pension_as_extraction',
+      'pitfall.group_life_fragility',
+      'pitfall.ssp_gap',
+      'pitfall.couples_alignment',
+      'pitfall.extraction_mix',
+    ],
     bullets: [
       { tone: 'risk', text: '45% of net worth is illiquid, unvalued in this chart, and worth whatever a buyer decides.' },
       { tone: 'warn', text: 'Personal pension at £120k is behind a typical 48-year-old.' },
@@ -405,6 +446,14 @@ const S6: Fixture = {
       'Lock in the sale structure before signing — tax treatment depends on it.',
       'Use every year\'s pension allowance up to the exit date.',
       'Line up the post-exit asset allocation now.',
+    ],
+    // Business owner exit — "fifth" = BADR timing (the defining decision for the exit).
+    awarenessCheckIds: [
+      'pitfall.iht_mitigation',
+      'pitfall.carry_forward',
+      'pitfall.extraction_mix',
+      'pitfall.pension_iht_2027',
+      'pitfall.badr_timing',
     ],
     bullets: [
       { tone: 'good', text: 'Post-exit wealth (~£1m+ liquid) supports an £80k/yr lifestyle to 95 with comfort.' },
@@ -466,6 +515,14 @@ const S7: Fixture = {
       'Stress-test at 3% return and 4% inflation — does the plan still work?',
       'Decide now: lump sum up-front vs UFPLS. Big tax consequences either way.',
     ],
+    // Pre-retirement — "fifth" = pension-iht-2027 (the imminent rule change).
+    awarenessCheckIds: [
+      'pitfall.carry_forward',
+      'pitfall.glide_path',
+      'pitfall.iht_mitigation',
+      'pitfall.lpa',
+      'pitfall.pension_iht_2027',
+    ],
     bullets: [
       { tone: 'good', text: 'Current liquid + accessible pension = ~£1.0m. Supports £48k/yr spend to 95 with headroom.' },
       { tone: 'info', text: 'Pension tax-free lump sum (25% up to £268,275) can fund the first 5 years without touching taxable income.' },
@@ -526,6 +583,14 @@ const S8: Fixture = {
       'Annual check-in on the "money-lasts-until" age — this number will move each year with markets.',
       'Talk to family about house plans. Downsizing is a decision made once.',
     ],
+    // Retired — "fifth" = LPA (the legal gap that is most urgent at 70).
+    awarenessCheckIds: [
+      'pitfall.care_funding',
+      'pitfall.pension_iht_2027',
+      'pitfall.will_currency',
+      'pitfall.rnrb_taper',
+      'pitfall.lpa',
+    ],
     bullets: [
       { tone: 'good', text: 'State pension (~£12k/yr) covers essential spending — without it, runway ends at 81.' },
       { tone: 'warn', text: 'Inflation at 2.5% means year-20 expenses are ~£74k in today\'s money.' },
@@ -585,6 +650,14 @@ const S9: Fixture = {
       'Commission a full estate plan — IHT is a bespoke-advice problem.',
       'Consider pension as a transfer vehicle (outside estate, inherited tax-efficient).',
       'Discuss the family governance conversation. This is as much about alignment as numbers.',
+    ],
+    // HNW — "fifth" = iht_mitigation (the largest single cost to heirs).
+    awarenessCheckIds: [
+      'pitfall.rnrb_taper',
+      'pitfall.pension_iht_2027',
+      'pitfall.tapered_annual_allowance',
+      'pitfall.adviser_fee_total',
+      'pitfall.iht_mitigation',
     ],
     bullets: [
       { tone: 'risk', text: 'Estate value ~£6m → IHT liability ~£1.94m at 40% after nil-rate bands.' },

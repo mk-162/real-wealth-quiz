@@ -476,6 +476,102 @@ export function loadTakeaway(segmentId: string): TakeawayContent | null {
 }
 
 // ---------------------------------------------------------------------------
+// Awareness-checks-expanded loader
+// content/pdf-report/awareness-checks-expanded/<slug>.md
+//
+// Display copy only — selection logic lives in content/awareness-checks/*.md
+// and is joined back to expanded copy via the `source_id` frontmatter field.
+// ---------------------------------------------------------------------------
+
+export interface ExpandedAwarenessCheck {
+  /** `pitfall.<slug>` — matches `id` on the original awareness-check file. */
+  sourceId: string;
+  /** H1 heading from the expanded body ("Lasting Power of Attorney — the legal gap…"). */
+  title: string;
+  /** Three body paragraphs: context / specifics / bridge. Length varies. */
+  paragraphs: string[];
+  /** Optional illustration slug → `/report-preview/assets/illustrations/<slug>.svg`. */
+  imageSlug?: string;
+  complianceStatus: string;
+}
+
+const EXPANDED_DIR = path.join(CONTENT_ROOT, 'awareness-checks-expanded');
+
+let _expandedCache: Map<string, ExpandedAwarenessCheck> | null = null;
+
+function loadExpandedOnce(): Map<string, ExpandedAwarenessCheck> {
+  if (_expandedCache) return _expandedCache;
+
+  const out = new Map<string, ExpandedAwarenessCheck>();
+  if (!fs.existsSync(EXPANDED_DIR)) {
+    _expandedCache = out;
+    return out;
+  }
+
+  for (const file of fs.readdirSync(EXPANDED_DIR)) {
+    if (!file.endsWith('.md') || file === 'README.md') continue;
+    const full = path.join(EXPANDED_DIR, file);
+    const raw = fs.readFileSync(full, 'utf8');
+    const parsed = matter(raw);
+    const fm = parsed.data as {
+      source_id?: string;
+      image_slug?: string;
+      compliance_status?: string;
+    };
+    if (!fm.source_id) continue;
+
+    // Body: one H1 heading (the topic title) followed by 1-3 blank-line-separated paragraphs.
+    const sections = splitByH1(parsed.content);
+    if (sections.length === 0) continue;
+    const section = sections[0];
+    const paragraphs = section.body
+      .split(/\n\s*\n/)
+      .map(p => p.trim())
+      .filter(p => p.length > 0);
+
+    out.set(fm.source_id, {
+      sourceId: fm.source_id,
+      title: section.heading.trim(),
+      paragraphs,
+      imageSlug: fm.image_slug,
+      complianceStatus: fm.compliance_status ?? 'draft',
+    });
+  }
+
+  _expandedCache = out;
+  return out;
+}
+
+/** Returns the expanded card for a given `pitfall.<slug>` source id, or null. */
+export function loadExpandedAwarenessCheck(sourceId: string): ExpandedAwarenessCheck | null {
+  return loadExpandedOnce().get(sourceId) ?? null;
+}
+
+/**
+ * Batch loader for the per-segment "Five things" page.
+ *
+ * Takes the content-agent's expanded copy library and a segment's curated list
+ * of source_ids (hand-picked in fixtures today; will come from a DSL-driven
+ * resolver against content/awareness-checks/*.md once sessions produce real
+ * trigger data). Returns up to 4 standard cards + 1 featured "fifth" if present.
+ */
+export interface FiveThingsSelection {
+  standard: ExpandedAwarenessCheck[]; // up to 4
+  featured: ExpandedAwarenessCheck | null;
+}
+
+export function loadFiveThings(sourceIds: string[]): FiveThingsSelection {
+  const map = loadExpandedOnce();
+  const items = sourceIds
+    .map(id => map.get(id) ?? null)
+    .filter((x): x is ExpandedAwarenessCheck => x !== null);
+  return {
+    standard: items.slice(0, 4),
+    featured: items.length > 4 ? items[4] : null,
+  };
+}
+
+// ---------------------------------------------------------------------------
 // Methodology loader — content/pdf-report/methodology.md
 // ---------------------------------------------------------------------------
 
