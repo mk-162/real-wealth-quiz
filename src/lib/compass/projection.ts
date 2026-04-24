@@ -186,7 +186,7 @@ function statePensionForUser(i: CompassInputs): number {
   return base * Math.min(1, yearsHeld / 35);
 }
 
-function mortgageEndAgeToNumber(b: MortgageEndBand, currentAge: number): number {
+export function mortgageEndAgeToNumber(b: MortgageEndBand, currentAge: number): number {
   switch (b) {
     case 'under_55': return Math.min(55, currentAge + 10);
     case '55_65': return 60;

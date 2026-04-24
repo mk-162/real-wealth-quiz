@@ -184,6 +184,13 @@ export const screenSchema = screenFrontmatter.extend({
   headline: z.string().optional(),
   /** Supporting body below the headline. */
   sub: z.string().optional(),
+  /**
+   * Optional per-screen pullquote shown in the left column.
+   * Overrides the section-level pullquote from sections.ts when present.
+   * Empty string suppresses the section default — nothing is shown.
+   * Omit the section entirely to inherit the section default.
+   */
+  pullquote: z.string().optional(),
   /** Free-form body for transition / intro screens. */
   body: z.string().optional(),
 });

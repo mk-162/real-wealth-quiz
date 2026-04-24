@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Your Real Wealth Report — Michelle</title>
+  <link rel="stylesheet" href="./report.css" />
+</head>
+<body>
+  <!-- SAMPLE version — Michelle persona (S3 segment, age 52, couple,
+       income £125-200k, estate £1-2m). Content mirrors the brochure
+       restyle: forest-green cover, cream "Five things" page, navy
+       "Let's talk" panel, full-bleed back cover. -->
+
+  <div class="print-controls">
+    <button type="button" onclick="window.print()">Print / Save PDF</button>
+  </div>
+
+  <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;">
+    <defs>
+      <clipPath id="rw-cover-leaf" clipPathUnits="objectBoundingBox">
+        <path d="M 0 0 L 1 0 L 1 0.82 C 0.74 0.97 0.42 1 0.16 0.94 C 0.06 0.91 0 0.82 0 0.74 L 0 0 Z" />
+      </clipPath>
+      <clipPath id="rw-header-leaf" clipPathUnits="objectBoundingBox">
+        <path d="M 0 0 L 1 0 L 1 0.84 C 0.78 0.98 0.42 1 0.16 0.94 C 0.06 0.91 0 0.84 0 0.76 L 0 0 Z" />
+      </clipPath>
+    </defs>
+  </svg>
+
+  <div class="doc">
+    <!-- Cover -->
+    <section class="page" data-screen-label="01 Cover">
+      <div class="cover">
+        <figure class="cover__media">
+          <img src="/welcome-image.png" alt="" class="cover__media-image" aria-hidden="true" />
+        </figure>
+        <span class="coord cover__coord" aria-hidden="true">
+          <span class="coord__bracket"></span>
+          <span class="coord__text">53.483° N</span>
+          <span class="coord__text">-2.244° W</span>
+        </span>
+        <div class="cover__content">
+          <h1 class="cover__title">Your Wealth Report, Michelle.</h1>
+          <p class="cover__tagline">
+            A thoughtful briefing from a planner — five things worth a
+            conversation, the quiet gaps we noticed, and where to look
+            first.
+          </p>
+          <div class="cover__meta-grid">
+            <div><span class="k">Prepared for</span><span class="v">Michelle</span></div>
+            <div><span class="k">Prepared by</span><span class="v">Real Wealth · Manchester</span></div>
+            <div><span class="k">Reading time</span><span class="v">6 minutes</span></div>
+          </div>
+        </div>
+        <img src="/real-wealth-logo-wordmark.svg" alt="Real Wealth" class="cover__logo" />
+      </div>
+    </section>
+
+    <!-- Snapshot -->
+    <section class="page" data-screen-label="02 Where you are">
+      <div class="page__body page__body--with-header">
+        <figure class="img-header img-header--small" aria-hidden="true">
+          <img src="/welcome-image.png" alt="" class="img-header__photo" />
+          <span class="coord" style="top:16px; right:24px;">
+            <span class="coord__bracket"></span>
+            <span class="coord__text">53.483° N</span>
+            <span class="coord__text">-2.244° W</span>
+          </span>
+        </figure>
+
+        <section class="section-title">
+          <h2 class="h-display">A quick picture of what you told us.</h2>
+          <p class="body body--muted">
+            Ten minutes of questions, no forms. What follows is the shape
+            of your answers — and what a planner would want to understand
+            better over a short call.
+          </p>
+        </section>
+
+        <div class="snapshot">
+          <div class="snapshot__item">
+            <span class="snapshot__val">52</span>
+            <span class="snapshot__label">Age</span>
+            <span class="snapshot__sub">13 years until state pension at 67</span>
+          </div>
+          <div class="snapshot__item">
+            <span class="snapshot__val">£1&ndash;2m</span>
+            <span class="snapshot__label">Estate band</span>
+            <span class="snapshot__sub">Approaching the IHT threshold for a couple</span>
+          </div>
+          <div class="snapshot__item">
+            <span class="snapshot__val">5</span>
+            <span class="snapshot__label">Things we&rsquo;d talk through</span>
+            <span class="snapshot__sub">Plus four gaps worth a planner&rsquo;s time</span>
+          </div>
+        </div>
+
+        <div class="two-col-with-quote">
+          <div>
+            <h3 class="h-sub">In your own words</h3>
+            <p class="body body--muted">
+              You named time with the grandkids as your signal of
+              &ldquo;enough&rdquo;. This report looks at whether the shape
+              of your current arrangement clears the runway for that — and
+              what a planner would want to understand better before
+              saying anything more specific.
+            </p>
+          </div>
+          <aside class="pull-quote-panel">
+            &ldquo;More time in the garden with the grandkids, less
+            worrying about money.&rdquo;
+          </aside>
+        </div>
+      </div>
+
+      <div class="foot-chrome">
+        <div class="foot-chrome__left">
+          <span class="foot-chrome__num">02</span>
+          <span>Where you are</span>
+        </div>
+        <div class="foot-chrome__right">
+          <a class="foot-chrome__url" href="https://www.realwealth.co.uk">www.realwealth.co.uk</a>
+          <img src="/real-wealth-logo-mark.svg" alt="" class="foot-chrome__mark" aria-hidden="true" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Five things (cream blob + icon list) -->
+    <section class="page" data-screen-label="03 Five things">
+      <div class="page__cream-blob"></div>
+      <div class="page__body">
+        <section class="section-title">
+          <h2 class="h-display">Five things worth a conversation.</h2>
+          <p class="body body--muted">
+            The shape of this list will feel familiar to anyone in their
+            early fifties with a household income in six figures. Here&rsquo;s
+            what a planner would want to dig into first.
+          </p>
+        </section>
+
+        <ol class="icon-list">
+          <li class="icon-list__item">
+            <span class="icon-bubble icon-bubble--teal" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+            </span>
+            <div>
+              <h3 class="icon-list__title icon-list__title--teal">1. The £100k income-tax trap</h3>
+              <p class="icon-list__body">
+                The 60% effective marginal band between £100k and £125k
+                catches most high earners by surprise. Pension contributions
+                are often the cheapest way through it.
+              </p>
+            </div>
+          </li>
+          <li class="icon-list__item">
+            <span class="icon-bubble icon-bubble--orange" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+            </span>
+            <div>
+              <h3 class="icon-list__title icon-list__title--orange">2. Pension carry-forward</h3>
+              <p class="icon-list__body">
+                You can potentially contribute up to £180k across three tax
+                years. Whether that&rsquo;s worth it depends on your income
+                shape and what &ldquo;enough&rdquo; looks like at 67.
+              </p>
+            </div>
+          </li>
+          <li class="icon-list__item">
+            <span class="icon-bubble icon-bubble--navy" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 6v6c0 5 3.5 9.5 8 10 4.5-.5 8-5 8-10V6z"/><path d="m9 12 2 2 4-4"/></svg>
+            </span>
+            <div>
+              <h3 class="icon-list__title icon-list__title--navy">3. Estate planning, gently</h3>
+              <p class="icon-list__body">
+                At £1m+ estate with succession still open, inheritance tax
+                starts to matter. A conversation about where the money goes
+                before it&rsquo;s inherited is usually cheaper than after.
+              </p>
+            </div>
+          </li>
+          <li class="icon-list__item">
+            <span class="icon-bubble icon-bubble--teal" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M4 12h16M12 4v16"/></svg>
+            </span>
+            <div>
+              <h3 class="icon-list__title icon-list__title--teal">4. Joint-partner allowances</h3>
+              <p class="icon-list__body">
+                Couples with differing incomes often miss the easy ones:
+                pension topping-up between you, ISA maximisation, and the
+                marriage / transferable allowance.
+              </p>
+            </div>
+          </li>
+          <li class="icon-list__item">
+            <span class="icon-bubble icon-bubble--orange" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+            </span>
+            <div>
+              <h3 class="icon-list__title icon-list__title--orange">5. The protection question no one asks</h3>
+              <p class="icon-list__body">
+                What happens to household income if one of you can&rsquo;t
+                work for six months? For a mid-career couple with a
+                mortgage, this is almost always the biggest under-covered
+                area.
+              </p>
+            </div>
+          </li>
+        </ol>
+      </div>
+
+      <div class="foot-chrome">
+        <div class="foot-chrome__left">
+          <span class="foot-chrome__num">03</span>
+          <span>Five things</span>
+        </div>
+        <div class="foot-chrome__right">
+          <a class="foot-chrome__url" href="https://www.realwealth.co.uk">www.realwealth.co.uk</a>
+          <img src="/real-wealth-logo-mark.svg" alt="" class="foot-chrome__mark" aria-hidden="true" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Silent gaps -->
+    <section class="page" data-screen-label="04 Silent gaps">
+      <div class="page__body page__body--with-header">
+        <figure class="img-header" aria-hidden="true">
+          <img src="/welcome-image.png" alt="" class="img-header__photo" />
+          <span class="coord" style="top:16px; right:24px;">
+            <span class="coord__bracket"></span>
+            <span class="coord__text">51.014° N</span>
+            <span class="coord__text">-3.103° W</span>
+          </span>
+        </figure>
+
+        <section class="section-title">
+          <h2 class="h-display">Things we didn&rsquo;t ask — but noticed.</h2>
+          <p class="body body--muted">
+            You didn&rsquo;t tell us about these directly — but based on
+            the rest of the conversation, they&rsquo;re the quiet ones a
+            planner would bring to a first meeting.
+          </p>
+        </section>
+
+        <ul class="silent-list">
+          <li class="silent-list__item">
+            <span class="silent-list__num">01</span>
+            <h3 class="silent-list__title">Wills and LPAs</h3>
+            <p class="silent-list__body">
+              Households at the £1m+ estate level without an up-to-date
+              Will and Lasting Power of Attorney are surprisingly common.
+              The cost of not having them is disproportionate.
+            </p>
+          </li>
+          <li class="silent-list__item">
+            <span class="silent-list__num">02</span>
+            <h3 class="silent-list__title">Employer benefits</h3>
+            <p class="silent-list__body">
+              Most large employers offer death-in-service, group income
+              protection, and pension matching. Many of these quietly go
+              under-used.
+            </p>
+          </li>
+          <li class="silent-list__item">
+            <span class="silent-list__num">03</span>
+            <h3 class="silent-list__title">State pension forecast</h3>
+            <p class="silent-list__body">
+              A few minutes on gov.uk surfaces any NI gaps. Plugging them
+              in your fifties is materially cheaper than plugging them at
+              sixty-six.
+            </p>
+          </li>
+          <li class="silent-list__item">
+            <span class="silent-list__num">04</span>
+            <h3 class="silent-list__title">Investment fees</h3>
+            <p class="silent-list__body">
+              A 0.5% difference on a £500k portfolio compounds to over
+              £100k across 20 years. Worth a one-time audit.
+            </p>
+          </li>
+        </ul>
+      </div>
+
+      <div class="foot-chrome">
+        <div class="foot-chrome__left">
+          <span class="foot-chrome__num">04</span>
+          <span>Silent gaps</span>
+        </div>
+        <div class="foot-chrome__right">
+          <a class="foot-chrome__url" href="https://www.realwealth.co.uk">www.realwealth.co.uk</a>
+          <img src="/real-wealth-logo-mark.svg" alt="" class="foot-chrome__mark" aria-hidden="true" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Planner's read -->
+    <section class="page" data-screen-label="05 Planner's read">
+      <div class="page__body">
+        <section class="section-title">
+          <h2 class="h-display">A planner&rsquo;s read — three lenses.</h2>
+          <p class="body body--muted">
+            This isn&rsquo;t advice yet — it&rsquo;s the shape of a first
+            conversation. Each block is something a planner would want to
+            understand before suggesting anything specific.
+          </p>
+        </section>
+
+        <div class="insight-block">
+          <div class="insight-block__row">
+            <span class="insight-block__label">Insight</span>
+            <p class="insight-block__copy">
+              Your income band is where pension contributions stop being a
+              &ldquo;nice idea&rdquo; and start being a material saving on tax.
+            </p>
+          </div>
+          <div class="insight-block__row">
+            <span class="insight-block__label">Context</span>
+            <p class="insight-block__copy">
+              Above £100k, personal allowance tapers. The effective marginal
+              rate between £100k&ndash;£125k is 60%. Pension contributions
+              reduce adjusted net income and can restore the allowance.
+            </p>
+          </div>
+          <div class="insight-block__row">
+            <span class="insight-block__label">One move</span>
+            <p class="insight-block__copy">
+              Model this year&rsquo;s contribution against next year&rsquo;s
+              bonus shape — often more tax-efficient to contribute from a
+              bonus than from salary.
+            </p>
+          </div>
+        </div>
+
+        <div class="insight-block">
+          <div class="insight-block__row">
+            <span class="insight-block__label">Insight</span>
+            <p class="insight-block__copy">
+              Estates in the £1&ndash;2m band are where inheritance planning
+              becomes materially useful without needing a complicated
+              structure.
+            </p>
+          </div>
+          <div class="insight-block__row">
+            <span class="insight-block__label">Context</span>
+            <p class="insight-block__copy">
+              Residence and transferable nil-rate bands together give a
+              couple up to £1m free of IHT. Above that, 40% applies. The
+              cheapest moves are usually policies in trust or gifts made
+              within the seven-year rule.
+            </p>
+          </div>
+          <div class="insight-block__row">
+            <span class="insight-block__label">One move</span>
+            <p class="insight-block__copy">
+              Draft a simple &ldquo;if we were hit by a bus&rdquo; letter —
+              all accounts, advisers, key people. An hour of work that
+              saves months of distress.
+            </p>
+          </div>
+        </div>
+
+        <div class="insight-block">
+          <div class="insight-block__row">
+            <span class="insight-block__label">Insight</span>
+            <p class="insight-block__copy">
+              Your income is the asset that matters most before retirement —
+              and it&rsquo;s often the least protected.
+            </p>
+          </div>
+          <div class="insight-block__row">
+            <span class="insight-block__label">Context</span>
+            <p class="insight-block__copy">
+              A household relying on one or two incomes typically needs life
+              cover at 10&ndash;12x salary, and critical-illness cover at
+              3&ndash;5x, to replace income through a major event.
+            </p>
+          </div>
+          <div class="insight-block__row">
+            <span class="insight-block__label">One move</span>
+            <p class="insight-block__copy">
+              Check your employer&rsquo;s death-in-service and group income
+              protection before buying anything new — often the baseline is
+              surprisingly good.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="foot-chrome">
+        <div class="foot-chrome__left">
+          <span class="foot-chrome__num">05</span>
+          <span>A planner&rsquo;s read</span>
+        </div>
+        <div class="foot-chrome__right">
+          <a class="foot-chrome__url" href="https://www.realwealth.co.uk">www.realwealth.co.uk</a>
+          <img src="/real-wealth-logo-mark.svg" alt="" class="foot-chrome__mark" aria-hidden="true" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Let's talk -->
+    <section class="page" data-screen-label="06 Let's talk">
+      <div class="page__body">
+        <section class="section-title">
+          <h2 class="h-display">Your legacy, our responsibility.</h2>
+          <p class="body">
+            A planner reads every answer. There&rsquo;s no algorithm here —
+            just a human who&rsquo;ll bring this briefing to a first
+            conversation and start where you want to start.
+          </p>
+          <p class="body body--muted">
+            A free thirty-minute call. No preparation on your side. Either
+            we&rsquo;re a fit or we&rsquo;re not — you&rsquo;ll leave with
+            a clearer picture of where to look first either way.
+          </p>
+        </section>
+
+        <div class="lets-talk">
+          <h3 class="lets-talk__title">Let&rsquo;s <em>talk</em>.</h3>
+          <p class="lets-talk__lede">
+            Pick a time that suits you. We&rsquo;ll come ready — briefing
+            in hand.
+          </p>
+          <div class="lets-talk__cards">
+            <div class="contact-card">
+              <p class="contact-card__name">Mike Toole</p>
+              <p class="contact-card__role">Partner · Financial Planner</p>
+              <p class="contact-card__line">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                0161 768 7722
+              </p>
+              <p class="contact-card__line">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="m22 6-10 7L2 6"/></svg>
+                mike.toole@realwealth.co.uk
+              </p>
+            </div>
+            <div class="contact-card">
+              <p class="contact-card__name">John White</p>
+              <p class="contact-card__role">Partner · Financial Planner</p>
+              <p class="contact-card__line">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                0177 806 0083
+              </p>
+              <p class="contact-card__line">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="m22 6-10 7L2 6"/></svg>
+                john.white@realwealth.co.uk
+              </p>
+            </div>
+          </div>
+          <p class="lets-talk__url">www.realwealth.co.uk</p>
+        </div>
+      </div>
+
+      <div class="foot-chrome">
+        <div class="foot-chrome__left">
+          <span class="foot-chrome__num">06</span>
+          <span>Let&rsquo;s talk</span>
+        </div>
+        <div class="foot-chrome__right">
+          <a class="foot-chrome__url" href="https://www.realwealth.co.uk">www.realwealth.co.uk</a>
+          <img src="/real-wealth-logo-mark.svg" alt="" class="foot-chrome__mark" aria-hidden="true" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Back cover -->
+    <section class="page" data-screen-label="07 Back cover">
+      <div class="backcover">
+        <img src="/welcome-image.png" alt="" class="backcover__photo" aria-hidden="true" />
+        <div class="backcover__photo-overlay"></div>
+        <span class="coord backcover__coord">
+          <span class="coord__bracket"></span>
+          <span class="coord__text">53.483° N</span>
+          <span class="coord__text">-2.244° W</span>
+        </span>
+        <div class="backcover__block">
+          <img src="/real-wealth-logo-wordmark.svg" alt="Real Wealth" class="backcover__logo" />
+          <address class="backcover__address">
+            <strong>Real Wealth Partners Ltd</strong>
+            Office 1, First Floor, 14–18 Tib Lane<br />
+            Manchester, M2 4JB<br />
+            FRN 1037186 · Registered in England &amp; Wales · 16498380
+          </address>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

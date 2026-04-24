@@ -239,3 +239,22 @@ Override the base URL with `PLAYWRIGHT_BASE_URL=http://localhost:3001 npm run te
 ### Distress-indicator safeguard
 
 The Q2.4 "happy place" free-text answer is scanned client-side by `src/lib/safeguards/distress.ts` on data-capture submit. If the answer contains a phrase suggesting the user is in crisis (suicide ideation, self-harm, hopelessness, etc.), the user is routed to `/conversation/support` — a quiet, non-commercial page with Samaritans / MoneyHelper / NHS 111 signposts — instead of the sales-y summary. **This is a UX-level safeguard only.** A production deployment must also wire up server-side moderation on submit and a human review queue with escalation to a Vulnerable Customer Specialist under Consumer Duty.
+
+---
+
+## Report routes
+
+The 9-page Compass report is rendered across three routes depending on the audience:
+
+| Route | Purpose |
+|-------|---------|
+| `/report/master/[segment]` | Production-shaped 9-page report for one of the 9 segments (`S1`..`S9`). Cover → Snapshot → Planning grid + Goals → Projection + CTA → Narrative (5-7) → Next step → Methodology. SSG-rendered; pages 02, 03, 09 are fully content-driven from `content/pdf-report/`; pages 05-07 are deliberate placeholders until the narrative components land. Index page at `/report/master`. |
+| `/report/master-fields` | Debug / field-map view of the same 9 pages. Content slots render as their data-field paths (e.g. `{view.headline.title}`) instead of copy, so you can eyeball which source drives each slot. Engine-driven numbers (gauge %, totals, chart) still render at real values. Uses S2 band values. |
+| `/conversation/summary` | Live summary page. Server-component wrapper pre-renders one `CompassReportSection` per segment, `SummaryClient.tsx` embeds the correct one inline after the email-unlock considered-list. The page entry is Phase 1B of the PDF-report plan. |
+
+Preview-only routes (dev/design agents, not linked from the live site):
+
+- `/report/compass-preview` — tab-picker for all 9 segments. Client-side.
+- `/report/compass-client-view/[segment]` — clean client-facing view without dev chrome.
+
+Plan docs: see `Lead Magnet App/MASTER_REPORT_PLAN.md` for the page-by-page data contract, and `Lead Magnet App/PHASE_1_NOTES.md` for the feature-branch history.

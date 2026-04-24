@@ -156,6 +156,19 @@
   }
 }
 
+/* Welcome-back line — only rendered when a returning visitor has a
+   first name on their stored session. Small quiet caption above the
+   marketing headline; do not compete with it. */
+.welcomeBack {
+  font-family: var(--font-body);
+  font-size: var(--fs-small);
+  font-weight: 500;
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0 0 var(--space-sm);
+}
+
 /* Display headline — gelica italic, the realwealth.co.uk signature.
    Renders the headline as the start of a sentence; CSS adds the italic
    "voice" without needing to alter copy. */

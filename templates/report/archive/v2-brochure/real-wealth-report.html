@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Your Real Wealth Report — {{first_name}}</title>
+  <link rel="stylesheet" href="./report.css" />
+</head>
+<body>
+  <!--
+    Real Wealth Wealth Report — HTML template.
+    Restyle of the "Nearing retirement IFAs" brochure (Feb 2026):
+    deep forest-green cover, cream content pages, serif italic section
+    heads in teal, circular alternating-colour icons, navy closing
+    panel, full-bleed back cover.
+
+    Placeholder tokens use {{mustache}} style for substitution:
+      {{first_name}}        — customer first name
+      {{report_date}}       — e.g. "23rd April 2026"
+      {{prepared_by}}       — e.g. "Real Wealth · Manchester"
+      {{reading_time}}      — e.g. "6 minutes"
+      {{coord_*}}           — geographic coordinate pairs per page
+      {{snapshot_*}}        — three snapshot stats
+      {{aspiration_quote}}  — Q2.4 user's own words
+      {{five_items_N_*}}    — five considered-list items
+      {{silent_gaps_N_*}}   — four silent gaps
+      {{theme_N_*}}         — three insight / context / one-move blocks
+      {{planner_name}}      — planner name + phone + email for the CTA
+      {{booking_url}}       — Calendly / scheduling link
+  -->
+
+  <!-- Print helper (hidden in PDF) -->
+  <div class="print-controls">
+    <button type="button" onclick="window.print()">Print / Save PDF</button>
+  </div>
+
+  <!-- Shared SVG defs. Two clip paths:
+       - #rw-cover-leaf: large organic curve for the cover image
+         (sharp top corners, curved bottom dipping down-right)
+       - #rw-header-leaf: gentler version for content-page image
+         headers (subtle curve on the bottom-right) -->
+  <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;">
+    <defs>
+      <clipPath id="rw-cover-leaf" clipPathUnits="objectBoundingBox">
+        <path d="M 0 0 L 1 0 L 1 0.82 C 0.74 0.97 0.42 1 0.16 0.94 C 0.06 0.91 0 0.82 0 0.74 L 0 0 Z" />
+      </clipPath>
+      <clipPath id="rw-header-leaf" clipPathUnits="objectBoundingBox">
+        <path d="M 0 0 L 1 0 L 1 0.84 C 0.78 0.98 0.42 1 0.16 0.94 C 0.06 0.91 0 0.84 0 0.76 L 0 0 Z" />
+      </clipPath>
+    </defs>
+  </svg>
+
+  <div class="doc">
+    <!-- ============================================================= -->
+    <!-- Page 1 — Cover                                                  -->
+    <!-- ============================================================= -->
+    <section class="page" data-screen-label="01 Cover">
+      <div class="cover">
+        <!-- Full-width masked image at the top. The clip-path leaves
+             a curved cutout on the bottom-right so the forest-green
+             cover shows through below. -->
+        <figure class="cover__media">
+          <img
+            src="/welcome-image.png"
+            alt=""
+            class="cover__media-image"
+            aria-hidden="true"
+          />
+        </figure>
+
+        <!-- Coordinate marker — brand signature from the brochure -->
+        <span class="coord cover__coord" aria-hidden="true">
+          <span class="coord__bracket"></span>
+          <span class="coord__text">{{coord_cover_lat}}</span>
+          <span class="coord__text">{{coord_cover_lng}}</span>
+        </span>
+
+        <div class="cover__content">
+          <h1 class="cover__title">
+            Your Wealth Report, {{first_name}}.
+          </h1>
+          <p class="cover__tagline">
+            A thoughtful briefing from a planner — five things worth a
+            conversation, the quiet gaps we noticed, and where to look
+            first.
+          </p>
+          <div class="cover__meta-grid">
+            <div>
+              <span class="k">Prepared for</span>
+              <span class="v">{{first_name}}</span>
+            </div>
+            <div>
+              <span class="k">Prepared by</span>
+              <span class="v">{{prepared_by}}</span>
+            </div>
+            <div>
+              <span class="k">Reading time</span>
+              <span class="v">{{reading_time}}</span>
+            </div>
+          </div>
+        </div>
+
+        <img
+          src="/real-wealth-logo-wordmark.svg"
+          alt="Real Wealth"
+          class="cover__logo"
+        />
+      </div>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- Page 2 — Where you are (snapshot + aspiration)                  -->
+    <!-- ============================================================= -->
+    <section class="page" data-screen-label="02 Where you are">
+      <div class="page__body page__body--with-header">
+        <!-- Image header — small curve-masked photo + coordinate -->
+        <figure class="img-header img-header--small" aria-hidden="true">
+          <img
+            src="/welcome-image.png"
+            alt=""
+            class="img-header__photo"
+          />
+          <span class="coord" style="top:16px; right:24px;">
+            <span class="coord__bracket"></span>
+            <span class="coord__text">{{coord_page_2_lat}}</span>
+            <span class="coord__text">{{coord_page_2_lng}}</span>
+          </span>
+        </figure>
+
+        <section class="section-title">
+          <h2 class="h-display">A quick picture of what you told us.</h2>
+          <p class="body body--muted">
+            Ten minutes of questions, no forms. What follows is the shape
+            of your answers — and what a planner would want to understand
+            better over a short call.
+          </p>
+        </section>
+
+        <div class="snapshot">
+          <div class="snapshot__item">
+            <span class="snapshot__val">{{snapshot_stat_1_val}}</span>
+            <span class="snapshot__label">{{snapshot_stat_1_label}}</span>
+            <span class="snapshot__sub">{{snapshot_stat_1_sub}}</span>
+          </div>
+          <div class="snapshot__item">
+            <span class="snapshot__val">{{snapshot_stat_2_val}}</span>
+            <span class="snapshot__label">{{snapshot_stat_2_label}}</span>
+            <span class="snapshot__sub">{{snapshot_stat_2_sub}}</span>
+          </div>
+          <div class="snapshot__item">
+            <span class="snapshot__val">{{snapshot_stat_3_val}}</span>
+            <span class="snapshot__label">{{snapshot_stat_3_label}}</span>
+            <span class="snapshot__sub">{{snapshot_stat_3_sub}}</span>
+          </div>
+        </div>
+
+        <div class="two-col-with-quote">
+          <div>
+            <h3 class="h-sub">In your own words</h3>
+            <p class="body body--muted">{{section_aspiration_body}}</p>
+          </div>
+          <aside class="pull-quote-panel">
+            &ldquo;{{aspiration_quote}}&rdquo;
+          </aside>
+        </div>
+      </div>
+
+      <div class="foot-chrome">
+        <div class="foot-chrome__left">
+          <span class="foot-chrome__num">02</span>
+          <span>Where you are</span>
+        </div>
+        <div class="foot-chrome__right">
+          <a class="foot-chrome__url" href="https://www.realwealth.co.uk">www.realwealth.co.uk</a>
+          <img src="/real-wealth-logo-mark.svg" alt="" class="foot-chrome__mark" aria-hidden="true" />
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- Page 3 — Five things worth a conversation                       -->
+    <!-- Cream blob background + numbered icon list (alt teal/orange/navy)
+    -->
+    <section class="page" data-screen-label="03 Five things">
+      <div class="page__cream-blob"></div>
+      <div class="page__body">
+        <section class="section-title">
+          <h2 class="h-display">Five things worth a conversation.</h2>
+          <p class="body body--muted">
+            {{section_five_body}}
+          </p>
+        </section>
+
+        <ol class="icon-list">
+          <li class="icon-list__item">
+            <span class="icon-bubble icon-bubble--teal" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+            </span>
+            <div>
+              <h3 class="icon-list__title icon-list__title--teal">1. {{five_items_1_headline}}</h3>
+              <p class="icon-list__body">{{five_items_1_body}}</p>
+            </div>
+          </li>
+          <li class="icon-list__item">
+            <span class="icon-bubble icon-bubble--orange" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+            </span>
+            <div>
+              <h3 class="icon-list__title icon-list__title--orange">2. {{five_items_2_headline}}</h3>
+              <p class="icon-list__body">{{five_items_2_body}}</p>
+            </div>
+          </li>
+          <li class="icon-list__item">
+            <span class="icon-bubble icon-bubble--navy" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 6v6c0 5 3.5 9.5 8 10 4.5-.5 8-5 8-10V6z"/><path d="m9 12 2 2 4-4"/></svg>
+            </span>
+            <div>
+              <h3 class="icon-list__title icon-list__title--navy">3. {{five_items_3_headline}}</h3>
+              <p class="icon-list__body">{{five_items_3_body}}</p>
+            </div>
+          </li>
+          <li class="icon-list__item">
+            <span class="icon-bubble icon-bubble--teal" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M4 12h16M12 4v16"/></svg>
+            </span>
+            <div>
+              <h3 class="icon-list__title icon-list__title--teal">4. {{five_items_4_headline}}</h3>
+              <p class="icon-list__body">{{five_items_4_body}}</p>
+            </div>
+          </li>
+          <li class="icon-list__item">
+            <span class="icon-bubble icon-bubble--orange" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+            </span>
+            <div>
+              <h3 class="icon-list__title icon-list__title--orange">5. {{five_items_5_headline}}</h3>
+              <p class="icon-list__body">{{five_items_5_body}}</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+
+      <div class="foot-chrome">
+        <div class="foot-chrome__left">
+          <span class="foot-chrome__num">03</span>
+          <span>Five things</span>
+        </div>
+        <div class="foot-chrome__right">
+          <a class="foot-chrome__url" href="https://www.realwealth.co.uk">www.realwealth.co.uk</a>
+          <img src="/real-wealth-logo-mark.svg" alt="" class="foot-chrome__mark" aria-hidden="true" />
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- Page 4 — Silent gaps                                            -->
+    <!-- Image header + two-column numbered list                         -->
+    <section class="page" data-screen-label="04 Silent gaps">
+      <div class="page__body page__body--with-header">
+        <figure class="img-header" aria-hidden="true">
+          <img
+            src="/welcome-image.png"
+            alt=""
+            class="img-header__photo"
+          />
+          <span class="coord" style="top:16px; right:24px;">
+            <span class="coord__bracket"></span>
+            <span class="coord__text">{{coord_page_4_lat}}</span>
+            <span class="coord__text">{{coord_page_4_lng}}</span>
+          </span>
+        </figure>
+
+        <section class="section-title">
+          <h2 class="h-display">Things we didn&rsquo;t ask — but noticed.</h2>
+          <p class="body body--muted">{{section_silent_gaps_body}}</p>
+        </section>
+
+        <ul class="silent-list">
+          <li class="silent-list__item">
+            <span class="silent-list__num">01</span>
+            <h3 class="silent-list__title">{{silent_gaps_1_headline}}</h3>
+            <p class="silent-list__body">{{silent_gaps_1_body}}</p>
+          </li>
+          <li class="silent-list__item">
+            <span class="silent-list__num">02</span>
+            <h3 class="silent-list__title">{{silent_gaps_2_headline}}</h3>
+            <p class="silent-list__body">{{silent_gaps_2_body}}</p>
+          </li>
+          <li class="silent-list__item">
+            <span class="silent-list__num">03</span>
+            <h3 class="silent-list__title">{{silent_gaps_3_headline}}</h3>
+            <p class="silent-list__body">{{silent_gaps_3_body}}</p>
+          </li>
+          <li class="silent-list__item">
+            <span class="silent-list__num">04</span>
+            <h3 class="silent-list__title">{{silent_gaps_4_headline}}</h3>
+            <p class="silent-list__body">{{silent_gaps_4_body}}</p>
+          </li>
+        </ul>
+      </div>
+
+      <div class="foot-chrome">
+        <div class="foot-chrome__left">
+          <span class="foot-chrome__num">04</span>
+          <span>Silent gaps</span>
+        </div>
+        <div class="foot-chrome__right">
+          <a class="foot-chrome__url" href="https://www.realwealth.co.uk">www.realwealth.co.uk</a>
+          <img src="/real-wealth-logo-mark.svg" alt="" class="foot-chrome__mark" aria-hidden="true" />
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- Page 5 — Planner's read (insight / context / one move)          -->
+    <!-- ============================================================= -->
+    <section class="page" data-screen-label="05 Planner's read">
+      <div class="page__body">
+        <section class="section-title">
+          <h2 class="h-display">A planner&rsquo;s read — three lenses.</h2>
+          <p class="body body--muted">
+            This isn&rsquo;t advice yet — it&rsquo;s the shape of a first
+            conversation. Each block is something a planner would want to
+            understand before suggesting anything specific.
+          </p>
+        </section>
+
+        <div class="insight-block">
+          <div class="insight-block__row">
+            <span class="insight-block__label">Insight</span>
+            <p class="insight-block__copy">{{theme_1_insight}}</p>
+          </div>
+          <div class="insight-block__row">
+            <span class="insight-block__label">Context</span>
+            <p class="insight-block__copy">{{theme_1_context}}</p>
+          </div>
+          <div class="insight-block__row">
+            <span class="insight-block__label">One move</span>
+            <p class="insight-block__copy">{{theme_1_tip}}</p>
+          </div>
+        </div>
+
+        <div class="insight-block">
+          <div class="insight-block__row">
+            <span class="insight-block__label">Insight</span>
+            <p class="insight-block__copy">{{theme_2_insight}}</p>
+          </div>
+          <div class="insight-block__row">
+            <span class="insight-block__label">Context</span>
+            <p class="insight-block__copy">{{theme_2_context}}</p>
+          </div>
+          <div class="insight-block__row">
+            <span class="insight-block__label">One move</span>
+            <p class="insight-block__copy">{{theme_2_tip}}</p>
+          </div>
+        </div>
+
+        <div class="insight-block">
+          <div class="insight-block__row">
+            <span class="insight-block__label">Insight</span>
+            <p class="insight-block__copy">{{theme_3_insight}}</p>
+          </div>
+          <div class="insight-block__row">
+            <span class="insight-block__label">Context</span>
+            <p class="insight-block__copy">{{theme_3_context}}</p>
+          </div>
+          <div class="insight-block__row">
+            <span class="insight-block__label">One move</span>
+            <p class="insight-block__copy">{{theme_3_tip}}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="foot-chrome">
+        <div class="foot-chrome__left">
+          <span class="foot-chrome__num">05</span>
+          <span>A planner&rsquo;s read</span>
+        </div>
+        <div class="foot-chrome__right">
+          <a class="foot-chrome__url" href="https://www.realwealth.co.uk">www.realwealth.co.uk</a>
+          <img src="/real-wealth-logo-mark.svg" alt="" class="foot-chrome__mark" aria-hidden="true" />
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- Page 6 — Let's talk (closing + navy CTA panel)                 -->
+    <!-- ============================================================= -->
+    <section class="page" data-screen-label="06 Let's talk">
+      <div class="page__body">
+        <section class="section-title">
+          <h2 class="h-display">Your legacy, our responsibility.</h2>
+          <p class="body">
+            A planner reads every answer. There&rsquo;s no algorithm here —
+            just a human who&rsquo;ll bring this briefing to a first
+            conversation and start where you want to start.
+          </p>
+          <p class="body body--muted">
+            A free thirty-minute call. No preparation on your side. Either
+            we&rsquo;re a fit or we&rsquo;re not — you&rsquo;ll leave with
+            a clearer picture of where to look first either way.
+          </p>
+        </section>
+
+        <div class="lets-talk">
+          <h3 class="lets-talk__title">Let&rsquo;s <em>talk</em>.</h3>
+          <p class="lets-talk__lede">
+            Pick a time that suits you. We&rsquo;ll come ready — briefing
+            in hand.
+          </p>
+          <div class="lets-talk__cards">
+            <div class="contact-card">
+              <p class="contact-card__name">{{planner_1_name}}</p>
+              <p class="contact-card__role">{{planner_1_role}}</p>
+              <p class="contact-card__line">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                {{planner_1_phone}}
+              </p>
+              <p class="contact-card__line">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="m22 6-10 7L2 6"/></svg>
+                {{planner_1_email}}
+              </p>
+            </div>
+            <div class="contact-card">
+              <p class="contact-card__name">{{planner_2_name}}</p>
+              <p class="contact-card__role">{{planner_2_role}}</p>
+              <p class="contact-card__line">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                {{planner_2_phone}}
+              </p>
+              <p class="contact-card__line">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="m22 6-10 7L2 6"/></svg>
+                {{planner_2_email}}
+              </p>
+            </div>
+          </div>
+          <p class="lets-talk__url">www.realwealth.co.uk</p>
+        </div>
+      </div>
+
+      <div class="foot-chrome">
+        <div class="foot-chrome__left">
+          <span class="foot-chrome__num">06</span>
+          <span>Let&rsquo;s talk</span>
+        </div>
+        <div class="foot-chrome__right">
+          <a class="foot-chrome__url" href="https://www.realwealth.co.uk">www.realwealth.co.uk</a>
+          <img src="/real-wealth-logo-mark.svg" alt="" class="foot-chrome__mark" aria-hidden="true" />
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- Page 7 — Back cover (full-bleed image + logo + address)         -->
+    <!-- ============================================================= -->
+    <section class="page" data-screen-label="07 Back cover">
+      <div class="backcover">
+        <img src="/welcome-image.png" alt="" class="backcover__photo" aria-hidden="true" />
+        <div class="backcover__photo-overlay"></div>
+        <span class="coord backcover__coord">
+          <span class="coord__bracket"></span>
+          <span class="coord__text">{{coord_backcover_lat}}</span>
+          <span class="coord__text">{{coord_backcover_lng}}</span>
+        </span>
+        <div class="backcover__block">
+          <img src="/real-wealth-logo-wordmark.svg" alt="Real Wealth" class="backcover__logo" />
+          <address class="backcover__address">
+            <strong>Real Wealth Partners Ltd</strong>
+            Office 1, First Floor, 14–18 Tib Lane<br />
+            Manchester, M2 4JB<br />
+            FRN 1037186 · Registered in England &amp; Wales · 16498380
+          </address>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

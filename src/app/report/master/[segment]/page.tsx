@@ -26,7 +26,7 @@
 
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
-import { FIXTURES, fixtureById, buildReport } from '@/lib/compass';
+import { FIXTURES, fixtureById, buildReport, scoreAllTiles } from '@/lib/compass';
 import { enrichSegmentView, loadMethodology, loadFiveThings } from '@/lib/compass/pdf-content';
 import { ReportView, PageFrame, CtaPanel, FiveThings } from '@/components/compass';
 import styles from './page.module.css';
@@ -59,11 +59,23 @@ export default async function MasterReport({
   if (!fixture) notFound();
 
   // Enrich the fixture with content-agent markdown at SSG time.
+  //
+  // In production this is a public, user-facing render path — every loader
+  // must reject draft / in_review content and throw loudly rather than ship
+  // unreviewed copy. In dev/staging the `requireApproved` flag is a no-op
+  // (see src/lib/content/compliance.ts) so authors can preview WIP markdown.
+  const requireApproved = process.env.NODE_ENV === 'production';
   const report = buildReport(fixture.inputs);
-  const enrichedView = enrichSegmentView(fixture.view, report.scores.targetCoveragePct);
+  const tileScores = scoreAllTiles(fixture.inputs, report);
+  const enrichedView = enrichSegmentView(
+    fixture.view,
+    report.scores.targetCoveragePct,
+    requireApproved,
+    tileScores,
+  );
   const enrichedFixture = { ...fixture, view: enrichedView };
 
-  const methodology = loadMethodology();
+  const methodology = loadMethodology(requireApproved);
   const fiveThings = loadFiveThings(enrichedView.awarenessCheckIds ?? []);
 
   const name = SEGMENT_NAMES[fixture.view.segmentId] ?? 'your plan';

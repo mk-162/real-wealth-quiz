@@ -40,11 +40,12 @@ Worth a conversation.
 | Folder | What's in here | When to edit |
 |---|---|---|
 | `pages/` | Homepage, data-capture, summary-page structure | When the structure or top-level copy of a page changes |
-| `screens/` | The questionnaire screens, one file per screen | When a question wording, option, or helper needs to change |
-| `awareness-checks/` | The 20 "something worth noticing" moments | When the stem or the three-body response copy changes |
+| `screens/` | The questionnaire screens, one file per screen | When a question wording, option, helper, or per-screen pullquote needs to change |
+| `awareness-checks/` | The 26 "something worth noticing" moments — short web copy | When the stem or the three-body response copy changes |
 | `provocations/` | The 24 quiet callouts triggered by answers | When a provocation headline/body needs a rewrite. **CFP + Compliance sign-off required before `compliance_status` can flip to `approved_to_ship`.** |
 | `segments/` | The 9 summary-page CTAs + 2 overlays | When a segment's closing call-to-action changes |
 | `microcopy/` | Errors, toasts, modals, meta, ARIA, emails | When small interstitial strings change |
+| `pdf-report/` | All copy for the multi-page PDF Wealth Report (Page 1 + Pages 2–4 + methodology) | See `pdf-report/README.md` for the full field dictionary — this folder has its own schema conventions |
 
 Each content subfolder now has its own `README.md` with the field dictionary for that folder. Start there if you need to know what a frontmatter key does before editing it.
 

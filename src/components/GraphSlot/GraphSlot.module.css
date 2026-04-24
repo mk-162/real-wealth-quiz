@@ -1,0 +1,106 @@
+.wrap {
+  padding: clamp(2rem, 4vw, 3rem) var(--gutter);
+  background: var(--paper);
+}
+
+.inner {
+  max-width: var(--container-max);
+  margin: 0 auto;
+}
+
+.eyebrow {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: var(--fs-micro);
+  font-weight: 500;
+  letter-spacing: var(--ls-wider);
+  text-transform: uppercase;
+  color: var(--brand-teal);
+  margin-bottom: var(--space-sm);
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(1.5rem, 2vw + 0.75rem, 2rem);
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  margin: 0 0 var(--space-sm);
+}
+
+.caption {
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: 1.55;
+  color: var(--ink-soft);
+  max-width: 60ch;
+  margin: 0 0 var(--space-lg);
+}
+
+.chart {
+  background: var(--paper-warm);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  min-height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Placeholder visual while the real chart is supplied by the team */
+.placeholder {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.placeholderBars {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  height: 180px;
+  width: 100%;
+  max-width: 540px;
+}
+
+.placeholderBar {
+  flex: 1;
+  background: var(--teal-tint-15);
+  border-radius: 4px;
+  animation: barGrow 700ms var(--ease-default) both;
+}
+
+.placeholderBar:nth-child(odd) {
+  background: var(--teal-tint-10);
+}
+
+.placeholderHint {
+  font-family: var(--font-body);
+  font-size: var(--fs-small);
+  color: var(--stone);
+  margin: 0;
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+}
+
+@keyframes barGrow {
+  from {
+    transform: scaleY(0);
+    transform-origin: bottom;
+  }
+  to {
+    transform: scaleY(1);
+    transform-origin: bottom;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .placeholderBar {
+    animation: none;
+  }
+}

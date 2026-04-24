@@ -185,6 +185,7 @@ function loadScreens(): Screen[] {
       ...fm.data,
       headline: body.headline,
       sub: body.sub,
+      pullquote: body.pullquote,
       body: body.body,
     });
   }

@@ -1,0 +1,1101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Compass Report — 9-Segment Mockup</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+<style>
+  html { scroll-behavior: smooth; }
+  body { font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  .tab-active { background:#0ea5e9; color:white; }
+  .page { page-break-after: always; }
+  .kicker { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color:#64748b; font-weight:600; }
+  .caveat-banner { background: linear-gradient(90deg,#fff7ed 0%,#fef3c7 100%); border-left: 4px solid #f59e0b; }
+  .example-pill { background:#dc2626; color:white; letter-spacing:0.1em; font-size:0.7rem; font-weight:700; padding:2px 8px; border-radius:9999px; }
+  .panel { background:white; border:1px solid #e2e8f0; border-radius:12px; }
+  .sparkbadge { display:inline-flex; align-items:center; gap:4px; font-weight:600; font-size:0.75rem; padding:2px 8px; border-radius:9999px; }
+  .hl-good  { background:#ecfdf5; color:#065f46; border:1px solid #a7f3d0; }
+  .hl-warn  { background:#fffbeb; color:#92400e; border:1px solid #fde68a; }
+  .hl-risk  { background:#fef2f2; color:#991b1b; border:1px solid #fecaca; }
+  .hl-info  { background:#eff6ff; color:#1e40af; border:1px solid #bfdbfe; }
+
+  /* Gauge */
+  .gauge { position: relative; padding: 6px 0 26px; }
+  .gauge-bar {
+    position: relative; height: 44px; border-radius: 8px; overflow: hidden;
+    background: linear-gradient(to right,
+      #fca5a5 0%, #fca5a5 46.67%,
+      #fcd34d 46.67%, #fcd34d 60%,
+      #6ee7b7 60%, #6ee7b7 76.67%,
+      #93c5fd 76.67%, #93c5fd 100%);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), inset 0 -1px 0 rgba(0,0,0,0.08);
+  }
+  .gauge-zone-label {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+    pointer-events:none;
+  }
+  .gauge-needle {
+    position: absolute; top: -6px; bottom: -6px; width: 3px;
+    background:#0f172a; border-radius: 2px; transform: translateX(-50%); z-index: 3;
+  }
+  .gauge-needle::before, .gauge-needle::after {
+    content:''; position:absolute; left:50%; transform:translateX(-50%);
+    width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent;
+  }
+  .gauge-needle::before { top:-2px; border-bottom: 8px solid #0f172a; }
+  .gauge-needle::after  { bottom:-2px; border-top: 8px solid #0f172a; }
+  .gauge-score-pill {
+    position: absolute; bottom: 100%; margin-bottom: 8px;
+    background:#0f172a; color:white; padding:4px 10px; border-radius: 6px;
+    font-weight: 800; font-size: 0.9rem; transform: translateX(-50%); white-space: nowrap; z-index: 4;
+  }
+  .gauge-score-pill::after {
+    content:''; position:absolute; top:100%; left:50%; transform:translateX(-50%);
+    border-left:5px solid transparent; border-right:5px solid transparent; border-top:5px solid #0f172a;
+  }
+  .gauge-ticks { position: relative; height: 20px; margin-top: 4px; }
+  .gauge-tick {
+    position: absolute; transform: translateX(-50%); font-size: 0.7rem; color:#64748b;
+  }
+
+  /* Planning grid tile */
+  .tile {
+    border: 1px solid #e2e8f0; border-radius: 10px; overflow: hidden; background:white;
+    display:flex; flex-direction:column; min-height: 96px;
+  }
+  .tile-band { height: 5px; }
+  .tile-body { padding: 8px 10px; display:flex; flex-direction:column; gap:2px; flex:1; }
+  .tile-label { font-size: 0.82rem; font-weight: 700; color:#0f172a; line-height: 1.2; }
+  .tile-status { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+  .tile-note { font-size: 0.72rem; color:#475569; line-height: 1.35; margin-top:2px; }
+  .tile-green  .tile-band { background:#10b981; } .tile-green  .tile-status { color:#047857; }
+  .tile-amber  .tile-band { background:#f59e0b; } .tile-amber  .tile-status { color:#b45309; }
+  .tile-red    .tile-band { background:#ef4444; } .tile-red    .tile-status { color:#b91c1c; }
+  .tile-grey   .tile-band { background:#cbd5e1; } .tile-grey   .tile-status { color:#475569; }
+
+  /* Goals matrix */
+  .goal-row {
+    display:grid; grid-template-columns: 1.5fr 2fr auto; gap: 12px;
+    padding: 12px 14px; border-bottom: 1px solid #f1f5f9; align-items: start;
+  }
+  .goal-row:last-child { border-bottom: none; }
+  .goal-title { font-weight: 600; color:#0f172a; font-size: 0.9rem; }
+  .goal-cap   { font-size: 0.82rem; color:#475569; line-height: 1.4; }
+  .badge {
+    display:inline-flex; align-items:center; gap:4px;
+    font-size: 0.7rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 9999px; white-space: nowrap;
+  }
+  .badge-green { background:#ecfdf5; color:#065f46; border:1px solid #a7f3d0; }
+  .badge-amber { background:#fffbeb; color:#92400e; border:1px solid #fde68a; }
+  .badge-red   { background:#fef2f2; color:#991b1b; border:1px solid #fecaca; }
+  .badge-grey  { background:#f1f5f9; color:#475569; border:1px solid #cbd5e1; }
+
+  /* Compact balance strip */
+  .bs-strip {
+    display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 0;
+    border:1px solid #e2e8f0; border-radius: 10px; overflow:hidden; background:white;
+  }
+  .bs-cell { padding: 12px 16px; border-right: 1px solid #e2e8f0; }
+  .bs-cell:last-child { border-right: none; background:#0ea5e9; color:white; }
+  .bs-cell .kicker { color:#64748b; }
+  .bs-cell:last-child .kicker { color:rgba(255,255,255,0.85); }
+  .bs-cell .num { font-size: 1.5rem; font-weight: 800; line-height: 1; margin-top: 2px; }
+
+  /* Chart legend for donut */
+  .donut-legend { font-size: 0.82rem; }
+  .donut-legend .sq { display:inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: middle; }
+</style>
+</head>
+<body class="bg-slate-100 text-slate-800">
+
+<!-- EXAMPLE ONLY TOP BANNER -->
+<div class="bg-red-600 text-white text-center py-2 text-sm font-semibold sticky top-0 z-50">
+  EXAMPLE ONLY — Illustrative projection built from banded answers. Not personalised financial advice. Speak to a qualified IFA for advice tailored to you.
+</div>
+
+<!-- NAV -->
+<header class="bg-white border-b border-slate-200 shadow-sm sticky top-9 z-40">
+  <div class="max-w-6xl mx-auto px-4 py-3">
+    <div class="flex items-center justify-between mb-3">
+      <div>
+        <div class="kicker">Compass — lead magnet PDF mockup</div>
+        <div class="text-lg font-semibold">Two-page report, 9 client-type variants</div>
+      </div>
+      <div class="text-xs text-slate-500 text-right">
+        Click a tab to switch segment. Each view shows Page 1 (snapshot) + Page 2 (projection).
+      </div>
+    </div>
+    <nav id="tabs" class="flex flex-wrap gap-2"></nav>
+  </div>
+</header>
+
+<main id="report-root" class="max-w-6xl mx-auto px-4 py-6 space-y-12"></main>
+
+<footer class="max-w-6xl mx-auto px-4 py-10 text-xs text-slate-500 border-t">
+  Mockup data. All figures illustrative. Assumptions: 2025/26 UK tax year, 6% nominal investment growth (balanced), 2.5% inflation, 2.5% cash growth, state pension £11,502 full rate from age 67, life expectancy 95. Health score target = stated retirement spend × 25, inflation-adjusted.
+</footer>
+
+<script>
+/* =====================================================================
+   SEGMENT DEFINITIONS
+   ===================================================================== */
+const SEGMENTS = [
+  {
+    id:'S1', label:'Early Accumulator', who:'Age 28 • £45k income • Solo',
+    persona:'Marcus — software engineer, renting, starting to save seriously.',
+    healthScore: 105, healthMode:'target',
+    healthInterpretation:'You are on track thanks to time. The biggest lever you can pull now is capturing your full employer pension match — one decision, 30+ years of compounding.',
+    balance:{
+      assets:{ property:0, business:0, pension:12000, savings:8000, investments:5000 },
+      liabilities:{ mortgages:0, personalLoans:0, creditCard:2200 },
+    },
+    chartInputs:{
+      age:28, retireAge:65, income:45000, spend:26000,
+      mortgagePmt:0, mortgageEnd:28, rent:14400,
+      cash:8000, isa:5000, gia:0, pension:12000,
+      monthlyContrib:250, pensionContribPct:0.08, statePensionAge:68,
+      growth:0.06,
+    },
+    grid:{
+      retirement:   { s:'green', n:'Projected to meet target at 65 with time on your side.' },
+      pension:      { s:'amber', n:'8% of income. Check employer match — it may be higher.' },
+      statePension: { s:'grey',  n:'Too early to know NI record.' },
+      investment:   { s:'amber', n:'Small pot, single wrapper. Diversification starts now.' },
+      tax:          { s:'green', n:'Basic-rate. ISA allowance partially used.' },
+      cash:         { s:'green', n:'£8k covers your essentials for 6+ months.' },
+      debt:         { s:'amber', n:'£2.2k credit card — clear before investing more.' },
+      mortgage:     { s:'grey',  n:'You rent — not applicable yet.' },
+      estate:       { s:'red',   n:'No will or LPA likely. Cheap to fix now.' },
+      iht:          { s:'green', n:'No exposure.' },
+      protection:   { s:'grey',  n:'Not asked. Worth a thought once dependents appear.' },
+      twelfth:      { s:'amber', n:'One employer — salary is your only income stream.', label:'Income mix' },
+    },
+    goals:[
+      { g:'Buy a home in 5 years',          c:'No deposit yet. £250/mo saving ramping up.', a:'amber' },
+      { g:'Comfortable retirement at 65',   c:'37 years of compounding does the heavy lifting.', a:'green' },
+      { g:'Build financial independence',   c:'Surplus growing; habits forming.', a:'green' },
+    ],
+    headline:{ tone:'good', title:'Time is your biggest asset — and you\'re using it lightly',
+      body:'On your current contribution rate you are on course for a workable retirement at 65. Nudging contributions up by a few percent now is worth more than every other decision you can make later.' },
+    bullets:[
+      { tone:'good',  text:'You have 37 years of compounding ahead — the single biggest lever in the chart.' },
+      { tone:'warn',  text:'Pension at £12k is light for age 28. Capturing any employer match above 3% is the cheapest upgrade you can make.' },
+      { tone:'info',  text:'Your ISA becomes the bridge to age 57 when pension unlocks — keep it liquid and invested.' },
+      { tone:'risk',  text:'Renting + no property equity shifts the "safe spend" line down in later life. Modelled as rent through retirement.' },
+    ],
+    nextSteps:[
+      'Check your employer pension match — request the max from HR.',
+      'Automate a £50/month ISA top-up for one year, re-evaluate.',
+      'Set a 35-year NI record goal — check gaps on gov.uk.',
+    ],
+  },
+
+  {
+    id:'S2', label:'Mass-Affluent Mid-Career', who:'Age 42 • £75k • Partner + kids',
+    persona:'Sarah — senior manager, mortgaged home, two children.',
+    healthScore: 88, healthMode:'target',
+    healthInterpretation:'Slightly below target. Lifting pension contribution from 12% to 15% plus redirecting freed mortgage payment at 58 closes the gap entirely.',
+    balance:{
+      assets:{ property:450000, business:0, pension:95000, savings:15000, investments:28000 },
+      liabilities:{ mortgages:180000, personalLoans:0, creditCard:3500 },
+    },
+    chartInputs:{
+      age:42, retireAge:62, income:75000, spend:48000,
+      mortgagePmt:14400, mortgageEnd:58, rent:0,
+      cash:15000, isa:28000, gia:0, pension:95000,
+      monthlyContrib:300, pensionContribPct:0.12, statePensionAge:67,
+      growth:0.06,
+    },
+    grid:{
+      retirement:   { s:'amber', n:'At 88% of target — within reach, not yet secured.' },
+      pension:      { s:'amber', n:'£95k is ~£180k behind a typical 42yo target.' },
+      statePension: { s:'amber', n:'~20 years NI built. 15 more needed for full.' },
+      investment:   { s:'green', n:'ISA + pension — diversified enough for now.' },
+      tax:          { s:'green', n:'Basic + higher rate; allowances being used.' },
+      cash:         { s:'amber', n:'£15k vs ~£24k ideal for household of 4.' },
+      debt:         { s:'amber', n:'£3.5k CC — clear this year.' },
+      mortgage:     { s:'green', n:'On track to clear at age 58.' },
+      estate:       { s:'red',   n:'Children + likely no will is the biggest flag.' },
+      iht:          { s:'green', n:'Below thresholds currently.' },
+      protection:   { s:'red',   n:'Dependents without cover is a material risk.' },
+      twelfth:      { s:'amber', n:'Single household earner carries concentration risk.', label:'Income mix' },
+    },
+    goals:[
+      { g:'Fund university for two kids',   c:'~£90k needed. Current surplus ~£8k/yr.', a:'amber' },
+      { g:'Pay off mortgage by 58',         c:'On current schedule — £1,200/mo stream freed.', a:'green' },
+      { g:'Retire at 62 comfortably',       c:'88% of target — close, not guaranteed.', a:'amber' },
+      { g:'Recession-proof family finances',c:'Cash buffer thin; no protection in place.', a:'amber' },
+    ],
+    headline:{ tone:'warn', title:'On track — but the mortgage cliff at 58 is the pivot',
+      body:'When the mortgage clears, ~£1,200/month of freed cash flow decides your retirement comfort. Committing that surplus before it arrives is the single biggest lever.' },
+    bullets:[
+      { tone:'good',  text:'Comfortable retirement at 62 is achievable on current trajectory.' },
+      { tone:'warn',  text:'Pension balance is roughly £180k below a typical age-42 on-track figure.' },
+      { tone:'info',  text:'Mortgage ends at age 58 — chart shows a step-up in saveable income from that year.' },
+      { tone:'risk',  text:'School fees, big family spend years, and career breaks not modelled here. These can shave 3-5 years off the runway.' },
+    ],
+    nextSteps:[
+      'Set a diary note for age 57 to redirect the full mortgage payment into pension/ISA.',
+      'Consider a one-off ISA top-up from savings above £10k emergency buffer.',
+      'Check partner\'s pension — household-level planning usually adds 10-15% to retirement income.',
+    ],
+  },
+
+  {
+    id:'S3', label:'High-Earner Mid-Career', who:'Age 45 • £150k • Partner',
+    persona:'James — director at a tech company, two properties, ambitious plans.',
+    healthScore: 124, healthMode:'target',
+    healthInterpretation:'Above target. Your biggest unused lever is not returns — it\'s tax. Salary-sacrifice within the £100-125k band pays back at an effective 60% marginal rate.',
+    balance:{
+      assets:{ property:800000, business:0, pension:220000, savings:30000, investments:125000 },
+      liabilities:{ mortgages:380000, personalLoans:0, creditCard:0 },
+    },
+    chartInputs:{
+      age:45, retireAge:60, income:150000, spend:72000,
+      mortgagePmt:21600, mortgageEnd:60, rent:0,
+      cash:30000, isa:85000, gia:40000, pension:220000,
+      monthlyContrib:800, pensionContribPct:0.14, statePensionAge:67,
+      growth:0.06,
+    },
+    grid:{
+      retirement:   { s:'green', n:'124% of target — strong margin.' },
+      pension:      { s:'amber', n:'14% is decent, but not enough to offset £100k trap.' },
+      statePension: { s:'green', n:'20+ years NI likely — on track for full.' },
+      investment:   { s:'green', n:'ISA + GIA + Pension — properly diversified.' },
+      tax:          { s:'red',   n:'£100k–£125k trap active: effective 60% rate.' },
+      cash:         { s:'green', n:'£30k covers 5+ months of spend.' },
+      debt:         { s:'green', n:'No non-mortgage debt.' },
+      mortgage:     { s:'amber', n:'£380k high but serviceable; clears at 60.' },
+      estate:       { s:'amber', n:'Will likely in place; LPA often missed.' },
+      iht:          { s:'amber', n:'Growth trajectory enters IHT territory by age 72.' },
+      protection:   { s:'red',   n:'Cover likely under-matched to this income level.' },
+      twelfth:      { s:'amber', n:'High earnings from one employer — concentration.', label:'Income mix' },
+    },
+    goals:[
+      { g:'Retire at 60 with £90k/yr spend', c:'Projected liquid ~£2.1m at 60.', a:'green' },
+      { g:'Minimise tax drag',               c:'60% marginal rate in £100-125k band — unaddressed.', a:'red' },
+      { g:'Fund children\'s adulthood',       c:'Capacity available; tax-efficient routes exist.', a:'green' },
+      { g:'Leave meaningful legacy',         c:'On track, though IHT drag will grow.', a:'amber' },
+    ],
+    headline:{ tone:'risk', title:'The £100k–£125k tax trap is active — and costing you',
+      body:'Every £1 of income between £100k and £125k is taxed at an effective 60%. Salary-sacrifice into pension within this band is the highest-value contribution available anywhere in UK tax.' },
+    bullets:[
+      { tone:'risk',  text:'£100k tax trap: you lose £1 of Personal Allowance for every £2 earned over £100k — effective rate hits 60%.' },
+      { tone:'good',  text:'At 60, liquid wealth projects to ~£2.1m — roughly £90k/yr "safe" drawdown for 35 years.' },
+      { tone:'warn',  text:'Estate growth trajectory enters inheritance-tax territory around age 72 at current rates.' },
+      { tone:'info',  text:'Pension annual allowance taper may apply if total income > £260k — worth checking employer contributions.' },
+    ],
+    nextSteps:[
+      'Move bonus + income above £100k into pension via salary sacrifice if available.',
+      'Use full £20k ISA allowance and £3,000 CGT allowance each year.',
+      'Review whether a VCT or EIS has a place in your mix — tax-led, not return-led.',
+    ],
+  },
+
+  {
+    id:'S4', label:'Senior Professional', who:'Age 55 • £200k • Close to retirement',
+    persona:'Diane — partner at a consulting firm, five years from a planned exit.',
+    healthScore: 142, healthMode:'target',
+    healthInterpretation:'Comfortably above target. The question is no longer "will the money last" — it\'s "what happens to the surplus". Drawdown order and IHT planning become the story.',
+    balance:{
+      assets:{ property:1200000, business:0, pension:650000, savings:80000, investments:270000 },
+      liabilities:{ mortgages:150000, personalLoans:0, creditCard:0 },
+    },
+    chartInputs:{
+      age:55, retireAge:60, income:200000, spend:95000,
+      mortgagePmt:18000, mortgageEnd:60, rent:0,
+      cash:80000, isa:180000, gia:90000, pension:650000,
+      monthlyContrib:1500, pensionContribPct:0.18, statePensionAge:67,
+      growth:0.06,
+    },
+    grid:{
+      retirement:   { s:'green', n:'142% of target — strong buffer.' },
+      pension:      { s:'green', n:'18% contribution, £650k pot. Solid.' },
+      statePension: { s:'green', n:'30+ NI years — full expected.' },
+      investment:   { s:'green', n:'Well-diversified across wrappers.' },
+      tax:          { s:'amber', n:'Higher-rate still — carry-forward pension + CGT worth reviewing.' },
+      cash:         { s:'green', n:'£80k — 10+ months of cover.' },
+      debt:         { s:'green', n:'No non-mortgage debt.' },
+      mortgage:     { s:'green', n:'Clears at 60 — aligned to retirement.' },
+      estate:       { s:'amber', n:'Will likely yes; LPA often missed at this stage.' },
+      iht:          { s:'red',   n:'£2m+ liquid + £1.2m home = material IHT liability by 75.' },
+      protection:   { s:'amber', n:'Relevant until retirement; review cover levels.' },
+      twelfth:      { s:'green', n:'Senior tenure; consulting income diversified.', label:'Income mix' },
+    },
+    goals:[
+      { g:'Retire at 60',                    c:'Projected £1.4m liquid + pension accessible.', a:'green' },
+      { g:'Travel extensively (£20k/yr)',    c:'Well within budget at projected drawdown.', a:'green' },
+      { g:'Leave £1m to children',           c:'On current path — but IHT will take a large bite.', a:'amber' },
+      { g:'Support ageing parents',          c:'Capacity clearly available.', a:'green' },
+    ],
+    headline:{ tone:'good', title:'Five years to peak — then drawdown order matters',
+      body:'On current trajectory you can sustain a £120k/yr lifestyle to age 95 with a buffer. What changes that is not return — it\'s the order you draw from ISA / GIA / Pension, and the IHT wrapper you leave behind.' },
+    bullets:[
+      { tone:'good',  text:'Retirement at 60 fully feasible; current liquid + pension accessible at 60 ~£1.4m.' },
+      { tone:'info',  text:'Drawdown order matters: ISA and GIA first leaves the pension intact (outside estate for IHT).' },
+      { tone:'warn',  text:'Mortgage clears at 60 — don\'t redirect that £1,500/mo into cash; the chart assumes it goes to investments.' },
+      { tone:'risk',  text:'£1.2m home + £2m+ liquid estate means IHT exposure by age 75 on current growth without planning.' },
+    ],
+    nextSteps:[
+      'Max pension annual allowance before retirement (60k) — carry-forward the last 3 years if possible.',
+      'Stress-test cash flow at 4% return (not 6%) — see if the retirement age still holds.',
+      'Start the IHT conversation now while options (PETs, trusts, gifting) have time to work.',
+    ],
+  },
+
+  {
+    id:'S5', label:'Business Owner Growth', who:'Age 48 • Business ~£500k • No exit plan yet',
+    persona:'Rob — runs a niche engineering firm, pays himself a mix of salary and dividends.',
+    healthScore: 78, healthMode:'target',
+    healthInterpretation:'This score depends entirely on the business. An exit at today\'s valuation adds ~30 points. No exit subtracts ~20. It is your single biggest variable, not on this page.',
+    balance:{
+      assets:{ property:700000, business:500000, pension:120000, savings:60000, investments:40000 },
+      liabilities:{ mortgages:250000, personalLoans:0, creditCard:0 },
+    },
+    chartInputs:{
+      age:48, retireAge:60, income:95000, spend:62000,
+      mortgagePmt:18000, mortgageEnd:62, rent:0,
+      cash:60000, isa:40000, gia:0, pension:120000,
+      monthlyContrib:400, pensionContribPct:0.08, statePensionAge:67,
+      businessValue:500000, growth:0.06,
+      extraAt:{age:60, amount:400000},
+    },
+    grid:{
+      retirement:   { s:'amber', n:'Depends on exit. Standalone pension + ISA would give Red.' },
+      pension:      { s:'red',   n:'£120k is ~£230k behind a typical 48yo target.' },
+      statePension: { s:'amber', n:'Mixed Class 2/4 record — worth a formal check.' },
+      investment:   { s:'red',   n:'45% of net worth in one illiquid business.' },
+      tax:          { s:'amber', n:'Dividend/salary mix could be optimised.' },
+      cash:         { s:'green', n:'£60k — healthy personal buffer.' },
+      debt:         { s:'green', n:'No non-mortgage personal debt.' },
+      mortgage:     { s:'amber', n:'£250k, clears 62. Serviceable but linked to business income.' },
+      estate:       { s:'red',   n:'Shareholder agreement + cross-option likely missing.' },
+      iht:          { s:'amber', n:'Business Property Relief may apply — untested without planning.' },
+      protection:   { s:'red',   n:'Key-person + shareholder protection rarely in place here.' },
+      twelfth:      { s:'red',   n:'No documented exit plan. Biggest single lever.', label:'Business exit' },
+    },
+    goals:[
+      { g:'Exit at 60 for £500k+ net',        c:'No exit plan; valuation unanchored.', a:'red' },
+      { g:'Pay off mortgage by 62',           c:'On track given current personal income.', a:'green' },
+      { g:'Fund children through uni',        c:'Possible if personal wealth grows alongside business.', a:'amber' },
+      { g:'Independence from the business',   c:'Personal pot is thin — you are the business.', a:'red' },
+    ],
+    headline:{ tone:'risk', title:'Your business is 45% of your net worth — but it\'s not in the chart',
+      body:'Personal pension and ISA are light because the business has been the preferred vehicle. An exit is the single decision that most changes this chart. Planning for it 3+ years ahead is the difference between 10% CGT and 24%.' },
+    bullets:[
+      { tone:'risk',  text:'45% of net worth is illiquid, unvalued in this chart, and worth whatever a buyer decides.' },
+      { tone:'warn',  text:'Personal pension at £120k is behind a typical 48-year-old — you\'ve been paying yourself in dividends, not pension.' },
+      { tone:'info',  text:'Business Asset Disposal Relief caps CGT at 10% on the first £1m of gain — worth ~£140k vs standard CGT.' },
+      { tone:'good',  text:'An exit in 12 years at £500k (today\'s value) shifts the chart up by ~£400k from age 60 onwards.' },
+    ],
+    nextSteps:[
+      'Get an informal business valuation annually — you need a number in this chart, not a guess.',
+      'Start drawing a pension even if dividend-heavy — annual allowance otherwise evaporates.',
+      'Model three exit scenarios: BADR-qualifying sale, EOT, or trade sale. All three move this chart differently.',
+    ],
+  },
+
+  {
+    id:'S6', label:'Business Owner Exit', who:'Age 58 • Exiting in ~3 years',
+    persona:'Elena — building the business up for a trade sale, most decisions are exit-shaped.',
+    healthScore: 128, healthMode:'target',
+    healthInterpretation:'On track if the exit executes. Structure — BADR qualifying, earn-out sequencing, pension contributions around sale year — is worth six figures in tax saved.',
+    balance:{
+      assets:{ property:850000, business:1200000, pension:280000, savings:150000, investments:110000 },
+      liabilities:{ mortgages:80000, personalLoans:0, creditCard:0 },
+    },
+    chartInputs:{
+      age:58, retireAge:61, income:120000, spend:78000,
+      mortgagePmt:9600, mortgageEnd:63, rent:0,
+      cash:150000, isa:110000, gia:0, pension:280000,
+      monthlyContrib:1200, pensionContribPct:0.15, statePensionAge:67,
+      growth:0.06,
+      extraAt:{age:61, amount:1080000},
+    },
+    grid:{
+      retirement:   { s:'green', n:'128% of target if exit closes at plan.' },
+      pension:      { s:'amber', n:'£280k — catch-up contributions before exit year matter.' },
+      statePension: { s:'green', n:'Long NI record.' },
+      investment:   { s:'amber', n:'Pre-exit concentration is expected; post-exit allocation is next.' },
+      tax:          { s:'green', n:'BADR planning likely in place — worth ~£140k.' },
+      cash:         { s:'green', n:'£150k — very healthy.' },
+      debt:         { s:'green', n:'None.' },
+      mortgage:     { s:'green', n:'£80k balance, clears 63.' },
+      estate:       { s:'amber', n:'Will yes; trust + LPA worth checking.' },
+      iht:          { s:'amber', n:'Estate steps up post-sale — plan before, not after.' },
+      protection:   { s:'amber', n:'Key-person still matters until handover complete.' },
+      twelfth:      { s:'green', n:'Documented exit plan with timeline.', label:'Business exit' },
+    },
+    goals:[
+      { g:'Execute clean exit at BADR rate',   c:'Plan in place; structure worth ~£140k in tax.', a:'green' },
+      { g:'£80k/yr retirement spend',          c:'Post-exit capacity comfortably covers.', a:'green' },
+      { g:'Provide for grandchildren',         c:'Clear capacity post-exit.', a:'green' },
+      { g:'Successor transition (family vs ext.)',c:'Often unresolved until close to the deal.', a:'amber' },
+    ],
+    headline:{ tone:'good', title:'The exit in ~3 years is the defining event on this chart',
+      body:'How you structure it — BADR-qualifying, earn-out tranches, pension contributions sequenced around the sale year — is worth more than every investment return decision combined.' },
+    bullets:[
+      { tone:'good',  text:'Post-exit wealth (~£1m+ liquid) supports an £80k/yr lifestyle to 95 with comfort.' },
+      { tone:'info',  text:'BADR: 10% CGT on the first £1m of gain — saves ~£140k vs standard 24%.' },
+      { tone:'warn',  text:'Annual allowance resets each April — sequencing contributions before the exit year adds to tax efficiency.' },
+      { tone:'risk',  text:'Post-sale, your entire wealth shifts from "business" to "investments" — asset-allocation decisions get much more consequential.' },
+    ],
+    nextSteps:[
+      'Lock in the sale structure before signing — tax treatment depends on it.',
+      'Use every year\'s pension allowance up to the exit date — it disappears after you stop earning.',
+      'Line up the post-exit asset allocation now. Going to cash for "safety" could cost you £300k over the next 30 years.',
+    ],
+  },
+
+  {
+    id:'S7', label:'Pre-Retiree Affluent', who:'Age 63 • 18 months to retirement',
+    persona:'Paul — winding down from a corporate career, mortgage paid, pensions mature.',
+    healthScore: 135, healthMode:'target',
+    healthInterpretation:'Above target. The accumulation conversation is finished; sequencing — which pot, which year, which wrapper — is the next 18 months of planning.',
+    balance:{
+      assets:{ property:650000, business:0, pension:480000, savings:120000, investments:300000 },
+      liabilities:{ mortgages:0, personalLoans:0, creditCard:0 },
+    },
+    chartInputs:{
+      age:63, retireAge:65, income:90000, spend:58000,
+      mortgagePmt:0, mortgageEnd:63, rent:0,
+      cash:120000, isa:220000, gia:80000, pension:480000,
+      monthlyContrib:1500, pensionContribPct:0.12, statePensionAge:67,
+      growth:0.055,
+    },
+    grid:{
+      retirement:   { s:'green', n:'135% of target — strong position.' },
+      pension:      { s:'green', n:'£480k + 12% ongoing contribution.' },
+      statePension: { s:'green', n:'Full expected in 4 years.' },
+      investment:   { s:'green', n:'Multi-wrapper, de-risking starting.' },
+      tax:          { s:'amber', n:'Drawdown order + pension lump-sum decision pending.' },
+      cash:         { s:'green', n:'£120k — very comfortable.' },
+      debt:         { s:'green', n:'None.' },
+      mortgage:     { s:'green', n:'Paid off.' },
+      estate:       { s:'amber', n:'Will yes, LPA not always updated at this stage.' },
+      iht:          { s:'amber', n:'Below immediate threshold; worth watching.' },
+      protection:   { s:'amber', n:'Life/IP becoming less relevant; review still useful.' },
+      twelfth:      { s:'green', n:'Diversified retirement income sources.', label:'Income mix' },
+    },
+    goals:[
+      { g:'Retire at 65',                    c:'Projected liquid ~£1m; state pension 2 years after.', a:'green' },
+      { g:'Travel annually while health allows', c:'Clear capacity.', a:'green' },
+      { g:'Help grandchildren with education',  c:'Gifting capacity comfortable.', a:'green' },
+      { g:'Stay in the current home',        c:'No mortgage; maintenance reserves adequate.', a:'green' },
+    ],
+    headline:{ tone:'good', title:'18 months to planned retirement — flex, not panic',
+      body:'Pension already accessible, mortgage paid, and ISA providing a tax-free bridge to state pension age. You have more options than constraints.' },
+    bullets:[
+      { tone:'good',  text:'Current liquid + accessible pension = ~£1.0m. Supports £48k/yr spend to 95 with headroom.' },
+      { tone:'info',  text:'Pension tax-free lump sum (25% up to £268,275) can fund the first 5 years without touching taxable income.' },
+      { tone:'warn',  text:'Four-year gap to state pension — this is the most tax-efficient period to draw from pension at basic rate only.' },
+      { tone:'risk',  text:'Sequence-of-returns risk: a bad first 5 years shortens the runway disproportionately.' },
+    ],
+    nextSteps:[
+      'Map out the first 5 years of retirement income month-by-month — not year-by-year.',
+      'Stress-test at 3% return and 4% inflation — does the plan still work?',
+      'Decide now: lump sum up-front vs UFPLS. Big tax consequences either way.',
+    ],
+  },
+
+  {
+    id:'S8', label:'Retired', who:'Age 70 • Drawing down • £45k/yr spend',
+    persona:'Margaret — retired 8 years, husband passed, living in the family home.',
+    healthScore: 91, healthMode:'lifetime',
+    healthInterpretation:'Your funds are projected to last approximately 91% of your expected remaining lifetime — about a 4-year gap against a 25-year horizon. Small spending adjustments or a rate re-check close most of it.',
+    balance:{
+      assets:{ property:550000, business:0, pension:320000, savings:90000, investments:180000 },
+      liabilities:{ mortgages:0, personalLoans:0, creditCard:0 },
+    },
+    chartInputs:{
+      age:70, retireAge:60, income:14000, spend:45000,
+      mortgagePmt:0, mortgageEnd:70, rent:0,
+      cash:90000, isa:180000, gia:0, pension:320000,
+      monthlyContrib:0, pensionContribPct:0, statePensionAge:67,
+      growth:0.02,
+      drawdown:true,
+    },
+    grid:{
+      retirement:   { s:'amber', n:'Funds cover 91% of expected lifetime; 4-year gap.' },
+      pension:      { s:'amber', n:'Drawdown rate sustainable at spend minus ~10%.' },
+      statePension: { s:'green', n:'Full rate, in payment.' },
+      investment:   { s:'amber', n:'Review de-risk level — not too cautious, not too racy.' },
+      tax:          { s:'amber', n:'Drawdown order affects lifetime tax by thousands.' },
+      cash:         { s:'green', n:'£90k reserve is healthy.' },
+      debt:         { s:'green', n:'None.' },
+      mortgage:     { s:'green', n:'Paid.' },
+      estate:       { s:'red',   n:'Will likely out of date; LPA critical at this age.' },
+      iht:          { s:'green', n:'Below thresholds.' },
+      protection:   { s:'grey',  n:'Less relevant at this stage.' },
+      twelfth:      { s:'green', n:'State + private pension + ISA income streams.', label:'Income mix' },
+    },
+    goals:[
+      { g:'Remain independent in my home',     c:'Equity release or downsize adds 12-18 months runway.', a:'amber' },
+      { g:'Help grandchildren financially',    c:'Constrained by runway; small gifts only.', a:'amber' },
+      { g:'Leave something to my children',    c:'Depends on longevity and market sequence.', a:'amber' },
+      { g:'Manage healthcare without burdening family', c:'LPA + care-fees planning not confirmed.', a:'amber' },
+    ],
+    headline:{ tone:'warn', title:'At £45k/yr spend, your funds last to approximately age 91',
+      body:'The chart shows a declining balance; at current growth and inflation assumptions, you have ~21 years of runway. Below, you\'ll see how sensitive that number is to the variables you cannot control.' },
+    bullets:[
+      { tone:'good',  text:'State pension (~£12k/yr) covers essential spending — without it, runway ends at 81.' },
+      { tone:'warn',  text:'Inflation at 2.5% means year-20 expenses are ~£74k in today\'s money — the pot needs to keep growing.' },
+      { tone:'risk',  text:'If returns average 3% not 4.5%, runway shortens to age 84 (7 fewer years).' },
+      { tone:'info',  text:'Your home (£550k) is a final reserve — equity release or downsize adds 12-18 months of runway.' },
+    ],
+    nextSteps:[
+      'Review whether £45k spend is essential or includes elective items — a £6k/yr reduction adds 5 years of runway.',
+      'Annual check-in on the "money-lasts-until" age — this number will move each year with markets.',
+      'Talk to family about house plans. Downsizing is a decision made once; worth thinking about before it is urgent.',
+    ],
+  },
+
+  {
+    id:'S9', label:'HNW Multi-Generational', who:'Age 68 • £6m+ estate • IHT exposed',
+    persona:'Charles — multiple properties, legacy-minded, still on two boards.',
+    healthScore: 240, healthMode:'target',
+    healthInterpretation:'Far above retirement target. The planning conversation is no longer about sustainability — it\'s about what your heirs keep after inheritance tax.',
+    balance:{
+      assets:{ property:3700000, business:0, pension:1400000, savings:240000, investments:900000 },
+      liabilities:{ mortgages:0, personalLoans:0, creditCard:0 },
+    },
+    chartInputs:{
+      age:68, retireAge:72, income:180000, spend:140000,
+      mortgagePmt:0, mortgageEnd:68, rent:0,
+      cash:240000, isa:400000, gia:500000, pension:1400000,
+      monthlyContrib:3000, pensionContribPct:0.10, statePensionAge:67,
+      growth:0.055,
+    },
+    grid:{
+      retirement:   { s:'green', n:'Far above target — sustainability is not the question.' },
+      pension:      { s:'green', n:'£1.4m, well-managed.' },
+      statePension: { s:'green', n:'Full rate, in payment.' },
+      investment:   { s:'green', n:'Multi-wrapper, multi-asset.' },
+      tax:          { s:'amber', n:'Scope to optimise dividend + CGT drag.' },
+      cash:         { s:'green', n:'£240k buffer — more than adequate.' },
+      debt:         { s:'green', n:'None.' },
+      mortgage:     { s:'green', n:'Paid across all properties.' },
+      estate:       { s:'amber', n:'Has will; trust structure not confirmed.' },
+      iht:          { s:'red',   n:'~£1.9m exposure at 40% — largest single cost to heirs.' },
+      protection:   { s:'amber', n:'Whole-of-life worth discussing specifically for IHT.' },
+      twelfth:      { s:'green', n:'Diversified: salary, dividends, investment income.', label:'Income mix' },
+    },
+    goals:[
+      { g:'Leave multi-generational legacy', c:'~£1.9m of it goes to HMRC under current plan.', a:'red' },
+      { g:'Fund philanthropy meaningfully',   c:'Charitable giving is IHT-efficient; capacity ample.', a:'green' },
+      { g:'Support adult children during lifetime', c:'Gifting allowances plus PETs — underused.', a:'green' },
+      { g:'Maintain lifestyle indefinitely',  c:'Spend rate 2.1% of wealth — pot grows.', a:'green' },
+    ],
+    headline:{ tone:'risk', title:'Your net estate is exposed to ~£1.9m of inheritance tax',
+      body:'At current reliefs and estate size, HMRC is the single largest inheritor. Every year without a structured plan is a year of lost opportunity (PETs, trusts, pension transfer).' },
+    bullets:[
+      { tone:'risk',  text:'Estate value ~£6m → IHT liability ~£1.94m at 40% after nil-rate bands. Largest single cost your heirs face.' },
+      { tone:'info',  text:'Annual gifting allowances are material but not solving this alone. PETs need 7 years; start the clock now.' },
+      { tone:'good',  text:'Your spend rate is 2.1% of liquid wealth — pot grows despite withdrawals. Sustainability is not the question.' },
+      { tone:'warn',  text:'RNRB (residence nil-rate band) tapers to zero at £2.35m. You are already above it — factor that into planning.' },
+    ],
+    nextSteps:[
+      'Commission a full estate plan — IHT is a bespoke-advice problem.',
+      'Consider pension as a transfer vehicle (outside estate, inherited tax-efficient).',
+      'Discuss the family governance conversation. This is as much about alignment as numbers.',
+    ],
+  },
+];
+
+/* =====================================================================
+   PLANNING GRID TILE DEFINITIONS
+   ===================================================================== */
+const TILE_DEFS = [
+  { key:'retirement',   label:'Retirement readiness' },
+  { key:'pension',      label:'Pension contributions' },
+  { key:'statePension', label:'State pension' },
+  { key:'investment',   label:'Investment strategy' },
+  { key:'tax',          label:'Tax efficiency' },
+  { key:'cash',         label:'Emergency cash' },
+  { key:'debt',         label:'Debt position' },
+  { key:'mortgage',     label:'Mortgage position' },
+  { key:'estate',       label:'Estate planning' },
+  { key:'iht',          label:'Inheritance tax' },
+  { key:'protection',   label:'Protection cover' },
+  { key:'twelfth',      label:'Income mix' }, // overridden per-segment
+];
+const STATUS_LABEL = { green:'Good', amber:'Review', red:'Attention', grey:'Not checked' };
+
+/* =====================================================================
+   PROJECTION ENGINE (illustrative — not the real Compass engine)
+   ===================================================================== */
+function project(inp) {
+  const years = [];
+  let { age, retireAge, income, spend, mortgagePmt, mortgageEnd, rent,
+        cash, isa, gia, pension, monthlyContrib, pensionContribPct,
+        statePensionAge=67, growth=0.06, drawdown=false, extraAt=null } = inp;
+  const cashGrowth = 0.025;
+  const pensionAccessAge = 57;
+  const statePensionFull = 11502;
+  const lifeEnd = 95;
+
+  for (let a = age; a <= lifeEnd; a++) {
+    const retired = a >= retireAge;
+    const pensionUnlocked = a >= pensionAccessAge;
+
+    let y_income = retired ? 0 : income;
+    if (a >= statePensionAge) y_income += statePensionFull;
+
+    let y_spend = (retired && !drawdown) ? spend * 0.85 : spend;
+    if (a < mortgageEnd) y_spend += mortgagePmt;
+    y_spend += rent;
+
+    if (extraAt && a === extraAt.age) cash += extraAt.amount;
+
+    if (!retired) {
+      isa += monthlyContrib * 12;
+      pension += income * pensionContribPct;
+      const surplus = y_income - y_spend - (monthlyContrib * 12) - (income * pensionContribPct);
+      cash += Math.max(0, surplus);
+      if (surplus < 0) { const fc = Math.min(-surplus, cash); cash -= fc; }
+    } else {
+      const need = Math.max(0, y_spend - y_income);
+      if (need > 0) {
+        const fc = Math.min(need, cash); cash -= fc; let left = need - fc;
+        const fi = Math.min(left, isa); isa -= fi; left -= fi;
+        const fg = Math.min(left, gia); gia -= fg; left -= fg;
+        if (pensionUnlocked && left > 0) {
+          const fp = Math.min(left, pension); pension -= fp;
+        }
+      }
+    }
+
+    cash *= 1 + cashGrowth;
+    isa  *= 1 + growth;
+    gia  *= 1 + growth;
+    pension *= 1 + growth;
+    cash = Math.max(0, cash); isa = Math.max(0, isa); gia = Math.max(0, gia); pension = Math.max(0, pension);
+
+    years.push({
+      age: a, cash,
+      investments: isa + gia,
+      pensionAccessible: pensionUnlocked ? pension : 0,
+      pensionInaccessible: pensionUnlocked ? 0 : pension,
+      total: cash + isa + gia + pension,
+    });
+  }
+  return years;
+}
+
+/* ---------- FORMAT HELPERS ---------- */
+function gbp(v){
+  if (!isFinite(v)) return '£0';
+  const abs = Math.abs(v);
+  if (abs >= 1e6) return '£' + (v/1e6).toFixed(2).replace(/\.00$/,'') + 'm';
+  if (abs >= 1e4) return '£' + Math.round(v/1000) + 'k';
+  return '£' + Math.round(v).toLocaleString('en-GB');
+}
+function totals(b){
+  const ta = Object.values(b.assets).reduce((a,x)=>a+x,0);
+  const tl = Object.values(b.liabilities).reduce((a,x)=>a+x,0);
+  return { ta, tl, nw: ta-tl };
+}
+function fundsLastUntil(proj){
+  const base = proj[0].total;
+  for (let i=1;i<proj.length;i++){
+    if (proj[i].total <= (base * 0.02)) return proj[i].age;
+  }
+  return null;
+}
+
+/* =====================================================================
+   PANEL RENDERERS
+   ===================================================================== */
+
+function healthGauge(score, mode, interpretation){
+  // Gauge visible range: 0..150 (scores >150 peg to the right end, value shown as-is).
+  const capped = Math.min(Math.max(score, 0), 150);
+  const pct = capped / 150 * 100;
+  const modeLabel = mode === 'lifetime' ? 'of expected remaining lifetime covered' : 'of your retirement target';
+  const zoneLabelPos = [
+    { text:'Shortfall', left: 23 },   // centre of 0-70
+    { text:'Behind',    left: 53 },   // centre of 70-90
+    { text:'On track',  left: 68 },   // centre of 90-115
+    { text:'Ahead',     left: 88 },   // centre of 115-150
+  ];
+  const ticks = [
+    { val:0, pos:0 }, { val:70, pos:46.67 }, { val:90, pos:60 }, { val:115, pos:76.67 }, { val:'150+', pos:100 },
+  ];
+
+  return `
+  <div class="gauge">
+    <div style="display:flex; align-items:baseline; justify-content:space-between; margin-bottom: 14px;">
+      <div>
+        <div class="kicker">Financial Health</div>
+        <div style="font-size: 2.6rem; font-weight: 800; line-height: 1;">${score}%</div>
+        <div style="font-size: 0.85rem; color:#475569;">${modeLabel}</div>
+      </div>
+      <div style="max-width: 55%; font-size: 0.9rem; color:#334155; line-height: 1.45;">
+        ${interpretation}
+      </div>
+    </div>
+
+    <div style="position: relative; padding-top: 30px;">
+      <div class="gauge-bar">
+        ${zoneLabelPos.map(l => `<div class="gauge-zone-label" style="left:${l.left}%; transform:translate(-50%,-50%); color:rgba(15,23,42,0.55);">${l.text}</div>`).join('')}
+        <div class="gauge-needle" style="left:${pct}%">
+          <div class="gauge-score-pill">${score}%</div>
+        </div>
+      </div>
+      <div class="gauge-ticks">
+        ${ticks.map(t => `<span class="gauge-tick" style="left:${t.pos}%">${t.val}${typeof t.val==='number'?'%':''}</span>`).join('')}
+      </div>
+    </div>
+  </div>`;
+}
+
+function planningGridHTML(grid){
+  return `
+  <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap: 8px;">
+    ${TILE_DEFS.map(def => {
+      const cell = grid[def.key];
+      if (!cell) return '';
+      const label = cell.label || def.label;
+      const status = cell.s;
+      return `
+        <div class="tile tile-${status}">
+          <div class="tile-band"></div>
+          <div class="tile-body">
+            <div class="tile-label">${label}</div>
+            <div class="tile-status">${STATUS_LABEL[status]}</div>
+            <div class="tile-note">${cell.n}</div>
+          </div>
+        </div>`;
+    }).join('')}
+  </div>`;
+}
+
+function goalsMatrixHTML(goals){
+  return `
+  <div class="panel">
+    ${goals.map(g => `
+      <div class="goal-row">
+        <div class="goal-title">${g.g}</div>
+        <div class="goal-cap">${g.c}</div>
+        <span class="badge badge-${g.a}">${STATUS_LABEL[g.a]}</span>
+      </div>
+    `).join('')}
+  </div>`;
+}
+
+function balanceStripHTML(balance){
+  const { ta, tl, nw } = totals(balance);
+  return `
+  <div class="bs-strip">
+    <div class="bs-cell"><div class="kicker">Total assets</div><div class="num" style="color:#065f46;">${gbp(ta)}</div></div>
+    <div class="bs-cell"><div class="kicker">Total liabilities</div><div class="num" style="color:#991b1b;">${gbp(tl)}</div></div>
+    <div class="bs-cell"><div class="kicker">Net worth</div><div class="num">${gbp(nw)}</div></div>
+  </div>`;
+}
+
+function toneBar(t){
+  return {
+    good:'border-emerald-500 bg-emerald-50 text-emerald-900',
+    warn:'border-amber-500 bg-amber-50 text-amber-900',
+    risk:'border-red-500 bg-red-50 text-red-900',
+    info:'border-sky-500 bg-sky-50 text-sky-900',
+  }[t];
+}
+function toneLabel(t){ return {good:'Good',warn:'Watch',risk:'Risk',info:'Info'}[t] || 'Note'; }
+function toneIcon(t){ return {good:'✓',warn:'!',risk:'△',info:'i'}[t] || '·'; }
+
+/* =====================================================================
+   MAIN RENDER
+   ===================================================================== */
+const tabs = document.getElementById('tabs');
+SEGMENTS.forEach(s => {
+  const b = document.createElement('button');
+  b.className = 'tab px-3 py-1.5 rounded-md text-sm font-medium border border-slate-300 hover:bg-slate-100';
+  b.dataset.target = s.id;
+  b.innerHTML = `<span class="font-bold">${s.id}</span> · ${s.label}`;
+  b.onclick = () => activate(s.id);
+  tabs.appendChild(b);
+});
+
+const root = document.getElementById('report-root');
+SEGMENTS.forEach(seg => root.appendChild(renderReport(seg)));
+
+function renderReport(seg){
+  const wrap = document.createElement('section');
+  wrap.id = 'seg-' + seg.id;
+  wrap.className = 'report space-y-8';
+
+  const proj = project(seg.chartInputs);
+  const { ta, tl, nw } = totals(seg.balance);
+
+  /* ---------- PAGE 1 — SNAPSHOT (REDESIGNED) ---------- */
+  const p1 = document.createElement('article');
+  p1.className = 'panel p-6 page';
+  p1.innerHTML = `
+    <div class="flex items-start justify-between mb-5">
+      <div>
+        <div class="kicker">${seg.id} · ${seg.label} — Page 1 of 2</div>
+        <h1 class="text-3xl font-semibold text-slate-900">Where you are today</h1>
+        <p class="text-slate-500 mt-1">${seg.who} · <span class="italic">${seg.persona}</span></p>
+      </div>
+      <span class="example-pill">EXAMPLE</span>
+    </div>
+
+    <!-- ROW 1 — FULL-WIDTH FINANCIAL HEALTH GAUGE -->
+    <div class="panel p-5 mb-5" style="background:#f8fafc;">
+      ${healthGauge(seg.healthScore, seg.healthMode, seg.healthInterpretation)}
+    </div>
+
+    <!-- ROW 2 — DONUT (left) + PLANNING GRID (right) -->
+    <div class="grid md:grid-cols-5 gap-5 mb-5">
+      <div class="md:col-span-2 panel p-5">
+        <div class="kicker mb-3">What you own · Net worth ${gbp(nw)}</div>
+        <div style="position:relative; width: 100%; aspect-ratio: 1/1; max-width: 260px; margin: 0 auto;">
+          <canvas id="donut-${seg.id}"></canvas>
+          <div style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; pointer-events:none;">
+            <div style="font-size:0.75rem; color:#64748b; text-transform:uppercase; letter-spacing:0.05em;">Net worth</div>
+            <div style="font-size:1.4rem; font-weight:800;">${gbp(nw)}</div>
+          </div>
+        </div>
+        <div id="donut-legend-${seg.id}" class="donut-legend mt-4 grid grid-cols-2 gap-x-3 gap-y-1"></div>
+      </div>
+      <div class="md:col-span-3 panel p-5">
+        <div class="kicker mb-3">Planning grid · 12 areas at a glance</div>
+        ${planningGridHTML(seg.grid)}
+      </div>
+    </div>
+
+    <!-- ROW 3 — GOALS MATRIX -->
+    <div class="mb-5">
+      <div class="kicker mb-2">Goals &amp; wellbeing · how your position aligns with what matters to you</div>
+      ${goalsMatrixHTML(seg.goals)}
+    </div>
+
+    <!-- ROW 4 — COMPACT BALANCE STRIP -->
+    <div class="mb-5">
+      <div class="kicker mb-2">Balance sheet · headline totals (full breakdown on page 3)</div>
+      ${balanceStripHTML(seg.balance)}
+    </div>
+
+    <!-- HEADLINE TAKEAWAY -->
+    <div class="rounded-lg px-5 py-4 border-l-4 ${toneBar(seg.headline.tone)}">
+      <div class="text-xs uppercase tracking-wide font-semibold opacity-70">Key takeaway</div>
+      <div class="text-lg font-semibold mt-0.5">${seg.headline.title}</div>
+      <div class="text-sm mt-1">${seg.headline.body}</div>
+    </div>
+
+    <!-- CAVEAT -->
+    <div class="caveat-banner mt-5 rounded-lg p-4 text-sm">
+      <div class="font-semibold text-amber-900">This is an illustrative example, not advice.</div>
+      <div class="text-amber-800 mt-1">Figures are generated from banded answers and published assumptions (see methodology page). Your actual position depends on variables not captured here. Before acting on any of this, speak to a qualified Independent Financial Adviser (IFA).</div>
+    </div>
+  `;
+
+  /* ---------- PAGE 2 — PROJECTION (unchanged) ---------- */
+  const p2 = document.createElement('article');
+  p2.className = 'panel p-6 page';
+
+  const today = proj[0].total;
+  const atRetire = proj.find(p => p.age === seg.chartInputs.retireAge)?.total ?? proj[Math.min(5, proj.length-1)].total;
+  const atEnd = proj[proj.length-1].total;
+  const depleteAge = seg.chartInputs.drawdown ? fundsLastUntil(proj) : null;
+  const peak = proj.reduce((m,p)=>p.total>m.total?p:m, proj[0]);
+
+  p2.innerHTML = `
+    <div class="flex items-start justify-between mb-4">
+      <div>
+        <div class="kicker">${seg.id} · ${seg.label} — Page 2 of 2</div>
+        <h1 class="text-3xl font-semibold text-slate-900">Where you're heading</h1>
+        <p class="text-slate-500 mt-1">Lifetime liquid wealth — the big picture</p>
+      </div>
+      <span class="example-pill">EXAMPLE</span>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5">
+      <div class="panel p-4">
+        <div class="kicker">Today</div>
+        <div class="text-2xl font-bold">${gbp(today)}</div>
+        <div class="text-xs text-slate-500">age ${proj[0].age}</div>
+      </div>
+      <div class="panel p-4">
+        <div class="kicker">${seg.chartInputs.drawdown?'At age 80':'At retirement'}</div>
+        <div class="text-2xl font-bold">${gbp(seg.chartInputs.drawdown ? (proj.find(p=>p.age===80)?.total||0) : atRetire)}</div>
+        <div class="text-xs text-slate-500">age ${seg.chartInputs.drawdown?80:seg.chartInputs.retireAge}</div>
+      </div>
+      <div class="panel p-4">
+        <div class="kicker">Peak wealth</div>
+        <div class="text-2xl font-bold">${gbp(peak.total)}</div>
+        <div class="text-xs text-slate-500">age ${peak.age}</div>
+      </div>
+      <div class="panel p-4 ${depleteAge?'bg-red-50 border-red-200':''}">
+        <div class="kicker">${depleteAge?'Funds last to':'At age 95'}</div>
+        <div class="text-2xl font-bold">${depleteAge?'age '+depleteAge : gbp(atEnd)}</div>
+        <div class="text-xs text-slate-500">${depleteAge?'current spend level':'end of horizon'}</div>
+      </div>
+    </div>
+
+    <div class="relative">
+      <canvas id="chart-${seg.id}" height="320"></canvas>
+    </div>
+
+    <div class="mt-6">
+      <div class="kicker mb-2">How to read this chart</div>
+      <ul class="space-y-2">
+        ${seg.bullets.map(b => `
+          <li class="flex items-start gap-3">
+            <span class="sparkbadge hl-${b.tone} shrink-0 mt-0.5">${toneIcon(b.tone)} ${toneLabel(b.tone)}</span>
+            <span class="text-sm text-slate-700">${b.text}</span>
+          </li>`).join('')}
+      </ul>
+    </div>
+
+    <div class="mt-6 p-4 rounded-lg bg-slate-900 text-slate-100">
+      <div class="kicker text-slate-300">Three things worth discussing with an adviser</div>
+      <ol class="list-decimal list-inside mt-2 space-y-1 text-sm">
+        ${seg.nextSteps.map(n=>`<li>${n}</li>`).join('')}
+      </ol>
+    </div>
+
+    <div class="mt-6 text-xs text-slate-500 border-t pt-4 grid md:grid-cols-2 gap-3">
+      <div>
+        <div class="font-semibold text-slate-700 mb-1">Assumptions used</div>
+        Growth: 6% balanced (4% cautious / 8% adventurous) · Inflation 2.5% · Cash 2.5% · State pension £11,502 full rate from age ${seg.chartInputs.statePensionAge} · Life expectancy 95 · 2025/26 tax year.
+      </div>
+      <div>
+        <div class="font-semibold text-slate-700 mb-1">Not modelled</div>
+        One-off events (weddings, inheritances, school fees), major career breaks, divorce/separation, long-term care costs, tax rule changes, market sequence-of-return variations, Scottish tax refinements, student loan, dividend tax, CGT on rebalancing.
+      </div>
+    </div>
+
+    <div class="caveat-banner mt-4 rounded-lg p-4 text-sm">
+      <div class="font-semibold text-amber-900">Illustrative only — speak to an IFA before acting</div>
+      <div class="text-amber-800 mt-1">This report is produced from banded answers and published assumptions. It is not personalised advice, nor is it regulated under FCA rules as advice. Figures shown use simplified models. For decisions about your retirement, investments, tax, or estate, you should meet with a qualified Independent Financial Adviser.</div>
+    </div>
+  `;
+
+  wrap.appendChild(p1);
+  wrap.appendChild(p2);
+
+  queueMicrotask(() => {
+    renderDonut(seg);
+    renderChart(seg, proj);
+  });
+
+  return wrap;
+}
+
+/* ---------- CHART RENDERERS ---------- */
+function renderDonut(seg){
+  const b = seg.balance.assets;
+  const pie = [
+    { label:'Property',    v:b.property,    color:'#0284c7' },
+    { label:'Pension',     v:b.pension,     color:'#67e8f9' },
+    { label:'Savings',     v:b.savings,     color:'#2563eb' },
+    { label:'Investments', v:b.investments, color:'#f97316' },
+    { label:'Business',    v:b.business,    color:'#a855f7' },
+  ].filter(x=>x.v>0);
+
+  const ctx = document.getElementById('donut-'+seg.id).getContext('2d');
+  new Chart(ctx, {
+    type:'doughnut',
+    data:{ labels: pie.map(p=>p.label), datasets:[{ data: pie.map(p=>p.v), backgroundColor: pie.map(p=>p.color), borderWidth:0 }] },
+    options:{
+      cutout:'62%', plugins:{ legend:{display:false}, tooltip:{callbacks:{label:c=>` ${c.label}: ${gbp(c.raw)}`}} },
+      responsive:true, maintainAspectRatio:true,
+    },
+  });
+
+  const legend = document.getElementById('donut-legend-'+seg.id);
+  legend.innerHTML = pie.map(p=>`
+    <div class="flex items-center gap-2">
+      <span class="sq" style="background:${p.color}"></span>
+      <span class="font-medium text-slate-700">${p.label}</span>
+      <span class="text-slate-500 ml-auto">${gbp(p.v)}</span>
+    </div>
+  `).join('');
+}
+
+function renderChart(seg, proj){
+  const labels = proj.map(p=>p.age);
+  const inp = seg.chartInputs;
+  const ctx = document.getElementById('chart-'+seg.id).getContext('2d');
+
+  const datasets = [
+    { label:'Savings',                data: proj.map(p=>Math.round(p.cash)),                 backgroundColor:'rgba(37,99,235,.85)',  borderColor:'rgba(37,99,235,1)', borderWidth:0, fill:true },
+    { label:'Investments',            data: proj.map(p=>Math.round(p.investments)),          backgroundColor:'rgba(249,115,22,.85)', borderColor:'rgba(249,115,22,1)',borderWidth:0, fill:true },
+    { label:'Pension (accessible)',   data: proj.map(p=>Math.round(p.pensionAccessible)),    backgroundColor:'rgba(16,185,129,.75)', borderColor:'rgba(16,185,129,1)',borderWidth:0, fill:true },
+    { label:'Pension (inaccessible)', data: proj.map(p=>Math.round(p.pensionInaccessible)),  backgroundColor:'rgba(167,243,208,.75)',borderColor:'rgba(16,185,129,.6)',borderWidth:0, fill:true },
+  ];
+
+  const annotations = {};
+  if (!inp.drawdown) {
+    annotations.retire = {
+      type:'line', xMin: inp.retireAge - inp.age, xMax: inp.retireAge - inp.age,
+      borderColor:'#065f46', borderWidth:2, borderDash:[6,4],
+      label:{ display:true, content:`Desired financial independence age: ${inp.retireAge}`, position:'start', backgroundColor:'#065f46', color:'white', font:{size:11} },
+    };
+  } else {
+    const dep = fundsLastUntil(proj);
+    if (dep) {
+      annotations.deplete = {
+        type:'line', xMin: dep - inp.age, xMax: dep - inp.age,
+        borderColor:'#b91c1c', borderWidth:2, borderDash:[6,4],
+        label:{ display:true, content:`Funds deplete near age ${dep}`, position:'end', backgroundColor:'#b91c1c', color:'white', font:{size:11} },
+      };
+    }
+  }
+  if (inp.mortgageEnd > inp.age && inp.mortgagePmt > 0) {
+    annotations.mortgage = {
+      type:'line', xMin: inp.mortgageEnd - inp.age, xMax: inp.mortgageEnd - inp.age,
+      borderColor:'#64748b', borderWidth:1, borderDash:[3,3],
+      label:{ display:true, content:`Mortgage ends (age ${inp.mortgageEnd})`, position:'start', backgroundColor:'#64748b', color:'white', font:{size:10} },
+    };
+  }
+  if (inp.statePensionAge > inp.age) {
+    annotations.sp = {
+      type:'line', xMin: inp.statePensionAge - inp.age, xMax: inp.statePensionAge - inp.age,
+      borderColor:'#0ea5e9', borderWidth:1, borderDash:[3,3],
+      label:{ display:true, content:`State pension (age ${inp.statePensionAge})`, position:'end', backgroundColor:'#0ea5e9', color:'white', font:{size:10} },
+    };
+  }
+
+  new Chart(ctx, {
+    type:'line',
+    data:{ labels, datasets },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      interaction:{ mode:'index', intersect:false },
+      plugins:{
+        legend:{ position:'bottom', labels:{ boxWidth:12, font:{size:12} } },
+        tooltip:{ callbacks:{
+          title: items => 'Age ' + items[0].label,
+          label: c => ` ${c.dataset.label}: ${gbp(c.raw)}`,
+          footer: items => 'Total liquid wealth: ' + gbp(items.reduce((s,i)=>s+i.raw,0)),
+        }},
+        annotation:{ annotations },
+      },
+      scales:{
+        x:{ title:{display:true,text:'Age'}, grid:{display:false} },
+        y:{ stacked:true, title:{display:true,text:'Lifetime liquid wealth (today\'s £)'},
+            ticks:{ callback: v => gbp(v) } },
+      },
+      elements:{ line:{ tension:0.25 }, point:{ radius:0, hoverRadius:4 } },
+    },
+  });
+}
+
+/* ---------- TAB ACTIVATION ---------- */
+function activate(id){
+  document.querySelectorAll('#tabs .tab').forEach(t => t.classList.toggle('tab-active', t.dataset.target===id));
+  document.querySelectorAll('.report').forEach(r => r.classList.toggle('hidden', r.id !== 'seg-'+id));
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+activate('S2');
+</script>
+</body>
+</html>

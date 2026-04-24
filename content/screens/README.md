@@ -115,8 +115,23 @@ Supported predicate forms include:
 | Section | What it does |
 |---|---|
 | `# Headline` | Main question/card headline. |
-| `# Sub` | Optional supporting copy. |
+| `# Sub` | Optional supporting copy shown beneath the inputs on the right panel. |
+| `# Pullquote` | Optional per-screen pullquote for the left column. See below. |
 | `# Body` | Free-form body for intro or transition screens. |
+
+### Pullquote behaviour
+
+Each questionnaire section has a default pullquote defined in `src/lib/sections/sections.ts`. The `# Pullquote` section lets you override or suppress that default for a specific screen.
+
+| `# Pullquote` section in file? | Content | What renders |
+|---|---|---|
+| No | — | Section default shows (inherited from `sections.ts`) |
+| Yes | Has text | That text shows instead of the section default |
+| Yes | Empty | Nothing shows — section default is suppressed |
+
+Use the empty form when the section default doesn't fit the specific question. Leave the section out entirely when you want the default to carry through.
+
+**Note:** if a screen has no `# Pullquote` section and no section default, the app uses `# Sub` as the pullquote of last resort. If you have a `# Sub` on a screen and want no pullquote at all, add an empty `# Pullquote` section explicitly.
 
 ## Worked Example: Other Property
 

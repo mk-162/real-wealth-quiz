@@ -32,7 +32,12 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 nextstart*.log
+next-dev*.log
+pw-dev*.log
 client-review-next-start.*.log
+content.zip
+public/report-preview/real-wealth-report-sample.zip
+public/report-preview/sample-standalone.html
 
 # env files (do not commit!)
 .env

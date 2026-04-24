@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Your Real Wealth Report — Michelle</title>
+  <link rel="stylesheet" href="./report.css" />
+</head>
+<body>
+  <!--
+    Real Wealth Report — SAMPLE version with dummy content filled in.
+    Persona: Michelle (S3 segment — mid-career, household income
+    £125-200k, estate £1-2m, age 52, with partner). Content reflects
+    what a planner would surface for that shape of conversation.
+  -->
+
+  <!-- Floating print helper, hidden in the PDF -->
+  <div class="print-controls">
+    <button type="button" onclick="window.print()">Print / Save PDF</button>
+  </div>
+
+  <!-- Shared SVG <clipPath> defs -->
+  <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;">
+    <defs>
+      <clipPath id="rw-hero-2-leaves" clipPathUnits="objectBoundingBox">
+        <path d="M 0.337 0 L 0 0 C 0 0.265 0.297 0.48 0.663 0.48 L 1 0.48 C 1 0.215 0.703 0 0.337 0 Z" />
+        <path d="M 0.663 0.52 L 1 0.52 C 1 0.785 0.703 1 0.337 1 L 0 1 C 0 0.735 0.297 0.52 0.663 0.52 Z" />
+      </clipPath>
+      <clipPath id="rw-hero-large-px">
+        <rect x="0" y="0" width="100%" height="100%" rx="22" ry="22" />
+      </clipPath>
+    </defs>
+  </svg>
+
+  <div class="doc">
+    <!-- ============================================================= -->
+    <!-- Page 1 — Cover                                                  -->
+    <!-- ============================================================= -->
+    <section class="page" data-screen-label="01 Cover">
+      <div class="cover">
+        <div class="cover__glow-tr"></div>
+        <div class="cover__glow-bl"></div>
+
+        <figure class="cover__media">
+          <img
+            src="/welcome-image.png"
+            alt=""
+            class="cover__media-image"
+            aria-hidden="true"
+          />
+        </figure>
+
+        <div class="cover__top">
+          <img
+            src="/real-wealth-logo-wordmark.svg"
+            alt="Real Wealth"
+            class="cover__logo"
+          />
+          <div class="cover__meta">
+            <strong>Wealth Report</strong>
+            <span class="sub">23rd April 2026 · 6 pages</span>
+          </div>
+        </div>
+
+        <div class="cover__content">
+          <span class="cover__eyebrow">For Michelle · A briefing from Real Wealth</span>
+          <h1 class="cover__title">Your Wealth Report.</h1>
+          <p class="cover__lede">
+            Ten minutes of honest questions about your money — and here&rsquo;s
+            what a planner would talk through with you next. Five things
+            worth a conversation, a few quiet gaps we noticed, and where
+            to look first.
+          </p>
+
+          <div class="cover__meta-grid">
+            <div>
+              <span class="k">Prepared for</span>
+              <span class="v">Michelle</span>
+            </div>
+            <div>
+              <span class="k">Prepared by</span>
+              <span class="v">Real Wealth · Manchester</span>
+            </div>
+            <div>
+              <span class="k">Reading time</span>
+              <span class="v">6 minutes</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="cover__bottom">
+          <span>Real Wealth · Manchester · Taunton</span>
+          <span><strong>Page 01 · 06</strong></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- Page 2 — Where you are                                          -->
+    <!-- ============================================================= -->
+    <section class="page" data-screen-label="02 Where you are">
+      <div class="accent-strip"></div>
+      <header class="page__chrome-top">
+        <img src="/real-wealth-wordmark.svg" alt="Real Wealth" class="logo-wordmark" style="color: var(--rw-teal);" />
+        <span class="doc-title">Your Wealth Report · Michelle</span>
+      </header>
+
+      <div class="page__body">
+        <div class="section-title">
+          <span class="eyebrow">Where you are today</span>
+          <h2 class="h-section">A quick picture of what you told us.</h2>
+          <p class="body">
+            We asked ten questions, no forms, no numbers to look up. What
+            follows is the shape of your answers — and what a planner
+            would want to understand better over a short call.
+          </p>
+        </div>
+
+        <div class="fact-strip">
+          <div class="fact">
+            <span class="fact__val">52</span>
+            <span class="fact__label">Age</span>
+            <span class="fact__sub">13 years until state pension at 67</span>
+          </div>
+          <div class="fact">
+            <span class="fact__val">£1&ndash;2m</span>
+            <span class="fact__label">Estate band</span>
+            <span class="fact__sub">Approaching the IHT threshold for a couple</span>
+          </div>
+          <div class="fact">
+            <span class="fact__val">5</span>
+            <span class="fact__label">Things we&rsquo;d talk through</span>
+            <span class="fact__sub">Plus four gaps worth a planner&rsquo;s time</span>
+          </div>
+        </div>
+
+        <span class="eyebrow">In your own words</span>
+        <h2 class="h-section h-section--teal">&ldquo;More time in the garden with the grandkids, less worrying about money.&rdquo;</h2>
+        <p class="body" style="margin-top:12px;">
+          You named time with the grandkids as your signal of &ldquo;enough&rdquo;.
+          This report looks at whether the shape of your current arrangement
+          clears the runway for that — and what a planner would want to
+          understand better before saying anything more specific.
+        </p>
+      </div>
+
+      <footer class="page__chrome-bot">
+        <span>Manchester · Taunton · hello@realwealth.co.uk</span>
+        <span class="page-num">02 · 06</span>
+      </footer>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- Page 3 — Five things worth a conversation                       -->
+    <!-- ============================================================= -->
+    <section class="page" data-screen-label="03 Five things">
+      <div class="accent-strip"></div>
+      <header class="page__chrome-top">
+        <img src="/real-wealth-wordmark.svg" alt="Real Wealth" class="logo-wordmark" style="color: var(--rw-teal);" />
+        <span class="doc-title">Your Wealth Report · Michelle</span>
+      </header>
+
+      <div class="page__body">
+        <div class="section-title">
+          <span class="eyebrow">What we&rsquo;d talk through</span>
+          <h2 class="h-section">Five things worth a conversation.</h2>
+          <p class="body">
+            The shape of this list will feel familiar to anyone in their
+            early fifties with a household income in six figures. Here&rsquo;s
+            what a planner would want to dig into first.
+          </p>
+        </div>
+
+        <div class="steps">
+          <article class="step">
+            <span class="step__num">01</span>
+            <h3 class="step__title">The £100k income-tax trap</h3>
+            <p class="step__body">
+              The 60% effective marginal band between £100k and £125k
+              catches most high earners by surprise. Pension contributions
+              are often the cheapest way through it.
+            </p>
+          </article>
+          <article class="step">
+            <span class="step__num">02</span>
+            <h3 class="step__title">Pension carry-forward</h3>
+            <p class="step__body">
+              You can potentially contribute up to £180k across three tax
+              years. Whether that&rsquo;s worth it depends on your income
+              shape and what &ldquo;enough&rdquo; looks like at 67.
+            </p>
+          </article>
+          <article class="step">
+            <span class="step__num">03</span>
+            <h3 class="step__title">Estate planning, gently</h3>
+            <p class="step__body">
+              At £1m+ estate with succession still open, inheritance tax
+              starts to matter. A conversation about where the money goes
+              before it&rsquo;s inherited is usually cheaper than after.
+            </p>
+          </article>
+          <article class="step">
+            <span class="step__num">04</span>
+            <h3 class="step__title">Joint-partner allowances</h3>
+            <p class="step__body">
+              Couples with differing incomes often miss the easy ones:
+              pension topping-up between you, ISA maximisation, and the
+              marriage / transferable allowance.
+            </p>
+          </article>
+        </div>
+
+        <div class="callout">
+          <span class="callout__eyebrow">And the fifth</span>
+          <p class="callout__body">
+            <span class="big">The protection question no one asks.</span>
+            &nbsp;—&nbsp; What happens to household income if one of you
+            can&rsquo;t work for six months? For a mid-career couple with
+            a mortgage, this is almost always the biggest under-covered
+            area. Worth a ten-minute audit.
+          </p>
+        </div>
+      </div>
+
+      <footer class="page__chrome-bot">
+        <span>Manchester · Taunton · hello@realwealth.co.uk</span>
+        <span class="page-num">03 · 06</span>
+      </footer>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- Page 4 — Silent gaps                                            -->
+    <!-- ============================================================= -->
+    <section class="page" data-screen-label="04 Silent gaps">
+      <div class="accent-strip"></div>
+      <header class="page__chrome-top">
+        <img src="/real-wealth-wordmark.svg" alt="Real Wealth" class="logo-wordmark" style="color: var(--rw-teal);" />
+        <span class="doc-title">Your Wealth Report · Michelle</span>
+      </header>
+
+      <div class="page__body">
+        <div class="hero-panel">
+          <div class="hero-panel__copy">
+            <span class="eyebrow">Things we didn&rsquo;t ask — but noticed</span>
+            <h2 class="h-section">The shape of your answers says more than the answers themselves.</h2>
+            <p class="lede">
+              You didn&rsquo;t tell us about these directly — but based on
+              the rest of the conversation, they&rsquo;re the quiet ones
+              a planner would bring to a first meeting.
+            </p>
+          </div>
+          <div class="hero-panel__img">
+            <div class="img-placeholder">lifestyle photo — coastal walk</div>
+          </div>
+        </div>
+
+        <div class="two-col">
+          <div>
+            <div class="feature-row">
+              <span class="feature-row__num">01</span>
+              <div>
+                <h4 class="feature-row__title">Wills and LPAs</h4>
+                <p class="feature-row__body">
+                  Households at the £1m+ estate level without an up-to-date
+                  Will and Lasting Power of Attorney are surprisingly common.
+                  The cost of not having them is disproportionate.
+                </p>
+              </div>
+            </div>
+            <div class="feature-row">
+              <span class="feature-row__num">02</span>
+              <div>
+                <h4 class="feature-row__title">Employer benefits</h4>
+                <p class="feature-row__body">
+                  Most large employers offer death-in-service, group income
+                  protection, and pension matching. Many of these quietly
+                  go under-used.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="feature-row">
+              <span class="feature-row__num">03</span>
+              <div>
+                <h4 class="feature-row__title">State pension forecast</h4>
+                <p class="feature-row__body">
+                  A few minutes on gov.uk surfaces any NI gaps. Plugging
+                  them in your fifties is materially cheaper than plugging
+                  them at 66.
+                </p>
+              </div>
+            </div>
+            <div class="feature-row">
+              <span class="feature-row__num">04</span>
+              <div>
+                <h4 class="feature-row__title">Investment fees</h4>
+                <p class="feature-row__body">
+                  A 0.5% difference on a £500k portfolio compounds to over
+                  £100k across 20 years. Worth a one-time audit.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="page__chrome-bot">
+        <span>Manchester · Taunton · hello@realwealth.co.uk</span>
+        <span class="page-num">04 · 06</span>
+      </footer>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- Page 5 — Insight / Context / One move                           -->
+    <!-- ============================================================= -->
+    <section class="page" data-screen-label="05 Planner's read">
+      <div class="accent-strip"></div>
+      <header class="page__chrome-top">
+        <img src="/real-wealth-wordmark.svg" alt="Real Wealth" class="logo-wordmark" style="color: var(--rw-teal);" />
+        <span class="doc-title">Your Wealth Report · Michelle</span>
+      </header>
+
+      <div class="page__body">
+        <div class="section-title">
+          <span class="eyebrow">A planner&rsquo;s read</span>
+          <h2 class="h-section">Three lenses — insight, context, one practical move.</h2>
+          <p class="body">
+            This isn&rsquo;t advice yet — it&rsquo;s the shape of a first
+            conversation. Each block is something a planner would want to
+            understand better before suggesting anything specific.
+          </p>
+        </div>
+
+        <div class="insight-block">
+          <div class="insight-block__row">
+            <span class="insight-block__label">Insight</span>
+            <p class="insight-block__copy">
+              Your income band is where pension contributions stop being a
+              &ldquo;nice idea&rdquo; and start being a material saving on tax.
+            </p>
+          </div>
+          <div class="insight-block__row">
+            <span class="insight-block__label">Context</span>
+            <p class="insight-block__copy">
+              Above £100k, personal allowance tapers. The effective marginal
+              rate between £100k&ndash;£125k is 60%. Pension contributions
+              reduce adjusted net income and can restore the allowance.
+            </p>
+          </div>
+          <div class="insight-block__row">
+            <span class="insight-block__label">One move</span>
+            <p class="insight-block__copy">
+              Model this year&rsquo;s contribution against next year&rsquo;s
+              bonus shape — it&rsquo;s often more tax-efficient to
+              contribute from a bonus than from salary.
+            </p>
+          </div>
+        </div>
+
+        <div class="insight-block">
+          <div class="insight-block__row">
+            <span class="insight-block__label">Insight</span>
+            <p class="insight-block__copy">
+              Estates in the £1&ndash;2m band are where inheritance planning
+              becomes materially useful without needing a complicated
+              structure.
+            </p>
+          </div>
+          <div class="insight-block__row">
+            <span class="insight-block__label">Context</span>
+            <p class="insight-block__copy">
+              The residence nil-rate band and transferable nil-rate band
+              together give a couple up to £1m free of IHT. Above that, 40%
+              applies. The cheapest moves are usually policies written in
+              trust or gifts made within the seven-year rule.
+            </p>
+          </div>
+          <div class="insight-block__row">
+            <span class="insight-block__label">One move</span>
+            <p class="insight-block__copy">
+              Draft a simple &ldquo;if we were hit by a bus&rdquo; letter —
+              all accounts, advisers, key people. An hour of work that
+              saves months of distress if it&rsquo;s ever needed.
+            </p>
+          </div>
+        </div>
+
+        <div class="insight-block">
+          <div class="insight-block__row">
+            <span class="insight-block__label">Insight</span>
+            <p class="insight-block__copy">
+              Your income is the asset that matters most before retirement —
+              and it&rsquo;s often the least protected.
+            </p>
+          </div>
+          <div class="insight-block__row">
+            <span class="insight-block__label">Context</span>
+            <p class="insight-block__copy">
+              A household relying on one or two incomes typically needs life
+              cover equal to 10&ndash;12x salary, and critical-illness
+              cover at 3&ndash;5x, to replace income through a major event.
+            </p>
+          </div>
+          <div class="insight-block__row">
+            <span class="insight-block__label">One move</span>
+            <p class="insight-block__copy">
+              Check your employer&rsquo;s death-in-service and group income
+              protection before buying anything new — often the baseline is
+              surprisingly good.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <footer class="page__chrome-bot">
+        <span>Manchester · Taunton · hello@realwealth.co.uk</span>
+        <span class="page-num">05 · 06</span>
+      </footer>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- Page 6 — Next step + CTA                                        -->
+    <!-- ============================================================= -->
+    <section class="page" data-screen-label="06 Next step">
+      <div class="accent-strip"></div>
+      <header class="page__chrome-top">
+        <img src="/real-wealth-wordmark.svg" alt="Real Wealth" class="logo-wordmark" style="color: var(--rw-teal);" />
+        <span class="doc-title">Your Wealth Report · Michelle</span>
+      </header>
+
+      <div class="page__body">
+        <div class="section-title">
+          <span class="eyebrow">What happens next</span>
+          <h2 class="h-section">Talk it through with a planner.</h2>
+          <p class="body">
+            A free 30-minute conversation. No preparation on your side.
+            We&rsquo;ll bring this briefing to the call so the starting
+            point is already halfway done.
+          </p>
+        </div>
+
+        <div class="checklist">
+          <div class="check">
+            <span class="check__mark">
+              <svg viewBox="0 0 20 20" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m4 10 4 4 8-8" /></svg>
+            </span>
+            <p class="check__text"><strong>Thirty minutes.</strong> Enough to confirm what&rsquo;s worth a longer look, and rule out what isn&rsquo;t.</p>
+          </div>
+          <div class="check">
+            <span class="check__mark">
+              <svg viewBox="0 0 20 20" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m4 10 4 4 8-8" /></svg>
+            </span>
+            <p class="check__text"><strong>No preparation.</strong> You&rsquo;ve already done it — this report is the prep.</p>
+          </div>
+          <div class="check">
+            <span class="check__mark">
+              <svg viewBox="0 0 20 20" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m4 10 4 4 8-8" /></svg>
+            </span>
+            <p class="check__text"><strong>Not a sales call.</strong> You&rsquo;ll leave with a clearer picture of where to look first, whether or not we go further together.</p>
+          </div>
+          <div class="check">
+            <span class="check__mark">
+              <svg viewBox="0 0 20 20" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m4 10 4 4 8-8" /></svg>
+            </span>
+            <p class="check__text"><strong>One planner, not a call centre.</strong> The person who reads this will be the person you talk to.</p>
+          </div>
+        </div>
+
+        <div class="cta-panel">
+          <div class="cta-panel__glow"></div>
+          <div class="cta-panel__watermark img-placeholder" style="border-radius:50%;background:transparent;">mark</div>
+          <span class="cta-panel__eyebrow">Book your free 30-minute consultation</span>
+          <h3 class="cta-panel__title">Let&rsquo;s talk about you, Michelle.</h3>
+          <p class="cta-panel__body">
+            We&rsquo;ll hold a slot this week and next. Pick a time that
+            suits you and we&rsquo;ll come ready — briefing in hand.
+          </p>
+          <a class="cta-panel__cta" href="https://calendly.com/realwealth/intro">
+            Book the call
+            <svg viewBox="0 0 20 20" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10h12m-5-5 5 5-5 5"/></svg>
+          </a>
+          <div class="cta-panel__contact">0161 768 7722 · hello@realwealth.co.uk</div>
+        </div>
+      </div>
+
+      <footer class="page__chrome-bot">
+        <span>Real Wealth Partners Ltd · FRN 1037186 · Authorised and regulated by the Financial Conduct Authority</span>
+        <span class="page-num">06 · 06</span>
+      </footer>
+    </section>
+  </div>
+</body>
+</html>

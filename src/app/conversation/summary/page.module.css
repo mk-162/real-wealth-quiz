@@ -3,6 +3,136 @@
 }
 
 /* ================================================================ */
+/* Teal masked hero — mirrors the homepage treatment                 */
+/* ================================================================ */
+/* Full-bleed teal gradient background, two-column grid (copy left /
+   masked image right on desktop; stacked on mobile). The image is
+   clipped to the two-leaf logo shape via the #rw-hero-2-leaves
+   clipPath mounted globally in layout.tsx. */
+.tealHero {
+  position: relative;
+  overflow: hidden;
+  color: var(--paper);
+  padding: clamp(2.5rem, 6vw, 5rem) var(--gutter) clamp(3rem, 7vw, 6rem);
+  isolation: isolate;
+}
+
+@media (min-width: 1024px) {
+  .tealHero {
+    min-height: 560px;
+    display: flex;
+    align-items: center;
+  }
+}
+
+.tealHeroBg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--gradient-teal);
+}
+
+.tealHeroBg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(60% 50% at 75% 35%, rgba(255, 255, 255, 0.18), transparent 70%),
+    radial-gradient(40% 40% at 15% 85%, rgba(0, 0, 0, 0.15), transparent 70%);
+  pointer-events: none;
+}
+
+.tealHeroInner {
+  position: relative;
+  width: 100%;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-xl);
+  animation: fadeUp var(--duration-slow) var(--ease-default) both;
+}
+
+@media (min-width: 1024px) {
+  .tealHeroInner {
+    grid-template-columns: 6fr 5fr;
+    align-items: center;
+    gap: clamp(3rem, 6vw, 6rem);
+  }
+}
+
+.tealHeroCopy {
+  max-width: 640px;
+  order: 2;
+}
+
+@media (min-width: 1024px) {
+  .tealHeroCopy {
+    order: 1;
+  }
+}
+
+.tealEyebrow {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: var(--fs-micro);
+  font-weight: 500;
+  letter-spacing: var(--ls-wider);
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.82);
+  margin: 0 0 var(--space-sm);
+}
+
+.tealHeadline {
+  font-family: var(--font-heading);
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(2.25rem, 4vw + 0.5rem, 3.75rem);
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+  color: var(--paper);
+  margin: 0 0 var(--space-md);
+  max-width: 22ch;
+  text-wrap: balance;
+}
+
+.tealFrame {
+  font-family: var(--font-body);
+  font-size: clamp(1.05rem, 0.9vw + 0.85rem, 1.25rem);
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.92);
+  max-width: 520px;
+  margin: 0;
+  font-weight: 400;
+}
+
+.tealHeroMedia {
+  order: 1;
+  margin: 0;
+  position: relative;
+  aspect-ratio: 5 / 6;
+  width: 100%;
+}
+
+@media (min-width: 1024px) {
+  .tealHeroMedia {
+    order: 2;
+    width: 100%;
+    justify-self: stretch;
+    margin-right: calc(-1 * var(--gutter));
+  }
+}
+
+.tealHeroImage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 62%;
+  clip-path: url(#rw-hero-2-leaves);
+}
+
+/* ================================================================ */
 /* Hero — problem framing + primary CTA                              */
 /* ================================================================ */
 /* Replaces the previous teal-overlay aspiration-only hero. The hero
@@ -729,4 +859,18 @@
 .startOverSecondary:hover {
   background: var(--teal-tint-05);
   color: var(--ink);
+}
+
+/* ================================================================ */
+/* Embedded Compass report (post-unlock)                             */
+/* ================================================================ */
+/* The 9-page A4 report is rendered inline between the considered
+   list and the silent-gaps section. Pages are 794px wide (A4 at
+   96dpi) — this wrapper centres them in the wider summary layout
+   so they sit visually aligned on desktop. */
+.reportEmbed {
+  margin-top: 48px;
+  max-width: 794px;
+  margin-left: auto;
+  margin-right: auto;
 }

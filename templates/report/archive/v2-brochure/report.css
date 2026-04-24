@@ -1,0 +1,843 @@
+/* Real Wealth report — layout + print rules.
+   Matches the "Nearing retirement IFAs" brochure (Feb 2026):
+     - Cover: deep forest-green, image masked with a single organic
+       curve, serif italic title in white, logo mark bottom-right
+     - Content: cream blob background behind serif italic section
+       heads in teal, sans body
+     - Numbered lists: circular alternating-colour icons (teal /
+       orange / navy)
+     - Closing: navy "Let's talk" panel with contact cards
+     - Back cover: full-bleed image + logo mark / address block
+   Coordinate markers (e.g. "53.483° N, -2.244° W") appear as a
+   signature on image headers and the cover. */
+
+@import './tokens.css';
+@import url('https://use.typekit.net/ayo5bxu.css');
+
+/* -------------------------------------------------------- base + page */
+
+@page {
+  size: A4;
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--rw-paper-cool);
+  color: var(--rw-ink);
+  font-family: var(--rw-font-body);
+  font-size: var(--rw-fs-body);
+  line-height: var(--rw-lh-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: var(--rw-weight-body);
+}
+
+.doc {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 16px;
+  gap: 28px;
+}
+
+.page {
+  position: relative;
+  width: 794px;
+  height: 1123px;
+  background: var(--rw-paper);
+  box-shadow: var(--rw-shadow-lift);
+  border-radius: 2px;
+  overflow: hidden;
+  page-break-after: always;
+  break-after: page;
+}
+
+.page:last-child {
+  page-break-after: auto;
+  break-after: auto;
+}
+
+@media print {
+  html,
+  body {
+    background: #fff;
+  }
+  .doc {
+    padding: 0;
+    gap: 0;
+  }
+  .page {
+    box-shadow: none;
+    border-radius: 0;
+    margin: 0;
+  }
+  .print-controls {
+    display: none !important;
+  }
+}
+
+/* --------------------------------------- typography, shared helpers */
+
+.h-display {
+  font-family: var(--rw-font-display);
+  font-style: italic;
+  font-weight: var(--rw-weight-display);
+  font-size: var(--rw-fs-h1);
+  line-height: var(--rw-lh-tight);
+  letter-spacing: var(--rw-tracking-display);
+  color: var(--rw-teal);
+  margin: 0 0 14px;
+}
+
+.h-display--navy {
+  color: var(--rw-navy);
+}
+
+.h-display--white {
+  color: var(--rw-paper);
+}
+
+.h-sub {
+  font-family: var(--rw-font-body);
+  font-size: var(--rw-fs-h3);
+  font-weight: var(--rw-weight-bold);
+  color: var(--rw-teal);
+  margin: 0 0 6px;
+  letter-spacing: var(--rw-tracking-heading);
+}
+
+.body {
+  font-family: var(--rw-font-body);
+  font-size: var(--rw-fs-body-lg);
+  line-height: var(--rw-lh-body);
+  color: var(--rw-ink);
+  margin: 0 0 12px;
+  max-width: 60ch;
+}
+
+.body--muted {
+  color: var(--rw-ink-soft);
+}
+
+/* Small geographic-coordinate marker — appears on image headers and
+   the cover as a brand signature. Uses brackets to frame a compass
+   reading. */
+.coord {
+  position: absolute;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-family: var(--rw-font-body);
+  font-size: 9px;
+  line-height: 1.15;
+  letter-spacing: var(--rw-tracking-coord);
+  color: var(--rw-paper);
+  mix-blend-mode: normal;
+  z-index: 3;
+}
+
+.coord--dark {
+  color: var(--rw-ink);
+}
+
+.coord__bracket {
+  display: block;
+  width: 20px;
+  height: 8px;
+  border: 1px solid currentColor;
+  border-bottom: 0;
+  margin-bottom: 4px;
+}
+
+.coord__text {
+  display: block;
+  padding-left: 2px;
+}
+
+.coord--bottom .coord__bracket {
+  border: 1px solid currentColor;
+  border-top: 0;
+  margin-top: 4px;
+  margin-bottom: 0;
+}
+
+/* Footer chrome for content pages — page number (left), URL + logo
+   mark (right), hairline rule above. Kept minimal like the brochure. */
+.foot-chrome {
+  position: absolute;
+  bottom: 32px;
+  left: 48px;
+  right: 48px;
+  padding-top: 10px;
+  border-top: 1px solid var(--rw-border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--rw-font-body);
+  font-size: 10.5px;
+  color: var(--rw-ink-muted);
+}
+
+.foot-chrome__left {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.foot-chrome__num {
+  font-weight: var(--rw-weight-bold);
+  color: var(--rw-ink);
+}
+
+.foot-chrome__right {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--rw-teal);
+}
+
+.foot-chrome__url {
+  color: var(--rw-teal);
+  text-decoration: none;
+  letter-spacing: 0;
+}
+
+.foot-chrome__mark {
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+}
+
+/* ================================================================== */
+/* Page 1 — Cover                                                      */
+/* ================================================================== */
+
+.cover {
+  position: absolute;
+  inset: 0;
+  background: var(--rw-forest);
+  color: var(--rw-paper);
+  overflow: hidden;
+}
+
+/* Large organic-curve masked image filling the top ~58% of the cover.
+   The teal-petal curve on the bottom is the same logo geometry used
+   elsewhere, here applied to the bottom edge of the image so the
+   forest-green cover shows through in a single elegant curve. */
+.cover__media {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 640px;
+  margin: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.cover__media-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 50%;
+  clip-path: url(#rw-cover-leaf);
+  display: block;
+}
+
+.cover__coord {
+  top: 40px;
+  right: 40px;
+}
+
+.cover__content {
+  position: absolute;
+  top: 700px;
+  left: 48px;
+  right: 48px;
+  z-index: 2;
+}
+
+.cover__title {
+  font-family: var(--rw-font-display);
+  font-style: italic;
+  font-weight: var(--rw-weight-display);
+  font-size: var(--rw-fs-cover-title);
+  line-height: 1.08;
+  letter-spacing: var(--rw-tracking-display);
+  color: var(--rw-paper);
+  margin: 0 0 16px;
+  max-width: 16ch;
+}
+
+.cover__tagline {
+  font-family: var(--rw-font-body);
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+  max-width: 50ch;
+}
+
+.cover__meta-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 32px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  max-width: 520px;
+}
+
+.cover__meta-grid .k {
+  display: block;
+  font-size: 9.5px;
+  font-weight: var(--rw-weight-bold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  margin-bottom: 3px;
+}
+
+.cover__meta-grid .v {
+  display: block;
+  font-family: var(--rw-font-body);
+  font-size: 12.5px;
+  color: var(--rw-paper);
+}
+
+.cover__logo {
+  position: absolute;
+  bottom: 40px;
+  right: 40px;
+  height: 30px;
+  width: auto;
+  display: block;
+  z-index: 2;
+}
+
+/* ================================================================== */
+/* Content pages — shared chrome                                      */
+/* ================================================================== */
+
+/* Image header — a horizontal photo at the top of a content page
+   with a coordinate marker overlaid top-right. About 28% of the
+   page height. */
+.img-header {
+  position: relative;
+  margin: 0 0 28px;
+  height: 260px;
+  overflow: hidden;
+  border-radius: 0;
+}
+
+.img-header__photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 48%;
+  display: block;
+  clip-path: url(#rw-header-leaf);
+}
+
+.img-header--small {
+  height: 180px;
+}
+
+.page__body {
+  position: absolute;
+  top: 48px;
+  bottom: 96px;
+  left: 48px;
+  right: 48px;
+}
+
+.page__body--with-header {
+  top: 0;
+  padding-top: 24px;
+}
+
+/* Subtle cream-blob background behind a content page — a soft
+   organic shape anchored to the right side of the page. Appears
+   behind numbered lists on the "Why partner" page. Not a clip path;
+   just an oversized ellipse positioned absolutely. */
+.page__cream-blob {
+  position: absolute;
+  top: -160px;
+  right: -220px;
+  width: 900px;
+  height: 820px;
+  background: var(--rw-cream);
+  border-radius: 50%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.page__body > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ================================================================== */
+/* Section title pattern                                              */
+/* ================================================================== */
+
+.section-title {
+  margin-bottom: 20px;
+  max-width: 56ch;
+}
+
+/* ================================================================== */
+/* Snapshot / stats block                                             */
+/* ================================================================== */
+
+.snapshot {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 20px 0 28px;
+  max-width: 640px;
+}
+
+.snapshot__item {
+  padding: 4px 0;
+}
+
+.snapshot__val {
+  font-family: var(--rw-font-display);
+  font-style: italic;
+  font-weight: var(--rw-weight-display);
+  font-size: 36px;
+  line-height: 1;
+  color: var(--rw-teal);
+  letter-spacing: var(--rw-tracking-display);
+  display: block;
+}
+
+.snapshot__label {
+  display: block;
+  font-family: var(--rw-font-body);
+  font-size: 10px;
+  font-weight: var(--rw-weight-bold);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--rw-ink-muted);
+  margin: 8px 0 3px;
+}
+
+.snapshot__sub {
+  display: block;
+  font-family: var(--rw-font-body);
+  font-size: 11px;
+  color: var(--rw-ink-soft);
+  line-height: 1.45;
+}
+
+/* ================================================================== */
+/* Pull quote — appears on image-header pages alongside body copy    */
+/* ================================================================== */
+
+.pull-quote-panel {
+  background: var(--rw-teal);
+  color: var(--rw-paper);
+  padding: 20px 22px;
+  border-radius: var(--rw-radius-md);
+  font-family: var(--rw-font-display);
+  font-style: italic;
+  font-weight: var(--rw-weight-display);
+  font-size: 18px;
+  line-height: 1.35;
+  letter-spacing: var(--rw-tracking-display);
+}
+
+.two-col-with-quote {
+  display: grid;
+  grid-template-columns: 1.7fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+/* ================================================================== */
+/* Numbered icon list — cream background page (like "Why Partner")   */
+/* ================================================================== */
+
+.icon-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 620px;
+}
+
+.icon-list__item {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 18px;
+  align-items: start;
+}
+
+.icon-bubble {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--rw-paper);
+}
+
+.icon-bubble--teal {
+  background: var(--rw-teal);
+}
+
+.icon-bubble--orange {
+  background: var(--rw-orange);
+}
+
+.icon-bubble--navy {
+  background: var(--rw-navy);
+}
+
+.icon-list__title {
+  font-family: var(--rw-font-body);
+  font-size: 14px;
+  font-weight: var(--rw-weight-bold);
+  margin: 4px 0 6px;
+  letter-spacing: var(--rw-tracking-heading);
+}
+
+.icon-list__title--teal {
+  color: var(--rw-teal);
+}
+
+.icon-list__title--orange {
+  color: var(--rw-orange);
+}
+
+.icon-list__title--navy {
+  color: var(--rw-navy);
+}
+
+.icon-list__body {
+  font-family: var(--rw-font-body);
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--rw-ink);
+  margin: 0 0 6px;
+  max-width: 62ch;
+}
+
+/* ================================================================== */
+/* Insight / Context / One move                                       */
+/* ================================================================== */
+
+.insight-block {
+  background: var(--rw-paper);
+  border: 1px solid var(--rw-border-subtle);
+  border-radius: var(--rw-radius-md);
+  padding: 18px 22px;
+  margin-bottom: 14px;
+  box-shadow: var(--rw-shadow-sm);
+}
+
+.insight-block__row {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 14px;
+  padding: 8px 0;
+  border-bottom: 1px dashed var(--rw-border-subtle);
+}
+
+.insight-block__row:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.insight-block__row:first-child {
+  padding-top: 0;
+}
+
+.insight-block__label {
+  font-family: var(--rw-font-body);
+  font-size: 10px;
+  font-weight: var(--rw-weight-bold);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--rw-teal);
+  padding-top: 2px;
+}
+
+.insight-block__copy {
+  font-family: var(--rw-font-body);
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--rw-ink);
+  margin: 0;
+}
+
+/* ================================================================== */
+/* Silent-gaps — lightweight two-column list                          */
+/* ================================================================== */
+
+.silent-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px 28px;
+  max-width: 680px;
+  margin-top: 8px;
+}
+
+.silent-list__item {
+  padding: 0 0 10px;
+  border-bottom: 1px solid var(--rw-border-subtle);
+}
+
+.silent-list__num {
+  font-family: var(--rw-font-display);
+  font-style: italic;
+  font-weight: var(--rw-weight-display);
+  font-size: 22px;
+  color: var(--rw-orange);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  margin-bottom: 6px;
+  display: inline-block;
+}
+
+.silent-list__title {
+  font-family: var(--rw-font-body);
+  font-size: 13px;
+  font-weight: var(--rw-weight-bold);
+  color: var(--rw-ink);
+  margin: 0 0 4px;
+  letter-spacing: var(--rw-tracking-heading);
+}
+
+.silent-list__body {
+  font-family: var(--rw-font-body);
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--rw-ink-soft);
+  margin: 0;
+}
+
+/* ================================================================== */
+/* "Let's talk" closing panel — navy, two contact cards              */
+/* ================================================================== */
+
+.lets-talk {
+  background: var(--rw-navy);
+  color: var(--rw-paper);
+  border-radius: var(--rw-radius-lg);
+  padding: 34px 36px 32px;
+  margin-top: 18px;
+  position: relative;
+  overflow: hidden;
+}
+
+.lets-talk__title {
+  font-family: var(--rw-font-display);
+  font-style: italic;
+  font-weight: var(--rw-weight-display);
+  font-size: 40px;
+  line-height: 1.05;
+  letter-spacing: var(--rw-tracking-display);
+  color: var(--rw-paper);
+  margin: 0 0 8px;
+}
+
+.lets-talk__title em {
+  color: var(--rw-orange);
+  font-style: italic;
+}
+
+.lets-talk__lede {
+  font-family: var(--rw-font-body);
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0 0 24px;
+  max-width: 50ch;
+}
+
+.lets-talk__cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 22px;
+}
+
+.contact-card {
+  padding: 0;
+}
+
+.contact-card__name {
+  font-family: var(--rw-font-body);
+  font-size: 15px;
+  font-weight: var(--rw-weight-bold);
+  color: var(--rw-paper);
+  margin: 0 0 2px;
+}
+
+.contact-card__role {
+  font-family: var(--rw-font-body);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0 0 10px;
+}
+
+.contact-card__line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--rw-font-body);
+  font-size: 12px;
+  color: var(--rw-paper);
+  line-height: 1.4;
+  margin: 2px 0;
+}
+
+.contact-card__line svg {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+.lets-talk__url {
+  font-family: var(--rw-font-body);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.55);
+  margin: 16px 0 0;
+  letter-spacing: 0.04em;
+}
+
+/* ================================================================== */
+/* Back cover — full-bleed image + logo + address                     */
+/* ================================================================== */
+
+.backcover {
+  position: absolute;
+  inset: 0;
+  background: var(--rw-forest);
+  overflow: hidden;
+}
+
+.backcover__photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+.backcover__photo-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(12, 58, 50, 0.25) 0%, rgba(12, 58, 50, 0.65) 70%, rgba(12, 58, 50, 0.85) 100%);
+  z-index: 1;
+}
+
+.backcover__coord {
+  top: 40px;
+  right: 40px;
+  color: var(--rw-paper);
+  z-index: 2;
+}
+
+.backcover__block {
+  position: absolute;
+  bottom: 40px;
+  left: 48px;
+  right: 48px;
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  color: var(--rw-paper);
+}
+
+.backcover__logo {
+  height: 44px;
+  width: auto;
+  display: block;
+}
+
+.backcover__address {
+  font-family: var(--rw-font-body);
+  font-size: 10.5px;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.78);
+  max-width: 44ch;
+  text-align: right;
+}
+
+.backcover__address strong {
+  color: var(--rw-paper);
+  font-weight: var(--rw-weight-bold);
+  display: block;
+  margin-bottom: 3px;
+}
+
+/* ================================================================== */
+/* Print controls (hidden in PDF)                                     */
+/* ================================================================== */
+
+.print-controls {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 9999;
+  display: flex;
+  gap: 8px;
+  background: var(--rw-paper);
+  padding: 8px 12px;
+  border-radius: var(--rw-radius-sm);
+  box-shadow: var(--rw-shadow-card);
+  font-family: var(--rw-font-body);
+  font-size: 12px;
+  border: 1px solid var(--rw-border-subtle);
+}
+
+.print-controls button {
+  appearance: none;
+  background: var(--rw-paper);
+  color: var(--rw-teal);
+  border: 1.5px solid var(--rw-teal);
+  padding: 6px 14px;
+  border-radius: var(--rw-radius-sm);
+  font-family: var(--rw-font-display);
+  font-style: italic;
+  font-weight: var(--rw-weight-display);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.print-controls button:hover {
+  background: var(--rw-teal);
+  color: var(--rw-paper);
+}
+
+/* Decorative placeholder tiles (when a real image isn't ready) */
+.img-placeholder {
+  background: var(--rw-gradient-teal);
+  border-radius: var(--rw-radius-md);
+  color: rgba(255, 255, 255, 0.82);
+  font-family: var(--rw-font-body);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+}

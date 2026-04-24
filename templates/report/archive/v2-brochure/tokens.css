@@ -1,0 +1,102 @@
+/* Real Wealth report — brand tokens.
+   Tuned to match the "Nearing retirement IFAs" brochure (Feb 2026):
+   deep forest-green covers, cream blob content pages, teal serif
+   italic headings, alternating teal/orange/navy circular icons. */
+
+:root {
+  /* Brand colours ---------------------------------------------------- */
+  --rw-forest: #0c3a32;   /* cover + back-cover background */
+  --rw-forest-soft: #124a41;
+  --rw-teal: #0c7372;     /* headlines, icon #1 */
+  --rw-teal-mid: #11a09f;
+  --rw-orange: #ff6801;   /* icon #2, CTA */
+  --rw-orange-soft: #ff8a3d;
+  --rw-navy: #333566;     /* icon #3, "Let's talk" panel */
+  --rw-navy-deep: #242754;
+  --rw-gold: #ffd33a;
+
+  /* Surfaces + type -------------------------------------------------- */
+  --rw-paper: #ffffff;
+  --rw-paper-warm: #faf7f2;
+  --rw-cream: #fdf2c9;    /* the brochure's soft-cream blob colour */
+  --rw-cream-soft: #fef8de;
+  --rw-paper-cool: #f4f1ec;
+  --rw-ink: #353535;
+  --rw-ink-soft: #5a5a5a;
+  --rw-ink-muted: #707070;
+  --rw-stone: #b2b2b2;
+  --rw-border-subtle: rgba(0, 0, 0, 0.08);
+  --rw-border-teal: rgba(12, 115, 114, 0.22);
+
+  /* Gradients — kept minimal; brochure prefers solid fills ----------- */
+  --rw-gradient-teal: linear-gradient(135deg, #0c7372 5%, #11a09f 40%, #0c7372 100%);
+  --rw-gradient-forest: linear-gradient(180deg, #0c3a32 0%, #0e4438 100%);
+
+  /* Semantic --------------------------------------------------------- */
+  --rw-bg-default: var(--rw-paper);
+  --rw-bg-surface: var(--rw-paper);
+  --rw-bg-cover: var(--rw-forest);
+  --rw-bg-cream: var(--rw-cream);
+  --rw-bg-emphasis: var(--rw-teal);
+  --rw-bg-accent: var(--rw-orange);
+  --rw-fg-default: var(--rw-ink);
+  --rw-fg-muted: var(--rw-ink-soft);
+  --rw-fg-on-dark: var(--rw-paper);
+  --rw-fg-on-dark-muted: rgba(255, 255, 255, 0.78);
+
+  /* Typography ------------------------------------------------------- */
+  /* Display uses Gelica italic (sophisticated serif, matches the
+     brochure's "Securing Your Legacy, Protecting Your Clients"
+     title). Body is Area Normal. */
+  --rw-font-display: 'gelica', Georgia, 'Times New Roman', serif;
+  --rw-font-body: 'area-normal', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  --rw-fs-cover-title: 48px;
+  --rw-fs-h1: 38px;        /* serif italic section heads */
+  --rw-fs-h2: 26px;
+  --rw-fs-h3: 18px;
+  --rw-fs-h4: 15px;
+  --rw-fs-body-lg: 14px;
+  --rw-fs-body: 13px;
+  --rw-fs-body-sm: 12px;
+  --rw-fs-eyebrow: 10px;
+  --rw-fs-caption: 10px;
+
+  --rw-lh-tight: 1.08;
+  --rw-lh-heading: 1.18;
+  --rw-lh-body: 1.55;
+  --rw-lh-prose: 1.7;
+
+  --rw-tracking-display: -0.01em;
+  --rw-tracking-heading: -0.005em;
+  --rw-tracking-body: 0;
+  --rw-tracking-eyebrow: 0.18em;
+  --rw-tracking-coord: 0.06em;
+
+  --rw-weight-body: 400;
+  --rw-weight-bold: 700;
+  --rw-weight-display: 300;
+
+  /* Layout ----------------------------------------------------------- */
+  --rw-radius-sm: 6px;
+  --rw-radius-md: 10px;
+  --rw-radius-lg: 20px;
+  --rw-radius-pill: 9999px;
+
+  --rw-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --rw-shadow-card: 0 2px 12px rgba(0, 0, 0, 0.05);
+  --rw-shadow-lift: 0 4px 24px rgba(0, 0, 0, 0.08);
+
+  /* Spacing (8px base) ---------------------------------------------- */
+  --rw-space-1: 4px;
+  --rw-space-2: 8px;
+  --rw-space-3: 12px;
+  --rw-space-4: 16px;
+  --rw-space-5: 20px;
+  --rw-space-6: 24px;
+  --rw-space-8: 32px;
+  --rw-space-10: 40px;
+  --rw-space-12: 48px;
+  --rw-space-16: 64px;
+  --rw-space-20: 80px;
+}

@@ -1,0 +1,98 @@
+/* Real Wealth report — brand tokens for the restyled AbleCare template.
+   Mirrors the app's tokens.css so the report reads as a first-party
+   Real Wealth artefact. Values are flat (no references out of this
+   file) so the template can be rendered by a headless tool with no
+   other dependency. */
+
+:root {
+  /* Brand colours ---------------------------------------------------- */
+  --rw-teal: #0c7372;
+  --rw-teal-mid: #11a09f;
+  --rw-teal-deep: #09595a;
+  --rw-orange: #ff6801;
+  --rw-navy: #333566;
+  --rw-gold: #ffd33a;
+
+  /* Surfaces + type -------------------------------------------------- */
+  --rw-paper: #ffffff;
+  --rw-paper-warm: #faf7f2;
+  --rw-paper-cool: #f4f1ec;
+  --rw-ink: #353535;
+  --rw-ink-soft: #5a5a5a;
+  --rw-ink-muted: #707070;
+  --rw-stone: #b2b2b2;
+  --rw-border-subtle: rgba(0, 0, 0, 0.08);
+  --rw-border-teal: rgba(12, 115, 114, 0.22);
+
+  /* Gradients -------------------------------------------------------- */
+  --rw-gradient-teal: linear-gradient(135deg, #0c7372 5%, #11a09f 32%, #0c7372 100%);
+  --rw-gradient-teal-soft: linear-gradient(145deg, #0c7372 0%, #11a09f 50%, #0c7372 100%);
+  --rw-gradient-orange: linear-gradient(140deg, #ff6801 2%, #ffa963 44%);
+
+  /* Semantic --------------------------------------------------------- */
+  --rw-bg-default: var(--rw-paper-warm);
+  --rw-bg-surface: var(--rw-paper);
+  --rw-bg-emphasis: var(--rw-teal);
+  --rw-bg-accent: var(--rw-orange);
+  --rw-fg-default: var(--rw-ink);
+  --rw-fg-muted: var(--rw-ink-soft);
+  --rw-fg-on-teal: var(--rw-paper);
+  --rw-fg-on-teal-muted: rgba(255, 255, 255, 0.82);
+  --rw-fg-eyebrow-dark: var(--rw-teal);
+  --rw-fg-eyebrow-light: rgba(255, 255, 255, 0.82);
+
+  /* Typography ------------------------------------------------------- */
+  /* Kept web-safe fallbacks so the report prints intelligibly even
+     if the Typekit families fail to load in the PDF renderer. Gelica
+     is the italic display family; Area Normal is the body. */
+  --rw-font-display: 'gelica', Georgia, 'Times New Roman', serif;
+  --rw-font-body: 'area-normal', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  --rw-fs-display: 56px;
+  --rw-fs-h1: 40px;
+  --rw-fs-h2: 28px;
+  --rw-fs-h3: 20px;
+  --rw-fs-h4: 16px;
+  --rw-fs-body-lg: 15px;
+  --rw-fs-body: 13px;
+  --rw-fs-body-sm: 12px;
+  --rw-fs-eyebrow: 10.5px;
+  --rw-fs-caption: 11px;
+
+  --rw-lh-tight: 1.08;
+  --rw-lh-heading: 1.18;
+  --rw-lh-body: 1.55;
+  --rw-lh-prose: 1.7;
+
+  --rw-tracking-display: -0.015em;
+  --rw-tracking-heading: -0.01em;
+  --rw-tracking-body: 0;
+  --rw-tracking-eyebrow: 0.22em;
+
+  --rw-weight-body: 400;
+  --rw-weight-bold: 700;
+  --rw-weight-display: 300; /* gelica looks best at ExtraLight for display */
+
+  /* Layout ----------------------------------------------------------- */
+  --rw-radius-sm: 6px;
+  --rw-radius-md: 9px;
+  --rw-radius-lg: 16px;
+  --rw-radius-pill: 9999px;
+
+  --rw-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --rw-shadow-card: 0 2px 12px rgba(0, 0, 0, 0.05);
+  --rw-shadow-lift: 0 4px 24px rgba(0, 0, 0, 0.08);
+
+  /* Spacing (8px base) ---------------------------------------------- */
+  --rw-space-1: 4px;
+  --rw-space-2: 8px;
+  --rw-space-3: 12px;
+  --rw-space-4: 16px;
+  --rw-space-5: 20px;
+  --rw-space-6: 24px;
+  --rw-space-8: 32px;
+  --rw-space-10: 40px;
+  --rw-space-12: 48px;
+  --rw-space-16: 64px;
+  --rw-space-20: 80px;
+}

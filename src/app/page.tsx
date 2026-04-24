@@ -8,11 +8,13 @@
  */
 'use client';
 
+import { useEffect, useSyncExternalStore } from 'react';
 import { Button } from '@/components/Button';
 import { TierTile, type TierId } from '@/components/TierTile';
 import { FCAFooter } from '@/components/FCAFooter';
 import { Logo } from '@/components/Logo';
 import { pageValue } from '@/lib/content';
+import { loadSession } from '@/lib/questionnaire/session';
 import styles from './page.module.css';
 
 interface TierTileContent {
@@ -34,6 +36,24 @@ interface BenefitCardContent {
 interface HeroPillContent {
   icon?: string;
   label?: string;
+}
+
+function subscribeSessionStorage(onStoreChange: () => void): () => void {
+  if (typeof window === 'undefined') return () => {};
+  window.addEventListener('storage', onStoreChange);
+  return () => window.removeEventListener('storage', onStoreChange);
+}
+
+function getFirstNameSnapshot(): string {
+  try {
+    return loadSession()?.contact?.firstName?.trim() ?? '';
+  } catch {
+    return '';
+  }
+}
+
+function getServerFirstNameSnapshot(): string {
+  return '';
 }
 
 export default function Home() {
@@ -62,6 +82,25 @@ export default function Home() {
     [],
   );
 
+  /* Returning visitors — if the contact form was filled on a previous
+     visit, show their first name as a small welcome line above the
+     headline. Read from localStorage after mount to avoid hydration
+     mismatch. */
+  const firstName = useSyncExternalStore(
+    subscribeSessionStorage,
+    getFirstNameSnapshot,
+    getServerFirstNameSnapshot,
+  );
+  useEffect(() => {
+    try {
+      const session = loadSession();
+      const name = session?.contact?.firstName?.trim();
+      if (name) return;
+    } catch {
+      /* localStorage disabled — skip personalisation */
+    }
+  }, []);
+
   return (
     <>
       <header className={styles.topnav}>
@@ -89,6 +128,9 @@ export default function Home() {
           <div className={styles.heroBg} />
           <div className={styles.heroInner}>
             <div className={styles.heroCopy}>
+              {firstName ? (
+                <p className={styles.welcomeBack}>Welcome back, {firstName}.</p>
+              ) : null}
               <h1 className={styles.headline}>{headline}</h1>
               <p className={styles.sub}>{sub}</p>
               <div className={styles.heroCta}>

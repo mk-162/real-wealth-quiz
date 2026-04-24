@@ -95,7 +95,21 @@ function QuestionLayout(props: ScreenRendererProps) {
   const section = sectionMeta(screen.section as never);
 
   const kicker = section?.kicker ?? `STEP ${screen.screen_number}`;
-  const pullquote = section?.pullquote;
+  /*
+   * Pullquote resolution — three-level priority chain:
+   *   1. screen.pullquote is a non-empty string  → use it (per-screen override)
+   *   2. screen.pullquote is ""                  → suppress (empty string = no quote,
+   *                                                even when the section has one)
+   *   3. screen.pullquote is undefined           → fall back to section default,
+   *                                                then screen.sub as last resort
+   *
+   * The `|| undefined` coercion on the truthy branch converts an explicit empty
+   * string to undefined so QuestionShell renders nothing rather than a blank <p>.
+   */
+  const pullquote: string | undefined =
+    screen.pullquote !== undefined
+      ? screen.pullquote || undefined
+      : section?.pullquote ?? screen.sub;
   /* Grouped asymmetric screens historically used screen.title as the
      stem (the section-level line) when headline was absent. Preserve
      that fallback. */
@@ -105,7 +119,7 @@ function QuestionLayout(props: ScreenRendererProps) {
     <QuestionShell
       kicker={kicker}
       stem={stem}
-      pullquote={pullquote ?? screen.sub}
+      pullquote={pullquote}
       aside={aside}
     >
       {screen.sub && screen.sub !== pullquote ? (

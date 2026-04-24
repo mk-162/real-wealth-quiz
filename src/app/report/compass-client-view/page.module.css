@@ -1,0 +1,70 @@
+.page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 48px 24px 80px;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: #0f172a;
+}
+
+.heading {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0 0 8px;
+}
+
+.lede {
+  color: #475569;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.link {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 14px;
+  align-items: center;
+  padding: 12px 14px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  text-decoration: none;
+  color: inherit;
+  background: white;
+}
+
+.link:hover {
+  border-color: #0ea5e9;
+  background: #f0f9ff;
+}
+
+.id {
+  font-weight: 800;
+  color: #0284c7;
+  font-size: 0.9rem;
+  width: 28px;
+}
+
+.label {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.persona {
+  color: #64748b;
+  font-size: 0.82rem;
+  text-align: right;
+}
+
+@media (max-width: 640px) {
+  .link { grid-template-columns: auto 1fr; }
+  .persona { grid-column: 1 / -1; text-align: left; }
+}

@@ -22,6 +22,7 @@
 import { test, expect, type Page } from '@playwright/test';
 
 const SESSION_KEY = 'real-wealth:conversation';
+const UNLOCK_KEY = 'real-wealth:report-unlocked';
 /* Keep in lockstep with SESSION_VERSION in src/lib/questionnaire/session.ts.
    Bumping the version there invalidates seeded test sessions too. */
 const SESSION_VERSION = '2';
@@ -42,13 +43,14 @@ async function seedSession(
   page: Page,
   tier: 'standard' | 'thorough',
   answers: SeedAnswers,
+  unlockReport = false,
 ): Promise<void> {
   /* Seed BEFORE the app loads so the summary page picks the session up on
      first paint. We hit a neutral about:blank-equivalent first so we have a
      same-origin window to write into. */
   await page.goto('/');
   await page.evaluate(
-    ({ key, version, tier, answers }) => {
+    ({ key, unlockKey, version, tier, answers, unlockReport }) => {
       const now = new Date().toISOString();
       const session = {
         version,
@@ -60,8 +62,11 @@ async function seedSession(
         visitedOrder: [],
       };
       window.localStorage.setItem(key, JSON.stringify(session));
+      if (unlockReport) {
+        window.localStorage.setItem(unlockKey, 'true');
+      }
     },
-    { key: SESSION_KEY, version: SESSION_VERSION, tier, answers },
+    { key: SESSION_KEY, unlockKey: UNLOCK_KEY, version: SESSION_VERSION, tier, answers, unlockReport },
   );
 }
 
@@ -75,7 +80,13 @@ async function readSession(page: Page): Promise<Record<string, unknown> | null> 
 test.beforeEach(async ({ page }) => {
   /* Wipe any previous session so a flake on test N doesn't bleed into N+1. */
   await page.goto('/');
-  await page.evaluate((key) => window.localStorage.removeItem(key), SESSION_KEY);
+  await page.evaluate(
+    ({ sessionKey, unlockKey }) => {
+      window.localStorage.removeItem(sessionKey);
+      window.localStorage.removeItem(unlockKey);
+    },
+    { sessionKey: SESSION_KEY, unlockKey: UNLOCK_KEY },
+  );
 });
 
 test('S1 Early Accumulator flow', async ({ page }) => {
@@ -181,7 +192,7 @@ test('S2 Mass-Affluent Mid-Career flow', async ({ page }) => {
     income_band: '50to100k',
     estate_band: '500k_to_1m',
     happy_place: 'Breakfast on the porch, walking the dog, a quiet Sunday.',
-  });
+  }, true);
 
   await page.goto('/conversation/summary');
   await expect(page).toHaveURL(/\/conversation\/summary/, { timeout: 10_000 });
@@ -204,7 +215,7 @@ test('S4 Senior Professional flow', async ({ page }) => {
     income_band: 'gt200k',
     estate_band: '2m_to_3m',
     happy_place: 'A long walk with the family after Sunday lunch.',
-  });
+  }, true);
 
   await page.goto('/conversation/summary');
   await expect(page).toHaveURL(/\/conversation\/summary/, { timeout: 10_000 });
@@ -229,7 +240,7 @@ test('S5 Business-Owner Growth flow', async ({ page }) => {
     income_band: '100to125k',
     estate_band: '500k_to_1m',
     happy_place: 'Saturday in the garden with the kids.',
-  });
+  }, true);
 
   await page.goto('/conversation/summary');
   await expect(page).toHaveURL(/\/conversation\/summary/, { timeout: 10_000 });
@@ -254,7 +265,7 @@ test('S7 Pre-Retiree Affluent flow', async ({ page }) => {
     income_band: '125to200k',
     estate_band: '1m_to_2m',
     happy_place: 'A slow morning, coffee, and a long book.',
-  });
+  }, true);
 
   await page.goto('/conversation/summary');
   await expect(page).toHaveURL(/\/conversation\/summary/, { timeout: 10_000 });
@@ -279,7 +290,7 @@ test('S8 Retired Decumulation flow', async ({ page }) => {
     income_band: '50to100k',
     estate_band: '500k_to_1m',
     happy_place: 'A quiet Sunday, the grandchildren visiting later.',
-  });
+  }, true);
 
   await page.goto('/conversation/summary');
   await expect(page).toHaveURL(/\/conversation\/summary/, { timeout: 10_000 });
@@ -294,4 +305,119 @@ test('S8 Retired Decumulation flow', async ({ page }) => {
   const answers = session?.answers as Record<string, unknown> | undefined;
   expect(answers?.work_status).toBe('fully_retired');
   expect(answers?.age).toBe(66);
+});
+
+/* ================================================================ */
+/* End-to-end journey — questionnaire seed → email unlock → 9-page   */
+/* Compass report visible.                                           */
+/* ================================================================ */
+/* This is the canonical happy-path journey test. It covers the full */
+/* user flow in a single run: seeded session (S2 mass-affluent mid-  */
+/* career — the default persona), landing on /conversation/summary   */
+/* with the report LOCKED, submitting the email capture form (with   */
+/* /api/report/send mocked to 200 since Resend isn't available in    */
+/* test), and asserting the embedded 9-page Compass report now       */
+/* renders — Cover, chart page, Methodology all present.             */
+/*                                                                   */
+/* We also count console.error events over the whole journey and    */
+/* assert zero — any real bug that logs to console would fail here.  */
+/*                                                                   */
+/* The seed path is used rather than walking the 28-screen           */
+/* questionnaire because the questionnaire has no stable per-input   */
+/* test ids yet and walking it is brittle (see the file-level        */
+/* comment at the top). The seed produces an identical session       */
+/* shape to what the real flow writes, so from /conversation/summary */
+/* onwards the rendering and unlock paths are exercised end-to-end.  */
+test('journey: seed → summary (locked) → email unlock → 9-page report visible', async ({ page }) => {
+  /* Capture any console errors across the whole journey. */
+  const consoleErrors: string[] = [];
+  page.on('console', (msg) => {
+    if (msg.type() === 'error') {
+      consoleErrors.push(msg.text());
+    }
+  });
+  page.on('pageerror', (err) => {
+    consoleErrors.push(`pageerror: ${err.message}`);
+  });
+
+  /* Mock the email-send API so the unlock completes without needing
+     a real RESEND_API_KEY. The real route handler is exercised by a
+     dedicated API-level test elsewhere; this test is about the UI
+     journey from form submit → report reveal. */
+  await page.route('**/api/report/send', async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({ ok: true }),
+    });
+  });
+
+  /* Seed an S2 session WITHOUT the unlock flag — we want the email
+     gate to render, and then we'll submit it. */
+  await seedSession(page, 'standard', {
+    age: 42,
+    household: ['partner'],
+    work_status: 'employed',
+    income_band: '50to100k',
+    estate_band: '500k_to_1m',
+    happy_place: 'Breakfast on the porch, walking the dog, a quiet Sunday.',
+  }, false);
+
+  await page.goto('/conversation/summary');
+  await expect(page).toHaveURL(/\/conversation\/summary/, { timeout: 10_000 });
+  await expect(page.locator('body')).toBeVisible();
+
+  /* Before unlock: the email-capture banner is visible and the report
+     is NOT. The HealthGauge card has a stable aria-label we can use
+     as a sentinel for "report is rendered". */
+  await expect(page.getByRole('heading', { name: 'Email me my report.' })).toBeVisible();
+  await expect(page.locator('[aria-label="Financial health"]')).toHaveCount(0);
+  /* The Methodology page only exists inside the embedded report. */
+  await expect(page.getByRole('heading', { level: 3, name: 'Methodology' })).toHaveCount(0);
+
+  /* Fill the email-capture form. First name + email + service consent
+     are required; the form uses stable id attributes (capture-*). We
+     target by id to avoid getByLabel ambiguity — the section's
+     aria-labelledby makes "Email" and the consent label both match. */
+  await page.locator('#capture-firstName').fill('Sarah');
+  await page.locator('#capture-email').fill('sarah@example.com');
+  await page.locator('#capture-consent-service').check();
+
+  /* Submit. The mocked route returns 200 immediately so the unlock
+     flips and the report renders below. */
+  await page.getByRole('button', { name: 'Send me my report' }).click();
+
+  /* After unlock: the email form is gone, the report is visible. */
+  await expect(page.getByRole('heading', { name: 'Email me my report.' })).toBeHidden();
+
+  /* Unlock flag was persisted to localStorage — this is the contract
+     the SummaryClient uses to keep the report revealed across reloads. */
+  const unlocked = await page.evaluate(
+    (key) => window.localStorage.getItem(key),
+    UNLOCK_KEY,
+  );
+  expect(unlocked).toBe('true');
+
+  /* Cover page shows "Your Wealth Report" and the recipient name
+     (S2 fallback persona: Sarah). The cover title uses "Your Wealth
+     Report." with a trailing period. */
+  await expect(page.getByRole('heading', { name: 'Your Wealth Report.' })).toBeVisible();
+  await expect(page.getByText('For Sarah · A briefing from Real Wealth')).toBeVisible();
+
+  /* Chart page: the HealthGauge card is a stable sentinel that only
+     exists inside the embedded report (page 02 — Snapshot). */
+  await expect(page.locator('[aria-label="Financial health"]').first()).toBeVisible();
+
+  /* Methodology page (page 09). "Methodology" appears as the eyebrow
+     span; the actual page heading is the h2 loaded from content. We
+     assert on the eyebrow text (stable across content edits) plus
+     the h2 (confirms the page loaded its content). */
+  await expect(page.getByText('Methodology', { exact: true }).first()).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: /How this report was built/i }),
+  ).toBeVisible();
+
+  /* Zero console errors over the full journey — any real bug that
+     logs to console.error will fail the test here. */
+  expect(consoleErrors, `Console errors: ${consoleErrors.join('\n')}`).toEqual([]);
 });

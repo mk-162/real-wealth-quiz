@@ -33,3 +33,5 @@ export * from './ResumeBanner';
 export * from './SpotlightFlag';
 export * from './SilentGapCard';
 export * from './Bridge';
+export * from './ReportCapture';
+export * from './GraphSlot';

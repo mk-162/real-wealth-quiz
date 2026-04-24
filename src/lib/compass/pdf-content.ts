@@ -29,6 +29,19 @@ import type {
   TileStatus,
   TileKey,
 } from './types';
+import type { TileScoreMap } from './tile-scoring-types';
+import { applyTemplate } from './tile-template';
+import { canPublishInProduction, filterApproved } from '../content/compliance';
+
+/** Thrown by single-item loaders when `requireApproved` is set and content isn't cleared for production. */
+function assertApproved(filePath: string, complianceStatus: string | undefined): void {
+  if (!canPublishInProduction(complianceStatus)) {
+    throw new Error(
+      `Content not approved to ship: ${filePath} (compliance_status: ${complianceStatus}). ` +
+      `Set requireApproved=false to bypass in dev.`
+    );
+  }
+}
 
 // ---------------------------------------------------------------------------
 // Paths
@@ -186,6 +199,8 @@ export interface TileContent {
   /** Fallback whatItChecks — used when the tile has a single variant. */
   whatItChecks: string;
   thresholds: Record<string, string>; // green/amber/red/grey → description
+  /** `compliance_status` from tile frontmatter: draft | in_review | approved_to_ship. */
+  compliance_status?: string;
   perSegment: Map<string, {
     status: TileStatus;
     note: string;
@@ -236,6 +251,7 @@ function loadTilesOnce(): TileContent[] {
       what_it_checks_owners?: string;
       what_it_checks_others?: string;
       thresholds?: Record<string, string>;
+      compliance_status?: string;
     };
 
     const fallbackLabel = fm.label ?? fm.label_others ?? fm.label_owners ?? String(key);
@@ -277,6 +293,7 @@ function loadTilesOnce(): TileContent[] {
       label: fallbackLabel,
       whatItChecks: fallbackWhatItChecks,
       thresholds: fm.thresholds ?? {},
+      compliance_status: fm.compliance_status,
       perSegment,
     });
   }
@@ -285,22 +302,50 @@ function loadTilesOnce(): TileContent[] {
   return out;
 }
 
-/** Returns the 12 tiles for a segment, each with its content-agent note + whatItChecks. */
-export function loadPlanningTiles(segmentId: string): PlanningTile[] {
+/**
+ * Returns the 12 tiles for a segment, each with its content-agent note + whatItChecks.
+ *
+ * The grid always renders 12 positional slots (tiles are keyed, not list items),
+ * so we can't filter the array. Instead, tiles whose source file is unapproved
+ * in production fall back to the neutral `grey` / `Not checked` state — the
+ * same degradation used when a tile file is missing entirely.
+ */
+export function loadPlanningTiles(
+  segmentId: string,
+  tileScores?: TileScoreMap,
+): PlanningTile[] {
   const tiles = loadTilesOnce();
   return tiles.map(t => {
-    const seg = t.perSegment.get(segmentId);
+    const approved = canPublishInProduction(t.compliance_status);
+    const seg = approved ? t.perSegment.get(segmentId) : undefined;
     // Per-segment label and whatItChecks win over tile-level fallback. This is
     // what makes tile 12 flip to "Business exit" (owners) vs "Income mix" (others)
     // depending on segment.
     const label = seg?.label ?? t.label;
-    const whatItChecks = seg?.whatItChecks || t.whatItChecks || undefined;
+
+    const engineScore = tileScores?.[t.key];
+    const contentStatus = seg?.status;
+    const contentNote = seg?.note ?? 'Not checked';
+
+    // Status precedence: engine (if scoreable) > content-authored > grey fallback.
+    // If compliance gate blocks (approved === false), engine result is hidden
+    // behind grey — engine still ran but we don't surface it.
+    const effectiveStatus: TileStatus = !approved
+      ? 'grey'
+      : (engineScore?.scoreable ? engineScore.status : (contentStatus ?? 'grey'));
+
+    // Note: if engine scored AND content is approved, run template substitution.
+    // Otherwise render content note as-is (legacy static copy still works).
+    const effectiveNote: string = !approved || !engineScore?.scoreable
+      ? contentNote
+      : applyTemplate(contentNote, engineScore.metrics);
+
     return {
       key: t.key,
       label,
-      status: seg?.status ?? 'grey',
-      note: seg?.note ?? 'Not checked',
-      whatItChecks,
+      status: effectiveStatus,
+      note: effectiveNote,
+      whatItChecks: approved ? (seg?.whatItChecks || t.whatItChecks || undefined) : undefined,
     };
   });
 }
@@ -309,12 +354,17 @@ export function loadPlanningTiles(segmentId: string): PlanningTile[] {
 // Goals loader — content/pdf-report/goals/S[n]-*.md
 // ---------------------------------------------------------------------------
 
-let _goalsCache: Map<string, WellbeingGoal[]> | null = null;
+interface GoalsEntry {
+  compliance_status?: string;
+  goals: WellbeingGoal[];
+}
 
-function loadGoalsOnce(): Map<string, WellbeingGoal[]> {
+let _goalsCache: Map<string, GoalsEntry> | null = null;
+
+function loadGoalsOnce(): Map<string, GoalsEntry> {
   if (_goalsCache) return _goalsCache;
 
-  const out = new Map<string, WellbeingGoal[]>();
+  const out = new Map<string, GoalsEntry>();
   if (!fs.existsSync(GOALS_DIR)) {
     _goalsCache = out;
     return out;
@@ -325,7 +375,7 @@ function loadGoalsOnce(): Map<string, WellbeingGoal[]> {
     const full = path.join(GOALS_DIR, file);
     const raw = fs.readFileSync(full, 'utf8');
     const parsed = matter(raw);
-    const fm = parsed.data as { segment?: string };
+    const fm = parsed.data as { segment?: string; compliance_status?: string };
     const segId = fm.segment;
     if (!segId) continue;
 
@@ -341,15 +391,23 @@ function loadGoalsOnce(): Map<string, WellbeingGoal[]> {
         alignment: normaliseStatus(kv.status, 'amber'),
       });
     }
-    out.set(segId, goals);
+    out.set(segId, { compliance_status: fm.compliance_status, goals });
   }
 
   _goalsCache = out;
   return out;
 }
 
+/**
+ * Returns the goals for a segment. Goals are a per-segment *list* that can
+ * be filtered wholesale: if the segment's goals file is not approved for
+ * production, callers see an empty array and the fixture baseline takes over.
+ */
 export function loadGoals(segmentId: string): WellbeingGoal[] {
-  return loadGoalsOnce().get(segmentId) ?? [];
+  const entry = loadGoalsOnce().get(segmentId);
+  if (!entry) return [];
+  if (!canPublishInProduction(entry.compliance_status)) return [];
+  return entry.goals;
 }
 
 // ---------------------------------------------------------------------------
@@ -365,19 +423,26 @@ export interface HealthGaugeCopy {
   gaugeReframe?: string;
 }
 
-let _gaugeCache: Map<string, HealthGaugeCopy> | null = null;
+interface HealthGaugeCache {
+  /** File-level `compliance_status` from health-gauge.md frontmatter. */
+  compliance_status?: string;
+  perSegment: Map<string, HealthGaugeCopy>;
+}
 
-function loadHealthGaugeOnce(): Map<string, HealthGaugeCopy> {
+let _gaugeCache: HealthGaugeCache | null = null;
+
+function loadHealthGaugeOnce(): HealthGaugeCache {
   if (_gaugeCache) return _gaugeCache;
 
-  const out = new Map<string, HealthGaugeCopy>();
+  const perSegment = new Map<string, HealthGaugeCopy>();
   if (!fs.existsSync(HEALTH_GAUGE_FILE)) {
-    _gaugeCache = out;
-    return out;
+    _gaugeCache = { perSegment };
+    return _gaugeCache;
   }
 
   const raw = fs.readFileSync(HEALTH_GAUGE_FILE, 'utf8');
   const parsed = matter(raw);
+  const fm = parsed.data as { compliance_status?: string };
 
   for (const section of splitByH1(parsed.content)) {
     const segId = extractSegmentId(section.heading);
@@ -399,19 +464,36 @@ function loadHealthGaugeOnce(): Map<string, HealthGaugeCopy> {
       if (!defaultInterpretation) defaultInterpretation = bodyText;
     }
 
-    out.set(segId, { defaultInterpretation, zoneVariants });
+    perSegment.set(segId, { defaultInterpretation, zoneVariants });
   }
 
-  _gaugeCache = out;
-  return out;
+  _gaugeCache = { compliance_status: fm.compliance_status, perSegment };
+  return _gaugeCache;
 }
 
 /**
  * Pick the best interpretation copy for this segment + actual score.
  * Falls back to any available copy if the score's zone isn't authored.
+ *
+ * When `requireApproved` is true and the source file's `compliance_status`
+ * is not `approved_to_ship`, this throws rather than silently returning the
+ * fixture baseline — so a production build loudly fails instead of shipping
+ * unreviewed copy. In non-production, everything passes (see
+ * `canPublishInProduction`) so the flag is a no-op for dev/staging.
  */
-export function pickHealthInterpretation(segmentId: string, score: number): { copy: string; zoneVariants: HealthZoneVariants } | null {
-  const content = loadHealthGaugeOnce().get(segmentId);
+export function pickHealthInterpretation(
+  segmentId: string,
+  score: number,
+  requireApproved = false,
+): { copy: string; zoneVariants: HealthZoneVariants } | null {
+  const cache = loadHealthGaugeOnce();
+  if (requireApproved) {
+    assertApproved(HEALTH_GAUGE_FILE, cache.compliance_status);
+  } else if (!canPublishInProduction(cache.compliance_status)) {
+    return null;
+  }
+
+  const content = cache.perSegment.get(segmentId);
   if (!content) return null;
 
   const zone: keyof HealthZoneVariants =
@@ -434,19 +516,25 @@ export interface TakeawayContent {
   body: string;
 }
 
-let _takeawayCache: Map<string, TakeawayContent> | null = null;
+interface TakeawayCache {
+  compliance_status?: string;
+  perSegment: Map<string, TakeawayContent>;
+}
 
-function loadTakeawayOnce(): Map<string, TakeawayContent> {
+let _takeawayCache: TakeawayCache | null = null;
+
+function loadTakeawayOnce(): TakeawayCache {
   if (_takeawayCache) return _takeawayCache;
 
-  const out = new Map<string, TakeawayContent>();
+  const perSegment = new Map<string, TakeawayContent>();
   if (!fs.existsSync(TAKEAWAY_FILE)) {
-    _takeawayCache = out;
-    return out;
+    _takeawayCache = { perSegment };
+    return _takeawayCache;
   }
 
   const raw = fs.readFileSync(TAKEAWAY_FILE, 'utf8');
   const parsed = matter(raw);
+  const fm = parsed.data as { compliance_status?: string };
 
   for (const section of splitByH1(parsed.content)) {
     const segId = extractSegmentId(section.heading);
@@ -464,15 +552,28 @@ function loadTakeawayOnce(): Map<string, TakeawayContent> {
       }
     }
 
-    if (title || body) out.set(segId, { title, body });
+    if (title || body) perSegment.set(segId, { title, body });
   }
 
-  _takeawayCache = out;
-  return out;
+  _takeawayCache = { compliance_status: fm.compliance_status, perSegment };
+  return _takeawayCache;
 }
 
-export function loadTakeaway(segmentId: string): TakeawayContent | null {
-  return loadTakeawayOnce().get(segmentId) ?? null;
+/**
+ * Returns the headline takeaway banner for a segment.
+ *
+ * With `requireApproved=true` (production render paths), throws if the source
+ * file is not `approved_to_ship`. Otherwise returns `null` for non-approved
+ * content in production, letting the caller fall back to fixture copy.
+ */
+export function loadTakeaway(segmentId: string, requireApproved = false): TakeawayContent | null {
+  const cache = loadTakeawayOnce();
+  if (requireApproved) {
+    assertApproved(TAKEAWAY_FILE, cache.compliance_status);
+  } else if (!canPublishInProduction(cache.compliance_status)) {
+    return null;
+  }
+  return cache.perSegment.get(segmentId) ?? null;
 }
 
 // ---------------------------------------------------------------------------
@@ -562,9 +663,16 @@ export interface FiveThingsSelection {
 
 export function loadFiveThings(sourceIds: string[]): FiveThingsSelection {
   const map = loadExpandedOnce();
-  const items = sourceIds
+  const resolved = sourceIds
     .map(id => map.get(id) ?? null)
     .filter((x): x is ExpandedAwarenessCheck => x !== null);
+  // Gate each expanded card on its own `compliance_status`. In production any
+  // card that is still `draft` or `in_review` is dropped from the selection,
+  // so the list silently shrinks rather than exposing unreviewed copy. Dev
+  // and staging pass everything through.
+  const items = filterApproved(
+    resolved.map(r => ({ ...r, compliance_status: r.complianceStatus })),
+  );
   return {
     standard: items.slice(0, 4),
     featured: items.length > 4 ? items[4] : null,
@@ -580,11 +688,13 @@ export interface MethodologyContent {
   pageHeading: string;
   openingParagraph: string;
   sections: { heading: string; body: string }[];
+  /** `compliance_status` from methodology.md frontmatter. */
+  compliance_status?: string;
 }
 
 let _methodologyCache: MethodologyContent | null = null;
 
-export function loadMethodology(): MethodologyContent | null {
+function loadMethodologyOnce(): MethodologyContent | null {
   if (_methodologyCache) return _methodologyCache;
 
   const file = path.join(CONTENT_ROOT, 'methodology.md');
@@ -592,7 +702,7 @@ export function loadMethodology(): MethodologyContent | null {
 
   const raw = fs.readFileSync(file, 'utf8');
   const parsed = matter(raw);
-  const fm = parsed.data as { title?: string };
+  const fm = parsed.data as { title?: string; compliance_status?: string };
 
   const h1Sections = splitByH1(parsed.content);
   let pageHeading = '';
@@ -614,8 +724,32 @@ export function loadMethodology(): MethodologyContent | null {
     pageHeading,
     openingParagraph,
     sections,
+    compliance_status: fm.compliance_status,
   };
   return _methodologyCache;
+}
+
+/**
+ * Returns the methodology page content.
+ *
+ * With `requireApproved=true` (production render paths), throws if the file's
+ * `compliance_status` is not `approved_to_ship` — methodology copy carries
+ * regulatory disclaimers and must never ship unreviewed. With the flag off
+ * (or in non-production), draft copy is visible so authors can preview.
+ *
+ * In production without the flag, this returns `null` for non-approved
+ * content rather than throwing — the call site decides whether absence is
+ * tolerable (placeholder shown) or fatal (explicit `requireApproved=true`).
+ */
+export function loadMethodology(requireApproved = false): MethodologyContent | null {
+  const content = loadMethodologyOnce();
+  if (!content) return null;
+  if (requireApproved) {
+    assertApproved('content/pdf-report/methodology.md', content.compliance_status);
+  } else if (!canPublishInProduction(content.compliance_status)) {
+    return null;
+  }
+  return content;
 }
 
 // ---------------------------------------------------------------------------
@@ -629,12 +763,24 @@ import type { SegmentView } from './types';
  *
  * Priority: content files win where present; fixture values fill the gaps.
  * Safe to call at SSG time — this module is server-only.
+ *
+ * `requireApproved=true` propagates to the single-item loaders (health-gauge,
+ * takeaway, and downstream methodology callers) so a draft markdown file
+ * fails the build loudly rather than silently shipping fixture fallbacks.
+ * Planning-grid tiles and goals degrade gracefully (fixture baseline) instead
+ * of throwing, because the grid is positional and goals are a per-segment
+ * list — silent fallback is safer there than a hard crash.
  */
-export function enrichSegmentView(base: SegmentView, actualScore: number): SegmentView {
-  const tiles = loadPlanningTiles(base.segmentId);
+export function enrichSegmentView(
+  base: SegmentView,
+  actualScore: number,
+  requireApproved = false,
+  tileScores?: TileScoreMap,
+): SegmentView {
+  const tiles = loadPlanningTiles(base.segmentId, tileScores);
   const goals = loadGoals(base.segmentId);
-  const gauge = pickHealthInterpretation(base.segmentId, actualScore);
-  const takeaway = loadTakeaway(base.segmentId);
+  const gauge = pickHealthInterpretation(base.segmentId, actualScore, requireApproved);
+  const takeaway = loadTakeaway(base.segmentId, requireApproved);
 
   return {
     ...base,

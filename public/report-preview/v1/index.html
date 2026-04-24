@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Your Real Wealth Report — {{first_name}}</title>
+  <link rel="stylesheet" href="./report.css" />
+</head>
+<body>
+  <!--
+    Real Wealth Report — restyle of the AbleCare PDF template.
+    Structure: 6 A4 pages, print-ready.
+
+    Placeholder tokens use {{mustache}} style for an easy substitution
+    pass from a server renderer. Replace before shipping the PDF:
+      {{first_name}}        — customer's first name
+      {{report_date}}       — e.g. "Wednesday, 23rd April 2026"
+      {{prepared_by}}       — planner name, e.g. "Real Wealth · Manchester"
+      {{reading_time}}      — e.g. "6 minutes"
+      {{segment_label}}     — friendly segment name, e.g. "Mid-career, high-income"
+      {{section_*_body}}    — prose per section (see each page)
+      {{aspiration_quote}}  — user's own Q2.4 happy-place answer
+      {{five_items[N].*}}   — the five considered-list items
+      {{silent_gaps[N].*}}  — silent gaps array
+      {{booking_url}}       — Calendly link or equivalent
+  -->
+
+  <!-- Floating print helper, hidden in the PDF -->
+  <div class="print-controls">
+    <button type="button" onclick="window.print()">Print / Save PDF</button>
+  </div>
+
+  <!-- Shared SVG <clipPath> defs — mirrors the app's HeroMaskDefs
+       component so the cover and any future masked images on the
+       content pages can reference #rw-hero-2-leaves from CSS. Kept
+       inline so the template file has no runtime dependency. -->
+  <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;">
+    <defs>
+      <clipPath id="rw-hero-2-leaves" clipPathUnits="objectBoundingBox">
+        <path d="M 0.337 0 L 0 0 C 0 0.265 0.297 0.48 0.663 0.48 L 1 0.48 C 1 0.215 0.703 0 0.337 0 Z" />
+        <path d="M 0.663 0.52 L 1 0.52 C 1 0.785 0.703 1 0.337 1 L 0 1 C 0 0.735 0.297 0.52 0.663 0.52 Z" />
+      </clipPath>
+      <clipPath id="rw-hero-large-px">
+        <rect x="0" y="0" width="100%" height="100%" rx="22" ry="22" />
+      </clipPath>
+    </defs>
+  </svg>
+
+  <div class="doc">
+    <!-- ============================================================= -->
+    <!-- Page 1 — Cover                                                  -->
+    <!-- ============================================================= -->
+    <section class="page" data-screen-label="01 Cover">
+      <div class="cover">
+        <div class="cover__glow-tr"></div>
+        <div class="cover__glow-bl"></div>
+
+        <!-- Hero image with two-leaf mask — the dominant visual on
+             the cover. Swap the src for a bespoke lifestyle photo
+             when available; /welcome-image.png is the homepage
+             hero and a good placeholder. -->
+        <figure class="cover__media">
+          <img
+            src="/welcome-image.png"
+            alt=""
+            class="cover__media-image"
+            aria-hidden="true"
+          />
+        </figure>
+
+        <div class="cover__top">
+          <img
+            src="/real-wealth-logo-wordmark.svg"
+            alt="Real Wealth"
+            class="cover__logo"
+          />
+          <div class="cover__meta">
+            <strong>Wealth Report</strong>
+            <span class="sub">Rev. 2026.04 · 6 pages</span>
+          </div>
+        </div>
+
+        <div class="cover__content">
+          <span class="cover__eyebrow">For {{first_name}} · A briefing from Real Wealth</span>
+          <h1 class="cover__title">Your Wealth Report.</h1>
+          <p class="cover__lede">
+            Ten minutes of honest questions about your money — and here&rsquo;s
+            what a planner would talk through with you next. Five things
+            worth a conversation, a few quiet gaps we noticed, and where
+            to look first.
+          </p>
+
+          <div class="cover__meta-grid">
+            <div>
+              <span class="k">Prepared for</span>
+              <span class="v">{{first_name}}</span>
+            </div>
+            <div>
+              <span class="k">Prepared by</span>
+              <span class="v">{{prepared_by}}</span>
+            </div>
+            <div>
+              <span class="k">Reading time</span>
+              <span class="v">{{reading_time}}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="cover__bottom">
+          <span>Real Wealth · Manchester · Taunton</span>
+          <span><strong>Page 01 · 06</strong></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- Page 2 — Where you are, where you're heading                    -->
+    <!-- ============================================================= -->
+    <section class="page" data-screen-label="02 Where you are">
+      <div class="accent-strip"></div>
+      <header class="page__chrome-top">
+        <img src="/real-wealth-wordmark.svg" alt="Real Wealth" class="logo-wordmark" style="color: var(--rw-teal);" />
+        <span class="doc-title">Your Wealth Report · {{first_name}}</span>
+      </header>
+
+      <div class="page__body">
+        <div class="section-title">
+          <span class="eyebrow">Where you are today</span>
+          <h2 class="h-section">A quick picture of what you told us.</h2>
+          <p class="body">
+            We asked ten questions, no forms, no numbers to look up. What
+            follows is the shape of your answers — and what a planner
+            would want to understand better over a short call.
+          </p>
+        </div>
+
+        <div class="fact-strip">
+          <div class="fact">
+            <span class="fact__val">{{snapshot_stat_1_val}}</span>
+            <span class="fact__label">{{snapshot_stat_1_label}}</span>
+            <span class="fact__sub">{{snapshot_stat_1_sub}}</span>
+          </div>
+          <div class="fact">
+            <span class="fact__val">{{snapshot_stat_2_val}}</span>
+            <span class="fact__label">{{snapshot_stat_2_label}}</span>
+            <span class="fact__sub">{{snapshot_stat_2_sub}}</span>
+          </div>
+          <div class="fact">
+            <span class="fact__val">{{snapshot_stat_3_val}}</span>
+            <span class="fact__label">{{snapshot_stat_3_label}}</span>
+            <span class="fact__sub">{{snapshot_stat_3_sub}}</span>
+          </div>
+        </div>
+
+        <span class="eyebrow">In your own words</span>
+        <h2 class="h-section h-section--teal">&ldquo;{{aspiration_quote}}&rdquo;</h2>
+        <p class="body" style="margin-top:12px;">
+          {{section_aspiration_body}}
+        </p>
+      </div>
+
+      <footer class="page__chrome-bot">
+        <span>Manchester · Taunton · hello@realwealth.co.uk</span>
+        <span class="page-num">02 · 06</span>
+      </footer>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- Page 3 — Five things worth a conversation                       -->
+    <!-- ============================================================= -->
+    <section class="page" data-screen-label="03 Five things">
+      <div class="accent-strip"></div>
+      <header class="page__chrome-top">
+        <img src="/real-wealth-wordmark.svg" alt="Real Wealth" class="logo-wordmark" style="color: var(--rw-teal);" />
+        <span class="doc-title">Your Wealth Report · {{first_name}}</span>
+      </header>
+
+      <div class="page__body">
+        <div class="section-title">
+          <span class="eyebrow">What we&rsquo;d talk through</span>
+          <h2 class="h-section">Five things worth a conversation.</h2>
+          <p class="body">{{section_five_body}}</p>
+        </div>
+
+        <div class="steps">
+          <article class="step">
+            <span class="step__num">01</span>
+            <h3 class="step__title">{{five_items_1_headline}}</h3>
+            <p class="step__body">{{five_items_1_body}}</p>
+          </article>
+          <article class="step">
+            <span class="step__num">02</span>
+            <h3 class="step__title">{{five_items_2_headline}}</h3>
+            <p class="step__body">{{five_items_2_body}}</p>
+          </article>
+          <article class="step">
+            <span class="step__num">03</span>
+            <h3 class="step__title">{{five_items_3_headline}}</h3>
+            <p class="step__body">{{five_items_3_body}}</p>
+          </article>
+          <article class="step">
+            <span class="step__num">04</span>
+            <h3 class="step__title">{{five_items_4_headline}}</h3>
+            <p class="step__body">{{five_items_4_body}}</p>
+          </article>
+        </div>
+
+        <div class="callout">
+          <span class="callout__eyebrow">And the fifth</span>
+          <p class="callout__body">
+            <span class="big">{{five_items_5_headline}}</span>
+            &nbsp;—&nbsp; {{five_items_5_body}}
+          </p>
+        </div>
+      </div>
+
+      <footer class="page__chrome-bot">
+        <span>Manchester · Taunton · hello@realwealth.co.uk</span>
+        <span class="page-num">03 · 06</span>
+      </footer>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- Page 4 — Silent gaps                                            -->
+    <!-- ============================================================= -->
+    <section class="page" data-screen-label="04 Silent gaps">
+      <div class="accent-strip"></div>
+      <header class="page__chrome-top">
+        <img src="/real-wealth-wordmark.svg" alt="Real Wealth" class="logo-wordmark" style="color: var(--rw-teal);" />
+        <span class="doc-title">Your Wealth Report · {{first_name}}</span>
+      </header>
+
+      <div class="page__body">
+        <div class="hero-panel">
+          <div class="hero-panel__copy">
+            <span class="eyebrow">Things we didn&rsquo;t ask — but noticed</span>
+            <h2 class="h-section">The shape of your answers says more than the answers themselves.</h2>
+            <p class="lede">{{section_silent_gaps_body}}</p>
+          </div>
+          <div class="hero-panel__img">
+            <div class="img-placeholder">lifestyle photo — coastal walk</div>
+          </div>
+        </div>
+
+        <div class="two-col">
+          <div>
+            <div class="feature-row">
+              <span class="feature-row__num">01</span>
+              <div>
+                <h4 class="feature-row__title">{{silent_gaps_1_headline}}</h4>
+                <p class="feature-row__body">{{silent_gaps_1_body}}</p>
+              </div>
+            </div>
+            <div class="feature-row">
+              <span class="feature-row__num">02</span>
+              <div>
+                <h4 class="feature-row__title">{{silent_gaps_2_headline}}</h4>
+                <p class="feature-row__body">{{silent_gaps_2_body}}</p>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="feature-row">
+              <span class="feature-row__num">03</span>
+              <div>
+                <h4 class="feature-row__title">{{silent_gaps_3_headline}}</h4>
+                <p class="feature-row__body">{{silent_gaps_3_body}}</p>
+              </div>
+            </div>
+            <div class="feature-row">
+              <span class="feature-row__num">04</span>
+              <div>
+                <h4 class="feature-row__title">{{silent_gaps_4_headline}}</h4>
+                <p class="feature-row__body">{{silent_gaps_4_body}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="page__chrome-bot">
+        <span>Manchester · Taunton · hello@realwealth.co.uk</span>
+        <span class="page-num">04 · 06</span>
+      </footer>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- Page 5 — Insight / Context / Tip (planner's read)               -->
+    <!-- ============================================================= -->
+    <section class="page" data-screen-label="05 Planner's read">
+      <div class="accent-strip"></div>
+      <header class="page__chrome-top">
+        <img src="/real-wealth-wordmark.svg" alt="Real Wealth" class="logo-wordmark" style="color: var(--rw-teal);" />
+        <span class="doc-title">Your Wealth Report · {{first_name}}</span>
+      </header>
+
+      <div class="page__body">
+        <div class="section-title">
+          <span class="eyebrow">A planner&rsquo;s read</span>
+          <h2 class="h-section">Three lenses — insight, context, one practical move.</h2>
+          <p class="body">
+            This isn&rsquo;t advice yet — it&rsquo;s the shape of a first
+            conversation. Each block is something a planner would want to
+            understand better before suggesting anything specific.
+          </p>
+        </div>
+
+        <div class="insight-block">
+          <div class="insight-block__row">
+            <span class="insight-block__label">Insight</span>
+            <p class="insight-block__copy">{{theme_1_insight}}</p>
+          </div>
+          <div class="insight-block__row">
+            <span class="insight-block__label">Context</span>
+            <p class="insight-block__copy">{{theme_1_context}}</p>
+          </div>
+          <div class="insight-block__row">
+            <span class="insight-block__label">One move</span>
+            <p class="insight-block__copy">{{theme_1_tip}}</p>
+          </div>
+        </div>
+
+        <div class="insight-block">
+          <div class="insight-block__row">
+            <span class="insight-block__label">Insight</span>
+            <p class="insight-block__copy">{{theme_2_insight}}</p>
+          </div>
+          <div class="insight-block__row">
+            <span class="insight-block__label">Context</span>
+            <p class="insight-block__copy">{{theme_2_context}}</p>
+          </div>
+          <div class="insight-block__row">
+            <span class="insight-block__label">One move</span>
+            <p class="insight-block__copy">{{theme_2_tip}}</p>
+          </div>
+        </div>
+
+        <div class="insight-block">
+          <div class="insight-block__row">
+            <span class="insight-block__label">Insight</span>
+            <p class="insight-block__copy">{{theme_3_insight}}</p>
+          </div>
+          <div class="insight-block__row">
+            <span class="insight-block__label">Context</span>
+            <p class="insight-block__copy">{{theme_3_context}}</p>
+          </div>
+          <div class="insight-block__row">
+            <span class="insight-block__label">One move</span>
+            <p class="insight-block__copy">{{theme_3_tip}}</p>
+          </div>
+        </div>
+      </div>
+
+      <footer class="page__chrome-bot">
+        <span>Manchester · Taunton · hello@realwealth.co.uk</span>
+        <span class="page-num">05 · 06</span>
+      </footer>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- Page 6 — Next step + CTA                                        -->
+    <!-- ============================================================= -->
+    <section class="page" data-screen-label="06 Next step">
+      <div class="accent-strip"></div>
+      <header class="page__chrome-top">
+        <img src="/real-wealth-wordmark.svg" alt="Real Wealth" class="logo-wordmark" style="color: var(--rw-teal);" />
+        <span class="doc-title">Your Wealth Report · {{first_name}}</span>
+      </header>
+
+      <div class="page__body">
+        <div class="section-title">
+          <span class="eyebrow">What happens next</span>
+          <h2 class="h-section">Talk it through with a planner.</h2>
+          <p class="body">
+            A free 30-minute conversation. No preparation on your side.
+            We&rsquo;ll bring this briefing to the call so the starting
+            point is already halfway done.
+          </p>
+        </div>
+
+        <div class="checklist">
+          <div class="check">
+            <span class="check__mark">
+              <svg viewBox="0 0 20 20" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m4 10 4 4 8-8" /></svg>
+            </span>
+            <p class="check__text"><strong>Thirty minutes.</strong> Enough to confirm what&rsquo;s worth a longer look, and rule out what isn&rsquo;t.</p>
+          </div>
+          <div class="check">
+            <span class="check__mark">
+              <svg viewBox="0 0 20 20" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m4 10 4 4 8-8" /></svg>
+            </span>
+            <p class="check__text"><strong>No preparation.</strong> You&rsquo;ve already done it — this report is the prep.</p>
+          </div>
+          <div class="check">
+            <span class="check__mark">
+              <svg viewBox="0 0 20 20" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m4 10 4 4 8-8" /></svg>
+            </span>
+            <p class="check__text"><strong>Not a sales call.</strong> You&rsquo;ll leave with a clearer picture of where to look first, whether or not we go further together.</p>
+          </div>
+          <div class="check">
+            <span class="check__mark">
+              <svg viewBox="0 0 20 20" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m4 10 4 4 8-8" /></svg>
+            </span>
+            <p class="check__text"><strong>One planner, not a call centre.</strong> The person who reads this will be the person you talk to.</p>
+          </div>
+        </div>
+
+        <div class="cta-panel">
+          <div class="cta-panel__glow"></div>
+          <div class="cta-panel__watermark img-placeholder" style="border-radius:50%;background:transparent;">mark</div>
+          <span class="cta-panel__eyebrow">Book your free 30-minute consultation</span>
+          <h3 class="cta-panel__title">Let&rsquo;s talk about you, {{first_name}}.</h3>
+          <p class="cta-panel__body">
+            We&rsquo;ll hold a slot this week and next. Pick a time that
+            suits you and we&rsquo;ll come ready — briefing in hand.
+          </p>
+          <a class="cta-panel__cta" href="{{booking_url}}">
+            Book the call
+            <svg viewBox="0 0 20 20" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10h12m-5-5 5 5-5 5"/></svg>
+          </a>
+          <div class="cta-panel__contact">0161 768 7722 · hello@realwealth.co.uk</div>
+        </div>
+      </div>
+
+      <footer class="page__chrome-bot">
+        <span>Real Wealth Partners Ltd · FRN 1037186 · Authorised and regulated by the Financial Conduct Authority</span>
+        <span class="page-num">06 · 06</span>
+      </footer>
+    </section>
+  </div>
+</body>
+</html>

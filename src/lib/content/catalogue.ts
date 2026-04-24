@@ -353,7 +353,8 @@ export const screens: Screen[] = [
         "required": true
       }
     ],
-    "headline": "How would you describe your working life right now?"
+    "headline": "How would you describe your working life right now?",
+    "pullquote": ""
   },
   {
     "id": "screen.3.5.money_today",
@@ -1956,6 +1957,303 @@ export const screens: Screen[] = [
       }
     ],
     "headline": "The conversation you're already having — or aren't."
+  },
+  {
+    "id": "screen.compass.01.pension-pot",
+    "screen_number": "4.E.1",
+    "title": "Your pension, roughly",
+    "section": "assets",
+    "layout": "asymmetric",
+    "grouped": false,
+    "gate_critical": false,
+    "segments_served": [
+      "all"
+    ],
+    "skip": [],
+    "tier_limit": [
+      "A",
+      "B",
+      "C"
+    ],
+    "q_refs": [
+      "Q4.A.1"
+    ],
+    "logged_as": [
+      "pension_total_value"
+    ],
+    "conditional_logic": "only when pension_pots != none",
+    "inputs": [
+      {
+        "id": "pension_total_value",
+        "label": "Roughly, what would it all add up to today?",
+        "control": "slider",
+        "range": {
+          "min": 0,
+          "max": 2000000,
+          "default": 0,
+          "step": 25000
+        },
+        "required": true
+      }
+    ],
+    "headline": "Your pension, roughly.",
+    "sub": "Drag to the nearest round number. Zero means you haven't started yet, or you'd rather not say — the report still runs, it just uses a typical-household default for this number."
+  },
+  {
+    "id": "screen.compass.02.liquid-wealth",
+    "screen_number": "4.E.2",
+    "title": "Your liquid wealth",
+    "section": "assets",
+    "layout": "asymmetric",
+    "grouped": true,
+    "gate_critical": false,
+    "segments_served": [
+      "all"
+    ],
+    "skip": [],
+    "tier_limit": [
+      "A",
+      "B",
+      "C"
+    ],
+    "q_refs": [
+      "Q4.A.2",
+      "Q4.A.3",
+      "Q4.A.4"
+    ],
+    "logged_as": [
+      "cash_savings_band",
+      "isa_balance_band",
+      "gia_balance_band"
+    ],
+    "inputs": [
+      {
+        "id": "cash_savings_band",
+        "label": "Cash savings — current accounts, easy-access, fixed-term deposits",
+        "control": "slider",
+        "range": {
+          "min": 0,
+          "max": 500000,
+          "default": 0,
+          "step": 5000
+        },
+        "required": true
+      },
+      {
+        "id": "isa_balance_band",
+        "label": "ISAs — stocks-and-shares and cash ISAs combined",
+        "control": "slider",
+        "range": {
+          "min": 0,
+          "max": 500000,
+          "default": 0,
+          "step": 5000
+        },
+        "required": true
+      },
+      {
+        "id": "gia_balance_band",
+        "label": "Other investments outside ISA — trading accounts, funds, crypto",
+        "control": "slider",
+        "range": {
+          "min": 0,
+          "max": 500000,
+          "default": 0,
+          "step": 5000
+        },
+        "required": true
+      }
+    ],
+    "headline": "The money you can actually reach.",
+    "sub": "Liquid wealth — cash, ISAs, investments outside pensions. Leave at zero for anything you'd rather not share, or that genuinely doesn't apply."
+  },
+  {
+    "id": "screen.compass.03.contributions",
+    "screen_number": "4.E.3",
+    "title": "What you add, what you still owe",
+    "section": "assets",
+    "layout": "asymmetric",
+    "grouped": true,
+    "gate_critical": false,
+    "segments_served": [
+      "all"
+    ],
+    "skip": [],
+    "tier_limit": [
+      "A",
+      "B",
+      "C"
+    ],
+    "q_refs": [
+      "Q4.B.1",
+      "Q4.B.2",
+      "Q4.C.1",
+      "Q4.C.2"
+    ],
+    "logged_as": [
+      "monthly_saving_band",
+      "employer_pension_pct_band",
+      "own_pension_pct_band",
+      "mortgage_monthly_payment_band",
+      "mortgage_end_age_band"
+    ],
+    "inputs": [
+      {
+        "id": "monthly_saving_band",
+        "label": "How much do you put away each month — across all pots combined?",
+        "control": "slider",
+        "range": {
+          "min": 0,
+          "max": 10000,
+          "default": 0,
+          "step": 100
+        },
+        "required": true
+      },
+      {
+        "id": "employer_pension_pct_band",
+        "label": "Employer pension contribution — % of your salary",
+        "label_helper": "Set to 0 if self-employed, not employed, or your employer doesn't contribute.",
+        "control": "slider",
+        "range": {
+          "min": 0,
+          "max": 25,
+          "default": 5,
+          "step": 1
+        },
+        "required": true
+      },
+      {
+        "id": "own_pension_pct_band",
+        "label": "Your own pension contribution — % of your salary",
+        "label_helper": "Set to 0 if you don't currently pay into a pension.",
+        "control": "slider",
+        "range": {
+          "min": 0,
+          "max": 25,
+          "default": 5,
+          "step": 1
+        },
+        "required": true
+      },
+      {
+        "id": "mortgage_monthly_payment_band",
+        "label": "Monthly mortgage payment",
+        "control": "slider",
+        "range": {
+          "min": 0,
+          "max": 6000,
+          "default": 1500,
+          "step": 50
+        },
+        "required": false,
+        "conditional_reveal": "only when main_home == own_mortgage"
+      },
+      {
+        "id": "mortgage_end_age_band",
+        "label": "Age you expect the mortgage to be paid off",
+        "control": "slider",
+        "range": {
+          "min": 40,
+          "max": 85,
+          "default": 65,
+          "step": 1
+        },
+        "required": false,
+        "conditional_reveal": "only when main_home == own_mortgage"
+      }
+    ],
+    "headline": "What you add, and what you still owe.",
+    "sub": "How fast the pot grows — and whether the mortgage becomes freed-up saving capacity before or after retirement."
+  },
+  {
+    "id": "screen.compass.04.state-pension-ni",
+    "screen_number": "4.E.4",
+    "title": "State pension and your retirement shape",
+    "section": "retirement_horizon",
+    "layout": "asymmetric",
+    "grouped": true,
+    "gate_critical": false,
+    "segments_served": [
+      "all"
+    ],
+    "skip": [],
+    "tier_limit": [
+      "A",
+      "B",
+      "C"
+    ],
+    "q_refs": [
+      "Q4.D.1",
+      "Q4.D.2",
+      "Q4.D.3"
+    ],
+    "logged_as": [
+      "state_pension_amount_band",
+      "ni_qualifying_years_band",
+      "retirement_spend_ratio"
+    ],
+    "inputs": [
+      {
+        "id": "state_pension_amount_band",
+        "label": "Expected annual state pension (at your state pension age)",
+        "control": "radio",
+        "options": [
+          {
+            "value": "full_rate",
+            "label": "Full rate — I expect to get the full £11,502/yr"
+          },
+          {
+            "value": "partial",
+            "label": "Partial — my NI record isn't complete"
+          },
+          {
+            "value": "none",
+            "label": "None — I won't qualify"
+          },
+          {
+            "value": "no_idea",
+            "label": "No idea — use the default assumption"
+          }
+        ],
+        "required": true
+      },
+      {
+        "id": "ni_qualifying_years_band",
+        "label": "NI qualifying years built up so far",
+        "label_helper": "Check at gov.uk/check-state-pension — takes 90 seconds. Or drag to your best estimate.",
+        "control": "slider",
+        "range": {
+          "min": 0,
+          "max": 45,
+          "default": 0,
+          "step": 1
+        },
+        "required": true
+      },
+      {
+        "id": "retirement_spend_ratio",
+        "label": "In retirement, do you expect to spend…",
+        "control": "radio",
+        "options": [
+          {
+            "value": "less",
+            "label": "Less than now — mortgage paid, kids grown, quieter life"
+          },
+          {
+            "value": "same",
+            "label": "About the same"
+          },
+          {
+            "value": "more",
+            "label": "More — travel, upgrade, treat myself"
+          }
+        ],
+        "required": true
+      }
+    ],
+    "headline": "State pension, and what retirement really costs you.",
+    "sub": "Your NI record sets what the state pays. The less/same/more card is the most important single input to the whole projection — it determines how long your money has to last."
   }
 ];
 
