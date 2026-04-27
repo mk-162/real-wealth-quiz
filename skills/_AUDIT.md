@@ -337,7 +337,7 @@ Pages are heavier-frontmatter than screens — big nested objects (summary.md's 
 
 ---
 
-## 8. Report construction (`content/report/*` + `templates/report/*.html` + `src/lib/compass/*`)
+## 8. Report construction (`content/report/*` + `templates/_archive/report-legacy-mustache-2026-03/*.html` + `src/lib/compass/*`)
 
 This is the biggest surface — the PDF report has template, blocks, per-section content, chart bindings, image bindings, and the projection engine underneath.
 
@@ -385,7 +385,7 @@ This is the biggest surface — the PDF report has template, blocks, per-section
 
 ### 8.7 Add a new report section
 - **What:** introduce a new `section` key beyond the existing 10.
-- **Files touched:** `admin_app/shared/schema.ts`'s `reportSection` enum. `templates/report/real-wealth-report.html` to render it. `content/report/<kind>/<new-section>-*.md`.
+- **Files touched:** `admin_app/shared/schema.ts`'s `reportSection` enum. `templates/_archive/report-legacy-mustache-2026-03/real-wealth-report.html` to render it. `content/report/<kind>/<new-section>-*.md`.
 - **Invariants:** major change — update the template, the enum, and every admin place that maps sections to UI.
 - **Validation:** `npm run typecheck` + admin regression.
 - **Trigger phrases:** "add a Philanthropy section to the report".
@@ -413,21 +413,21 @@ This is the biggest surface — the PDF report has template, blocks, per-section
 
 ### 8.11 Edit a placeholder token
 - **What:** rename, add, or remove a `{{mustache}}` token used in the template or insight bodies.
-- **Files touched:** `templates/report/real-wealth-report.html` AND `admin_app/shared/placeholders.ts` (the registry) AND any insight body that uses the old name.
+- **Files touched:** `templates/_archive/report-legacy-mustache-2026-03/real-wealth-report.html` AND `admin_app/shared/placeholders.ts` (the registry) AND any insight body that uses the old name.
 - **Invariants:** the template's set of tokens and the registry must stay in sync. Renaming requires a grep + update across all insights.
 - **Validation:** admin integrity check `report:placeholder-known`.
 - **Trigger phrases:** "rename the {{snapshot_stat_1_val}} token to {{net_worth}}".
 
 ### 8.12 Change the HTML template structure
-- **What:** restructure `templates/report/real-wealth-report.html` — new page, rearranged panels, different layout.
-- **Files touched:** the HTML + CSS. Possibly `templates/report/tokens.css`.
+- **What:** restructure `templates/_archive/report-legacy-mustache-2026-03/real-wealth-report.html` — new page, rearranged panels, different layout.
+- **Files touched:** the HTML + CSS. Possibly `templates/_archive/report-legacy-mustache-2026-03/tokens.css`.
 - **Invariants:** all `{{mustache}}` tokens in the template must exist in the registry. Print CSS pagination breakpoints preserved.
 - **Validation:** manual render of a real session. Regression on the admin's rendered preview.
 - **Trigger phrases:** "add a new page between cover and snapshot".
 
 ### 8.13 Edit the disclaimer / methodology / caveats
 - **What:** change the legal / compliance copy printed in the report's grey caveat ribbons, final methodology page, or cover disclaimer.
-- **Files touched:** `templates/report/real-wealth-report.html` and/or `content/report/static/disclaimer.md` (if present).
+- **Files touched:** `templates/_archive/report-legacy-mustache-2026-03/real-wealth-report.html` and/or `content/report/static/disclaimer.md` (if present).
 - **Invariants:** compliance sign-off required before this can ship. Never change without a CFP review.
 - **Validation:** compliance review captured in the commit.
 - **Trigger phrases:** "update the methodology page".

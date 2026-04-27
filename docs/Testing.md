@@ -319,7 +319,7 @@ npm run build                                    # WITHOUT bypass
 
 Expected: build FAILS loudly with error message like:
 ```
-Error: Content not approved to ship: content/pdf-report/health-gauge.md (compliance_status: draft). Set requireApproved=false to bypass in dev.
+Error: Content not approved to ship: content/report/health-gauge.md (compliance_status: draft). Set requireApproved=false to bypass in dev.
 ```
 
 This is the **designed behaviour** — it prevents shipping draft content to end users. Not a bug.

@@ -248,7 +248,7 @@ The 9-page Compass report is rendered across three routes depending on the audie
 
 | Route | Purpose |
 |-------|---------|
-| `/report/master/[segment]` | Production-shaped 9-page report for one of the 9 segments (`S1`..`S9`). Cover → Snapshot → Planning grid + Goals → Projection + CTA → Narrative (5-7) → Next step → Methodology. SSG-rendered; pages 02, 03, 09 are fully content-driven from `content/pdf-report/`; pages 05-07 are deliberate placeholders until the narrative components land. Index page at `/report/master`. |
+| `/report/master/[segment]` | Production-shaped 9-page report for one of the 9 segments (`S1`..`S9`). Cover → Snapshot → Planning grid + Goals → Projection + CTA → Narrative (5-7) → Next step → Methodology. SSG-rendered; pages 02, 03, 09 are fully content-driven from `content/report/`; pages 05-07 are deliberate placeholders until the narrative components land. Index page at `/report/master`. |
 | `/report/master-fields` | Debug / field-map view of the same 9 pages. Content slots render as their data-field paths (e.g. `{view.headline.title}`) instead of copy, so you can eyeball which source drives each slot. Engine-driven numbers (gauge %, totals, chart) still render at real values. Uses S2 band values. |
 | `/conversation/summary` | Live summary page. Server-component wrapper pre-renders one `CompassReportSection` per segment, `SummaryClient.tsx` embeds the correct one inline after the email-unlock considered-list. The page entry is Phase 1B of the PDF-report plan. |
 

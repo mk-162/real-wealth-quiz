@@ -242,7 +242,7 @@ export interface PlanningTile {
   label: string;        // can be overridden (e.g. 'Business exit' vs 'Income mix')
   status: TileStatus;
   note: string;         // one-line plain-English rationale
-  /** "What this tile checks" — sourced from content/pdf-report/planning-grid/tile-NN-*.md frontmatter. */
+  /** "What this tile checks" — sourced from content/report/planning-grid/tile-NN-*.md frontmatter. */
   whatItChecks?: string;
 }
 
@@ -250,14 +250,14 @@ export interface WellbeingGoal {
   goal: string;
   capacity: string;
   alignment: TileStatus;
-  /** One-line status summary sourced from content/pdf-report/goals/S[n]-*.md (`rationale:` field). */
+  /** One-line status summary sourced from content/report/goals/S[n]-*.md (`rationale:` field). */
   rationale?: string;
 }
 
 export type HealthGaugeZone = 'red' | 'amber' | 'green' | 'blue';
 
 /**
- * Zone-specific interpretation copy sourced from content/pdf-report/health-gauge.md.
+ * Zone-specific interpretation copy sourced from content/report/health-gauge.md.
  * The loader keys them by zone so the runtime picks the right one based on the
  * actual calculated score: red < 70, amber 70-89, green 90-115, blue >= 116.
  */
@@ -274,7 +274,7 @@ export interface SegmentView {
   persona: string;           // e.g. 'Age 42 • £75k • Partner + kids'
   /** Fallback / "typical" interpretation. Used if no zoneVariants match the actual score. */
   healthInterpretation: string;
-  /** Zone-specific interpretations from content/pdf-report/health-gauge.md. */
+  /** Zone-specific interpretations from content/report/health-gauge.md. */
   healthZoneVariants?: HealthZoneVariants;
   headline: {
     tone: 'good' | 'warn' | 'risk' | 'info';

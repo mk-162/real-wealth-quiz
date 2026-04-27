@@ -8,7 +8,7 @@ description: Edit regulatory and compliance copy in the Real Wealth report — d
 
 ## What this skill does
 
-Updates regulatory prose in the report's template (`templates/report/real-wealth-report.html`) or in any supporting static content file (`content/report/static/disclaimer.md` if it exists; some is template-inline). Also touches `content/pages/summary.md` `fca_footer.disclosure` for the summary-page footer.
+Updates regulatory prose in the report's template (`templates/_archive/report-legacy-mustache-2026-03/real-wealth-report.html`) or in any supporting static content file (`content/report/static/disclaimer.md` if it exists; some is template-inline). Also touches `content/pages/summary.md` `fca_footer.disclosure` for the summary-page footer.
 
 ## Human confirm gate (Tier 3) — regulatory content
 
@@ -26,7 +26,7 @@ Before making any edit:
 Regulatory copy is the most compliance-sensitive text in the app. FCA Consumer Duty and Conduct of Business Sourcebook (COBS) rules govern what financial firms must disclose. Changes need CFP + Compliance review.
 
 Places to find regulatory copy:
-- `templates/report/real-wealth-report.html` — cover disclaimer, page ribbons, methodology page.
+- `templates/_archive/report-legacy-mustache-2026-03/real-wealth-report.html` — cover disclaimer, page ribbons, methodology page.
 - `content/pages/summary.md` → `fca_footer.disclosure` — the summary page FCA strip.
 - `content/pages/consumer-duty.md` — the consumer-duty explainer.
 - `content/pages/privacy.md` — the privacy notice.
@@ -65,7 +65,7 @@ Places to find regulatory copy:
 
 ## Files touched
 
-- `master_template/templates/report/real-wealth-report.html` (if template copy).
+- `master_template/templates/_archive/report-legacy-mustache-2026-03/real-wealth-report.html` (if template copy).
 - `master_template/content/pages/summary.md` (if summary FCA footer).
 - `master_template/content/pages/consumer-duty.md` (if consumer-duty page).
 - `master_template/content/pages/privacy.md` (if privacy).

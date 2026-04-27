@@ -9,7 +9,7 @@ description: Rename, add, or remove a `{{mustache}}` placeholder token used in t
 ## What this skill does
 
 Performs a transactional rename of a `{{mustache}}` token across every file that references it. The full surface:
-- `templates/report/real-wealth-report.html` — the template where tokens are substituted.
+- `templates/_archive/report-legacy-mustache-2026-03/real-wealth-report.html` — the template where tokens are substituted.
 - `admin_app/shared/placeholders.ts` — the registry that defines known tokens and (often) maps them to substitutor functions.
 - Every `content/report/insights/*.md` whose body uses the old token.
 - Every `content/report/context/*.md`, `content/report/tip/*.md`, `content/report/think/*.md` whose body uses the old token.
@@ -49,7 +49,7 @@ Tokens are substituted at report-render time. The substitutor reads `admin_app/s
 
 3. **Plan the atomic rename.** One commit containing:
    - `admin_app/shared/placeholders.ts` — rename the registry entry.
-   - `templates/report/real-wealth-report.html` — flip every occurrence.
+   - `templates/_archive/report-legacy-mustache-2026-03/real-wealth-report.html` — flip every occurrence.
    - Every insight / context / tip / think / chart binding — flip every body / inputs occurrence.
 
 4. **Execute.** All edits, one pass.
@@ -72,7 +72,7 @@ Tokens are substituted at report-render time. The substitutor reads `admin_app/s
 ## Files touched
 
 - `master_template/admin_app/shared/placeholders.ts`.
-- `master_template/templates/report/real-wealth-report.html`.
+- `master_template/templates/_archive/report-legacy-mustache-2026-03/real-wealth-report.html`.
 - Every `content/report/**/*.md` that used the token.
 
 ## Invariants — never break these
@@ -90,7 +90,7 @@ Tokens are substituted at report-render time. The substitutor reads `admin_app/s
 
 **Confirm:**
 
-> Grep turned up: `templates/report/real-wealth-report.html` (3 hits), `admin_app/shared/placeholders.ts` (1 registry entry), `content/report/insights/snapshot.md` (2 hits), `content/report/context/snapshot-context.md` (1 hit). Total 7 references across 4 files.
+> Grep turned up: `templates/_archive/report-legacy-mustache-2026-03/real-wealth-report.html` (3 hits), `admin_app/shared/placeholders.ts` (1 registry entry), `content/report/insights/snapshot.md` (2 hits), `content/report/context/snapshot-context.md` (1 hit). Total 7 references across 4 files.
 >
 > All edits in one commit. Post-rename I'll grep for residual `snapshot_stat_1_val` — expect zero.
 >

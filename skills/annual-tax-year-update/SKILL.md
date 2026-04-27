@@ -11,7 +11,7 @@ description: Perform the annual tax-year update — new state pension figures, a
 Rolls the app forward to a new UK tax year by adding new rates / figures / assumptions while preserving the historical ones. Touches:
 - `tax-rules-<year>.yaml` (if the project uses per-year yaml files) — add a new one; never overwrite.
 - `src/lib/compass/assumptions.ts` — extend, not replace, any year-keyed constants.
-- `templates/report/real-wealth-report.html` — methodology page, any year-specific disclosure.
+- `templates/_archive/report-legacy-mustache-2026-03/real-wealth-report.html` — methodology page, any year-specific disclosure.
 - `content/pages/*.md` — any year-keyed prose (consumer-duty page, FAQ).
 - Fixture tests keyed on specific years.
 
@@ -86,7 +86,7 @@ The firm's CFP signs off which figures land.
 
 - `master_template/tax-rules-<new-year>.yaml` (new; if this file pattern exists).
 - `master_template/src/lib/compass/assumptions.ts` (extend year-keyed maps).
-- `master_template/templates/report/real-wealth-report.html` (methodology page).
+- `master_template/templates/_archive/report-legacy-mustache-2026-03/real-wealth-report.html` (methodology page).
 - `master_template/content/pages/*.md` (year-keyed prose if any).
 - Fixture test files (year-keyed updates).
 

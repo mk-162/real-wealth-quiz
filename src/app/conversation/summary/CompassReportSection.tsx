@@ -248,8 +248,8 @@ export default function CompassReportSection({
           <NarrativePlaceholder
             eyebrow="Methodology"
             title="Not yet loaded"
-            intro="Content file not found at content/pdf-report/methodology.md. Once it lands the page renders automatically."
-            comingFrom="content/pdf-report/methodology.md"
+            intro="Content file not found at content/report/methodology.md. Once it lands the page renders automatically."
+            comingFrom="content/report/methodology.md"
             blocks={[]}
           />
         )}

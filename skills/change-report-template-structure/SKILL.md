@@ -1,14 +1,14 @@
 <!-- _AUDIT.md entry: 8.12 -->
 ---
 name: change-report-template-structure
-description: Restructure `templates/report/real-wealth-report.html` — add a new page, rearrange panels, change a layout, or adjust print-CSS pagination. Use this skill whenever the user asks to restructure the PDF report, insert a new page between existing ones, rearrange report panels, or change the report's HTML/CSS layout. This is Tier 3 — every `{{mustache}}` token in the template must exist in the registry, print pagination breakpoints must survive, and regression across all 9 segments is required. Triggers on phrasings like "add a new page between cover and snapshot", "rearrange the planning grid", or "the protection page layout needs a rework".
+description: Restructure `templates/_archive/report-legacy-mustache-2026-03/real-wealth-report.html` — add a new page, rearrange panels, change a layout, or adjust print-CSS pagination. Use this skill whenever the user asks to restructure the PDF report, insert a new page between existing ones, rearrange report panels, or change the report's HTML/CSS layout. This is Tier 3 — every `{{mustache}}` token in the template must exist in the registry, print pagination breakpoints must survive, and regression across all 9 segments is required. Triggers on phrasings like "add a new page between cover and snapshot", "rearrange the planning grid", or "the protection page layout needs a rework".
 ---
 
 # Change the report template structure
 
 ## What this skill does
 
-Edits `templates/report/real-wealth-report.html` (and optionally `templates/report/tokens.css`) to change the report's structural layout — adding pages, rearranging blocks, changing print-CSS pagination, or restyling sections.
+Edits `templates/_archive/report-legacy-mustache-2026-03/real-wealth-report.html` (and optionally `templates/_archive/report-legacy-mustache-2026-03/tokens.css`) to change the report's structural layout — adding pages, rearranging blocks, changing print-CSS pagination, or restyling sections.
 
 ## Human confirm gate (Tier 3)
 
@@ -23,7 +23,7 @@ Before making any edit:
 
 ## Background
 
-The report is a single HTML template consumed by a PDF renderer. Per-session data is interpolated via mustache tokens. Print CSS (`templates/report/tokens.css` + inline) controls pagination.
+The report is a single HTML template consumed by a PDF renderer. Per-session data is interpolated via mustache tokens. Print CSS (`templates/_archive/report-legacy-mustache-2026-03/tokens.css` + inline) controls pagination.
 
 ## Inputs you need from the user
 
@@ -41,7 +41,7 @@ The report is a single HTML template consumed by a PDF renderer. Per-session dat
 
 4. **Execute the HTML edit.** Preserve indentation style. Match the existing HTML's quoting, attribute ordering, class naming conventions (likely BEM or utility-classes).
 
-5. **Update CSS.** If the change needs new layout styles, add to `templates/report/tokens.css` (or inline, matching existing pattern).
+5. **Update CSS.** If the change needs new layout styles, add to `templates/_archive/report-legacy-mustache-2026-03/tokens.css` (or inline, matching existing pattern).
 
 6. **Check every token.** Grep for `{{.*}}` in the changed sections. Each token must exist in `admin_app/shared/placeholders.ts`.
 
@@ -60,8 +60,8 @@ The report is a single HTML template consumed by a PDF renderer. Per-session dat
 
 ## Files touched
 
-- `master_template/templates/report/real-wealth-report.html`.
-- `master_template/templates/report/tokens.css` (possibly).
+- `master_template/templates/_archive/report-legacy-mustache-2026-03/real-wealth-report.html`.
+- `master_template/templates/_archive/report-legacy-mustache-2026-03/tokens.css` (possibly).
 - No content edits for a pure structural change — though the template change may surface a need for new or moved content (flag as follow-up).
 
 ## Invariants — never break these

@@ -17,8 +17,8 @@ Before making any edit:
 1. **Challenge the need.** Ask: "Which of the existing 10 sections nearly covers this? Can we extend an existing section instead?"
 2. **Summarise the cascade:**
    - `admin_app/shared/schema.ts` — `reportSection` enum extension.
-   - `templates/report/real-wealth-report.html` — render the new section.
-   - `templates/report/tokens.css` (possibly) — section-specific styling.
+   - `templates/_archive/report-legacy-mustache-2026-03/real-wealth-report.html` — render the new section.
+   - `templates/_archive/report-legacy-mustache-2026-03/tokens.css` (possibly) — section-specific styling.
    - `content/report/<kind>/<new-section>-*.md` — at least one initial block (context or insight).
    - `content/report/charts/<new-section>-*.md` (optional) — section chart binding.
    - `content/report/images/<new-section>-*.md` (optional) — section image binding.
@@ -47,9 +47,9 @@ The report template renders sections in a fixed order. Adding a new section mean
 
 2. **Extend the enum.** `admin_app/shared/schema.ts` — add the new key to `reportSection`. If the master has a parallel enum (content/schema.ts extension), extend it too. Check for drift.
 
-3. **Extend the HTML template.** `templates/report/real-wealth-report.html` — add a section block for the new key. Match the existing section structure (heading, intro, insights, blocks, chart, image).
+3. **Extend the HTML template.** `templates/_archive/report-legacy-mustache-2026-03/real-wealth-report.html` — add a section block for the new key. Match the existing section structure (heading, intro, insights, blocks, chart, image).
 
-4. **Add section-specific styling** (if needed) in `templates/report/tokens.css`.
+4. **Add section-specific styling** (if needed) in `templates/_archive/report-legacy-mustache-2026-03/tokens.css`.
 
 5. **Seed content.** Create at least:
    - `content/report/context/<new-section>-context.md` — the section's orientation paragraph.
@@ -76,8 +76,8 @@ The report template renders sections in a fixed order. Adding a new section mean
 ## Files touched
 
 - `master_template/admin_app/shared/schema.ts` — enum extension.
-- `master_template/templates/report/real-wealth-report.html` — new section render.
-- `master_template/templates/report/tokens.css` (possibly).
+- `master_template/templates/_archive/report-legacy-mustache-2026-03/real-wealth-report.html` — new section render.
+- `master_template/templates/_archive/report-legacy-mustache-2026-03/tokens.css` (possibly).
 - `master_template/content/report/context/<new-section>-*.md` (new).
 - `master_template/content/report/<insights|tip|think>/<new-section>-*.md` (new, as needed).
 - `master_template/content/report/charts/<new-section>-*.md` (optional).

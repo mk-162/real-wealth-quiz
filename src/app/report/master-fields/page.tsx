@@ -132,7 +132,7 @@ export default function MasterFieldsReport() {
           <h2 className={styles.hSection}>Five things worth a conversation.</h2>
           <p className={styles.intro}>
             Four standard cards + 1 featured fifth. Each card:
-            title = {'{expandedCheck.title}'} (H1 of content/pdf-report/awareness-checks-expanded/&lt;slug&gt;.md),
+            title = {'{expandedCheck.title}'} (H1 of content/report/awareness-checks-expanded/&lt;slug&gt;.md),
             body = {'{expandedCheck.paragraphs[0]}'} (first paragraph),
             featured fifth also shows {'{expandedCheck.paragraphs[-1]}'} (bridge line),
             optional image = {'{expandedCheck.image_slug}'} → /report-preview/assets/illustrations/&lt;slug&gt;.svg.
@@ -205,14 +205,14 @@ export default function MasterFieldsReport() {
       >
         <div className={styles.sectionTitle}>
           <span className={styles.eyebrow}>Methodology</span>
-          <h2 className={styles.hSection}>{'{methodology.pageHeading}'} — H1 "Page heading" block of content/pdf-report/methodology.md</h2>
+          <h2 className={styles.hSection}>{'{methodology.pageHeading}'} — H1 "Page heading" block of content/report/methodology.md</h2>
           <p className={styles.intro}>{'{methodology.openingParagraph}'} — H1 "Opening paragraph" block</p>
         </div>
         <FieldPlaceholder
           eyebrow=""
           title=""
           intro=""
-          comingFrom="content/pdf-report/methodology.md"
+          comingFrom="content/report/methodology.md"
           blocks={[
             { kicker: 'Field: methodology.sections[0]', body: 'H1 "Section 1" — The Financial Health Score (heading + body)' },
             { kicker: 'Field: methodology.sections[1]', body: 'H1 "Section 2" — Growth and inflation assumptions (includes a markdown table)' },

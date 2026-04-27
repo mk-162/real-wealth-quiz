@@ -186,7 +186,7 @@ src/app/
     ├── compass-preview/page.tsx       Dev segment tab-picker
     └── compass-client-view/...        Clean client-facing view
 
-content/pdf-report/
+content/report/
 ├── health-gauge.md             Gauge interpretations per segment × zone
 ├── takeaway-banners.md         Page 2 headline per segment
 ├── methodology.md              Page 9 — 5 sections, 2 tables
@@ -268,7 +268,7 @@ Expected: all green. Any failure is a regression.
 
 ## Edit a tile note (content authoring)
 
-1. Open `content/pdf-report/planning-grid/tile-06-emergency-cash.md` (or whichever tile).
+1. Open `content/report/planning-grid/tile-06-emergency-cash.md` (or whichever tile).
 2. Find the per-segment H1 block you want to change (e.g. `# S2 — Mass-Affluent Mid-Career`).
 3. Edit the `note:` field. Use `{token}` substitution where you want the client's actual numbers:
 
@@ -333,11 +333,11 @@ Or on Vercel, set the env var in the preview environment, leave it unset in prod
 
 Files that must be approved for the 9-page report to render without the bypass:
 
-- `content/pdf-report/health-gauge.md`
-- `content/pdf-report/takeaway-banners.md`
-- `content/pdf-report/methodology.md`
-- All `content/pdf-report/planning-grid/tile-*.md` (12 files)
-- All `content/pdf-report/goals/S[n]-*.md` (9 files)
+- `content/report/health-gauge.md`
+- `content/report/takeaway-banners.md`
+- `content/report/methodology.md`
+- All `content/report/planning-grid/tile-*.md` (12 files)
+- All `content/report/goals/S[n]-*.md` (9 files)
 - Any awareness checks surfaced on page 6 for the segments you care about
 
 Tiles that aren't approved fall back to `grey / "Not checked"` — not fatal, just ugly.

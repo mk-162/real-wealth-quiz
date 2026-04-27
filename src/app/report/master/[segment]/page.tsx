@@ -13,13 +13,13 @@
  *   09 Methodology                    — the full assumptions + regulatory page
  *
  * Pages 05-08 remain placeholder blocks until the content agent's narrative
- * expansions are wired in. Page 09 reads from content/pdf-report/methodology.md.
+ * expansions are wired in. Page 09 reads from content/report/methodology.md.
  *
  * Chart pages (02-04) are enriched at SSG time from:
- *   - content/pdf-report/planning-grid/tile-NN-*.md   → per-tile status + note + whatItChecks
- *   - content/pdf-report/goals/S[n]-*.md              → goal capacity + rationale
- *   - content/pdf-report/health-gauge.md              → zone-specific gauge copy
- *   - content/pdf-report/takeaway-banners.md          → headline + supporting body
+ *   - content/report/planning-grid/tile-NN-*.md   → per-tile status + note + whatItChecks
+ *   - content/report/goals/S[n]-*.md              → goal capacity + rationale
+ *   - content/report/health-gauge.md              → zone-specific gauge copy
+ *   - content/report/takeaway-banners.md          → headline + supporting body
  *
  * See `src/lib/compass/pdf-content.ts` for the loader.
  */
@@ -253,8 +253,8 @@ export default async function MasterReport({
           <NarrativePlaceholder
             eyebrow="Methodology"
             title="Not yet loaded"
-            intro="Content file not found at content/pdf-report/methodology.md. Once it lands the page renders automatically."
-            comingFrom="content/pdf-report/methodology.md"
+            intro="Content file not found at content/report/methodology.md. Once it lands the page renders automatically."
+            comingFrom="content/report/methodology.md"
             blocks={[]}
           />
         )}

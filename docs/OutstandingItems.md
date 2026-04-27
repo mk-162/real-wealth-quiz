@@ -23,14 +23,14 @@ Last updated: 2026-04-27 (page 06 redesign session)
 
 ## Content — compliance + prose
 
-### Most `content/pdf-report/*.md` files are `compliance_status: draft`
+### Most `content/report/*.md` files are `compliance_status: draft`
 **Files:** `health-gauge.md`, `takeaway-banners.md`, `methodology.md`, `planning-grid/tile-*.md` × 12, `goals/S[n]-*.md` × 9, `awareness-checks-expanded/*.md` × 26.
 **Impact:** `NODE_ENV=production npm run build` fails loudly unless `RW_BYPASS_COMPLIANCE=1` is set. Escape hatch is fine for demos; real production needs real compliance review.
 **Fix:** Route each file through compliance review. Flip frontmatter to `approved_to_ship` once signed off.
 **Effort:** varies with compliance cadence — not an engineering problem.
 
 ### Tile prose may feel off when engine flips status
-**Files:** `content/pdf-report/planning-grid/tile-NN-*.md`
+**Files:** `content/report/planning-grid/tile-NN-*.md`
 **Impact:** Each segment has one note per tile, written for the segment's expected status archetype. If the engine scores an individual client differently from the archetype, the prose can mismatch the status chip. E.g. S2 archetype is amber cash; a wealthy S2 client gets green cash status but the note still reads amber-voiced.
 **Fix options:**
 - Accept the mismatch for MVP (numbers in tokens are still accurate, just the surrounding prose feels slightly off).

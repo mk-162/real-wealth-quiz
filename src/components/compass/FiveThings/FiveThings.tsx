@@ -2,7 +2,7 @@
  * FiveThings — Page 06 "Five things worth a conversation".
  *
  * Renders 4 standard cards in a 2×2 grid, plus one featured "fifth" highlight
- * card below. Content comes from `content/pdf-report/awareness-checks-expanded/`
+ * card below. Content comes from `content/report/awareness-checks-expanded/`
  * via `loadFiveThings()` in `pdf-content.ts`.
  *
  * Each card shows the H1 title + the first paragraph of body copy (the

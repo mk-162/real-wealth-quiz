@@ -25,7 +25,7 @@ Open http://localhost:5000/report/master/S2 and confirm the planning-grid tiles 
 Most tile markdown is still `compliance_status: draft`. The compliance gate is **opt-in** — by default all content renders everywhere (dev, staging, production) until you enable enforcement.
 
 - **Demo from localhost or any deployed URL** — do nothing. All content passes through.
-- **Go to production properly** — review each `content/pdf-report/*.md` with compliance, flip `compliance_status: draft` → `approved_to_ship` file-by-file. Then set `RW_ENFORCE_COMPLIANCE=1` in the production environment to activate the gate. Only `approved_to_ship` content will render once the gate is enabled.
+- **Go to production properly** — review each `content/report/*.md` with compliance, flip `compliance_status: draft` → `approved_to_ship` file-by-file. Then set `RW_ENFORCE_COMPLIANCE=1` in the production environment to activate the gate. Only `approved_to_ship` content will render once the gate is enabled.
 
 See `src/lib/content/compliance.ts` for the gate implementation.
 
@@ -45,7 +45,7 @@ http://localhost:5000/report/master/S8   — retired, drawdown
 http://localhost:5000/report/master/S9   — HNW multi-generational
 ```
 
-If a tile note reads awkwardly for the engine's status, that's a content tweak in `content/pdf-report/planning-grid/tile-NN-*.md` — per-segment `note:` field.
+If a tile note reads awkwardly for the engine's status, that's a content tweak in `content/report/planning-grid/tile-NN-*.md` — per-segment `note:` field.
 
 ---
 
@@ -53,7 +53,7 @@ If a tile note reads awkwardly for the engine's status, that's a content tweak i
 
 ### 4. Approve the rest of the PDF content
 
-Everything in `content/pdf-report/` is currently `compliance_status: draft`:
+Everything in `content/report/` is currently `compliance_status: draft`:
 
 - `health-gauge.md` (zone-matched interpretations)
 - `takeaway-banners.md` (per-segment headline + body)

@@ -1,7 +1,7 @@
 /**
  * PDF report content loader.
  *
- * Parses the markdown files under `content/pdf-report/` (written by the
+ * Parses the markdown files under `content/report/` (written by the
  * content agent) into typed structures that the report components consume.
  *
  * This module uses Node `fs` and `gray-matter`, so it is server-only. Import
@@ -47,7 +47,7 @@ function assertApproved(filePath: string, complianceStatus: string | undefined):
 // Paths
 // ---------------------------------------------------------------------------
 
-const CONTENT_ROOT = path.join(process.cwd(), 'content', 'pdf-report');
+const CONTENT_ROOT = path.join(process.cwd(), 'content', 'report');
 const TILES_DIR = path.join(CONTENT_ROOT, 'planning-grid');
 const GOALS_DIR = path.join(CONTENT_ROOT, 'goals');
 const HEALTH_GAUGE_FILE = path.join(CONTENT_ROOT, 'health-gauge.md');
@@ -189,7 +189,7 @@ function normaliseStatus(raw: string | undefined, fallback: TileStatus = 'grey')
 }
 
 // ---------------------------------------------------------------------------
-// Tile loader — content/pdf-report/planning-grid/tile-NN-*.md
+// Tile loader — content/report/planning-grid/tile-NN-*.md
 // ---------------------------------------------------------------------------
 
 export interface TileContent {
@@ -351,7 +351,7 @@ export function loadPlanningTiles(
 }
 
 // ---------------------------------------------------------------------------
-// Goals loader — content/pdf-report/goals/S[n]-*.md
+// Goals loader — content/report/goals/S[n]-*.md
 // ---------------------------------------------------------------------------
 
 interface GoalsEntry {
@@ -411,7 +411,7 @@ export function loadGoals(segmentId: string): WellbeingGoal[] {
 }
 
 // ---------------------------------------------------------------------------
-// Health-gauge loader — content/pdf-report/health-gauge.md
+// Health-gauge loader — content/report/health-gauge.md
 // ---------------------------------------------------------------------------
 
 export interface HealthGaugeCopy {
@@ -508,7 +508,7 @@ export function pickHealthInterpretation(
 }
 
 // ---------------------------------------------------------------------------
-// Takeaway loader — content/pdf-report/takeaway-banners.md
+// Takeaway loader — content/report/takeaway-banners.md
 // ---------------------------------------------------------------------------
 
 export interface TakeawayContent {
@@ -578,7 +578,7 @@ export function loadTakeaway(segmentId: string, requireApproved = false): Takeaw
 
 // ---------------------------------------------------------------------------
 // Awareness-checks-expanded loader
-// content/pdf-report/awareness-checks-expanded/<slug>.md
+// content/report/awareness-checks-expanded/<slug>.md
 //
 // Display copy only — selection logic lives in content/awareness-checks/*.md
 // and is joined back to expanded copy via the `source_id` frontmatter field.
@@ -699,7 +699,7 @@ export function loadFiveThings(sourceIds: string[]): FiveThingsSelection {
 }
 
 // ---------------------------------------------------------------------------
-// Methodology loader — content/pdf-report/methodology.md
+// Methodology loader — content/report/methodology.md
 // ---------------------------------------------------------------------------
 
 export interface MethodologyContent {
@@ -764,7 +764,7 @@ export function loadMethodology(requireApproved = false): MethodologyContent | n
   const content = loadMethodologyOnce();
   if (!content) return null;
   if (requireApproved) {
-    assertApproved('content/pdf-report/methodology.md', content.compliance_status);
+    assertApproved('content/report/methodology.md', content.compliance_status);
   } else if (!canPublishInProduction(content.compliance_status)) {
     return null;
   }
