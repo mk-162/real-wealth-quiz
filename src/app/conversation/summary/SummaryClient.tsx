@@ -825,9 +825,9 @@ function fromCta(cta: SegmentCta): ResolvedCta {
   return {
     headline: cta.headline,
     body: cta.body,
-    button: cta.button,
+    button: cta.cta,
     button_link: cta.button_link,
-    helper: cta.helper,
+    helper: cta.cta_helper,
   };
 }
 
@@ -871,8 +871,8 @@ function buildConsideredList(segmentId: string, inputs: SummaryInputs): ListItem
   const awarenessItems: ListItem[] = coreAwareness.slice(0, 3).map((a) => ({
     id: a.id,
     category: categoryFromId(a.id),
-    headline: trimToTenWords(a.stem),
-    body: a.partial_body,
+    headline: trimToTenWords(a.headline),
+    body: a.body_partial,
     close: 'Worth a conversation.',
     compliance: a.compliance_status === 'approved_to_ship' ? 'ok' : 'draft',
     rank: a.rank ?? 50,
@@ -883,7 +883,7 @@ function buildConsideredList(segmentId: string, inputs: SummaryInputs): ListItem
     category: categoryFromId(p.id),
     headline: p.headline,
     body: p.body,
-    close: p.close,
+    close: p.cta,
     compliance: p.compliance_status === 'approved_to_ship' ? 'ok' : 'draft',
     rank: 60 + i,
   }));

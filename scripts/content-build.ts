@@ -107,11 +107,11 @@ function loadProvocations(): Provocation[] {
       continue;
     }
     const body = splitBodySections(raw.content);
-    if (!body.headline || !body.body || !body.close) {
-      recordError(file, 'provocation body must have # Headline, # Body, and # Close sections');
+    if (!body.headline || !body.body || !body.cta) {
+      recordError(file, 'provocation body must have # Headline, # Body, and # Cta sections');
       continue;
     }
-    items.push({ ...fm.data, headline: body.headline, body: body.body, close: body.close });
+    items.push({ ...fm.data, headline: body.headline, body: body.body, cta: body.cta });
   }
   return items;
 }
@@ -127,19 +127,19 @@ function loadAwareness(): AwarenessCheck[] {
       continue;
     }
     const body = splitBodySections(raw.content);
-    if (!body.stem || !body.aware_body || !body.partial_body || !body.unaware_body) {
+    if (!body.headline || !body.body_aware || !body.body_partial || !body.body_unaware) {
       recordError(
         file,
-        'awareness body must have # Stem, # Aware body, # Partial body, and # Unaware body sections',
+        'awareness body must have # Headline, # Body Aware, # Body Partial, and # Body Unaware sections',
       );
       continue;
     }
     items.push({
       ...fm.data,
-      stem: body.stem,
-      aware_body: body.aware_body,
-      partial_body: body.partial_body,
-      unaware_body: body.unaware_body,
+      headline: body.headline,
+      body_aware: body.body_aware,
+      body_partial: body.body_partial,
+      body_unaware: body.body_unaware,
     });
   }
   return items;
@@ -156,16 +156,16 @@ function loadSegments(): SegmentCta[] {
       continue;
     }
     const body = splitBodySections(raw.content);
-    if (!body.headline || !body.body || !body.button || !body.helper) {
-      recordError(file, 'segment CTA body must have # Headline, # Body, # Button, and # Helper');
+    if (!body.headline || !body.body || !body.cta || !body.cta_helper) {
+      recordError(file, 'segment CTA body must have # Headline, # Body, # Cta, and # Cta Helper');
       continue;
     }
     items.push({
       ...fm.data,
       headline: body.headline,
       body: body.body,
-      button: body.button,
-      helper: body.helper,
+      cta: body.cta,
+      cta_helper: body.cta_helper,
     });
   }
   return items;

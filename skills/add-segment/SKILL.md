@@ -50,7 +50,7 @@ See `docs/Guide.md` §End-to-end data flow and `src/lib/segmentation/` for the s
    - `src/lib/segmentation/types.ts` — extend `SegmentId` union with `'S10'`.
 
 3. **Add the segment CTA file.**
-   - Create `content/segments/S10-<slug>.md` with `id: S10`, `kind: segment`, `segment: S10`, `button_link: "..."`, and all four body sections (`# Headline`, `# Body`, `# Button`, `# Helper`).
+   - Create `content/segments/S10-<slug>.md` with `id: S10`, `kind: segment`, `segment: S10`, `button_link: "..."`, and all four body sections (`# Headline`, `# Body`, `# Cta`, `# Cta Helper`).
    - Same rules as `change-segment-cta` for budgets and voice.
    - Compliance-gate the CTA copy — this is new commercial copy, needs review.
 

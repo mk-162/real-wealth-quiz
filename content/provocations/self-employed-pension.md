@@ -12,5 +12,5 @@ The quiet gap.
 # Body
 Self-employed people at your income typically fund a pension about 60% less than employed peers earning the same. It's nobody's fault — no employer nudging, no auto-enrolment — and it's the single commonest thing self-employed clients come to us to fix.
 
-# Close
+# Cta
 One of the fastest wins we work on.

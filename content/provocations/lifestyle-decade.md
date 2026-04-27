@@ -12,5 +12,5 @@ Ten years of the nice-to-haves.
 # Body
 At the level you've told us, the non-essential line adds up to between £240,000 and £480,000 across a decade. That's not a criticism — it's a figure most people haven't sat with. What it's buying you is the real question.
 
-# Close
+# Cta
 Worth asking out loud, once.

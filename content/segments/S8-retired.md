@@ -11,8 +11,8 @@ A second-opinion conversation.
 # Body
 Even a well-designed retirement plan is worth a second look when rules change — and the pensions IHT change in 2027, plus the 2024 Budget CGT step-ups, are significant. Twenty minutes, no pressure.
 
-# Button
+# Cta
 Book a 20-minute call
 
-# Helper
+# Cta Helper
 A second opinion, nothing more.

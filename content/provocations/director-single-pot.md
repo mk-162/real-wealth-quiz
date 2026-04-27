@@ -12,5 +12,5 @@ The quiet tax lever.
 # Body
 A 25% corporation-tax-paying company making a £60,000 employer pension contribution for its sole director saves £15,000 of corporation tax and avoids NI and income tax on the equivalent dividend. Most sole directors with one pension pot aren't using this at scale.
 
-# Close
+# Cta
 We run this jointly with your accountant.

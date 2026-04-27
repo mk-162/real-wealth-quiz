@@ -11,8 +11,8 @@ A first conversation.
 # Body
 You're in the band where the difference between acting and drifting is biggest — the £100k tax trap, pension carry-forward, ISA sequencing. Twenty minutes to show you the shape; no preparation needed on your side.
 
-# Button
+# Cta
 Book a 20-minute call
 
-# Helper
+# Cta Helper
 Planners who work with your segment routinely.

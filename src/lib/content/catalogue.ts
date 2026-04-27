@@ -2605,10 +2605,10 @@ export const awareness: AwarenessCheck[] = [
       "B"
     ],
     "compliance_status": "draft",
-    "stem": "The all-in cost of ongoing advice is typically quoted as just the adviser fee — but the total (adviser + platform + fund) is usually 1.5–2× that number. Have you ever seen yours as a single figure?",
-    "aware_body": "Helpful — that usually means you've already seen the total as a single figure, rather than just the adviser slice.",
-    "partial_body": "Three cost layers: adviser ongoing (roughly 0.5–1.0%), platform (0.15–0.35%), fund OCF (0.05–0.9%). Totals usually land between 0.7% and 2.0%. Consumer Duty obliges advisers to demonstrate value for the total fee, not just their slice.",
-    "unaware_body": "It's not that advice is wrong to cost money. It's that the total cost is often quoted as a single line that happens to only include one of three layers. A Consumer Duty-compliant review of your current arrangement asks: what is the total, what am I getting for it, is it defensible. Useful even when the answer is \"yes, fine.\""
+    "headline": "The all-in cost of ongoing advice is typically quoted as just the adviser fee — but the total (adviser + platform + fund) is usually 1.5–2× that number. Have you ever seen yours as a single figure?",
+    "body_aware": "Helpful — that usually means you've already seen the total as a single figure, rather than just the adviser slice.",
+    "body_partial": "Three cost layers: adviser ongoing (roughly 0.5–1.0%), platform (0.15–0.35%), fund OCF (0.05–0.9%). Totals usually land between 0.7% and 2.0%. Consumer Duty obliges advisers to demonstrate value for the total fee, not just their slice.",
+    "body_unaware": "It's not that advice is wrong to cost money. It's that the total cost is often quoted as a single line that happens to only include one of three layers. A Consumer Duty-compliant review of your current arrangement asks: what is the total, what am I getting for it, is it defensible. Useful even when the answer is \"yes, fine.\""
   },
   {
     "id": "pitfall.badr_timing",
@@ -2622,10 +2622,10 @@ export const awareness: AwarenessCheck[] = [
       "B"
     ],
     "compliance_status": "draft",
-    "stem": "Business Asset Disposal Relief gives a 10% CGT rate on qualifying business sales up to a £1m lifetime limit. But the rate is rising — to 14% from April 2025 and 18% from April 2026. Were you aware of the transition?",
-    "aware_body": "That's useful. What usually matters next is whether your timeline lines up with the rate step-up, or whether there's room to split consideration across years.",
-    "partial_body": "BADR applies on qualifying shares (5%+ holding for 2 years, working in the business). Lifetime limit £1m. Rate: 10% to April 2025, 14% from April 2025, 18% from April 2026. The 2024 Budget confirmed the step-up.",
-    "unaware_body": "On a £1m qualifying gain, BADR at 10% is £100,000 of tax; at 18% it's £180,000. That's £80,000 of CGT decided by the date of completion. Most business sales take 18–24 months from decision to close. The conversation about whether to accelerate into the 14% year, the 18% year, or split consideration is one most sellers have too late."
+    "headline": "Business Asset Disposal Relief gives a 10% CGT rate on qualifying business sales up to a £1m lifetime limit. But the rate is rising — to 14% from April 2025 and 18% from April 2026. Were you aware of the transition?",
+    "body_aware": "That's useful. What usually matters next is whether your timeline lines up with the rate step-up, or whether there's room to split consideration across years.",
+    "body_partial": "BADR applies on qualifying shares (5%+ holding for 2 years, working in the business). Lifetime limit £1m. Rate: 10% to April 2025, 14% from April 2025, 18% from April 2026. The 2024 Budget confirmed the step-up.",
+    "body_unaware": "On a £1m qualifying gain, BADR at 10% is £100,000 of tax; at 18% it's £180,000. That's £80,000 of CGT decided by the date of completion. Most business sales take 18–24 months from decision to close. The conversation about whether to accelerate into the 14% year, the 18% year, or split consideration is one most sellers have too late."
   },
   {
     "id": "pitfall.btl_incorporation",
@@ -2638,10 +2638,10 @@ export const awareness: AwarenessCheck[] = [
       "A"
     ],
     "compliance_status": "draft",
-    "stem": "Buy-to-let properties held personally lose most of their mortgage interest as a tax-deductible expense. Those held in a limited company don't. Were you aware of the difference?",
-    "aware_body": "Noted — the \"should I incorporate\" question tends to bring about eight follow-ups with it, and they're worth working through jointly with your accountant.",
-    "partial_body": "Section 24 of the Finance Act 2015 replaced personal-name mortgage interest relief with a flat 20% tax credit. For higher and additional-rate taxpayers with mortgaged BTLs, that effectively raises the tax rate on rent. Incorporation avoids it, but the transfer itself triggers CGT and SDLT.",
-    "unaware_body": "After Section 24, a higher-rate landlord with a heavily-mortgaged BTL can end up paying tax on income they didn't actually earn. Incorporation is the conversation people tend to have next — but the transfer triggers CGT and SDLT unless structured carefully. It's a £5,000–£15,000 decision for most portfolio landlords, and we tend to run it alongside your accountant rather than over the top of them."
+    "headline": "Buy-to-let properties held personally lose most of their mortgage interest as a tax-deductible expense. Those held in a limited company don't. Were you aware of the difference?",
+    "body_aware": "Noted — the \"should I incorporate\" question tends to bring about eight follow-ups with it, and they're worth working through jointly with your accountant.",
+    "body_partial": "Section 24 of the Finance Act 2015 replaced personal-name mortgage interest relief with a flat 20% tax credit. For higher and additional-rate taxpayers with mortgaged BTLs, that effectively raises the tax rate on rent. Incorporation avoids it, but the transfer itself triggers CGT and SDLT.",
+    "body_unaware": "After Section 24, a higher-rate landlord with a heavily-mortgaged BTL can end up paying tax on income they didn't actually earn. Incorporation is the conversation people tend to have next — but the transfer triggers CGT and SDLT unless structured carefully. It's a £5,000–£15,000 decision for most portfolio landlords, and we tend to run it alongside your accountant rather than over the top of them."
   },
   {
     "id": "pitfall.care_funding",
@@ -2654,10 +2654,10 @@ export const awareness: AwarenessCheck[] = [
       "A"
     ],
     "compliance_status": "draft",
-    "stem": "Long-term residential care in the UK typically costs £60,000–£100,000+ a year. It's not free at the point of use once assets pass £23,250 — and that includes the value of a home not occupied by a spouse. Were you aware of those thresholds?",
-    "aware_body": "Then the only question is which members of the family this is likely to affect, and when.",
-    "partial_body": "The means-test thresholds in England: lower capital limit £14,250, upper £23,250. A home is disregarded if a spouse or partner still lives there. The \"care cost cap\" reform announced for October 2025 was paused in 2024.",
-    "unaware_body": "The average stay in residential care is about 30 months; 50% of people admitted will pay the full cost. A £90,000-a-year care home bill erodes a £450,000 house in five years. Families who plan this (immediate-needs annuities, deputyship, property structures) routinely preserve £100,000–£300,000 of the estate. It's the conversation that comes up too late."
+    "headline": "Long-term residential care in the UK typically costs £60,000–£100,000+ a year. It's not free at the point of use once assets pass £23,250 — and that includes the value of a home not occupied by a spouse. Were you aware of those thresholds?",
+    "body_aware": "Then the only question is which members of the family this is likely to affect, and when.",
+    "body_partial": "The means-test thresholds in England: lower capital limit £14,250, upper £23,250. A home is disregarded if a spouse or partner still lives there. The \"care cost cap\" reform announced for October 2025 was paused in 2024.",
+    "body_unaware": "The average stay in residential care is about 30 months; 50% of people admitted will pay the full cost. A £90,000-a-year care home bill erodes a £450,000 house in five years. Families who plan this (immediate-needs annuities, deputyship, property structures) routinely preserve £100,000–£300,000 of the estate. It's the conversation that comes up too late."
   },
   {
     "id": "pitfall.carry_forward",
@@ -2670,10 +2670,10 @@ export const awareness: AwarenessCheck[] = [
       "A"
     ],
     "compliance_status": "draft",
-    "stem": "There's a way to carry forward up to three years of unused pension annual allowance — meaning a single one-off contribution of up to about £200,000 is sometimes possible. Were you aware of that?",
-    "aware_body": "Good to hear. The detail we usually pick up on is timing — carry-forward unwinds year by year, so the three-year window is shifting under your feet.",
-    "partial_body": "The mechanics: you use the current year's allowance first, then step backwards across the previous three tax years' unused allowance, provided you were a member of a UK pension scheme in each year.",
-    "unaware_body": "A one-off £200,000 pension contribution using carry-forward can save roughly £80,000–£90,000 of income tax in a single year for a higher-rate earner. Most business-owner clients we work with do this in a year where profits are unusually good. The window is three years — use it, or lose it."
+    "headline": "There's a way to carry forward up to three years of unused pension annual allowance — meaning a single one-off contribution of up to about £200,000 is sometimes possible. Were you aware of that?",
+    "body_aware": "Good to hear. The detail we usually pick up on is timing — carry-forward unwinds year by year, so the three-year window is shifting under your feet.",
+    "body_partial": "The mechanics: you use the current year's allowance first, then step backwards across the previous three tax years' unused allowance, provided you were a member of a UK pension scheme in each year.",
+    "body_unaware": "A one-off £200,000 pension contribution using carry-forward can save roughly £80,000–£90,000 of income tax in a single year for a higher-rate earner. Most business-owner clients we work with do this in a year where profits are unusually good. The window is three years — use it, or lose it."
   },
   {
     "id": "pitfall.couples_alignment",
@@ -2686,10 +2686,10 @@ export const awareness: AwarenessCheck[] = [
       "A"
     ],
     "compliance_status": "draft",
-    "stem": "Couples who have a structured conversation about money once a year — not about the bills, but about the plan — report much higher satisfaction with their finances than couples who don't. Do you and your partner?",
-    "aware_body": "Genuinely unusual — and in our experience the planner conversation is more useful because of it. We can work at the level of the plan rather than the basics.",
-    "partial_body": "What the research points to is simpler than it sounds: a shared retirement picture, agreement on gifting to children, alignment on risk, and one person who knows the passwords. It's not about the numbers — it's about not being surprised.",
-    "unaware_body": "The single highest-value thing that happens in a planner meeting with a couple isn't the tax or the pension maths — it's the conversation they end up having with each other that they hadn't yet had at home. Most couples thank us for that after the first meeting, before we've advised on anything."
+    "headline": "Couples who have a structured conversation about money once a year — not about the bills, but about the plan — report much higher satisfaction with their finances than couples who don't. Do you and your partner?",
+    "body_aware": "Genuinely unusual — and in our experience the planner conversation is more useful because of it. We can work at the level of the plan rather than the basics.",
+    "body_partial": "What the research points to is simpler than it sounds: a shared retirement picture, agreement on gifting to children, alignment on risk, and one person who knows the passwords. It's not about the numbers — it's about not being surprised.",
+    "body_unaware": "The single highest-value thing that happens in a planner meeting with a couple isn't the tax or the pension maths — it's the conversation they end up having with each other that they hadn't yet had at home. Most couples thank us for that after the first meeting, before we've advised on anything."
   },
   {
     "id": "pitfall.emergency_fund_sizing",
@@ -2702,10 +2702,10 @@ export const awareness: AwarenessCheck[] = [
       "A"
     ],
     "compliance_status": "draft",
-    "stem": "The commonly-quoted three months of essential spending as an emergency fund is usually too thin for households with a mortgage, dependants and a single primary earner. Does that land?",
-    "aware_body": "Judgement call, not a formula. For a single-earner household with dependants the 6-month mark is usually where we land — we'll pick up the specifics on the call.",
-    "partial_body": "The rule of thumb: 3 months for a dual-earner, no-dependants household; 6 months for a single-earner; 9–12 months for self-employed or commission-based earners. It's judgement, not formula.",
-    "unaware_body": "For a single-earner household with two children and an £1,800 mortgage, a 3-month emergency fund is often under-sized. The cost of getting it wrong: a forced sale of long-term investments at a bad time, or a high-interest loan in a crisis. Most planners we know land on 6 months for employed clients with dependants, more for business owners."
+    "headline": "The commonly-quoted three months of essential spending as an emergency fund is usually too thin for households with a mortgage, dependants and a single primary earner. Does that land?",
+    "body_aware": "Judgement call, not a formula. For a single-earner household with dependants the 6-month mark is usually where we land — we'll pick up the specifics on the call.",
+    "body_partial": "The rule of thumb: 3 months for a dual-earner, no-dependants household; 6 months for a single-earner; 9–12 months for self-employed or commission-based earners. It's judgement, not formula.",
+    "body_unaware": "For a single-earner household with two children and an £1,800 mortgage, a 3-month emergency fund is often under-sized. The cost of getting it wrong: a forced sale of long-term investments at a bad time, or a high-interest loan in a crisis. Most planners we know land on 6 months for employed clients with dependants, more for business owners."
   },
   {
     "id": "pitfall.extraction_mix",
@@ -2719,10 +2719,10 @@ export const awareness: AwarenessCheck[] = [
       "B"
     ],
     "compliance_status": "draft",
-    "stem": "Most business-owner clients we review are paying more tax on extraction than they need to — often because the salary, dividend and pension mix hasn't been revisited for a few years. How confident are you yours has been?",
-    "aware_body": "The thing we usually sanity-check is whether the current mix still fits 2024/25 — the dividend allowance tightened again, and the optimum shifts slightly each year.",
-    "partial_body": "The classic optimisation: salary up to the NI threshold, dividends to the basic-rate band, then employer pension contribution for the rest. Exact numbers shift every tax year. \"My accountant handles it\" often means the default mix hasn't been revisited for several years.",
-    "unaware_body": "On £100,000 drawn as pure salary versus a typical salary/dividend/employer-pension mix, the tax bill can differ by £15,000–£20,000 — per year. Whether that's you depends on your company structure and your accountant's current advice. We run this jointly with the accountant rather than over the top of them."
+    "headline": "Most business-owner clients we review are paying more tax on extraction than they need to — often because the salary, dividend and pension mix hasn't been revisited for a few years. How confident are you yours has been?",
+    "body_aware": "The thing we usually sanity-check is whether the current mix still fits 2024/25 — the dividend allowance tightened again, and the optimum shifts slightly each year.",
+    "body_partial": "The classic optimisation: salary up to the NI threshold, dividends to the basic-rate band, then employer pension contribution for the rest. Exact numbers shift every tax year. \"My accountant handles it\" often means the default mix hasn't been revisited for several years.",
+    "body_unaware": "On £100,000 drawn as pure salary versus a typical salary/dividend/employer-pension mix, the tax bill can differ by £15,000–£20,000 — per year. Whether that's you depends on your company structure and your accountant's current advice. We run this jointly with the accountant rather than over the top of them."
   },
   {
     "id": "pitfall.fund_fee_stack",
@@ -2735,10 +2735,10 @@ export const awareness: AwarenessCheck[] = [
       "A"
     ],
     "compliance_status": "draft",
-    "stem": "On a £500,000 portfolio, the difference between a 1.0% and a 0.4% all-in annual cost is roughly £70,000 over twenty years. Were you aware the all-in cost is usually higher than the quoted figure?",
-    "aware_body": "Useful. The all-in figure is the one we tend to work from on the call, rather than the headline adviser line.",
-    "partial_body": "All-in cost is platform fee + fund OCF + adviser fee + transaction costs. It's rarely quoted as one number — you usually have to add it up yourself or ask for it in that form.",
-    "unaware_body": "On a £500,000 pot growing at 5% gross for 20 years with no contributions, the difference between 1.0% and 0.4% all-in annual charges is roughly £70,000 of terminal value. Most investors have never been shown their all-in fee stack as a single number. That's often the first useful conversation."
+    "headline": "On a £500,000 portfolio, the difference between a 1.0% and a 0.4% all-in annual cost is roughly £70,000 over twenty years. Were you aware the all-in cost is usually higher than the quoted figure?",
+    "body_aware": "Useful. The all-in figure is the one we tend to work from on the call, rather than the headline adviser line.",
+    "body_partial": "All-in cost is platform fee + fund OCF + adviser fee + transaction costs. It's rarely quoted as one number — you usually have to add it up yourself or ask for it in that form.",
+    "body_unaware": "On a £500,000 pot growing at 5% gross for 20 years with no contributions, the difference between 1.0% and 0.4% all-in annual charges is roughly £70,000 of terminal value. Most investors have never been shown their all-in fee stack as a single number. That's often the first useful conversation."
   },
   {
     "id": "pitfall.glide_path",
@@ -2751,10 +2751,10 @@ export const awareness: AwarenessCheck[] = [
       "A"
     ],
     "compliance_status": "draft",
-    "stem": "Most DC pension default funds don't automatically reduce equity risk as you approach retirement — the \"lifestyling\" you may be assuming often isn't switched on. Worth a look?",
-    "aware_body": "Most of our clients who've thought about this one want to check the glide path still matches the retirement shape they're picturing — drawdown versus annuity changes the answer.",
-    "partial_body": "Since freedom-and-choice in 2015, many default funds assume drawdown rather than annuity purchase — which means they hold equity risk for longer. That isn't wrong in itself — but it matters whether it fits your plan.",
-    "unaware_body": "A 58-year-old five years from planned retirement may still be 80%+ in equities inside a \"default\" fund. A 25% equity fall at 62 is very different from the same fall at 35. One question worth asking isn't \"is equity risk bad\" — it's \"is this risk profile right for your plan.\" Most near-retirees we meet have never had this conversation about their default fund."
+    "headline": "Most DC pension default funds don't automatically reduce equity risk as you approach retirement — the \"lifestyling\" you may be assuming often isn't switched on. Worth a look?",
+    "body_aware": "Most of our clients who've thought about this one want to check the glide path still matches the retirement shape they're picturing — drawdown versus annuity changes the answer.",
+    "body_partial": "Since freedom-and-choice in 2015, many default funds assume drawdown rather than annuity purchase — which means they hold equity risk for longer. That isn't wrong in itself — but it matters whether it fits your plan.",
+    "body_unaware": "A 58-year-old five years from planned retirement may still be 80%+ in equities inside a \"default\" fund. A 25% equity fall at 62 is very different from the same fall at 35. One question worth asking isn't \"is equity risk bad\" — it's \"is this risk profile right for your plan.\" Most near-retirees we meet have never had this conversation about their default fund."
   },
   {
     "id": "pitfall.group_life_fragility",
@@ -2768,10 +2768,10 @@ export const awareness: AwarenessCheck[] = [
       "B"
     ],
     "compliance_status": "draft",
-    "stem": "Life cover through work ends on the day you leave the job. The cover you have today isn't the cover you'll have if you change employer. Were you aware of that?",
-    "aware_body": "Worth a quick check on whether there's any personal cover to carry between jobs — that's the bit that usually gets missed.",
-    "partial_body": "Group life is typically 3–4× salary and ends when employment ends. Critical illness and income protection in group schemes usually work the same way. Personal cover, set up while you're young and healthy, is often cheaper than people assume.",
-    "unaware_body": "Most families we work with had assumed their \"work benefit\" was lifelong cover. It isn't. A personal £500,000 life and £50,000 income protection policy for a healthy 40-year-old typically costs under £40 a month — less than most broadband bills. It's the cheapest big decision on most family balance sheets."
+    "headline": "Life cover through work ends on the day you leave the job. The cover you have today isn't the cover you'll have if you change employer. Were you aware of that?",
+    "body_aware": "Worth a quick check on whether there's any personal cover to carry between jobs — that's the bit that usually gets missed.",
+    "body_partial": "Group life is typically 3–4× salary and ends when employment ends. Critical illness and income protection in group schemes usually work the same way. Personal cover, set up while you're young and healthy, is often cheaper than people assume.",
+    "body_unaware": "Most families we work with had assumed their \"work benefit\" was lifelong cover. It isn't. A personal £500,000 life and £50,000 income protection policy for a healthy 40-year-old typically costs under £40 a month — less than most broadband bills. It's the cheapest big decision on most family balance sheets."
   },
   {
     "id": "pitfall.iht_mitigation",
@@ -2785,10 +2785,10 @@ export const awareness: AwarenessCheck[] = [
       "B"
     ],
     "compliance_status": "draft",
-    "stem": "There are well-established, legal ways to reduce — sometimes to nothing — the inheritance tax bill on an estate of your size. Were you aware of that?",
-    "aware_body": "What we usually check is whether the plan you have still matches the rules as they are now, rather than as they were when you first set it up — several changed in the 2024 Budget.",
-    "partial_body": "The toolkit has four main parts: gifting within the seven-year rule; trust structures (discretionary, life interest); Business Relief on qualifying shares and AIM portfolios; and the residence nil-rate band if you leave the home to direct descendants. Each has specific rules, and the 2024 Budget changed several of them.",
-    "unaware_body": "At an estate of your size, the default IHT bill is typically 40% of everything above £325,000 (or £500,000 if the residence nil-rate band applies and you qualify). For a £2m estate, that's £540,000–£700,000. With 2–5 years of structured planning, most families we work with reduce that by £150,000–£400,000. It's the most common senior-planner conversation we have."
+    "headline": "There are well-established, legal ways to reduce — sometimes to nothing — the inheritance tax bill on an estate of your size. Were you aware of that?",
+    "body_aware": "What we usually check is whether the plan you have still matches the rules as they are now, rather than as they were when you first set it up — several changed in the 2024 Budget.",
+    "body_partial": "The toolkit has four main parts: gifting within the seven-year rule; trust structures (discretionary, life interest); Business Relief on qualifying shares and AIM portfolios; and the residence nil-rate band if you leave the home to direct descendants. Each has specific rules, and the 2024 Budget changed several of them.",
+    "body_unaware": "At an estate of your size, the default IHT bill is typically 40% of everything above £325,000 (or £500,000 if the residence nil-rate band applies and you qualify). For a £2m estate, that's £540,000–£700,000. With 2–5 years of structured planning, most families we work with reduce that by £150,000–£400,000. It's the most common senior-planner conversation we have."
   },
   {
     "id": "pitfall.income_trap_100k",
@@ -2803,10 +2803,10 @@ export const awareness: AwarenessCheck[] = [
       "C"
     ],
     "compliance_status": "draft",
-    "stem": "Between £100,000 and £125,140, there's a quiet band where the effective tax rate is closer to 60% than 40%. Were you aware of that?",
-    "aware_body": "The lever that usually does the work here is a pension contribution or salary sacrifice. Most people in the band haven't set one up, so that's often where the conversation lands.",
-    "partial_body": "The detail: for every £2 you earn above £100,000, you lose £1 of your personal allowance. Added to the higher-rate band and NI, the effective rate on that slice comes out around 60%. It's a band, not a cliff — it ends at £125,140.",
-    "unaware_body": "A £15,000 pay rise from £100,000 to £115,000 costs roughly £9,000 in tax and NI. If you've got young children, you may also lose up to £10,000 of tax-free childcare. A £15,000 raise can cost £19,000. One common approach is a pension contribution or salary sacrifice — and most people in this band haven't used it. Worth a conversation."
+    "headline": "Between £100,000 and £125,140, there's a quiet band where the effective tax rate is closer to 60% than 40%. Were you aware of that?",
+    "body_aware": "The lever that usually does the work here is a pension contribution or salary sacrifice. Most people in the band haven't set one up, so that's often where the conversation lands.",
+    "body_partial": "The detail: for every £2 you earn above £100,000, you lose £1 of your personal allowance. Added to the higher-rate band and NI, the effective rate on that slice comes out around 60%. It's a band, not a cliff — it ends at £125,140.",
+    "body_unaware": "A £15,000 pay rise from £100,000 to £115,000 costs roughly £9,000 in tax and NI. If you've got young children, you may also lose up to £10,000 of tax-free childcare. A £15,000 raise can cost £19,000. One common approach is a pension contribution or salary sacrifice — and most people in this band haven't used it. Worth a conversation."
   },
   {
     "id": "pitfall.independent_restricted",
@@ -2820,10 +2820,10 @@ export const awareness: AwarenessCheck[] = [
       "B"
     ],
     "compliance_status": "draft",
-    "stem": "A \"financial adviser\" can be either independent or restricted — and a restricted adviser can only recommend products from a limited range, sometimes a single provider. Did you know whether yours is independent?",
-    "aware_body": "That's the right question to have asked. It shapes how the rest of the review looks, since an independent firm and a restricted one are working from different shelves.",
-    "partial_body": "The FCA requires advisers to disclose their status. Independent means they can recommend across the whole of market. Restricted can mean anything from \"limited to one provider\" to \"whole of market except annuities.\" The scope sits on the first page of their initial disclosure document.",
-    "unaware_body": "About 60% of UK advice firms are restricted. Not knowing the scope of your current adviser's restriction isn't a problem in itself — but it's a question worth asking if you've never looked at the initial disclosure document. Real Wealth is independent and FCA-regulated, which means we're free to look across the whole market."
+    "headline": "A \"financial adviser\" can be either independent or restricted — and a restricted adviser can only recommend products from a limited range, sometimes a single provider. Did you know whether yours is independent?",
+    "body_aware": "That's the right question to have asked. It shapes how the rest of the review looks, since an independent firm and a restricted one are working from different shelves.",
+    "body_partial": "The FCA requires advisers to disclose their status. Independent means they can recommend across the whole of market. Restricted can mean anything from \"limited to one provider\" to \"whole of market except annuities.\" The scope sits on the first page of their initial disclosure document.",
+    "body_unaware": "About 60% of UK advice firms are restricted. Not knowing the scope of your current adviser's restriction isn't a problem in itself — but it's a question worth asking if you've never looked at the initial disclosure document. Real Wealth is independent and FCA-regulated, which means we're free to look across the whole market."
   },
   {
     "id": "pitfall.lpa",
@@ -2838,10 +2838,10 @@ export const awareness: AwarenessCheck[] = [
       "C"
     ],
     "compliance_status": "draft",
-    "stem": "Without a Lasting Power of Attorney in place, your family can't legally manage your money or your health decisions if you lose capacity. The alternative — going through the Court of Protection — typically takes 6+ months and £3,000–£5,000 in fees. Were you aware of that?",
-    "aware_body": "Then the only question is whether the ones you have are the right ones — both types in place, and registered.",
-    "partial_body": "Two LPAs: one for property and financial affairs, one for health and welfare. Separate documents, registered with the Office of the Public Guardian (£82 per LPA currently). Without them, the alternative is a deputyship through the Court of Protection.",
-    "unaware_body": "We see a handful of families a year who discover, in the worst month of their lives, that a parent's stroke or dementia means the bank won't let anyone pay the mortgage. Court of Protection deputyship takes 6+ months, costs £3,000–£5,000, and is supervised every year after. A pair of LPAs cost £164 and can be done in a month."
+    "headline": "Without a Lasting Power of Attorney in place, your family can't legally manage your money or your health decisions if you lose capacity. The alternative — going through the Court of Protection — typically takes 6+ months and £3,000–£5,000 in fees. Were you aware of that?",
+    "body_aware": "Then the only question is whether the ones you have are the right ones — both types in place, and registered.",
+    "body_partial": "Two LPAs: one for property and financial affairs, one for health and welfare. Separate documents, registered with the Office of the Public Guardian (£82 per LPA currently). Without them, the alternative is a deputyship through the Court of Protection.",
+    "body_unaware": "We see a handful of families a year who discover, in the worst month of their lives, that a parent's stroke or dementia means the bank won't let anyone pay the mortgage. Court of Protection deputyship takes 6+ months, costs £3,000–£5,000, and is supervised every year after. A pair of LPAs cost £164 and can be done in a month."
   },
   {
     "id": "pitfall.mpaa",
@@ -2854,10 +2854,10 @@ export const awareness: AwarenessCheck[] = [
       "A"
     ],
     "compliance_status": "draft",
-    "stem": "Once you take any taxable income from a pension — even a small amount — you lose 72% of your ability to contribute in future, from £60,000 a year down to £10,000. Were you aware of that?",
-    "aware_body": "It's the MPAA in shorthand. The live question is usually whether anything's already crystallised it without you realising.",
-    "partial_body": "Taking the 25% tax-free lump sum by itself doesn't trigger it. It's the first time you take taxable income from a flexi-access drawdown that crystallises the MPAA — and once triggered, it doesn't unwind.",
-    "unaware_body": "A surprising number of people we meet took £5,000 of \"just to test it\" pension income in their 50s and capped their future contributions at £10,000 a year for the rest of their working life. The decision is reversible in the sense that you can stop — but not in the sense that you can reinstate the £60,000 allowance."
+    "headline": "Once you take any taxable income from a pension — even a small amount — you lose 72% of your ability to contribute in future, from £60,000 a year down to £10,000. Were you aware of that?",
+    "body_aware": "It's the MPAA in shorthand. The live question is usually whether anything's already crystallised it without you realising.",
+    "body_partial": "Taking the 25% tax-free lump sum by itself doesn't trigger it. It's the first time you take taxable income from a flexi-access drawdown that crystallises the MPAA — and once triggered, it doesn't unwind.",
+    "body_unaware": "A surprising number of people we meet took £5,000 of \"just to test it\" pension income in their 50s and capped their future contributions at £10,000 a year for the rest of their working life. The decision is reversible in the sense that you can stop — but not in the sense that you can reinstate the £60,000 allowance."
   },
   {
     "id": "pitfall.ni_gaps",
@@ -2871,10 +2871,10 @@ export const awareness: AwarenessCheck[] = [
       "B"
     ],
     "compliance_status": "draft",
-    "stem": "To get the full new state pension — currently about £11,500 a year — you need 35 qualifying years of National Insurance. Gaps can be filled voluntarily, but usually only looking back six years. Have you checked your record?",
-    "aware_body": "Useful. If you've pulled the forecast from gov.uk already, we can work straight from the gap list on the call.",
-    "partial_body": "Voluntary Class 3 NI contributions are currently £17.45 a week (about £900 a year). Each year of contributions adds roughly £328 a year to the state pension — a payback period under three years. Normal look-back is six years; the extended window to April 2025 allowed look-back to 2006.",
-    "unaware_body": "Around 60% of people in their late 40s and 50s have never checked their NI record. The most common surprise is a 2–5 year gap from self-employment, a career break, or time overseas. Each gap filled voluntarily typically returns 10–15× over retirement. gov.uk/check-state-pension takes about 90 seconds."
+    "headline": "To get the full new state pension — currently about £11,500 a year — you need 35 qualifying years of National Insurance. Gaps can be filled voluntarily, but usually only looking back six years. Have you checked your record?",
+    "body_aware": "Useful. If you've pulled the forecast from gov.uk already, we can work straight from the gap list on the call.",
+    "body_partial": "Voluntary Class 3 NI contributions are currently £17.45 a week (about £900 a year). Each year of contributions adds roughly £328 a year to the state pension — a payback period under three years. Normal look-back is six years; the extended window to April 2025 allowed look-back to 2006.",
+    "body_unaware": "Around 60% of people in their late 40s and 50s have never checked their NI record. The most common surprise is a 2–5 year gap from self-employment, a career break, or time overseas. Each gap filled voluntarily typically returns 10–15× over retirement. gov.uk/check-state-pension takes about 90 seconds."
   },
   {
     "id": "pitfall.overpayment_vs_cash",
@@ -2887,10 +2887,10 @@ export const awareness: AwarenessCheck[] = [
       "A"
     ],
     "compliance_status": "draft",
-    "stem": "Mortgage overpayment gives a guaranteed return equal to your mortgage rate. At today's rates, that often beats the after-tax return on a cash savings account. Were you aware of the comparison?",
-    "aware_body": "The detail worth pinning down is usually redemption penalties and how much liquidity you want to keep accessible.",
-    "partial_body": "The maths: overpaying a 5% mortgage is equivalent, in after-tax terms, to earning about 7% on a savings account taxed at basic rate (or about 9% taxed at higher rate). Most cash accounts don't offer that. The counterargument is liquidity — money in the house is harder to access.",
-    "unaware_body": "On a £300,000 mortgage at 5%, overpaying £500 a month for five years saves around £27,000 in interest and clears the mortgage about three years early. The same £500 in a taxed savings account, at 4.5% gross for a higher-rate taxpayer, is worth a lot less after tax. The decision depends on your emergency fund and redemption penalties — that's the planner conversation."
+    "headline": "Mortgage overpayment gives a guaranteed return equal to your mortgage rate. At today's rates, that often beats the after-tax return on a cash savings account. Were you aware of the comparison?",
+    "body_aware": "The detail worth pinning down is usually redemption penalties and how much liquidity you want to keep accessible.",
+    "body_partial": "The maths: overpaying a 5% mortgage is equivalent, in after-tax terms, to earning about 7% on a savings account taxed at basic rate (or about 9% taxed at higher rate). Most cash accounts don't offer that. The counterargument is liquidity — money in the house is harder to access.",
+    "body_unaware": "On a £300,000 mortgage at 5%, overpaying £500 a month for five years saves around £27,000 in interest and clears the mortgage about three years early. The same £500 in a taxed savings account, at 4.5% gross for a higher-rate taxpayer, is worth a lot less after tax. The decision depends on your emergency fund and redemption penalties — that's the planner conversation."
   },
   {
     "id": "pitfall.pension_as_extraction",
@@ -2903,10 +2903,10 @@ export const awareness: AwarenessCheck[] = [
       "A"
     ],
     "compliance_status": "draft",
-    "stem": "Employer pension contributions from your company reduce corporation tax, avoid NI, and don't count as dividend income — often the most tax-efficient way to take profit out. Were you aware of that lever?",
-    "aware_body": "Helpful context. Most of what remains is annual allowance and how it sits alongside your exit plan.",
-    "partial_body": "An employer pension contribution is a deductible business expense — the company saves corporation tax. No income tax or NI at the time of contribution. You pay income tax on the way out at retirement, usually at a lower rate than in-work extraction.",
-    "unaware_body": "Very few business owners with one or zero pension pots are using employer pension contributions as an extraction lever. On a £60,000 employer contribution, a 25% corporation-tax-paying company saves £15,000, and you save the NI and income tax you'd have paid on the equivalent dividend. The after-tax value is often 20–30% higher than an equivalent dividend."
+    "headline": "Employer pension contributions from your company reduce corporation tax, avoid NI, and don't count as dividend income — often the most tax-efficient way to take profit out. Were you aware of that lever?",
+    "body_aware": "Helpful context. Most of what remains is annual allowance and how it sits alongside your exit plan.",
+    "body_partial": "An employer pension contribution is a deductible business expense — the company saves corporation tax. No income tax or NI at the time of contribution. You pay income tax on the way out at retirement, usually at a lower rate than in-work extraction.",
+    "body_unaware": "Very few business owners with one or zero pension pots are using employer pension contributions as an extraction lever. On a £60,000 employer contribution, a 25% corporation-tax-paying company saves £15,000, and you save the NI and income tax you'd have paid on the equivalent dividend. The after-tax value is often 20–30% higher than an equivalent dividend."
   },
   {
     "id": "pitfall.pension_consolidation",
@@ -2921,10 +2921,10 @@ export const awareness: AwarenessCheck[] = [
       "C"
     ],
     "compliance_status": "draft",
-    "stem": "Most people with four or more pension pots find, on consolidation, at least one old workplace scheme with charges more than double their best current one. Does that ring a bell?",
-    "aware_body": "With this many pots, the decision usually turns on whether any old scheme carries a guarantee — protected tax-free cash, a guaranteed annuity rate — worth more than the charge saving you'd get from consolidating.",
-    "partial_body": "Old workplace pensions often carry 1–1.5% annual charges; modern equivalents are 0.2–0.5%. But a handful of older schemes have valuable safeguarded benefits (guaranteed annuity rates, protected tax-free cash) that would be lost on transfer. In our experience it's rarely \"consolidate everything\" — it's \"consolidate the right ones.\"",
-    "unaware_body": "Four or more pots often hides something forgotten. The average new client we work with finds £40,000–£60,000 across old workplace schemes they hadn't tracked. One question worth asking isn't \"can I consolidate\" — it's \"should I, and in what order.\""
+    "headline": "Most people with four or more pension pots find, on consolidation, at least one old workplace scheme with charges more than double their best current one. Does that ring a bell?",
+    "body_aware": "With this many pots, the decision usually turns on whether any old scheme carries a guarantee — protected tax-free cash, a guaranteed annuity rate — worth more than the charge saving you'd get from consolidating.",
+    "body_partial": "Old workplace pensions often carry 1–1.5% annual charges; modern equivalents are 0.2–0.5%. But a handful of older schemes have valuable safeguarded benefits (guaranteed annuity rates, protected tax-free cash) that would be lost on transfer. In our experience it's rarely \"consolidate everything\" — it's \"consolidate the right ones.\"",
+    "body_unaware": "Four or more pots often hides something forgotten. The average new client we work with finds £40,000–£60,000 across old workplace schemes they hadn't tracked. One question worth asking isn't \"can I consolidate\" — it's \"should I, and in what order.\""
   },
   {
     "id": "pitfall.pension_iht_2027",
@@ -2939,10 +2939,10 @@ export const awareness: AwarenessCheck[] = [
       "C"
     ],
     "compliance_status": "draft",
-    "stem": "From April 2027, unused pension funds are expected to fall inside the estate for inheritance tax — reversing a fifteen-year-old planning position. Were you aware of that change?",
-    "aware_body": "Noted — that puts the 2026–27 window firmly on the table, which is where most of the decisions sit for families in this range.",
-    "partial_body": "Currently, most pensions pass outside the estate. The 2024 Budget announced that from April 2027, defined-contribution pension wealth will be included for IHT purposes. Draft legislation is expected in 2025 — the detail will matter.",
-    "unaware_body": "This one's live. For a family with £500,000+ in pensions and a £1m+ estate, the decision you'd have made in 2024 — \"draw from ISAs first, keep the pension for inheritance\" — may no longer fit from April 2027. Worth revisiting in the 2026–27 window rather than later."
+    "headline": "From April 2027, unused pension funds are expected to fall inside the estate for inheritance tax — reversing a fifteen-year-old planning position. Were you aware of that change?",
+    "body_aware": "Noted — that puts the 2026–27 window firmly on the table, which is where most of the decisions sit for families in this range.",
+    "body_partial": "Currently, most pensions pass outside the estate. The 2024 Budget announced that from April 2027, defined-contribution pension wealth will be included for IHT purposes. Draft legislation is expected in 2025 — the detail will matter.",
+    "body_unaware": "This one's live. For a family with £500,000+ in pensions and a £1m+ estate, the decision you'd have made in 2024 — \"draw from ISAs first, keep the pension for inheritance\" — may no longer fit from April 2027. Worth revisiting in the 2026–27 window rather than later."
   },
   {
     "id": "pitfall.rnrb_taper",
@@ -2957,10 +2957,10 @@ export const awareness: AwarenessCheck[] = [
       "C"
     ],
     "compliance_status": "draft",
-    "stem": "Above £2 million of total estate, the residence nil-rate band starts tapering away — £1 of relief lost for every £2 over. Were you aware of that?",
-    "aware_body": "At £2.35m per person the RNRB is fully gone, so most of the conversation is about how to keep the estate under the cliff — timing of gifts, or Business Relief-qualifying investments.",
-    "partial_body": "The RNRB is £175,000 per person (£350,000 for a married couple). It tapers at £1 for every £2 over £2m, fully gone at £2.35m per person. The £2m threshold counts all assets — including pensions from April 2027.",
-    "unaware_body": "A typical £2.5m family estate (house plus investments) can easily pay £200,000–£500,000 more IHT than necessary because of this taper alone. In our experience the conversation is rarely \"spend more\" — it's usually about timing gifts, or using Business Relief-qualifying investments to move the estate below the cliff."
+    "headline": "Above £2 million of total estate, the residence nil-rate band starts tapering away — £1 of relief lost for every £2 over. Were you aware of that?",
+    "body_aware": "At £2.35m per person the RNRB is fully gone, so most of the conversation is about how to keep the estate under the cliff — timing of gifts, or Business Relief-qualifying investments.",
+    "body_partial": "The RNRB is £175,000 per person (£350,000 for a married couple). It tapers at £1 for every £2 over £2m, fully gone at £2.35m per person. The £2m threshold counts all assets — including pensions from April 2027.",
+    "body_unaware": "A typical £2.5m family estate (house plus investments) can easily pay £200,000–£500,000 more IHT than necessary because of this taper alone. In our experience the conversation is rarely \"spend more\" — it's usually about timing gifts, or using Business Relief-qualifying investments to move the estate below the cliff."
   },
   {
     "id": "pitfall.savings_tax_efficiency",
@@ -2974,10 +2974,10 @@ export const awareness: AwarenessCheck[] = [
       "B"
     ],
     "compliance_status": "draft",
-    "stem": "Most people pay more tax on their savings and investments than they need to — because the three allowances that reduce it don't tend to be used together. Any sense of whether you're using yours?",
-    "aware_body": "Good. What we usually check next is whether the mix still fits this tax year — the allowances move around, and a couple's combined capacity is easy to under-use.",
-    "partial_body": "The three levers: £20,000 annual ISA, £3,000 CGT annual exempt amount, and £500 dividend allowance. Used together across a couple, that's £46,500 of tax-protected capacity a year. Most couples use less than half.",
-    "unaware_body": "On £100,000 of investments outside an ISA, moving £20,000 a year inside over five years protects the whole amount from tax on future growth. The technique's called \"Bed and ISA\" and it's one of the most common first-year conversations we have."
+    "headline": "Most people pay more tax on their savings and investments than they need to — because the three allowances that reduce it don't tend to be used together. Any sense of whether you're using yours?",
+    "body_aware": "Good. What we usually check next is whether the mix still fits this tax year — the allowances move around, and a couple's combined capacity is easy to under-use.",
+    "body_partial": "The three levers: £20,000 annual ISA, £3,000 CGT annual exempt amount, and £500 dividend allowance. Used together across a couple, that's £46,500 of tax-protected capacity a year. Most couples use less than half.",
+    "body_unaware": "On £100,000 of investments outside an ISA, moving £20,000 a year inside over five years protects the whole amount from tax on future growth. The technique's called \"Bed and ISA\" and it's one of the most common first-year conversations we have."
   },
   {
     "id": "pitfall.ssp_gap",
@@ -2990,10 +2990,10 @@ export const awareness: AwarenessCheck[] = [
       "A"
     ],
     "compliance_status": "draft",
-    "stem": "Statutory Sick Pay is £116.75 a week — about £505 a month — and most employer sick pay schemes run out at six months. Were you aware the gap is that steep?",
-    "aware_body": "Income protection is usually what fills the gap, and because the event it covers is more common than early death, the premium is often lower than people expect.",
-    "partial_body": "The ladder: full pay for up to 6 months (if lucky) → half pay → SSP → nothing. For most households with a mortgage, the \"half-pay\" line is already below essential outgoings.",
-    "unaware_body": "If the main earner is off sick for a year, most families we meet find their sick-pay arrangement covers the first 3–6 months at best, then crashes to £505 a month statutory. That's rarely enough to cover the mortgage. Income protection closes the gap — and because the event is more likely than early death, it's much cheaper than life insurance."
+    "headline": "Statutory Sick Pay is £116.75 a week — about £505 a month — and most employer sick pay schemes run out at six months. Were you aware the gap is that steep?",
+    "body_aware": "Income protection is usually what fills the gap, and because the event it covers is more common than early death, the premium is often lower than people expect.",
+    "body_partial": "The ladder: full pay for up to 6 months (if lucky) → half pay → SSP → nothing. For most households with a mortgage, the \"half-pay\" line is already below essential outgoings.",
+    "body_unaware": "If the main earner is off sick for a year, most families we meet find their sick-pay arrangement covers the first 3–6 months at best, then crashes to £505 a month statutory. That's rarely enough to cover the mortgage. Income protection closes the gap — and because the event is more likely than early death, it's much cheaper than life insurance."
   },
   {
     "id": "pitfall.tapered_annual_allowance",
@@ -3007,10 +3007,10 @@ export const awareness: AwarenessCheck[] = [
       "B"
     ],
     "compliance_status": "draft",
-    "stem": "Above £260,000 of adjusted income, the amount you can put into a pension each year starts tapering down — and it keeps falling. Were you aware of that?",
-    "aware_body": "The live question is usually carry-forward — whether you've got unused allowance from prior years that's about to expire out of the three-year window.",
-    "partial_body": "The taper reduces the £60,000 standard annual allowance by £1 for every £2 of adjusted income above £260,000, all the way down to a £10,000 floor at £360,000. Carry-forward from the previous three years can still add to it if you were a member of a UK scheme each year.",
-    "unaware_body": "At your income, the standard £60,000 annual allowance probably doesn't apply to you in full. Carry-forward is often the difference between a tax-efficient year and a painful one — and very few people at this income level use it deliberately. That's usually the first conversation."
+    "headline": "Above £260,000 of adjusted income, the amount you can put into a pension each year starts tapering down — and it keeps falling. Were you aware of that?",
+    "body_aware": "The live question is usually carry-forward — whether you've got unused allowance from prior years that's about to expire out of the three-year window.",
+    "body_partial": "The taper reduces the £60,000 standard annual allowance by £1 for every £2 of adjusted income above £260,000, all the way down to a £10,000 floor at £360,000. Carry-forward from the previous three years can still add to it if you were a member of a UK scheme each year.",
+    "body_unaware": "At your income, the standard £60,000 annual allowance probably doesn't apply to you in full. Carry-forward is often the difference between a tax-efficient year and a painful one — and very few people at this income level use it deliberately. That's usually the first conversation."
   },
   {
     "id": "pitfall.will_currency",
@@ -3024,10 +3024,10 @@ export const awareness: AwarenessCheck[] = [
       "B"
     ],
     "compliance_status": "draft",
-    "stem": "A will more than five years old is often out of date before anyone realises. Life moves — houses, children, business stakes, relationships — without a nudge to update the document. When did you last look at yours?",
-    "aware_body": "The prompt we usually give is a five-year re-read — life moves even when nothing dramatic has happened, and the document drifts quietly out of shape.",
-    "partial_body": "The common triggers for a will review: marriage or divorce, new child, house purchase, business stake, gift above £3,000, or the death of a named beneficiary. If none of those have happened since the last review, the will probably still works.",
-    "unaware_body": "The commonest will problem we see isn't \"no will\" — it's \"an old will that no longer reflects what the family actually looks like.\" The cost of updating is usually a few hundred pounds. The cost of not updating it can be a seven-figure dispute."
+    "headline": "A will more than five years old is often out of date before anyone realises. Life moves — houses, children, business stakes, relationships — without a nudge to update the document. When did you last look at yours?",
+    "body_aware": "The prompt we usually give is a five-year re-read — life moves even when nothing dramatic has happened, and the document drifts quietly out of shape.",
+    "body_partial": "The common triggers for a will review: marriage or divorce, new child, house purchase, business stake, gift above £3,000, or the death of a named beneficiary. If none of those have happened since the last review, the will probably still works.",
+    "body_unaware": "The commonest will problem we see isn't \"no will\" — it's \"an old will that no longer reflects what the family actually looks like.\" The cost of updating is usually a few hundred pounds. The cost of not updating it can be a seven-figure dispute."
   }
 ];
 
@@ -3045,7 +3045,7 @@ export const provocations: Provocation[] = [
     "source_refs": [],
     "headline": "You already know the answer.",
     "body": "You've told us you're already working with someone and you're looking. That's the highest-intent signal we see in this form — the decision is mostly made, it's about the fit.",
-    "close": "Speak to one of our senior partners directly."
+    "cta": "Speak to one of our senior partners directly."
   },
   {
     "id": "prov.btl_portfolio",
@@ -3064,7 +3064,7 @@ export const provocations: Provocation[] = [
     "source_refs": [],
     "headline": "The incorporation question.",
     "body": "For portfolio landlords holding two or more properties personally with mortgages, the Section 24 tax change has made \"should I incorporate\" one of the most common planning questions we hear. In our experience it's \"it depends\" for about 60% of cases, and clearly yes or no for the rest.",
-    "close": "We usually run this jointly with your accountant."
+    "cta": "We usually run this jointly with your accountant."
   },
   {
     "id": "prov.business_no_plan",
@@ -3080,7 +3080,7 @@ export const provocations: Provocation[] = [
     "source_refs": [],
     "headline": "Thinking is the planning starting.",
     "body": "There's no such thing as a bad first succession conversation — even \"I don't know what I want yet\" is a starting position. Most of the owners we work with came to us exactly there.",
-    "close": "Thirty minutes to start the thinking in the open."
+    "cta": "Thirty minutes to start the thinking in the open."
   },
   {
     "id": "prov.close_to_line",
@@ -3096,7 +3096,7 @@ export const provocations: Provocation[] = [
     "source_refs": [],
     "headline": "The honest arithmetic.",
     "body": "You've given yourself a specific timeline to the day you don't have to work. Based on what you've told us, the monthly saving rate that implies is worth looking at — sooner is better than later, either way.",
-    "close": "The conversation most people wish they'd had five years sooner."
+    "cta": "The conversation most people wish they'd had five years sooner."
   },
   {
     "id": "prov.director_single_pot",
@@ -3112,7 +3112,7 @@ export const provocations: Provocation[] = [
     "source_refs": [],
     "headline": "The quiet tax lever.",
     "body": "A 25% corporation-tax-paying company making a £60,000 employer pension contribution for its sole director saves £15,000 of corporation tax and avoids NI and income tax on the equivalent dividend. Most sole directors with one pension pot aren't using this at scale.",
-    "close": "We run this jointly with your accountant."
+    "cta": "We run this jointly with your accountant."
   },
   {
     "id": "prov.dont_know_priority",
@@ -3127,7 +3127,7 @@ export const provocations: Provocation[] = [
     "source_refs": [],
     "headline": "Most of our best client relationships started here.",
     "body": "\"I don't know what I don't know\" is the most common way our strongest relationships begin. A first call is often half about what you think, half about what we show you — and the shape usually becomes obvious inside twenty minutes.",
-    "close": "A good reason to book."
+    "cta": "A good reason to book."
   },
   {
     "id": "prov.estate_unsure",
@@ -3144,7 +3144,7 @@ export const provocations: Provocation[] = [
     "source_refs": [],
     "headline": "Worth adding it up.",
     "body": "Most people we meet haven't added up their total estate recently — the house, the pensions, the investments, the business share. For households in your range, the number often crosses the £2m threshold where the inheritance tax maths changes shape.",
-    "close": "We can do the adding up on the call."
+    "cta": "We can do the adding up on the call."
   },
   {
     "id": "prov.exit_window",
@@ -3159,7 +3159,7 @@ export const provocations: Provocation[] = [
     "source_refs": [],
     "headline": "Two years, not six months.",
     "body": "The typical business sale takes 18–24 months from decision to close. Most sellers tell us they wished they'd started the tax and estate planning at least two years before that — not six months.",
-    "close": "The succession conversation is one of our signature strengths."
+    "cta": "The succession conversation is one of our signature strengths."
   },
   {
     "id": "prov.hnw_pathway",
@@ -3174,7 +3174,7 @@ export const provocations: Provocation[] = [
     "source_refs": [],
     "headline": "A different conversation.",
     "body": "At your level of assets, the planning conversation is usually less about growth and more about structure — trusts, generational gifting, Business Relief portfolios, the 2027 pension IHT change. Our senior partners handle this end of the firm directly.",
-    "close": "We'll book you with one of the seniors straight away."
+    "cta": "We'll book you with one of the seniors straight away."
   },
   {
     "id": "prov.iht_2m_cliff",
@@ -3196,7 +3196,7 @@ export const provocations: Provocation[] = [
     ],
     "headline": "The £2m cliff.",
     "body": "Above £2m of total estate, the residence nil-rate band starts tapering — £1 of relief lost for every £2 over. A typical £2.5m family estate can end up paying £200,000–£500,000 more inheritance tax than necessary without planning.",
-    "close": "One of the conversations most families come to us for."
+    "cta": "One of the conversations most families come to us for."
   },
   {
     "id": "prov.iht_no_plan",
@@ -3213,7 +3213,7 @@ export const provocations: Provocation[] = [
     "source_refs": [],
     "headline": "Most of our clients said the same, first meeting.",
     "body": "One question we often come back to isn't \"how much.\" It's \"what do I want them to be able to do with it.\" Getting that question answered once — between you, with a third party to hold the pen — is usually where the useful planning starts.",
-    "close": "Worth half an hour together."
+    "cta": "Worth half an hour together."
   },
   {
     "id": "prov.lifestyle_decade",
@@ -3231,7 +3231,7 @@ export const provocations: Provocation[] = [
     "source_refs": [],
     "headline": "Ten years of the nice-to-haves.",
     "body": "At the level you've told us, the non-essential line adds up to between £240,000 and £480,000 across a decade. That's not a criticism — it's a figure most people haven't sat with. What it's buying you is the real question.",
-    "close": "Worth asking out loud, once."
+    "cta": "Worth asking out loud, once."
   },
   {
     "id": "prov.money_stress",
@@ -3246,7 +3246,7 @@ export const provocations: Provocation[] = [
     "source_refs": [],
     "headline": "A note from us.",
     "body": "We work with people whose money was making them anxious. In our experience, a plan changes what money does to you — not because the numbers change, but because the unknowns do.",
-    "close": "We'd be glad to talk."
+    "cta": "We'd be glad to talk."
   },
   {
     "id": "prov.no_will_estate",
@@ -3265,7 +3265,7 @@ export const provocations: Provocation[] = [
     "source_refs": [],
     "headline": "Intestate is a bad default.",
     "body": "Without a will, the intestacy rules decide who gets what — and the outcome rarely matches what you'd have chosen. For estates over £500,000, an unmarried partner can inherit nothing, and children inherit equal shares at 18.",
-    "close": "Sorting it tends to be a few hundred pounds and a morning."
+    "cta": "Sorting it tends to be a few hundred pounds and a morning."
   },
   {
     "id": "prov.pension_pots_tease",
@@ -3281,7 +3281,7 @@ export const provocations: Provocation[] = [
     "source_refs": [],
     "headline": "The forgotten pots.",
     "body": "Most professionals in their late 50s can't name their total pension value within 20%. The average new client we work with finds £40,000–£60,000 across old workplace schemes they'd forgotten.",
-    "close": "A good conversation to have before any decisions."
+    "cta": "A good conversation to have before any decisions."
   },
   {
     "id": "prov.protection_gap",
@@ -3299,7 +3299,7 @@ export const provocations: Provocation[] = [
     "source_refs": [],
     "headline": "The 3-month line.",
     "body": "Most families find there's a 3–6 month gap between sick pay and savings running out. Income protection is rarely the first thing people list — and it's the one most of our clients say they wished they'd sorted earlier.",
-    "close": "The cheapest big decision on most family balance sheets."
+    "cta": "The cheapest big decision on most family balance sheets."
   },
   {
     "id": "prov.retired_short",
@@ -3314,7 +3314,7 @@ export const provocations: Provocation[] = [
     "source_refs": [],
     "headline": "Still a plan to make.",
     "body": "The phase after work often needs more planning, not less — drawdown strategy, tax efficiency, the pension-IHT change coming in 2027. It's rarely too late to improve the shape of it.",
-    "close": "Worth a planner's second opinion."
+    "cta": "Worth a planner's second opinion."
   },
   {
     "id": "prov.retirement_unease",
@@ -3333,7 +3333,7 @@ export const provocations: Provocation[] = [
     "source_refs": [],
     "headline": "It's not about when you stop.",
     "body": "Over half of our business-owner and senior-professional clients said the same thing in their first meeting. Planning isn't about \"when do I stop\" — it's about \"when could I stop if I wanted to.\" The freedom, not the date.",
-    "close": "A conversation about optionality, not retirement."
+    "cta": "A conversation about optionality, not retirement."
   },
   {
     "id": "prov.sandwich_gen",
@@ -3348,7 +3348,7 @@ export const provocations: Provocation[] = [
     "source_refs": [],
     "headline": "Both ways at once.",
     "body": "Families supporting children and a parent at the same time are the planning group we see most stretched for time. The tools that matter here — LPAs for your parents, protection for you, a will that accounts for both — are the ones that get put off until they're urgent.",
-    "close": "Worth thirty minutes with us."
+    "cta": "Worth thirty minutes with us."
   },
   {
     "id": "prov.self_employed_pension",
@@ -3365,7 +3365,7 @@ export const provocations: Provocation[] = [
     "source_refs": [],
     "headline": "The quiet gap.",
     "body": "Self-employed people at your income typically fund a pension about 60% less than employed peers earning the same. It's nobody's fault — no employer nudging, no auto-enrolment — and it's the single commonest thing self-employed clients come to us to fix.",
-    "close": "One of the fastest wins we work on."
+    "cta": "One of the fastest wins we work on."
   },
   {
     "id": "prov.spending_ratio",
@@ -3380,7 +3380,7 @@ export const provocations: Provocation[] = [
     "source_refs": [],
     "headline": "The shape of a month.",
     "body": "You've told us roughly what comes in and what goes out on essentials. At that ratio, in our experience, households find it hardest to accelerate their saving — even when they want to. It's not usually about willpower; it's usually about the design of the plan.",
-    "close": "Worth a conversation about the levers."
+    "cta": "Worth a conversation about the levers."
   },
   {
     "id": "prov.tradeoff_bigpot",
@@ -3396,7 +3396,7 @@ export const provocations: Provocation[] = [
     "source_refs": [],
     "headline": "Growing the pot.",
     "body": "You told us you lean towards growing the pot over simplifying life. At your current shape, a conversation about contribution capacity (pension, ISA, carry-forward) is usually where the biggest difference sits — bigger than investment selection.",
-    "close": "The easy wins are usually the first 45 minutes."
+    "cta": "The easy wins are usually the first 45 minutes."
   },
   {
     "id": "prov.urgency_week",
@@ -3411,7 +3411,7 @@ export const provocations: Provocation[] = [
     "source_refs": [],
     "headline": "We can move quickly.",
     "body": "You've told us this is urgent. We hold a small number of 48-hour slots for exactly this — a senior planner, next-day where possible, no prep needed from your side.",
-    "close": "Let's pick a time."
+    "cta": "Let's pick a time."
   },
   {
     "id": "prov.work_cover_only",
@@ -3429,7 +3429,7 @@ export const provocations: Provocation[] = [
     "source_refs": [],
     "headline": "Cover tied to the job.",
     "body": "We've seen families find out in the worst month of their life that the protection they thought they had was tied to a job they no longer held. Personal cover, set up while you're young and healthy, is usually cheaper than people assume.",
-    "close": "Worth checking you've got something that doesn't end when the job does."
+    "cta": "Worth checking you've got something that doesn't end when the job does."
   }
 ];
 
@@ -3442,8 +3442,8 @@ export const segments: SegmentCta[] = [
     "button_link": "calendly.com/real-wealth-senior-partner-placeholder",
     "headline": "The highest-intent conversation we have.",
     "body": "You've told us you're already working with someone and you're looking. That's the clearest signal we see. Our senior partners handle the conversations about a change of planner directly.",
-    "button": "Book with a senior partner",
-    "helper": "45 minutes, no preparation on your side."
+    "cta": "Book with a senior partner",
+    "cta_helper": "45 minutes, no preparation on your side."
   },
   {
     "id": "urgency_this_week",
@@ -3453,8 +3453,8 @@ export const segments: SegmentCta[] = [
     "button_link": "",
     "headline": "We can move quickly.",
     "body": "You said this week — we've held a small number of next-day slots for exactly this. Click through to see them. Subject to availability — we'll confirm within one working day.",
-    "button": "Book a next-day slot",
-    "helper": "A small number of 48-hour slots with a senior planner."
+    "cta": "Book a next-day slot",
+    "cta_helper": "A small number of 48-hour slots with a senior planner."
   },
   {
     "id": "S1",
@@ -3464,8 +3464,8 @@ export const segments: SegmentCta[] = [
     "button_link": "calendly.com/real-wealth-nurture-signup-placeholder",
     "headline": "Keep in touch.",
     "body": "We're not quite the fit for your current stage — you'll save money by sorting the basics first (pension, ISA, emergency fund). But we send a short, thoughtful monthly briefing, and we'd be glad to have you on it.",
-    "button": "Join our monthly briefing",
-    "helper": "No spam, no selling. Unsubscribe any time."
+    "cta": "Join our monthly briefing",
+    "cta_helper": "No spam, no selling. Unsubscribe any time."
   },
   {
     "id": "S2",
@@ -3475,8 +3475,8 @@ export const segments: SegmentCta[] = [
     "button_link": "calendly.com/real-wealth-standard-call-placeholder",
     "headline": "A first conversation.",
     "body": "Twenty minutes to walk through what you've told us — no preparation needed on your side, no obligation on ours. We'll share your Wealth Report and point out the moves that move the needle.",
-    "button": "Book a 20-minute call",
-    "helper": "We'll hold a slot this week and next."
+    "cta": "Book a 20-minute call",
+    "cta_helper": "We'll hold a slot this week and next."
   },
   {
     "id": "S3",
@@ -3486,8 +3486,8 @@ export const segments: SegmentCta[] = [
     "button_link": "calendly.com/real-wealth-standard-call-placeholder",
     "headline": "A first conversation.",
     "body": "You're in the band where the difference between acting and drifting is biggest — the £100k tax trap, pension carry-forward, ISA sequencing. Twenty minutes to show you the shape; no preparation needed on your side.",
-    "button": "Book a 20-minute call",
-    "helper": "Planners who work with your segment routinely."
+    "cta": "Book a 20-minute call",
+    "cta_helper": "Planners who work with your segment routinely."
   },
   {
     "id": "S4",
@@ -3497,8 +3497,8 @@ export const segments: SegmentCta[] = [
     "button_link": "calendly.com/real-wealth-standard-call-placeholder",
     "headline": "A first conversation.",
     "body": "We work with partners, consultants, and senior executives every week — the tapered allowance, carry-forward, and extraction questions come up often. Twenty minutes to walk through yours.",
-    "button": "Book a 20-minute call",
-    "helper": "With a planner experienced in your situation."
+    "cta": "Book a 20-minute call",
+    "cta_helper": "With a planner experienced in your situation."
   },
   {
     "id": "S5",
@@ -3508,8 +3508,8 @@ export const segments: SegmentCta[] = [
     "button_link": "calendly.com/real-wealth-standard-call-placeholder",
     "headline": "A first conversation.",
     "body": "Most of the levers for a growing business sit at the intersection of pension, extraction, and structure — and they move every tax year. Twenty minutes to look at yours, jointly with your accountant if you'd like.",
-    "button": "Book a 20-minute call",
-    "helper": "We work alongside accountants, not over them."
+    "cta": "Book a 20-minute call",
+    "cta_helper": "We work alongside accountants, not over them."
   },
   {
     "id": "S6",
@@ -3519,8 +3519,8 @@ export const segments: SegmentCta[] = [
     "button_link": "calendly.com/real-wealth-succession-call-placeholder",
     "headline": "The succession conversation.",
     "body": "The BADR rate transition and the 18–24 month sale timeline mean the conversation about when is usually as important as the conversation about how much. Our senior partners handle exits directly.",
-    "button": "Book a succession-focused call",
-    "helper": "A 30-minute call with a senior partner."
+    "cta": "Book a succession-focused call",
+    "cta_helper": "A 30-minute call with a senior partner."
   },
   {
     "id": "S7",
@@ -3530,8 +3530,8 @@ export const segments: SegmentCta[] = [
     "button_link": "calendly.com/real-wealth-standard-call-placeholder",
     "headline": "A first conversation.",
     "body": "You're at the stage where drawdown design, the 2027 pension IHT change, and state pension sequencing start mattering more than contribution decisions. Twenty minutes to walk through what you've told us.",
-    "button": "Book a 20-minute call",
-    "helper": "With a planner who specialises in decumulation."
+    "cta": "Book a 20-minute call",
+    "cta_helper": "With a planner who specialises in decumulation."
   },
   {
     "id": "S8",
@@ -3541,8 +3541,8 @@ export const segments: SegmentCta[] = [
     "button_link": "calendly.com/real-wealth-standard-call-placeholder",
     "headline": "A second-opinion conversation.",
     "body": "Even a well-designed retirement plan is worth a second look when rules change — and the pensions IHT change in 2027, plus the 2024 Budget CGT step-ups, are significant. Twenty minutes, no pressure.",
-    "button": "Book a 20-minute call",
-    "helper": "A second opinion, nothing more."
+    "cta": "Book a 20-minute call",
+    "cta_helper": "A second opinion, nothing more."
   },
   {
     "id": "S9",
@@ -3552,8 +3552,8 @@ export const segments: SegmentCta[] = [
     "button_link": "calendly.com/real-wealth-senior-partner-placeholder",
     "headline": "Meet a senior partner.",
     "body": "At your shape of assets, the planning conversation is about structure — trusts, generational gifting, Business Relief, the 2027 pension IHT change. Our senior partners take this end of the firm themselves.",
-    "button": "Book with a senior partner",
-    "helper": "A 45-minute call with a senior partner."
+    "cta": "Book with a senior partner",
+    "cta_helper": "A 45-minute call with a senior partner."
   }
 ];
 

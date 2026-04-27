@@ -12,5 +12,5 @@ We can move quickly.
 # Body
 You've told us this is urgent. We hold a small number of 48-hour slots for exactly this — a senior planner, next-day where possible, no prep needed from your side.
 
-# Close
+# Cta
 Let's pick a time.

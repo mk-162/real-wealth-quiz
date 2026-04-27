@@ -12,5 +12,5 @@ Worth adding it up.
 # Body
 Most people we meet haven't added up their total estate recently — the house, the pensions, the investments, the business share. For households in your range, the number often crosses the £2m threshold where the inheritance tax maths changes shape.
 
-# Close
+# Cta
 We can do the adding up on the call.

@@ -1,14 +1,14 @@
 <!-- _AUDIT.md entry: 5.4 -->
 ---
 name: add-awareness-check
-description: Create a brand-new awareness check markdown file under `content/awareness-checks/` with valid frontmatter, all four body sections (stem + three awareness-level bodies), and `compliance_status: draft`. Use this skill whenever the user asks to add a new awareness check, write a new "did you know" prompt, introduce a pitfall callout, or create a new educational nudge tied to a trigger. Triggers on phrasings like "add an awareness check about X", "new pitfall callout for business-owner consolidation", or "I want to write an awareness prompt for LPAs".
+description: Create a brand-new awareness check markdown file under `content/awareness-checks/` with valid frontmatter, all four body sections (headline + three awareness-level bodies), and `compliance_status: draft`. Use this skill whenever the user asks to add a new awareness check, write a new "did you know" prompt, introduce a pitfall callout, or create a new educational nudge tied to a trigger. Triggers on phrasings like "add an awareness check about X", "new pitfall callout for business-owner consolidation", or "I want to write an awareness prompt for LPAs".
 ---
 
 # Add a new awareness check
 
 ## What this skill does
 
-Creates a new `.md` file at `master_template/content/awareness-checks/<slug>.md` with required frontmatter and all four body sections (`# Stem`, `# Aware body`, `# Partial body`, `# Unaware body`), starting at `compliance_status: draft`.
+Creates a new `.md` file at `master_template/content/awareness-checks/<slug>.md` with required frontmatter and all four body sections (`# Headline`, `# Body Aware`, `# Body Partial`, `# Body Unaware`), starting at `compliance_status: draft`.
 
 ## Background
 
@@ -21,7 +21,7 @@ Awareness checks are compliance-gated educational callouts. See `edit-awareness-
 3. **Rank, core flag, tier_limit.** Rank = ordering priority (lower = higher priority). `core: true` means always-show regardless of trigger (most checks are not core). `tier_limit: [A, B, C]` or subset.
 4. **Placement note.** Human-readable — "after iht_mitigation if triggered", "page 6 silent-gaps", etc.
 5. **Source.** One or more citations.
-6. **Body copy.** Stem + three bodies (aware, partial, unaware).
+6. **Body copy.** Headline + three bodies (body aware, body partial, body unaware).
 
 ## Workflow
 
@@ -43,16 +43,16 @@ Awareness checks are compliance-gated educational callouts. See `edit-awareness-
 
 3. **Compose body — all four required:**
    ```markdown
-   # Stem
-   <question-style prompt, 120 chars ideal, ends with a question mark>
+   # Headline
+   <question-style prompt, 90 chars ideal, ends with a question mark>
 
-   # Aware body
+   # Body Aware
    <short — confirms awareness, offers adviser angle. 200 chars ideal.>
 
-   # Partial body
+   # Body Partial
    <medium — fills numerical gaps. 250 chars ideal.>
 
-   # Unaware body
+   # Body Unaware
    <longest — explains fresh, why it matters, typical impact. 280 chars ideal.>
    ```
 
@@ -101,16 +101,16 @@ compliance_status: draft
 tier_limit: [A, B, C]
 ---
 
-# Stem
+# Headline
 Several small pots across previous employers can be quietly eroding your outcome — were you aware of the consolidation question?
 
-# Aware body
+# Body Aware
 You already know. The practical question is usually timing and transfer costs — specifically whether any of the pots have protections (GARs, enhanced allowances) that would be lost on transfer.
 
-# Partial body
+# Body Partial
 Small pots pay flat-fee admin that eats a higher percentage of the pot at lower balances. The FCA flagged this in 2023. Consolidation often cuts total fees meaningfully, though transfer costs and any safeguarded benefits need checking first.
 
-# Unaware body
+# Body Unaware
 Each pot carries its own admin, its own fund costs, and often its own annual statement. At lower balances (under £30k per pot), flat fees can eat 1–2% a year before investment returns. Consolidating into one SIPP or workplace scheme often cuts total cost — but some pots have protections (guaranteed annuity rates, enhanced protection) that would be lost on transfer, so the consolidation conversation is never all-or-nothing.
 ```
 

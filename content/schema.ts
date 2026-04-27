@@ -4,7 +4,7 @@
  *
  * Every markdown file under content/ is parsed as YAML frontmatter + body.
  * Frontmatter is validated against one of the schemas below. The body is
- * parsed into labelled sections (# Stem, # Aware body, etc.) — each schema
+ * parsed into labelled sections (# Headline, # Body, # Cta, etc.) — each schema
  * names which body sections it expects.
  *
  * When a content file is malformed, the build fails loudly.
@@ -60,7 +60,7 @@ export const provocationSchema = provocationFrontmatter.extend({
   /** From the body — set by the loader. */
   headline: z.string(),
   body: z.string(),
-  close: z.string(),
+  cta: z.string(),
 });
 export type Provocation = z.infer<typeof provocationSchema>;
 
@@ -80,10 +80,10 @@ export const awarenessFrontmatter = z.object({
 });
 
 export const awarenessSchema = awarenessFrontmatter.extend({
-  stem: z.string(),
-  aware_body: z.string(),
-  partial_body: z.string(),
-  unaware_body: z.string(),
+  headline: z.string(),
+  body_aware: z.string(),
+  body_partial: z.string(),
+  body_unaware: z.string(),
 });
 export type AwarenessCheck = z.infer<typeof awarenessSchema>;
 
@@ -103,8 +103,8 @@ export const segmentCtaFrontmatter = z.object({
 export const segmentCtaSchema = segmentCtaFrontmatter.extend({
   headline: z.string(),
   body: z.string(),
-  button: z.string(),
-  helper: z.string(),
+  cta: z.string(),
+  cta_helper: z.string(),
 });
 export type SegmentCta = z.infer<typeof segmentCtaSchema>;
 

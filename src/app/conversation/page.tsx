@@ -192,7 +192,7 @@ function Questionnaire() {
         {active.kind === 'awareness' ? (
           <AwarenessScreen
             checkId={active.check.id}
-            stem={active.check.stem}
+            stem={active.check.headline}
             level={firedAwareness[active.check.id]}
             body={awarenessBodyFor(active.check, firedAwareness[active.check.id])}
             complianceTag={
@@ -225,7 +225,7 @@ function Questionnaire() {
                       key={p.id}
                       headline={p.headline}
                       body={p.body}
-                      closing={p.close}
+                      closing={p.cta}
                       complianceTag={
                         process.env.NODE_ENV !== 'production' &&
                         p.compliance_status !== 'approved_to_ship'
@@ -292,11 +292,11 @@ function AwarenessScreen({
 }
 
 function awarenessBodyFor(
-  check: { aware_body: string; partial_body: string; unaware_body: string },
+  check: { body_aware: string; body_partial: string; body_unaware: string },
   level: 'aware' | 'partial' | 'unaware' | undefined,
 ): string | undefined {
   if (!level) return undefined;
-  if (level === 'aware') return check.aware_body;
-  if (level === 'partial') return check.partial_body;
-  return check.unaware_body;
+  if (level === 'aware') return check.body_aware;
+  if (level === 'partial') return check.body_partial;
+  return check.body_unaware;
 }

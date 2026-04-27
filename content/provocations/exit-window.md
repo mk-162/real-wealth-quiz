@@ -12,5 +12,5 @@ Two years, not six months.
 # Body
 The typical business sale takes 18–24 months from decision to close. Most sellers tell us they wished they'd started the tax and estate planning at least two years before that — not six months.
 
-# Close
+# Cta
 The succession conversation is one of our signature strengths.

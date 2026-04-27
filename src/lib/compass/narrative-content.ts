@@ -2,7 +2,7 @@
  * Narrative content for PDF report pages 05, 07, 08.
  *
  * Page 08's CTA content comes from `content/segments/S[n]-*.md` — real authored
- * markdown (Headline / Body / Button / Helper / button_link). Parsed at SSG time.
+ * markdown (Headline / Body / Cta / Cta Helper / button_link). Parsed at SSG time.
  *
  * Pages 05 ("Where you are today") and 07 ("Silent gaps + Planner's read") have
  * no authored markdown yet — the per-segment narrative content lives INLINE here
@@ -77,11 +77,11 @@ function loadSegmentCtasOnce(): Map<string, SegmentCta> {
     const cta: SegmentCta = {
       headline: sections.get('Headline') ?? 'A first conversation.',
       body: sections.get('Body') ?? '',
-      buttonLabel: sections.get('Button') ?? 'Book a call',
+      buttonLabel: sections.get('Cta') ?? 'Book a call',
       buttonHref: fm.button_link
         ? (fm.button_link.startsWith('http') ? fm.button_link : `https://${fm.button_link}`)
         : 'https://calendly.com/realwealth/intro',
-      helper: sections.get('Helper') ?? '',
+      helper: sections.get('Cta Helper') ?? '',
       compliance_status: fm.compliance_status,
     };
     out.set(segmentId, cta);

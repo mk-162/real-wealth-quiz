@@ -8,7 +8,7 @@ description: Create a brand-new provocation file under `content/provocations/` w
 
 ## What this skill does
 
-Creates a new `.md` file at `master_template/content/provocations/<slug>.md` with every required frontmatter field, the three body sections (`# Headline`, `# Body`, `# Close`), and `compliance_status: draft` so it doesn't ship to production until reviewed.
+Creates a new `.md` file at `master_template/content/provocations/<slug>.md` with every required frontmatter field, the three body sections (`# Headline`, `# Body`, `# Cta`), and `compliance_status: draft` so it doesn't ship to production until reviewed.
 
 ## Background
 
@@ -19,7 +19,7 @@ Provocations are compliance-gated commercial callouts. See `edit-provocation-bod
 1. **Topic / slug.** Kebab-case short slug — `hundred-k-tax-trap`, `director-single-pot`. The filename will be `<slug>.md` and the `id` will be `prov.<slug_snake>`.
 2. **Trigger DSL.** When does it fire? See `change-provocation-trigger` for the DSL.
 3. **Segments.** Which of S1–S9 (or `all`). Target audience.
-4. **Body copy.** Headline, body, close — or intent to write. Budgets: headline 40/60, body 180/320, close 30/50.
+4. **Body copy.** Headline, body, cta — or intent to write. Budgets: headline 40/60, body 180/320, cta 30/50.
 5. **Source refs.** At least one citation (HMRC rule, Finance Act section, Autumn Budget, etc.) — provocations need sources for the compliance review.
 
 ## Workflow
@@ -50,7 +50,7 @@ Provocations are compliance-gated commercial callouts. See `edit-provocation-bod
    # Body
    <concrete mechanism, concrete numbers, real impact. 180 chars ideal.>
 
-   # Close
+   # Cta
    <one-line invitation / observation. 30 chars ideal.>
    ```
 
@@ -78,7 +78,7 @@ Provocations are compliance-gated commercial callouts. See `edit-provocation-bod
 
 - **Always start at `compliance_status: draft`.** Never author a new provocation at any other status.
 - **Both signoff_date fields must be `null`** at creation. They get set only via `advance-compliance-status`.
-- **All three body sections must be present.** `# Headline`, `# Body`, `# Close`. None can be empty.
+- **All three body sections must be present.** `# Headline`, `# Body`, `# Cta`. None can be empty.
 - **`id` format:** `prov.<slug_snake>`. Match the filename slug with underscores.
 - **At least one `source_refs` entry.** The compliance reviewer needs something to check against.
 - **Round-trip fidelity.** YAML AST editing.
@@ -111,11 +111,11 @@ The £100k marginal trap.
 # Body
 Between £100,000 and £125,140 of income, the personal allowance tapers away — £1 lost for every £2 over £100k. Effective marginal rate: 60%. A pension contribution at this band often yields 60p in the £1 of tax relief, before employer matching.
 
-# Close
+# Cta
 Most people we meet at this band are leaving the relief on the table.
 ```
 
-Validation: headline 21 chars, body 285 chars, close 47 chars — all under budgets. Clean.
+Validation: headline 21 chars, body 285 chars, cta 47 chars — all under budgets. Clean.
 
 ### Example 2 — don't do this: ship at approved_to_ship
 

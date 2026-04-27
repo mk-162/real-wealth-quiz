@@ -16,5 +16,5 @@ The £2m cliff.
 # Body
 Above £2m of total estate, the residence nil-rate band starts tapering — £1 of relief lost for every £2 over. A typical £2.5m family estate can end up paying £200,000–£500,000 more inheritance tax than necessary without planning.
 
-# Close
+# Cta
 One of the conversations most families come to us for.

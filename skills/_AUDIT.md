@@ -157,11 +157,11 @@ Change types are grouped by surface. Within each group they're ordered from safe
 ## 3. Segments (`content/segments/*.md`)
 
 ### 3.1 Change a segment's CTA copy
-- **What:** edit one of the 9 segment CTAs or the 2 overlays — headline, body, button label, helper text, or booking link.
-- **Files touched:** `content/segments/S<n>-<slug>.md` or `content/segments/overlay-<slug>.md`. Body sections: `# Headline`, `# Body`, `# Button`, `# Helper`.
+- **What:** edit one of the 9 segment CTAs or the 2 overlays — headline, body, cta label, cta helper text, or booking link.
+- **Files touched:** `content/segments/S<n>-<slug>.md` or `content/segments/overlay-<slug>.md`. Body sections: `# Headline`, `# Body`, `# Cta`, `# Cta Helper`.
 - **Invariants:** `kind: segment` requires `segment: S<n>`; `kind: overlay` requires `overlay: advised_but_looking | urgency_this_week`.
-- **Validation:** `npm run content:check`. Character budgets: `segment.headline` 50/75, `segment.body` 160/260, `segment.button` 22/32, `segment.helper` 40/60.
-- **Trigger phrases:** "change S6's CTA", "update the retired CTA button label".
+- **Validation:** `npm run content:check`. Character budgets: `segment.headline` 50/75, `segment.body` 160/260, `segment.cta` 22/32, `segment.cta_helper` 40/60.
+- **Trigger phrases:** "change S6's CTA", "update the retired CTA cta label".
 
 ### 3.2 Change a segment's name / label
 - **What:** rename a segment (e.g. "Early accumulator" → "Starting out").
@@ -203,9 +203,9 @@ Change types are grouped by surface. Within each group they're ordered from safe
 ## 4. Provocations (`content/provocations/*.md`)
 
 ### 4.1 Edit a provocation's body copy
-- **What:** change headline, body, or close of a provocation.
-- **Files touched:** the provocation md. Body sections: `# Headline`, `# Body`, `# Close`.
-- **Invariants:** keep under character budgets (`provocation.headline` 40/60, `provocation.body` 180/320, `provocation.close` 30/50). Don't change `id`.
+- **What:** change headline, body, or cta of a provocation.
+- **Files touched:** the provocation md. Body sections: `# Headline`, `# Body`, `# Cta`.
+- **Invariants:** keep under character budgets (`provocation.headline` 40/60, `provocation.body` 180/320, `provocation.cta` 30/50). Don't change `id`.
 - **Validation:** `npm run content:check` + voice check.
 - **Trigger phrases:** "soften the £2m cliff provocation".
 
@@ -226,7 +226,7 @@ Change types are grouped by surface. Within each group they're ordered from safe
 ### 4.4 Add a new provocation
 - **What:** create a new provocation file.
 - **Files touched:** `content/provocations/<slug>.md`. Placeholder registry if the body uses new tokens.
-- **Invariants:** `id: prov.<slug_snake>`. `compliance_status` must start `draft`. Body must have all three sections.
+- **Invariants:** `id: prov.<slug_snake>`. `compliance_status` must start `draft`. Body must have all three sections (`# Headline`, `# Body`, `# Cta`).
 - **Validation:** `npm run content:check`. Voice check. CFP + compliance review before `compliance_status` can advance.
 - **Trigger phrases:** "new provocation about the £100k tax trap".
 
@@ -249,9 +249,9 @@ Change types are grouped by surface. Within each group they're ordered from safe
 ## 5. Awareness checks (`content/awareness-checks/*.md`)
 
 ### 5.1 Edit an awareness check's body variants
-- **What:** change the `# Stem`, `# Aware body`, `# Partial body`, or `# Unaware body` section.
+- **What:** change the `# Headline`, `# Body Aware`, `# Body Partial`, or `# Body Unaware` section.
 - **Files touched:** the awareness md.
-- **Invariants:** all four sections must be present (admin integrity check). Stem is the question-style prompt; the three "body" variants fire based on the user's awareness level.
+- **Invariants:** all four sections must be present (admin integrity check). Headline is the question-style prompt; the three "body" variants fire based on the user's awareness level.
 - **Validation:** `npm run content:check` + voice check.
 - **Trigger phrases:** "rewrite the unaware body on will-currency".
 

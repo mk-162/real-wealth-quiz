@@ -12,5 +12,5 @@ A note from us.
 # Body
 We work with people whose money was making them anxious. In our experience, a plan changes what money does to you — not because the numbers change, but because the unknowns do.
 
-# Close
+# Cta
 We'd be glad to talk.

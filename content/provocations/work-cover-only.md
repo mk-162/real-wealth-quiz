@@ -12,5 +12,5 @@ Cover tied to the job.
 # Body
 We've seen families find out in the worst month of their life that the protection they thought they had was tied to a job they no longer held. Personal cover, set up while you're young and healthy, is usually cheaper than people assume.
 
-# Close
+# Cta
 Worth checking you've got something that doesn't end when the job does.

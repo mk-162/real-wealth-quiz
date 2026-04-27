@@ -12,5 +12,5 @@ Still a plan to make.
 # Body
 The phase after work often needs more planning, not less — drawdown strategy, tax efficiency, the pension-IHT change coming in 2027. It's rarely too late to improve the shape of it.
 
-# Close
+# Cta
 Worth a planner's second opinion.

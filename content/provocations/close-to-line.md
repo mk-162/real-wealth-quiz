@@ -12,5 +12,5 @@ The honest arithmetic.
 # Body
 You've given yourself a specific timeline to the day you don't have to work. Based on what you've told us, the monthly saving rate that implies is worth looking at — sooner is better than later, either way.
 
-# Close
+# Cta
 The conversation most people wish they'd had five years sooner.
