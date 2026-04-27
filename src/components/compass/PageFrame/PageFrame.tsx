@@ -66,11 +66,9 @@ export function PageFrame({
       <footer className={styles.chromeBot}>
         <span>{footer}</span>
         <span className={styles.pageNum}>
-          {totalPages !== undefined ? (
-            <>{pageNum} &middot; {String(totalPages).padStart(2, '0')}</>
-          ) : (
-            pageNum
-          )}
+          {totalPages !== undefined
+            ? `${pageNum} \u00B7 ${String(totalPages).padStart(2, '0')}`
+            : pageNum}
         </span>
       </footer>
     </section>

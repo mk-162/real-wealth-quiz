@@ -648,20 +648,23 @@ export function loadExpandedAwarenessCheck(sourceId: string): ExpandedAwarenessC
   return loadExpandedOnce().get(sourceId) ?? null;
 }
 
+let _allChecksCache: ExpandedAwarenessCheck[] | null = null;
+
 /**
  * Returns all expanded awareness checks, sorted by source_id, filtered through
  * the compliance gate. In dev/staging all items pass; with RW_ENFORCE_COMPLIANCE=1
  * set only `approved_to_ship` items are included.
  *
  * Used by page 06 which shows the full library unconditionally — one PageFrame
- * per check, no per-segment trigger selection.
+ * per check, no per-segment trigger selection. Result is memoised because the
+ * sort + filter is stable across the process lifetime.
  */
 export function loadAllExpandedChecks(): ExpandedAwarenessCheck[] {
-  const map = loadExpandedOnce();
-  const all = Array.from(map.values());
-  const filtered = filterApproved(all.map(r => ({ ...r, compliance_status: r.complianceStatus })));
-  filtered.sort((a, b) => a.sourceId.localeCompare(b.sourceId));
-  return filtered;
+  if (_allChecksCache) return _allChecksCache;
+  const all = Array.from(loadExpandedOnce().values()).filter(r => canPublishInProduction(r.complianceStatus));
+  all.sort((a, b) => a.sourceId.localeCompare(b.sourceId));
+  _allChecksCache = all;
+  return all;
 }
 
 /**

@@ -17,11 +17,11 @@
  * A parallel agent is wiring `buildCompassInputs` so the live user answers
  * feed this component in a follow-up commit.
  */
-import Image from 'next/image';
 import { fixtureById, buildReport, scoreAllTiles } from '@/lib/compass';
 import { enrichSegmentView, loadMethodology, loadAllExpandedChecks } from '@/lib/compass/pdf-content';
 import { getWhereYouAre, getSilentGapsAndRead, loadSegmentCta } from '@/lib/compass/narrative-content';
 import { ReportView, PageFrame, CtaPanel } from '@/components/compass';
+import { CoverPage, NarrativePlaceholder, MethodologySection, formatPageNum } from '@/app/report/master/[segment]/report-helpers';
 import reportStyles from '@/app/report/master/[segment]/page.module.css';
 
 export interface CompassReportSectionProps {
@@ -62,9 +62,8 @@ export default function CompassReportSection({
   const name = recipientName || 'your plan';
   const docTitle = `Your Wealth Report · ${name}`;
 
-  // Page-number helper. Page 06 onwards is variable-length (one page per check).
   const N = allChecks.length;
-  const p = (n: number) => String(n).padStart(2, '0');
+  const p = formatPageNum;
 
   return (
     <div className={`rw-doc ${reportStyles.doc}`}>
@@ -259,193 +258,3 @@ export default function CompassReportSection({
   );
 }
 
-function CoverPage({ name, segmentLabel, persona }: { name: string; segmentLabel: string; persona: string }) {
-  return (
-    <section className={reportStyles.cover}>
-      <div className={reportStyles.coverGlowTr} />
-      <div className={reportStyles.coverGlowBl} />
-
-      {/* Hero image. Path points at `cover-hero.jpg` — drop your chosen hero
-          image there to override the default. The logo-shaped clip-path
-          (rw-hero-2-leaves) is applied via CSS on .coverMediaImg. */}
-      <figure className={reportStyles.coverMedia}>
-        <Image
-          src="/report-preview/assets/cover-hero.jpg"
-          alt="Real Wealth — cover image"
-          className={reportStyles.coverMediaImg}
-          width={1400}
-          height={1000}
-          priority
-          unoptimized
-        />
-      </figure>
-
-      <div className={reportStyles.coverTop}>
-        <Image
-          src="/report-preview/assets/logo-wordmark.svg"
-          alt="Real Wealth"
-          className={reportStyles.coverLogo}
-          width={160}
-          height={28}
-          priority
-          unoptimized
-        />
-        <div className={reportStyles.coverMeta}>
-          <span className={reportStyles.coverMetaLabel}>WEALTH REPORT</span>
-          <span className={reportStyles.coverMetaDate}>
-            {new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
-          </span>
-        </div>
-      </div>
-
-      <div className={reportStyles.coverContent}>
-        <span className={reportStyles.coverEyebrow}>For {name} · A briefing from Real Wealth</span>
-        <h1 className={reportStyles.coverTitle}>Your Wealth Report.</h1>
-        <p className={reportStyles.coverLede}>
-          Ten minutes of honest questions about your money — and here&rsquo;s what a planner
-          would say back. A short, structured picture of where you are, where you&rsquo;re
-          heading, and the few things worth a conversation.
-        </p>
-
-        <div className={reportStyles.coverMetaGrid}>
-          <div className={reportStyles.coverMetaItem}>
-            <span className={reportStyles.coverMetaItemKicker}>Prepared for</span>
-            <span className={reportStyles.coverMetaItemValue}>{name}</span>
-          </div>
-          <div className={reportStyles.coverMetaItem}>
-            <span className={reportStyles.coverMetaItemKicker}>Planner lens</span>
-            <span className={reportStyles.coverMetaItemValue}>{segmentLabel}</span>
-          </div>
-          <div className={reportStyles.coverMetaItem}>
-            <span className={reportStyles.coverMetaItemKicker}>Snapshot</span>
-            <span className={reportStyles.coverMetaItemValue}>{persona}</span>
-          </div>
-        </div>
-      </div>
-
-      <div className={reportStyles.coverBottom}>
-        <span>realwealth.co.uk</span>
-        <span>01</span>
-      </div>
-    </section>
-  );
-}
-
-interface PlaceholderBlock { kicker: string; body: string; }
-function NarrativePlaceholder({
-  eyebrow, title, intro, comingFrom, blocks,
-}: {
-  eyebrow: string; title: string; intro: string; comingFrom: string; blocks: PlaceholderBlock[];
-}) {
-  return (
-    <>
-      <div className={reportStyles.sectionTitle}>
-        <span className={reportStyles.eyebrow}>{eyebrow}</span>
-        <h2 className={reportStyles.hSection}>{title}</h2>
-        <p className={reportStyles.intro} dangerouslySetInnerHTML={{ __html: intro }} />
-      </div>
-
-      <div className={reportStyles.placeholderBadge}>
-        Content in development · sourced from <code>{comingFrom}</code>
-      </div>
-
-      <div className={reportStyles.placeholderBlocks}>
-        {blocks.map((b, i) => (
-          <div key={i} className={reportStyles.placeholderBlock}>
-            <div className={reportStyles.placeholderKicker}>{b.kicker}</div>
-            <p className={reportStyles.placeholderBody}>{b.body}</p>
-          </div>
-        ))}
-      </div>
-
-      <div className={reportStyles.placeholderFoot}>
-        The content agent is expanding the markdown files that feed this page.
-        See <code>content/pages/*.md</code>, <code>content/segments/*.md</code>,
-        and <code>content/provocations/*.md</code>. Visual treatment will match
-        the rest of the report — same typography, same chip system, same chrome.
-      </div>
-    </>
-  );
-}
-
-/** Renders one methodology section body as markdown-ish HTML (handles tables + lists). */
-function MethodologySection({ heading, body }: { heading: string; body: string }) {
-  const html = bodyToHtml(body);
-  return (
-    <section className={reportStyles.methodologySection}>
-      <h3 className={reportStyles.methodologyHeading}>{heading}</h3>
-      <div className={reportStyles.methodologyBody} dangerouslySetInnerHTML={{ __html: html }} />
-    </section>
-  );
-}
-
-function bodyToHtml(md: string): string {
-  const lines = md.split(/\r?\n/);
-  const out: string[] = [];
-  let i = 0;
-  while (i < lines.length) {
-    const line = lines[i];
-
-    // Table start: "| col | col |"
-    if (/^\s*\|.*\|\s*$/.test(line) && i + 1 < lines.length && /^\s*\|?\s*[-:| ]+\|?\s*$/.test(lines[i + 1])) {
-      const tableLines: string[] = [];
-      while (i < lines.length && /^\s*\|.*\|/.test(lines[i])) {
-        tableLines.push(lines[i]);
-        i++;
-      }
-      out.push(renderTable(tableLines));
-      continue;
-    }
-
-    // H2
-    if (/^##\s+/.test(line)) {
-      out.push(`<h4>${escapeHtml(line.replace(/^##\s+/, ''))}</h4>`);
-      i++;
-      continue;
-    }
-
-    // Blank line
-    if (line.trim() === '') {
-      out.push('');
-      i++;
-      continue;
-    }
-
-    // Paragraph
-    const para: string[] = [line];
-    i++;
-    while (i < lines.length && lines[i].trim() !== '' && !/^##\s+/.test(lines[i]) && !/^\s*\|/.test(lines[i])) {
-      para.push(lines[i]);
-      i++;
-    }
-    out.push(`<p>${inline(para.join(' '))}</p>`);
-  }
-  return out.join('\n');
-}
-
-function renderTable(lines: string[]): string {
-  if (lines.length < 2) return '';
-  const header = splitCells(lines[0]);
-  const rows = lines.slice(2).map(splitCells);
-  const thead = `<thead><tr>${header.map(h => `<th>${inline(h)}</th>`).join('')}</tr></thead>`;
-  const tbody = `<tbody>${rows.map(r => `<tr>${r.map(c => `<td>${inline(c)}</td>`).join('')}</tr>`).join('')}</tbody>`;
-  return `<table class="${reportStyles.methodologyTable}">${thead}${tbody}</table>`;
-}
-
-function splitCells(line: string): string[] {
-  return line
-    .trim()
-    .replace(/^\||\|$/g, '')
-    .split('|')
-    .map(c => c.trim());
-}
-
-function inline(s: string): string {
-  return escapeHtml(s)
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.+?)\*/g, '<em>$1</em>');
-}
-
-function escapeHtml(s: string): string {
-  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-}
