@@ -31,11 +31,15 @@ export interface CompassInputs {
   birthYear?: number;
   partnerPresent: boolean;
   partnerAge?: number;
+  /** Partner gross annual income (£). Set when partner block fires. */
+  partnerGrossIncome?: number;
+  /** Partner pension pot (£). Set when partner block fires. */
+  partnerPensionValue?: number;
   hasDependentChildren: boolean;
   hasElderlyParents: boolean;
   targetRetirementAge: number;
 
-  // §2 Wealth
+  // §2 Wealth — banded fallbacks
   mainHomeValue: WealthBand | 0;
   otherPropertyValue: WealthBand | 0;
   totalPensionValue: WealthBand | 0;
@@ -45,17 +49,44 @@ export interface CompassInputs {
   businessValue: WealthBand | 0;
   otherAssets: WealthBand | 0;
 
+  // §2b Wealth — raw values (preferred when present, set by sliders).
+  // The engine uses these when defined and falls back to the banded midpoints
+  // above otherwise. Adding these is the A1 "stop re-banding sliders" fix.
+  mainHomeValueRaw?: number;
+  otherPropertyValueRaw?: number;
+  totalPensionValueRaw?: number;
+  cashSavingsRaw?: number;
+  isaBalanceRaw?: number;
+  giaBalanceRaw?: number;
+  businessValueRaw?: number;
+  /** Net monthly rent received from BTL / second home, gross of tax. */
+  otherPropertyMonthlyRentRaw?: number;
+
   mainHomeMortgageBalance: WealthBand | 0;
   otherPropertyMortgageBalance: WealthBand | 0;
   personalLoans: WealthBand | 0;
   creditCardDebt: WealthBand | 0;
 
+  // Liabilities — raw values
+  mainHomeMortgageBalanceRaw?: number;
+  otherPropertyMortgageBalanceRaw?: number;
+  personalLoansRaw?: number;
+  creditCardDebtRaw?: number;
+
   // §3 Income
   householdGrossIncome: IncomeBand;
+  /** Exact gross income (£). Preferred over the banded fallback when present. */
+  householdGrossIncomeRaw?: number;
   isScottishTaxpayer: boolean;
   monthlySavingAmount: SpendBand;
+  /** Exact monthly saving (£). Preferred over band when present. */
+  monthlySavingAmountRaw?: number;
   employerPensionContribPct: ContribPctBand;
   ownPensionContribPct: ContribPctBand;
+  /** Exact employer pension contribution % (0–25). Preferred over band when present. */
+  employerPensionContribPctRaw?: number;
+  /** Exact own pension contribution % (0–25). Preferred over band when present. */
+  ownPensionContribPctRaw?: number;
   salarySacrificeInUse?: boolean;
   dividendIncome?: IncomeBand;
   rentalIncomeNet?: IncomeBand;
@@ -63,17 +94,35 @@ export interface CompassInputs {
   // §4 Expenses
   essentialMonthlySpend: SpendBand;
   nonEssentialMonthlySpend: SpendBand;
+  /** Exact essential monthly spend (£). */
+  essentialMonthlySpendRaw?: number;
+  /** Exact non-essential monthly spend (£). */
+  nonEssentialMonthlySpendRaw?: number;
   retirementSpendRatio: RetirementSpendRatio;
 
   // §5 Mortgage
   mortgageMonthlyPayment?: SpendBand;
+  /** Exact mortgage monthly payment (£). */
+  mortgageMonthlyPaymentRaw?: number;
   mortgageEndAge: MortgageEndBand;
+  /** Exact mortgage end age (years). Preferred over band when present. */
+  mortgageEndAgeRaw?: number;
   rentMonthly?: SpendBand;
 
   // §6 State pension / NI
   statePensionKnown: 'yes' | 'no' | 'partial';
   statePensionExpectedAmount?: number; // annual £, default to 2025/26 full rate
   niQualifyingYears: NIYearsBand;
+  /** Exact NI qualifying years (0–45). Preferred over band when present. */
+  niQualifyingYearsRaw?: number;
+
+  // §6b Defined Benefit pension (B4)
+  /** Whether the user has any DB pension entitlement. */
+  hasDbPension?: boolean;
+  /** Annual income (£) the DB pension will pay, in today's money. */
+  dbPensionAnnualIncome?: number;
+  /** Age at which DB pension payments start. */
+  dbPensionStartAge?: number;
 
   // §7 Tax extras
   studentLoanPlan?: 'none' | 'plan1' | 'plan2' | 'plan4' | 'plan5' | 'postgraduate';
@@ -110,7 +159,13 @@ export interface BalanceSheet {
     business: number;
     pension: number;
     savings: number;        // cash
-    investments: number;    // ISA + GIA + other assets
+    investments: number;    // ISA + GIA + other assets (combined for legacy callers)
+    /** ISA balance, exposed separately so visualisations can split wrapper-by-wrapper. */
+    isa: number;
+    /** GIA / general-investment-account balance, exposed separately. */
+    gia: number;
+    /** "Other" investments (crypto, P2P, EIS/VCT) when collected. */
+    otherAssets: number;
     totalAssets: number;
   };
   liabilities: {

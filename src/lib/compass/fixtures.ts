@@ -670,6 +670,8 @@ const S9: Fixture = {
 
 export const FIXTURES: Fixture[] = [S1, S2, S3, S4, S5, S6, S7, S8, S9];
 
+const FIXTURE_MAP = new Map(FIXTURES.map(f => [f.view.segmentId, f]));
+
 export function fixtureById(id: string): Fixture | undefined {
-  return FIXTURES.find(f => f.view.segmentId === id);
+  return FIXTURE_MAP.get(id);
 }

@@ -16,15 +16,23 @@ export interface AssumptionsProps {
 
 export function Assumptions({
   assumptions,
-  notModelled = 'Not modelled: one-off events, career breaks, long-term care, tax rule changes, market sequence-of-return variations.',
+  notModelled = 'Not modelled: long-term care costs, sequence-of-return variations, lifetime gifts, business relief, divorce, future tax-rule changes.',
 }: AssumptionsProps) {
+  const incomeGrowth = assumptions.incomeGrowthRate ?? '2.5% real';
+  const taxResidence = assumptions.taxResidence ?? 'rest of UK';
+  const risk = assumptions.riskProfile ?? 'balanced';
+  const sacrifice = assumptions.salarySacrificeApplied === 'yes' ? ' · salary sacrifice applied' : '';
   return (
     <p className={styles.block}>
       <strong>Assumptions</strong>{' '}
-      · Growth {assumptions.investmentGrowthRate} balanced (4% cautious / 8% adventurous)
-      · Inflation {assumptions.inflation}
+      · Risk profile {risk} (growth {assumptions.investmentGrowthRate})
       · Cash {assumptions.cashGrowthRate}
+      · Inflation {assumptions.inflation}
+      · Real income growth {incomeGrowth}
       · State pension £{assumptions.statePensionFullRate} full rate from age {assumptions.statePensionAge}
+      · DC pension access from age {assumptions.pensionAccessAge}
+      · NI years assumed {assumptions.niYearsAssumed}
+      · Tax residence {taxResidence}{sacrifice}
       · Life expectancy {assumptions.lifeExpectancy}
       · Tax year {assumptions.taxYear}.
       {' '}{notModelled}

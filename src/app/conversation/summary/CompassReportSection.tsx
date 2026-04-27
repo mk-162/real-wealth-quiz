@@ -13,25 +13,42 @@
  * inside client components as children, so we lift the server work into this
  * file and let the page.tsx embed it without breaking.
  *
- * For now the report is driven by the segment's FIXTURE inputs (fixtureById).
- * A parallel agent is wiring `buildCompassInputs` so the live user answers
- * feed this component in a follow-up commit.
+ * Two render paths:
+ *   1. Pre-rendered fixture variants (one per segment) shipped from page.tsx
+ *      as a fallback / demo mode. The component receives no `inputs` prop
+ *      and falls back to `fixture.inputs`.
+ *   2. User-driven render via the `renderUserCompassReport` server action,
+ *      which calls this component with `inputs` derived from the live
+ *      session via `buildCompassInputs`. The `view` still comes from the
+ *      fixture (segment-specific persona/label is stage-setting, not user
+ *      data) — the dynamic parts (charts, tile scoring, gauge) come from
+ *      the user's real inputs.
  */
-import { fixtureById, buildReport, scoreAllTiles } from '@/lib/compass';
+import { fixtureById, buildReport, scoreAllTiles, type CompassInputs } from '@/lib/compass';
 import { enrichSegmentView, loadMethodology, loadAllExpandedChecks } from '@/lib/compass/pdf-content';
 import { getWhereYouAre, getSilentGapsAndRead, loadSegmentCta } from '@/lib/compass/narrative-content';
 import { ReportView, PageFrame, CtaPanel } from '@/components/compass';
 import { CoverPage, NarrativePlaceholder, MethodologySection, formatPageNum } from '@/app/report/master/[segment]/report-helpers';
 import reportStyles from '@/app/report/master/[segment]/page.module.css';
+// The .rw-doc / .rw-eyebrow / .rw-h-section global classes used by the
+// embedded report come from compass-theme.css. /report/* gets it via
+// /report/layout.tsx, but /conversation/* doesn't share that layout — so
+// we import it here, scoped to wherever this component lands.
+import '@/app/report/_theme/compass-theme.css';
 
 export interface CompassReportSectionProps {
   segmentId: string;
   recipientName: string;
+  /** Live user inputs from the questionnaire session. When omitted (e.g. the
+   *  pre-rendered fallback variants in page.tsx), the component falls back
+   *  to the fixture's stock inputs so demos still render. */
+  inputs?: CompassInputs;
 }
 
 export default function CompassReportSection({
   segmentId,
   recipientName,
+  inputs,
 }: CompassReportSectionProps) {
   const fixture = fixtureById(segmentId);
   if (!fixture) return null;
@@ -43,15 +60,18 @@ export default function CompassReportSection({
   // rather than silently downgrading. In dev/staging the flag is a no-op
   // (see src/lib/content/compliance.ts) so authors can preview WIP markdown.
   const requireApproved = process.env.NODE_ENV === 'production';
-  const report = buildReport(fixture.inputs);
-  const tileScores = scoreAllTiles(fixture.inputs, report);
+  const effectiveInputs = inputs ?? fixture.inputs;
+  const report = buildReport(effectiveInputs);
+  const tileScores = scoreAllTiles(effectiveInputs, report);
   const enrichedView = enrichSegmentView(
     fixture.view,
     report.scores.targetCoveragePct,
     requireApproved,
     tileScores,
   );
-  const enrichedFixture = { ...fixture, view: enrichedView };
+  // Override fixture.inputs with effectiveInputs so ReportView's internal
+  // buildReport call runs against the user's real numbers (when supplied).
+  const enrichedFixture = { ...fixture, inputs: effectiveInputs, view: enrichedView };
 
   const methodology = loadMethodology(requireApproved);
   const allChecks = loadAllExpandedChecks();

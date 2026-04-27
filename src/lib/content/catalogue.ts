@@ -215,7 +215,8 @@ export const screens: Screen[] = [
     "logged_as": [
       "age",
       "household",
-      "youngest_child_band"
+      "youngest_child_band",
+      "scottish_taxpayer"
     ],
     "inputs": [
       {
@@ -231,6 +232,23 @@ export const screens: Screen[] = [
         "required": true
       },
       {
+        "id": "scottish_taxpayer",
+        "label": "Where do you pay income tax?",
+        "label_helper": "Scottish residents pay slightly different rates above the personal allowance. Pick whichever describes most of the year.",
+        "control": "radio",
+        "options": [
+          {
+            "value": "no",
+            "label": "England, Wales, or Northern Ireland"
+          },
+          {
+            "value": "yes",
+            "label": "Scotland"
+          }
+        ],
+        "required": true
+      },
+      {
         "id": "household",
         "label": "Who else is part of the plan?",
         "control": "multi_select",
@@ -238,7 +256,8 @@ export const screens: Screen[] = [
           {
             "value": "partner",
             "label": "A partner",
-            "icon": "heart"
+            "icon": "heart",
+            "conditional_reveal": "partner_age"
           },
           {
             "value": "dependent_children",
@@ -289,6 +308,48 @@ export const screens: Screen[] = [
         ],
         "required": false,
         "conditional_reveal": "only when household includes dependent_children"
+      },
+      {
+        "id": "partner_age",
+        "label": "Your partner's age",
+        "label_helper": "Used to set the household's joint horizon and any guaranteed income they bring in.",
+        "control": "slider",
+        "range": {
+          "min": 25,
+          "max": 90,
+          "default": 45,
+          "step": 1
+        },
+        "required": false,
+        "conditional_reveal": "only when household includes partner"
+      },
+      {
+        "id": "partner_gross_income",
+        "label": "Their gross annual income (£)",
+        "label_helper": "Salary plus dividends, before tax. 0 if not currently working.",
+        "control": "slider",
+        "range": {
+          "min": 0,
+          "max": 300000,
+          "default": 0,
+          "step": 5000
+        },
+        "required": false,
+        "conditional_reveal": "only when household includes partner"
+      },
+      {
+        "id": "partner_pension_value",
+        "label": "Their pension pot (£)",
+        "label_helper": "Combined across all their pensions today. 0 if you'd rather skip — we'll model the household with conservative defaults.",
+        "control": "slider",
+        "range": {
+          "min": 0,
+          "max": 2000000,
+          "default": 0,
+          "step": 25000
+        },
+        "required": false,
+        "conditional_reveal": "only when household includes partner"
       }
     ],
     "headline": "Tell us a little about you.",
@@ -722,10 +783,13 @@ export const screens: Screen[] = [
     ],
     "logged_as": [
       "main_home",
-      "mortgage_balance",
+      "main_home_value",
+      "mortgage_balance_amount",
       "pension_pots",
       "pension_total_band",
-      "investments_band"
+      "investments_band",
+      "personal_loans_amount",
+      "credit_card_amount"
     ],
     "inputs": [
       {
@@ -735,12 +799,13 @@ export const screens: Screen[] = [
         "options": [
           {
             "value": "own_outright",
-            "label": "Own outright"
+            "label": "Own outright",
+            "conditional_reveal": "main_home_value"
           },
           {
             "value": "own_mortgage",
             "label": "Own, with a mortgage",
-            "conditional_reveal": "mortgage_balance"
+            "conditional_reveal": "main_home_value, mortgage_balance_amount"
           },
           {
             "value": "rent",
@@ -758,31 +823,29 @@ export const screens: Screen[] = [
         "required": true
       },
       {
-        "id": "mortgage_balance",
-        "label": "Roughly how much is left on the mortgage?",
-        "control": "radio",
-        "options": [
-          {
-            "value": "lt100k",
-            "label": "Under £100,000"
-          },
-          {
-            "value": "100k_to_250k",
-            "label": "£100,000 – £250,000"
-          },
-          {
-            "value": "250k_to_500k",
-            "label": "£250,000 – £500,000"
-          },
-          {
-            "value": "gt500k",
-            "label": "£500,000+"
-          },
-          {
-            "value": "prefer_not",
-            "label": "Prefer not to say"
-          }
-        ],
+        "id": "main_home_value",
+        "label": "What's the home roughly worth today? (£)",
+        "label_helper": "Drag to the nearest round number. Zillow / Rightmove or your last valuation is fine.",
+        "control": "slider",
+        "range": {
+          "min": 100000,
+          "max": 3000000,
+          "default": 400000,
+          "step": 25000
+        },
+        "required": false,
+        "conditional_reveal": "only when main_home in [own_outright, own_mortgage]"
+      },
+      {
+        "id": "mortgage_balance_amount",
+        "label": "Roughly how much is left on the mortgage? (£)",
+        "control": "slider",
+        "range": {
+          "min": 0,
+          "max": 1500000,
+          "default": 150000,
+          "step": 5000
+        },
         "required": false,
         "conditional_reveal": "only when main_home == own_mortgage"
       },
@@ -880,6 +943,52 @@ export const screens: Screen[] = [
           }
         ],
         "required": true
+      },
+      {
+        "id": "has_non_mortgage_debt",
+        "label": "Any non-mortgage debt above £5,000?",
+        "label_helper": "Personal loans, credit cards, BNPL — anything that isn't the mortgage.",
+        "control": "radio",
+        "options": [
+          {
+            "value": "no",
+            "label": "No"
+          },
+          {
+            "value": "yes",
+            "label": "Yes",
+            "conditional_reveal": "personal_loans_amount, credit_card_amount"
+          }
+        ],
+        "required": true
+      },
+      {
+        "id": "personal_loans_amount",
+        "label": "Personal loans outstanding (£)",
+        "label_helper": "Term loans, car finance, family loans you'll repay. 0 if none.",
+        "control": "slider",
+        "range": {
+          "min": 0,
+          "max": 200000,
+          "default": 0,
+          "step": 1000
+        },
+        "required": false,
+        "conditional_reveal": "only when has_non_mortgage_debt == yes"
+      },
+      {
+        "id": "credit_card_amount",
+        "label": "Credit-card balance carrying interest (£)",
+        "label_helper": "Only what won't clear at the next statement. 0 if you pay in full each month.",
+        "control": "slider",
+        "range": {
+          "min": 0,
+          "max": 50000,
+          "default": 0,
+          "step": 500
+        },
+        "required": false,
+        "conditional_reveal": "only when has_non_mortgage_debt == yes"
       }
     ],
     "headline": "What you've built so far.",
@@ -918,6 +1027,9 @@ export const screens: Screen[] = [
     ],
     "logged_as": [
       "other_property",
+      "other_property_value",
+      "other_property_mortgage_balance",
+      "other_property_monthly_rent",
       "held_in_limited_company"
     ],
     "inputs": [
@@ -931,17 +1043,18 @@ export const screens: Screen[] = [
           },
           {
             "value": "one_other",
-            "label": "One other"
+            "label": "One other",
+            "conditional_reveal": "other_property_value, other_property_mortgage_balance, other_property_monthly_rent"
           },
           {
             "value": "two_or_more",
             "label": "Two or more",
-            "conditional_reveal": "held_in_limited_company"
+            "conditional_reveal": "other_property_value, other_property_mortgage_balance, other_property_monthly_rent, held_in_limited_company"
           },
           {
             "value": "portfolio",
             "label": "A portfolio — three or more",
-            "conditional_reveal": "held_in_limited_company"
+            "conditional_reveal": "other_property_value, other_property_mortgage_balance, other_property_monthly_rent, held_in_limited_company"
           },
           {
             "value": "complicated",
@@ -949,6 +1062,47 @@ export const screens: Screen[] = [
           }
         ],
         "required": true
+      },
+      {
+        "id": "other_property_value",
+        "label": "Combined value across other property (£)",
+        "label_helper": "Drag to the nearest round number. Combined market value of all properties other than your main home.",
+        "control": "slider",
+        "range": {
+          "min": 0,
+          "max": 5000000,
+          "default": 350000,
+          "step": 25000
+        },
+        "required": false,
+        "conditional_reveal": "only when other_property in [one_other, two_or_more, portfolio]"
+      },
+      {
+        "id": "other_property_mortgage_balance",
+        "label": "Combined mortgage balance on those properties (£)",
+        "control": "slider",
+        "range": {
+          "min": 0,
+          "max": 3000000,
+          "default": 0,
+          "step": 5000
+        },
+        "required": false,
+        "conditional_reveal": "only when other_property in [one_other, two_or_more, portfolio]"
+      },
+      {
+        "id": "other_property_monthly_rent",
+        "label": "Net monthly rent received (£/month)",
+        "label_helper": "After agency fees and running costs — but before mortgage and tax. 0 if it's a second home you don't let out.",
+        "control": "slider",
+        "range": {
+          "min": 0,
+          "max": 20000,
+          "default": 0,
+          "step": 100
+        },
+        "required": false,
+        "conditional_reveal": "only when other_property in [one_other, two_or_more, portfolio]"
       },
       {
         "id": "held_in_limited_company",
@@ -2031,13 +2185,17 @@ export const screens: Screen[] = [
       "Q4.A.1"
     ],
     "logged_as": [
-      "pension_total_value"
+      "pension_total_value",
+      "has_db_pension",
+      "db_pension_annual_income",
+      "db_pension_start_age"
     ],
     "conditional_logic": "only when pension_pots != none",
     "inputs": [
       {
         "id": "pension_total_value",
         "label": "Roughly, what would it all add up to today?",
+        "label_helper": "This is your defined-contribution (DC) pot — workplace pensions, SIPPs, personal pensions. Don't include any defined-benefit / final-salary pension here; we'll ask about that next.",
         "control": "slider",
         "range": {
           "min": 0,
@@ -2046,6 +2204,56 @@ export const screens: Screen[] = [
           "step": 25000
         },
         "required": true
+      },
+      {
+        "id": "has_db_pension",
+        "label": "Do you have a defined-benefit (final-salary or career-average) pension?",
+        "label_helper": "Common in NHS, teaching, civil service, armed forces, police, fire, university (USS), and older corporate schemes. Pays a guaranteed income for life rather than a pot.",
+        "control": "radio",
+        "options": [
+          {
+            "value": "no",
+            "label": "No"
+          },
+          {
+            "value": "yes",
+            "label": "Yes",
+            "conditional_reveal": "db_pension_annual_income, db_pension_start_age"
+          },
+          {
+            "value": "not_sure",
+            "label": "Not sure — I'd like to find out"
+          }
+        ],
+        "required": true
+      },
+      {
+        "id": "db_pension_annual_income",
+        "label": "Expected annual income from it (£/year, in today's money)",
+        "label_helper": "Look at your most recent benefit statement. If you've not yet retired, this is the projected income at the scheme's normal retirement age.",
+        "control": "slider",
+        "range": {
+          "min": 0,
+          "max": 100000,
+          "default": 15000,
+          "step": 500
+        },
+        "required": false,
+        "conditional_reveal": "only when has_db_pension == yes"
+      },
+      {
+        "id": "db_pension_start_age",
+        "label": "Age it starts paying",
+        "label_helper": "Most schemes pay from 60, 65, or 67. Some let you take it earlier with a reduction.",
+        "control": "slider",
+        "range": {
+          "min": 55,
+          "max": 70,
+          "default": 65,
+          "step": 1
+        },
+        "required": false,
+        "conditional_reveal": "only when has_db_pension == yes"
       }
     ],
     "headline": "Your pension, roughly.",
@@ -2146,6 +2354,7 @@ export const screens: Screen[] = [
       "monthly_saving_band",
       "employer_pension_pct_band",
       "own_pension_pct_band",
+      "salary_sacrifice",
       "mortgage_monthly_payment_band",
       "mortgage_end_age_band"
     ],
@@ -2187,6 +2396,27 @@ export const screens: Screen[] = [
           "step": 1
         },
         "required": true
+      },
+      {
+        "id": "salary_sacrifice",
+        "label": "Are your pension contributions made through salary sacrifice?",
+        "label_helper": "Salary sacrifice routes your contribution before tax and NI, saving an extra ~14%. If you're not sure, your payslip will say 'Sacrifice' or 'SMART pension'.",
+        "control": "radio",
+        "options": [
+          {
+            "value": "yes",
+            "label": "Yes"
+          },
+          {
+            "value": "no",
+            "label": "No"
+          },
+          {
+            "value": "not_sure",
+            "label": "Not sure"
+          }
+        ],
+        "required": false
       },
       {
         "id": "mortgage_monthly_payment_band",
@@ -2306,6 +2536,59 @@ export const screens: Screen[] = [
     ],
     "headline": "State pension, and what retirement really costs you.",
     "sub": "Your NI record sets what the state pays. The less/same/more card is the most important single input to the whole projection — it determines how long your money has to last."
+  },
+  {
+    "id": "screen.compass.05.risk-profile",
+    "screen_number": "4.E.5",
+    "title": "How investments are held",
+    "section": "assets",
+    "layout": "asymmetric",
+    "grouped": false,
+    "gate_critical": false,
+    "segments_served": [
+      "all"
+    ],
+    "skip": [],
+    "tier_limit": [
+      "A",
+      "B",
+      "C"
+    ],
+    "q_refs": [
+      "Q4.E.5"
+    ],
+    "logged_as": [
+      "risk_profile"
+    ],
+    "inputs": [
+      {
+        "id": "risk_profile",
+        "label": "Roughly, how are your pensions and investments held?",
+        "label_helper": "If you have a mix, pick the one closest to most of the money. We use this to set a long-run growth assumption — 4% cautious, 6% balanced, 8% adventurous, all real (after inflation).",
+        "control": "radio",
+        "options": [
+          {
+            "value": "cautious",
+            "label": "Cautious — mostly cash, bonds, or income-focused funds"
+          },
+          {
+            "value": "balanced",
+            "label": "Balanced — a mix of stocks and bonds"
+          },
+          {
+            "value": "adventurous",
+            "label": "Adventurous — mostly equities, growth-focused"
+          },
+          {
+            "value": "no_idea",
+            "label": "I have no idea — pick a sensible middle for me"
+          }
+        ],
+        "required": true
+      }
+    ],
+    "headline": "How is the money invested?",
+    "sub": "The mix between equities, bonds, and cash sets your long-run growth rate — and quietly does most of the work in the projection. We assume balanced if you'd rather skip this."
   }
 ];
 

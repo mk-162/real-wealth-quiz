@@ -27,8 +27,9 @@
  */
 'use client';
 
-import { Suspense, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
+import { Suspense, useEffect, useMemo, useRef, useState, useSyncExternalStore, type ReactNode } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { renderUserCompassReport } from './actions';
 import { Bridge } from '@/components/Bridge';
 import { BriefingCard } from '@/components/BriefingCard';
 import { Button } from '@/components/Button';
@@ -176,15 +177,6 @@ function Summary({
   );
   const [unlockedThisSession, setUnlockedThisSession] = useState(false);
   const unlocked = persistedUnlocked || unlockedThisSession;
-  useEffect(() => {
-    try {
-      if (window.localStorage.getItem(UNLOCK_KEY) === 'true') {
-        return;
-      }
-    } catch {
-      /* storage disabled — keep the gate closed */
-    }
-  }, []);
   const handleUnlock = () => {
     setUnlockedThisSession(true);
     try {
@@ -203,6 +195,41 @@ function Summary({
      S3's copy for every visitor. */
   const segmentId: string | null =
     derived.segmentId ?? params.get('segment') ?? null;
+
+  /* User-driven report. Once the gate is unlocked AND we have a real
+     session with answers AND a resolved segment, ask the server to
+     render a Compass report whose chart numbers, tile scoring and
+     gauge are computed from `buildCompassInputs(session.answers)`.
+     Until that promise resolves (and as a fallback if the server
+     errors), we fall through to the segment's pre-rendered fixture
+     variant supplied by `reportSectionsBySegment`. */
+  const firstName = session?.contact?.firstName?.trim() ?? '';
+  const [userRenderedReport, setUserRenderedReport] = useState<ReactNode | null>(null);
+  useEffect(() => {
+    if (!unlocked || !session?.answers || !segmentId) {
+      setUserRenderedReport(null);
+      return;
+    }
+    const recipientName = firstName || 'your plan';
+    let cancelled = false;
+    renderUserCompassReport({
+      answers: session.answers,
+      segmentId,
+      recipientName,
+    })
+      .then((node) => {
+        if (!cancelled) setUserRenderedReport(node);
+      })
+      .catch(() => {
+        /* Server-side render failed (e.g. content loader threw) — fall
+           through to the pre-rendered fixture variant rather than
+           hiding the report entirely. */
+        if (!cancelled) setUserRenderedReport(null);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [unlocked, session, segmentId, firstName]);
   const hasResolvedSegment = Boolean(segmentId);
   const urgency = derived.urgency ?? params.get('urgency');
   const adviceStatus = derived.adviceStatus ?? params.get('adviceStatus');
@@ -273,12 +300,6 @@ function Summary({
     'bridge.copy',
     "We haven't asked everything — no 10-minute form could. A planner will fill in the detail that changes the picture.",
   );
-  const illustrativeTag = pageValue<string>(
-    'summary',
-    'charts.per_chart_illustrative_tag',
-    'ILLUSTRATIVE EXAMPLE',
-  );
-
   /* Aspiration echo is no longer rendered in the summary hero — the
      quote read as noise above the briefing headline and users preferred
      getting straight to the shortlist. Q2.4 is still read into
@@ -411,7 +432,6 @@ function Summary({
     );
   }
 
-  const firstName = session?.contact?.firstName?.trim() ?? '';
   const greeting = firstName
     ? `${firstName}, your Wealth Report is ready.`
     : 'Your Wealth Report is ready.';
@@ -448,26 +468,46 @@ function Summary({
         </div>
       </section>
 
-      {/* Graph placeholder — swap the inner content when the team's
-          chart is ready. */}
-      <GraphSlot />
-
-      {/* Email-gate banner. Pre-fills from session.contact if the user
-          completed /conversation/details upstream. Submitting POSTs to
-          /api/report/send which emails the report via Resend and flips
-          the unlock flag on success. */}
+      {/* Pre-unlock the page is "your report is on the way" — show the
+          chart placeholder + email gate. Once unlocked, the hero hands
+          straight to the embedded 9-page report below. The placeholder
+          chart would be redundant (and misleading "chart coming soon"
+          copy) above a report that has its own charts. */}
       {!unlocked ? (
-        <ReportCapture
-          prefillFirstName={session?.contact?.firstName}
-          prefillEmail={session?.contact?.email}
-          prefillConsentMarketing={session?.contact?.consentMarketing}
-          sessionPayload={session}
-          onSuccess={handleUnlock}
-        />
+        <>
+          <GraphSlot />
+          <ReportCapture
+            prefillFirstName={session?.contact?.firstName}
+            prefillEmail={session?.contact?.email}
+            prefillConsentMarketing={session?.contact?.consentMarketing}
+            sessionPayload={session}
+            onSuccess={handleUnlock}
+          />
+        </>
       ) : null}
 
       {unlocked ? (
         <>
+      {/* Embedded 9-page Compass report — now the lead element of the
+          unlocked summary so the report itself opens the experience
+          rather than the marketing wrapper. The considered list, silent
+          gaps and CTAs render below as supporting context.
+          Two possible sources, in priority order:
+            1. `userRenderedReport` — Server Action result driven by the
+               live `session.answers` (real numbers via buildCompassInputs).
+            2. `reportSectionsBySegment[segmentId]` — pre-rendered fixture
+               variant pre-computed in page.tsx for every segment, used as
+               a fallback while the action resolves and if the server
+               render errors. */}
+      {segmentId && (userRenderedReport ?? reportSectionsBySegment?.[segmentId]) ? (
+        <>
+          <SaveToPdfToolbar />
+          <section className={styles.reportEmbed}>
+            {userRenderedReport ?? reportSectionsBySegment?.[segmentId]}
+          </section>
+        </>
+      ) : null}
+
       {/* Section 3 — Spotlight compound flag (conditional) */}
       {spotlight ? (
         <div className={styles.spotlightWrap}>
@@ -556,8 +596,6 @@ function Summary({
         {items.some((i) => i.chart) ? (
           <p className={styles.chartsDisclaimer}>{chartsDisclaimer}</p>
         ) : null}
-        {/* Unused but retained for future injection of a custom label. */}
-        <span hidden>{illustrativeTag}</span>
       </section>
 
         {/* Sidebar column — compact "share with a friend" tertiary
@@ -570,20 +608,6 @@ function Summary({
           <ShareWithFriend />
         </aside>
       </div>
-
-      {/* Embedded 9-page Compass report. Fixture-driven for now —
-          a parallel agent is wiring `buildCompassInputs` so the live
-          user answers feed the report in a follow-up commit. The
-          section is pre-rendered server-side (one per segment) and
-          passed down as `reportSectionsBySegment`; this file is a
-          client component and cannot import the fs-based content
-          loaders directly. The right variant is picked by the
-          session-derived segmentId at render time. */}
-      {segmentId && reportSectionsBySegment?.[segmentId] ? (
-        <section className={styles.reportEmbed}>
-          {reportSectionsBySegment[segmentId]}
-        </section>
-      ) : null}
 
       {/* Section 5 — Silent gaps (conditional, 2+ triggers) */}
       {silentGaps.length > 0 ? (
@@ -642,6 +666,55 @@ function Summary({
       ) : null}
 
       <StartOverFooter />
+    </div>
+  );
+}
+
+/* ================================================================ */
+/* Save-to-PDF toolbar                                               */
+/* ================================================================ */
+
+/**
+ * Sits just above the embedded Compass report once the gate is
+ * unlocked. The button calls `window.print()`, which all major
+ * browsers offer with "Save as PDF" as one of the destinations.
+ * The page's @media print rules hide the surrounding summary
+ * chrome so the saved file contains only the report itself.
+ */
+function SaveToPdfToolbar() {
+  function handlePrint() {
+    if (typeof window !== 'undefined') {
+      window.print();
+    }
+  }
+  return (
+    <div className={styles.printToolbar}>
+      <span className={styles.printHint}>
+        Save a copy for your records.
+      </span>
+      <button
+        type="button"
+        className={styles.printButton}
+        onClick={handlePrint}
+      >
+        <svg
+          viewBox="0 0 16 16"
+          width="16"
+          height="16"
+          focusable="false"
+          aria-hidden="true"
+        >
+          <path
+            d="M4 6V2.5h8V6 M4 11H2.5V6.5h11V11H12 M4 9.5h8V13.5H4z"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+        <span>Save as PDF</span>
+      </button>
     </div>
   );
 }

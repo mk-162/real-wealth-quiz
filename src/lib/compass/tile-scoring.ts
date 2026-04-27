@@ -14,7 +14,7 @@
  *     meaningful score from the available inputs (falls back to authored copy).
  *
  * Thresholds, constants, and per-tile algorithms are sourced from the tile
- * scoring specification — see tile-scoring PR description for provenance.
+ * scoring specification.
  */
 
 import type {
@@ -33,66 +33,56 @@ import {
   NI_YEARS_MID,
   mortgageEndAgeToNumber,
 } from './projection';
+import {
+  STATE_PENSION_FULL,
+  STATE_PENSION_FULL_QUALIFYING_YEARS as STATE_PENSION_FULL_YEARS,
+  TAX_TRAP_LOWER,
+  TAX_TRAP_UPPER,
+  BASIC_RATE_LIMIT as TAX_BASIC_RATE_THRESHOLD,
+  IHT_NRB,
+  IHT_RNRB_PER_PERSON,
+  IHT_RNRB_TAPER_START,
+  IHT_RATE,
+} from './tax-year-2025-26';
 
 // -----------------------------------------------------------------------------
-// Constants — tile-scoring thresholds + UK tax-year figures (2025/26)
+// Constants — tile-scoring thresholds (regulatory figures live in tax-year-2025-26.ts)
 // -----------------------------------------------------------------------------
 
-// --- Retirement tile -------------------------------------------------------
 const RETIREMENT_MIN_AGE = 35;
 const RETIREMENT_GREEN_PCT = 100;
 const RETIREMENT_AMBER_PCT = 70;
 
-// --- Pension tile ----------------------------------------------------------
 const PENSION_GREEN_RATIO = 1.0;
 const PENSION_AMBER_RATIO = 0.60;
 
-// --- State pension tile ----------------------------------------------------
 const SP_MIN_AGE = 30;
 const SP_GREEN_YEARS = 35;
 const SP_AMBER_YEARS = 25;
-const STATE_PENSION_FULL = 11_502; // 2025/26 full annual rate
-const STATE_PENSION_FULL_YEARS = 35;
 const SP_SANITY_AMOUNT_THRESHOLD = 8_000;
 
-// --- Investment tile -------------------------------------------------------
 const INV_BUSINESS_CONCENTRATION_RED = 0.40;
 const INV_MIN_TOTAL_INVESTABLE = 5_000;
 
-// --- Tax tile --------------------------------------------------------------
-const TAX_TRAP_LOWER = 100_000;
-const TAX_TRAP_UPPER = 125_140;
-const TAX_BASIC_RATE_THRESHOLD = 50_270;
 const TAX_TRAP_CONTRIB_PCT = 10;
 
-// --- Cash tile -------------------------------------------------------------
 const CASH_GREEN_MONTHS_DEPENDENT = 6;
 const CASH_GREEN_MONTHS_SINGLE = 4;
 const CASH_AMBER_MONTHS = 3;
 
-// --- Debt tile -------------------------------------------------------------
 const DEBT_AMBER_MAX_DTI = 0.15;
 
-// --- Mortgage tile ---------------------------------------------------------
 const MORTGAGE_RED_PTI_PCT = 35;
 const MORTGAGE_AMBER_PTI_PCT = 25;
 
-// --- Estate tile ----------------------------------------------------------
 const ESTATE_YOUNG_AGE = 30;
 const ESTATE_MIDDLE_AGE = 50;
 
-// --- IHT tile --------------------------------------------------------------
 const IHT_MIN_ESTATE = 100_000;
-const IHT_NRB = 325_000;
-const IHT_RNRB_PER_PERSON = 175_000;
-const IHT_RNRB_TAPER_START = 2_000_000;
-const IHT_RATE = 0.40;
 const IHT_AMBER_MAX_BILL = 50_000;
 
-// --- Protection tile -------------------------------------------------------
 const PROTECTION_YEARS_TO_RETIREMENT_AMBER = 10;
 
-// --- Twelfth tile ----------------------------------------------------------
 const TWELFTH_BIZ_RED = 0.50;
 const TWELFTH_BIZ_AMBER = 0.25;
 const TWELFTH_SAVING_STRONG: ReadonlyArray<CompassInputs['monthlySavingAmount']> = [

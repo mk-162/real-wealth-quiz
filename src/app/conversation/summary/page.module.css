@@ -874,3 +874,89 @@
   margin-left: auto;
   margin-right: auto;
 }
+
+/* ================================================================ */
+/* Save-to-PDF toolbar                                               */
+/* ================================================================ */
+/* Sits just above the embedded report. The button calls
+   window.print() — Chrome / Safari / Firefox all expose "Save as
+   PDF" as one of the destination options in the print dialog,
+   which is good enough for an MVP. The toolbar itself is hidden
+   on print so it doesn't appear in the saved file. */
+.printToolbar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  max-width: 794px;
+  margin: 32px auto 0;
+  padding: 0 var(--gutter);
+}
+
+.printButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  font: inherit;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--ink-tint-15, rgba(0, 0, 0, 0.12));
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 120ms ease, border-color 120ms ease;
+}
+
+.printButton:hover {
+  background: var(--paper-warm);
+  border-color: var(--ink-tint-25, rgba(0, 0, 0, 0.2));
+}
+
+.printButton:focus-visible {
+  outline: 2px solid var(--rw-teal);
+  outline-offset: 2px;
+}
+
+.printButton svg {
+  flex-shrink: 0;
+}
+
+.printHint {
+  font-size: 13px;
+  color: var(--ink-muted, rgba(0, 0, 0, 0.6));
+}
+
+/* ================================================================ */
+/* Print: show only the embedded Compass report                      */
+/* ================================================================ */
+/* When the user prints (or saves as PDF), hide every chrome
+   element on the summary page. Only the .rw-doc inside
+   .reportEmbed should reach paper. We use the visibility +
+   absolute-position trick so the rest of the page collapses
+   without leaving placeholder space. */
+@media print {
+  .shell {
+    background: #fff;
+  }
+
+  .shell > *,
+  .printToolbar {
+    visibility: hidden;
+  }
+
+  .reportEmbed,
+  .reportEmbed * {
+    visibility: visible;
+  }
+
+  .reportEmbed {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+  }
+}

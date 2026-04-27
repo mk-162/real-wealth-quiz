@@ -21,7 +21,9 @@ const SLICE_COLOURS = {
   property:    '#0c7372',
   pension:     '#67e8f9',
   savings:     '#2563eb',
-  investments: '#f97316',
+  isa:         '#f97316',
+  gia:         '#fb923c',
+  otherAssets: '#fbbf24',
   business:    '#8b5cf6',
 } as const;
 
@@ -29,11 +31,14 @@ const SLICE_COLOURS = {
 const CIRCUMFERENCE = 2 * Math.PI * 70;
 
 export function NetWorthDonut({ balanceSheet, title = 'What you own.' }: NetWorthDonutProps) {
+  // Split investments into ISA / GIA / other so the wrapper mix is visible.
   const slices = [
     { name: 'Property',    value: balanceSheet.assets.property,    colour: SLICE_COLOURS.property },
     { name: 'Pension',     value: balanceSheet.assets.pension,     colour: SLICE_COLOURS.pension },
     { name: 'Savings',     value: balanceSheet.assets.savings,     colour: SLICE_COLOURS.savings },
-    { name: 'Investments', value: balanceSheet.assets.investments, colour: SLICE_COLOURS.investments },
+    { name: 'ISA',         value: balanceSheet.assets.isa,         colour: SLICE_COLOURS.isa },
+    { name: 'GIA',         value: balanceSheet.assets.gia,         colour: SLICE_COLOURS.gia },
+    { name: 'Other',       value: balanceSheet.assets.otherAssets, colour: SLICE_COLOURS.otherAssets },
     { name: 'Business',    value: balanceSheet.assets.business,    colour: SLICE_COLOURS.business },
   ].filter(s => s.value > 0);
 
@@ -87,6 +92,17 @@ export function NetWorthDonut({ balanceSheet, title = 'What you own.' }: NetWort
             <span className={styles.legendValue}>{gbp(s.value)}</span>
           </div>
         ))}
+        {balanceSheet.liabilities.totalLiabilities > 0 && (
+          <div className={styles.legendRow} style={{ marginTop: 6, opacity: 0.85 }}>
+            <span
+              className={styles.swatch}
+              style={{ background: 'transparent', border: '2px solid #b91c1c' }}
+              aria-hidden="true"
+            />
+            <span className={styles.legendLabel}>Less liabilities</span>
+            <span className={styles.legendValue}>−{gbp(balanceSheet.liabilities.totalLiabilities)}</span>
+          </div>
+        )}
       </div>
     </section>
   );

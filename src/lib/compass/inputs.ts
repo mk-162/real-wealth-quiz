@@ -30,6 +30,7 @@ import type {
   NIYearsBand,
   MortgageEndBand,
   RetirementSpendRatio,
+  RiskProfile,
 } from './types';
 
 // -----------------------------------------------------------------------------
@@ -50,18 +51,26 @@ export const INPUT_QUESTION_IDS = {
 
   // §2 Wealth — Money today + Assets snapshot (3.5, 4.A.3)
   householdGrossIncome: 'income_band',
+  householdGrossIncomeRaw: 'income_amount',        // optional exact slider companion
   totalEstate: 'estate_band',
   earnersOneOrTwo: 'earners_one_or_two',
   mainHome: 'main_home',
+  mainHomeValue: 'main_home_value',                // direct slider (B1)
   mortgageBalance: 'mortgage_balance',             // under 4.A.3 — a BAND, not a number
+  mortgageBalanceRaw: 'mortgage_balance_amount',   // optional exact slider companion
   pensionPots: 'pension_pots',
   pensionTotalBandOld: 'pension_total_band',       // legacy compound band inside 4.A.3
   investmentsBand: 'investments_band',
   otherProperty: 'other_property',
+  otherPropertyValueRaw: 'other_property_value',
+  otherPropertyMortgageBalanceRaw: 'other_property_mortgage_balance',
+  otherPropertyMonthlyRent: 'other_property_monthly_rent',
 
   // §3 Monthly shape (4.A.1)
   essentialMonthlySpend: 'essential_monthly_spend',
+  essentialMonthlySpendRaw: 'essential_monthly_spend_amount',
   nonEssentialMonthlySpend: 'non_essential_monthly_spend',
+  nonEssentialMonthlySpendRaw: 'non_essential_monthly_spend_amount',
 
   // §4 Legacy / Will / LPA (4.B.2)
   passingOnIntent: 'passing_on_intent',
@@ -94,6 +103,21 @@ export const INPUT_QUESTION_IDS = {
   statePensionAmount: 'state_pension_amount_band',
   niQualifyingYears: 'ni_qualifying_years_band',
   retirementSpendRatio: 'retirement_spend_ratio',
+
+  // §9 Tax / risk / household additions (Sprints 2–4)
+  scottishTaxpayer: 'scottish_taxpayer',
+  salarySacrifice: 'salary_sacrifice',
+  riskProfile: 'risk_profile',
+  hasDbPension: 'has_db_pension',
+  dbPensionAnnualIncome: 'db_pension_annual_income',
+  dbPensionStartAge: 'db_pension_start_age',
+
+  // §10 Partner block (C1) and household debt (C3)
+  partnerAge: 'partner_age',
+  partnerGrossIncome: 'partner_gross_income',
+  partnerPensionValue: 'partner_pension_value',
+  personalLoansAmount: 'personal_loans_amount',
+  creditCardAmount: 'credit_card_amount',
 } as const;
 
 // -----------------------------------------------------------------------------
@@ -264,6 +288,47 @@ const STATE_PENSION_AMOUNT_TO_ANNUAL: Record<string, number | undefined> = {
 };
 
 // -----------------------------------------------------------------------------
+// Numeric helpers — preserve raw slider values without collapsing to bands.
+// -----------------------------------------------------------------------------
+
+/**
+ * Coerce a session value to a finite number if it's a number or numeric
+ * string; otherwise return undefined. Used to preserve raw slider inputs
+ * alongside the legacy banded labels.
+ */
+export function numericIfPresent(v: unknown): number | undefined {
+  if (typeof v === 'number' && Number.isFinite(v)) return v;
+  if (typeof v === 'string' && v !== '' && !Number.isNaN(Number(v))) {
+    const n = Number(v);
+    return Number.isFinite(n) ? n : undefined;
+  }
+  return undefined;
+}
+
+/**
+ * Map a raw £ value to the best-fit `WealthBand`. Used as a fallback for
+ * code paths that still type-against the band but received a slider value.
+ * The band itself is no longer the primary signal — `*Raw` fields are.
+ */
+export function numericToWealthBand(amount: number): WealthBand | 0 {
+  if (amount <= 0) return 0;
+  if (amount < 25_000) return '<25k';
+  if (amount < 100_000) return '25-100k';
+  if (amount < 250_000) return '100-250k';
+  if (amount < 500_000) return '250-500k';
+  if (amount < 1_000_000) return '500k-1m';
+  if (amount < 2_000_000) return '1-2m';
+  if (amount < 3_000_000) return '2-3m';
+  return '3m+';
+}
+
+/** Map a raw risk-profile string (cautious/balanced/adventurous) to the typed value. */
+export function lookupRiskProfile(raw: string | undefined): RiskProfile {
+  if (raw === 'cautious' || raw === 'balanced' || raw === 'adventurous') return raw;
+  return 'balanced';
+}
+
+// -----------------------------------------------------------------------------
 // Session-answers shape (what we accept)
 // -----------------------------------------------------------------------------
 
@@ -294,6 +359,15 @@ export function buildCompassInputs(answers: PartialAnswersMap): CompassInputs {
   const getArr = (k: string): string[] => {
     const v = answers[k];
     return Array.isArray(v) ? (v.filter((x) => typeof x === 'string') as string[]) : [];
+  };
+  const getBool = (k: string, fallback: boolean): boolean => {
+    const v = answers[k];
+    if (typeof v === 'boolean') return v;
+    if (typeof v === 'string') {
+      if (v === 'yes' || v === 'true' || v === '1') return true;
+      if (v === 'no' || v === 'false' || v === '0') return false;
+    }
+    return fallback;
   };
 
   /** Look up a value in a band table. If it's a "prefer_not" / "no_idea" / missing answer, return the fallback. */
@@ -367,9 +441,14 @@ export function buildCompassInputs(answers: PartialAnswersMap): CompassInputs {
   // If the 4.E.1 screen fired it overrides everything.
   const pensionDirect = getStr(ids.pensionTotalValue);
   const pensionLegacy = getStr(ids.pensionTotalBandOld);
+  // Numeric value (slider) — preferred over band collapse.
+  const pensionDirectNumeric = numericIfPresent(answers[ids.pensionTotalValue]);
+
   let totalPensionValue: WealthBand | 0;
   if (pensionDirect !== undefined) {
     totalPensionValue = lookup(WEALTH_LABEL_TO_BAND, pensionDirect, '<25k');
+  } else if (pensionDirectNumeric !== undefined) {
+    totalPensionValue = numericToWealthBand(pensionDirectNumeric);
   } else if (pensionLegacy !== undefined) {
     totalPensionValue = lookup(PENSION_LEGACY_LABEL_TO_BAND, pensionLegacy, '<25k');
   } else if (pensionPotsRaw === 'none') {
@@ -394,13 +473,18 @@ export function buildCompassInputs(answers: PartialAnswersMap): CompassInputs {
     answers[ids.isaBalance] !== undefined ||
     answers[ids.giaBalance] !== undefined;
 
+  // Numeric slider values for liquid wealth — preferred over band collapse.
+  const cashNumeric = numericIfPresent(answers[ids.cashSavings]);
+  const isaNumeric = numericIfPresent(answers[ids.isaBalance]);
+  const giaNumeric = numericIfPresent(answers[ids.giaBalance]);
+
   let cashSavings: WealthBand | 0;
   let isaBalance: WealthBand | 0;
   let giaBalance: WealthBand | 0;
   if (hasDirectLiquid) {
-    cashSavings = wealth(ids.cashSavings, '<25k');
-    isaBalance = wealth(ids.isaBalance, 0);
-    giaBalance = wealth(ids.giaBalance, 0);
+    cashSavings = cashNumeric !== undefined ? numericToWealthBand(cashNumeric) : wealth(ids.cashSavings, '<25k');
+    isaBalance = isaNumeric !== undefined ? numericToWealthBand(isaNumeric) : wealth(ids.isaBalance, 0);
+    giaBalance = giaNumeric !== undefined ? numericToWealthBand(giaNumeric) : wealth(ids.giaBalance, 0);
   } else if (legacyInvestmentsRaw !== undefined) {
     // Legacy investments_band is the combined lump — attribute to ISA by default.
     isaBalance = lookup(WEALTH_LABEL_TO_BAND, legacyInvestmentsRaw, 0);
@@ -468,28 +552,49 @@ export function buildCompassInputs(answers: PartialAnswersMap): CompassInputs {
     personalLoans: 0,
     creditCardDebt: 0,
 
+    // §2b Wealth — raw values (preferred when present)
+    totalPensionValueRaw: pensionDirectNumeric,
+    cashSavingsRaw: cashNumeric,
+    isaBalanceRaw: isaNumeric,
+    giaBalanceRaw: giaNumeric,
+
     // §3 Income
     householdGrossIncome: lookup(INCOME_LABEL_TO_BAND, getStr(ids.householdGrossIncome), '50-100k'),
-    isScottishTaxpayer: false,
+    householdGrossIncomeRaw: numericIfPresent(answers[ids.householdGrossIncomeRaw]),
+    isScottishTaxpayer: getBool(ids.scottishTaxpayer, false),
     monthlySavingAmount: lookup(SAVING_LABEL_TO_BAND, getStr(ids.monthlySaving), '<1.5k'),
+    monthlySavingAmountRaw: numericIfPresent(answers[ids.monthlySaving]),
     employerPensionContribPct: lookup(CONTRIB_LABEL_TO_BAND, getStr(ids.employerPensionPct), 'unsure'),
     ownPensionContribPct: lookup(CONTRIB_LABEL_TO_BAND, getStr(ids.ownPensionPct), 'unsure'),
+    employerPensionContribPctRaw: numericIfPresent(answers[ids.employerPensionPct]),
+    ownPensionContribPctRaw: numericIfPresent(answers[ids.ownPensionPct]),
+    salarySacrificeInUse: getBool(ids.salarySacrifice, false),
 
     // §4 Expenses
     essentialMonthlySpend: lookup(ESSENTIAL_SPEND_LABEL_TO_BAND, getStr(ids.essentialMonthlySpend), '1.5-3k'),
     nonEssentialMonthlySpend: lookup(NON_ESSENTIAL_SPEND_LABEL_TO_BAND, getStr(ids.nonEssentialMonthlySpend), '<1.5k'),
+    essentialMonthlySpendRaw: numericIfPresent(answers[ids.essentialMonthlySpendRaw]),
+    nonEssentialMonthlySpendRaw: numericIfPresent(answers[ids.nonEssentialMonthlySpendRaw]),
     retirementSpendRatio: lookup(RETIREMENT_SPEND_LABEL_TO_BAND, getStr(ids.retirementSpendRatio), 'same'),
 
     // §5 Mortgage
     mortgageMonthlyPayment: hasMortgage
       ? lookup(MORTGAGE_PAYMENT_LABEL_TO_BAND, getStr(ids.mortgageMonthlyPayment), '1.5-3k')
       : undefined,
+    mortgageMonthlyPaymentRaw: hasMortgage ? numericIfPresent(answers[ids.mortgageMonthlyPayment]) : undefined,
     mortgageEndAge,
+    mortgageEndAgeRaw: hasMortgage ? numericIfPresent(answers[ids.mortgageEndAge]) : undefined,
 
     // §6 State pension / NI
     statePensionKnown,
     statePensionExpectedAmount,
     niQualifyingYears: lookup(NI_LABEL_TO_BAND, getStr(ids.niQualifyingYears), '20-30'),
+    niQualifyingYearsRaw: numericIfPresent(answers[ids.niQualifyingYears]),
+
+    // §6b Defined Benefit pension (B4)
+    hasDbPension: getBool(ids.hasDbPension, false),
+    dbPensionAnnualIncome: numericIfPresent(answers[ids.dbPensionAnnualIncome]),
+    dbPensionStartAge: numericIfPresent(answers[ids.dbPensionStartAge]),
 
     // §8 Legacy
     totalEstate: estateBand,
@@ -503,7 +608,25 @@ export function buildCompassInputs(answers: PartialAnswersMap): CompassInputs {
     earningsProtectionConfidence: mapEarningsProtection(getNum(ids.earningsProtectionScale, 0)),
 
     // §10 Assumptions
-    riskProfile: 'balanced',
+    riskProfile: lookupRiskProfile(getStr(ids.riskProfile)),
+
+    // Partner block (C1)
+    partnerAge: numericIfPresent(answers[ids.partnerAge]),
+    partnerGrossIncome: numericIfPresent(answers[ids.partnerGrossIncome]),
+    partnerPensionValue: numericIfPresent(answers[ids.partnerPensionValue]),
+
+    // Other property (C2)
+    otherPropertyValueRaw: numericIfPresent(answers[ids.otherPropertyValueRaw]),
+    otherPropertyMortgageBalanceRaw: numericIfPresent(answers[ids.otherPropertyMortgageBalanceRaw]),
+    otherPropertyMonthlyRentRaw: numericIfPresent(answers[ids.otherPropertyMonthlyRent]),
+
+    // Non-mortgage debt (C3)
+    personalLoansRaw: numericIfPresent(answers[ids.personalLoansAmount]),
+    creditCardDebtRaw: numericIfPresent(answers[ids.creditCardAmount]),
+
+    // Home value (B1)
+    mainHomeValueRaw: isHomeOwner ? numericIfPresent(answers[ids.mainHomeValue]) : undefined,
+    mainHomeMortgageBalanceRaw: hasMortgage ? numericIfPresent(answers[ids.mortgageBalanceRaw]) : undefined,
   };
 
   return inputs;

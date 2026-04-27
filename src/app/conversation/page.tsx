@@ -53,29 +53,10 @@ function Questionnaire() {
     firedAwareness,
   } = engine;
 
-  /* Browser-back integration.
-     ----------------------------------------------------------------
-     Without this effect, the browser/device back button navigates the
-     user out of the questionnaire to whatever page they arrived from
-     (usually the homepage) — even when they are mid-flow. Users
-     reasonably expect back to step them one question backward, same
-     as the in-page ← Back button.
-
-     How it works:
-       1. On mount we push a marker history entry ("sentinel") on top
-          of the current /conversation entry. The URL does not change;
-          this entry is only there to catch the next back press.
-       2. When popstate fires (user pressed browser back), we inspect
-          the *new* top-of-stack state.
-            a. If it carries our sentinel, the user is returning to
-               /conversation from /conversation/details — leave them
-               on whatever question they last saw.
-            b. Otherwise our sentinel has just been popped, meaning
-               the user is trying to step back within the flow. If
-               the engine can step back, do it and re-arm the
-               sentinel. If not (they are on the first question), fall
-               through — the browser will advance the back one more
-               step and take them home. */
+  /* Browser-back integration — pushes a sentinel history entry on mount so
+     pressing the device back button steps backward through the questionnaire
+     rather than navigating away. The sentinel is re-armed after each step;
+     if the user is on question 1, the next back press exits to the prior page. */
   const engineRef = useRef(engine);
   useEffect(() => {
     engineRef.current = engine;
