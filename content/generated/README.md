@@ -6,29 +6,28 @@ This folder contains routing support files for the questionnaire.
 
 | File | What it does |
 |---|---|
-| `matrix.json` | Segment/question routing matrix. **Directly edited** — see below. |
-| `rules.json` | Segmentation rules used by the review documentation and routing explanation. |
+| `rules.json` | Segmentation rules (the ranked predicate list that decides which segment each respondent lands in). |
 | `CATALOGUE_CHANGES.md` | Generated notes about catalogue changes. |
 
-## matrix.json — source of truth
+## Where the matrix lives
 
-`matrix.json` is the **directly-edited source of truth** for segment/question routing. It is no longer generated from the `Question Segment Master.xlsx` spreadsheet.
+`matrix.json` was retired in Phase 4 (2026-04-27). The segment × question
+visibility matrix now lives as per-screen `audience:` frontmatter blocks
+under `content/screens/*.md`. Each screen owns the questions in its
+`q_refs` array and gates them per segment via `audience`.
 
-Each entry maps a `questionId` to nine segment flags (`S1`–`S9`) with three possible values:
+To change who sees a question:
 
-| Value | Meaning |
-|---|---|
-| `Y` | Question is shown for this segment |
-| `N` | Question is hidden for this segment |
-| `C` | Question is shown as conditional (contextual reveal) |
+1. Find the owning screen (the one whose `q_refs` lists the questionId).
+2. Edit the `audience:` entry for that questionId, flipping per-segment
+   values between `shown`, `conditional`, and `hidden`.
+3. Run `npm run content:check`.
 
-**To add new question IDs**: add a new object to the array, positioned logically alongside related IDs. Use `Y` for all segments if `segments_served: [all]` in the screen file.
+See `content/screens/README.md` for the full schema and a worked example.
 
-`scripts/parse-segment-master.ts` was the previous generation script. It is now archived/unused — do not run it, as it would overwrite manual additions.
+## rules.json
 
-## Routing Note
-
-For screens with `q_refs`, the matrix is the source of truth for segment visibility. A screen is shown when at least one referenced question is `Y` or `C` for the visitor's segment.
-
-If screen metadata such as `segments_served` or `skip` disagrees with `matrix.json`, treat that as a content/routing inconsistency to resolve.
-
+`rules.json` carries metadata for the 9 segment-assignment rules
+(rank, label, predicate text, description). The executable predicate
+logic lives in `src/lib/segmentation/rules.ts`. Edit the JSON for
+documentation/predicate-text changes; edit the TS for logic changes.

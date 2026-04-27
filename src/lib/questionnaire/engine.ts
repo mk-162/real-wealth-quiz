@@ -32,7 +32,6 @@ import {
   awareness as allAwareness,
   provocations as allProvocations,
 } from '../content';
-import { matrix } from '../questions/matrix';
 import {
   segment as runSegmentation,
   upgradeSegment,
@@ -235,24 +234,26 @@ export function useQuestionnaireEngine(tier: TierSlug): EngineState & EngineActi
     return upgradeSegment(segmentResult.segmentId, q53);
   }, [segmentResult, answers.succession]);
 
-  /* The list of screens this user will see, in order. */
+  /* The list of screens this user will see, in order.
+     Phase 4: a screen with no `audience` block (transitions, intros) is
+     always shown. A screen with an audience block is shown if at least one of
+     its audience entries is `shown` or `conditional` for the current segment.
+     Predicates for `conditional` cells live in segmentation/engine.ts and are
+     applied there at the question-id level — at the screen level we treat
+     `conditional` as "potentially visible" so the screen survives this filter
+     and the engine decides per-question. */
   const visibleScreens = useMemo(() => {
     return screensForTier.filter((s) => {
       if (!upgradedSegmentId) return true;
-      const qRefs = s.q_refs ?? [];
-      if (qRefs.length === 0) {
-        const served = s.segments_served ?? ['all'];
-        return served.includes('all') || served.includes(upgradedSegmentId);
-      }
-      const anyVisible = qRefs.some((qid) => {
-        const row = matrix[qid];
-        if (!row) return false;
-        const cell = row[upgradedSegmentId];
-        return cell === 'Y' || cell === 'C';
+      const audience = s.audience;
+      if (!audience || Object.keys(audience).length === 0) return true;
+      const anyVisible = Object.values(audience).some((cells) => {
+        const v = cells[upgradedSegmentId];
+        return v === 'shown' || v === 'conditional';
       });
       if (!anyVisible && process.env.NODE_ENV !== 'production') {
         console.warn(
-          `[engine] screen ${s.id} hidden — all q_refs (${qRefs.join(', ')}) are N for ${upgradedSegmentId}`,
+          `[engine] screen ${s.id} hidden — every audience entry is hidden for ${upgradedSegmentId}`,
         );
       }
       return anyVisible;

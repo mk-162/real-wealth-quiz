@@ -113,30 +113,36 @@ Change types are grouped by surface. Within each group they're ordered from safe
 
 ---
 
-## 2. Matrix (`content/generated/matrix.json`)
+## 2. Matrix (per-screen `audience:` frontmatter)
 
-> Now authored, not generated. The xlsx pipeline is archived.
+> Phase 4 (S1, 2026-04-27) collapsed `content/generated/matrix.json` into
+> per-screen `audience:` frontmatter blocks. There is no longer a separate
+> matrix file. Each question lives on exactly one owning screen; the screen's
+> audience block gates each of its `q_refs` per segment.
 
-### 2.1 Change a Y/C/N cell
-- **What:** flip a single question × segment cell between Y (shown), C (conditional), N (hidden).
-- **Files touched:** `matrix.json` only. If flipping to C, a predicate for that question must exist in `src/lib/segmentation/engine.ts`.
-- **Invariants:** every row must have exactly one value per segment S1–S9. JSON byte-identical with 2-space indent + trailing newline.
-- **Validation:** `npm run content:check` runs the matrix integrity checks.
+### 2.1 Change a shown / conditional / hidden cell
+- **What:** flip a single question × segment cell between `shown`, `conditional`, `hidden`.
+- **Files touched:** the owning screen file under `content/screens/<n>-<slug>.md` only. If flipping to `conditional`, a predicate for that question must exist in `src/lib/segmentation/engine.ts`.
+- **Invariants:** every audience entry must have exactly one value per segment S1–S9. YAML frontmatter byte-stable (eemeli/yaml document round-trip).
+- **Validation:** `npm run content:check` runs the screen-frontmatter Zod check.
 - **Trigger phrases:** "hide Q5.3 from S1", "show Q4.A.1 to everyone", "make Q3.2 conditional for S6".
+- **Skill:** `change-matrix-cell`.
 
-### 2.2 Add a new matrix row
-- **What:** register a new question id in the matrix with Y/C/N values.
-- **Files touched:** `matrix.json`. Optionally `src/lib/segmentation/engine.ts` for a C predicate.
-- **Invariants:** `questionId` format `Q<major>.<minor>` or `Q<major>.<sub>.<n>` (e.g. `Q4.A.1`). Row must have all 9 segment columns.
-- **Validation:** `npm run content:check`. Integrity scan: every screen's `q_refs` entry must have a matrix row.
-- **Trigger phrases:** "register Q4.A.1 in the matrix", "add a row for the new Compass question".
-
-### 2.3 Remove a matrix row
-- **What:** delete a question row.
-- **Files touched:** `matrix.json`. Also any screen that still references it via `q_refs` (follow-up clean-up).
-- **Invariants:** don't leave dangling q_refs. If removing the row leaves a segment with zero `Y` cells in its question column, that's a red flag.
+### 2.2 Register a new question (formerly "add a matrix row")
+- **What:** a new question enters the system only when a screen declares it. Add it to a screen's `q_refs` array AND add a matching entry to the screen's `audience:` block.
+- **Files touched:** the screen file. Optionally `src/lib/segmentation/engine.ts` for a `conditional` predicate.
+- **Invariants:** `questionId` format `Q<major>.<minor>` or `Q<major>.<sub>.<n>` (e.g. `Q4.A.1`). Audience entry must have all 9 segment columns.
 - **Validation:** `npm run content:check`.
-- **Trigger phrases:** "drop Q10.3 from the matrix".
+- **Trigger phrases:** "register Q4.A.1", "add a new question for the new Compass screen".
+- **Skill:** `add-question-screen` (for new screens) or hand-edit the screen frontmatter (for adding to an existing screen). The `add-matrix-row` skill is RETIRED — its SKILL.md now redirects.
+
+### 2.3 Retire a question (formerly "remove a matrix row")
+- **What:** remove the questionId from the owning screen's `q_refs` and `audience:` block. If the screen now has zero questions, consider deleting the screen file too.
+- **Files touched:** the owning screen file. Possibly the predicate entry in `engine.ts`. Possibly other screens whose conditional_reveal references this input id.
+- **Invariants:** if a segment ends up with zero `shown` cells across all remaining audience entries, that's a red flag — that segment will see almost no questions.
+- **Validation:** `npm run content:check`.
+- **Trigger phrases:** "drop Q10.3", "retire this question everywhere".
+- **Skill:** RETIRED `remove-matrix-row` skill — its SKILL.md now redirects to the manual screen-edit checklist.
 
 ### 2.4 Change a conditional predicate (C cell logic)
 - **What:** edit the predicate function for a question's `C` cell.

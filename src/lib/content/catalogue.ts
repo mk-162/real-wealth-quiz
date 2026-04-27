@@ -22,10 +22,6 @@ export const screens: Screen[] = [
     "layout": "intro",
     "grouped": false,
     "gate_critical": false,
-    "segments_served": [
-      "all"
-    ],
-    "skip": [],
     "tier_limit": [
       "A",
       "B",
@@ -46,10 +42,6 @@ export const screens: Screen[] = [
     "layout": "asymmetric",
     "grouped": false,
     "gate_critical": false,
-    "segments_served": [
-      "all"
-    ],
-    "skip": [],
     "tier_limit": [
       "A",
       "B",
@@ -60,6 +52,19 @@ export const screens: Screen[] = [
     "q_refs": [
       "Q1.1"
     ],
+    "audience": {
+      "Q1.1": {
+        "S1": "shown",
+        "S2": "shown",
+        "S3": "shown",
+        "S4": "shown",
+        "S5": "shown",
+        "S6": "shown",
+        "S7": "shown",
+        "S8": "shown",
+        "S9": "shown"
+      }
+    },
     "logged_as": [
       "intent"
     ],
@@ -117,10 +122,6 @@ export const screens: Screen[] = [
     "layout": "asymmetric",
     "grouped": false,
     "gate_critical": false,
-    "segments_served": [
-      "all"
-    ],
-    "skip": [],
     "tier_limit": [
       "A",
       "B",
@@ -131,6 +132,19 @@ export const screens: Screen[] = [
     "q_refs": [
       "Q1.2"
     ],
+    "audience": {
+      "Q1.2": {
+        "S1": "shown",
+        "S2": "shown",
+        "S3": "shown",
+        "S4": "shown",
+        "S5": "shown",
+        "S6": "shown",
+        "S7": "shown",
+        "S8": "shown",
+        "S9": "shown"
+      }
+    },
     "logged_as": [
       "wealth_definition"
     ],
@@ -196,10 +210,6 @@ export const screens: Screen[] = [
     "layout": "asymmetric",
     "grouped": true,
     "gate_critical": true,
-    "segments_served": [
-      "all"
-    ],
-    "skip": [],
     "tier_limit": [
       "A",
       "B",
@@ -212,6 +222,30 @@ export const screens: Screen[] = [
       "Q2.2",
       "Q2.2a"
     ],
+    "audience": {
+      "Q2.1": {
+        "S1": "shown",
+        "S2": "shown",
+        "S3": "shown",
+        "S4": "shown",
+        "S5": "shown",
+        "S6": "shown",
+        "S7": "shown",
+        "S8": "shown",
+        "S9": "shown"
+      },
+      "Q2.2": {
+        "S1": "shown",
+        "S2": "shown",
+        "S3": "shown",
+        "S4": "shown",
+        "S5": "shown",
+        "S6": "shown",
+        "S7": "shown",
+        "S8": "shown",
+        "S9": "shown"
+      }
+    },
     "logged_as": [
       "age",
       "household",
@@ -363,10 +397,6 @@ export const screens: Screen[] = [
     "layout": "asymmetric",
     "grouped": false,
     "gate_critical": true,
-    "segments_served": [
-      "all"
-    ],
-    "skip": [],
     "tier_limit": [
       "A",
       "B",
@@ -377,6 +407,19 @@ export const screens: Screen[] = [
     "q_refs": [
       "Q2.3"
     ],
+    "audience": {
+      "Q2.3": {
+        "S1": "shown",
+        "S2": "shown",
+        "S3": "shown",
+        "S4": "shown",
+        "S5": "shown",
+        "S6": "shown",
+        "S7": "shown",
+        "S8": "shown",
+        "S9": "shown"
+      }
+    },
     "logged_as": [
       "work_status"
     ],
@@ -425,10 +468,6 @@ export const screens: Screen[] = [
     "layout": "asymmetric",
     "grouped": true,
     "gate_critical": true,
-    "segments_served": [
-      "all"
-    ],
-    "skip": [],
     "tier_limit": [
       "A",
       "B",
@@ -440,6 +479,30 @@ export const screens: Screen[] = [
       "Q3.1",
       "Q4.5"
     ],
+    "audience": {
+      "Q3.1": {
+        "S1": "shown",
+        "S2": "shown",
+        "S3": "shown",
+        "S4": "shown",
+        "S5": "shown",
+        "S6": "shown",
+        "S7": "shown",
+        "S8": "shown",
+        "S9": "shown"
+      },
+      "Q4.5": {
+        "S1": "shown",
+        "S2": "shown",
+        "S3": "shown",
+        "S4": "shown",
+        "S5": "shown",
+        "S6": "shown",
+        "S7": "shown",
+        "S8": "shown",
+        "S9": "shown"
+      }
+    },
     "logged_as": [
       "income_band",
       "estate_band",
@@ -545,10 +608,6 @@ export const screens: Screen[] = [
     "layout": "transition",
     "grouped": false,
     "gate_critical": false,
-    "segments_served": [
-      "all"
-    ],
-    "skip": [],
     "tier_limit": [
       "A",
       "B",
@@ -569,10 +628,6 @@ export const screens: Screen[] = [
     "layout": "transition",
     "grouped": false,
     "gate_critical": false,
-    "segments_served": [
-      "all"
-    ],
-    "skip": [],
     "tier_limit": [
       "A",
       "B",
@@ -592,19 +647,6 @@ export const screens: Screen[] = [
     "layout": "asymmetric",
     "grouped": true,
     "gate_critical": false,
-    "segments_served": [
-      "S2",
-      "S3",
-      "S4",
-      "S5",
-      "S6",
-      "S7",
-      "S8",
-      "S9"
-    ],
-    "skip": [
-      "S1"
-    ],
     "tier_limit": [
       "A",
       "B"
@@ -615,6 +657,30 @@ export const screens: Screen[] = [
       "Q3.2",
       "Q3.3"
     ],
+    "audience": {
+      "Q3.2": {
+        "S1": "hidden",
+        "S2": "shown",
+        "S3": "shown",
+        "S4": "shown",
+        "S5": "shown",
+        "S6": "shown",
+        "S7": "shown",
+        "S8": "shown",
+        "S9": "shown"
+      },
+      "Q3.3": {
+        "S1": "hidden",
+        "S2": "hidden",
+        "S3": "shown",
+        "S4": "shown",
+        "S5": "shown",
+        "S6": "shown",
+        "S7": "shown",
+        "S8": "shown",
+        "S9": "shown"
+      }
+    },
     "logged_as": [
       "essential_monthly_spend",
       "non_essential_monthly_spend"
@@ -696,10 +762,6 @@ export const screens: Screen[] = [
     "layout": "centred",
     "grouped": true,
     "gate_critical": false,
-    "segments_served": [
-      "all"
-    ],
-    "skip": [],
     "tier_limit": [
       "A",
       "B"
@@ -708,6 +770,30 @@ export const screens: Screen[] = [
       "Q3.4",
       "Q3.5"
     ],
+    "audience": {
+      "Q3.4": {
+        "S1": "shown",
+        "S2": "shown",
+        "S3": "shown",
+        "S4": "shown",
+        "S5": "shown",
+        "S6": "shown",
+        "S7": "shown",
+        "S8": "hidden",
+        "S9": "shown"
+      },
+      "Q3.5": {
+        "S1": "hidden",
+        "S2": "shown",
+        "S3": "shown",
+        "S4": "shown",
+        "S5": "shown",
+        "S6": "shown",
+        "S7": "shown",
+        "S8": "shown",
+        "S9": "shown"
+      }
+    },
     "logged_as": [
       "saving_confidence",
       "money_mindset"
@@ -763,10 +849,6 @@ export const screens: Screen[] = [
     "layout": "asymmetric",
     "grouped": true,
     "gate_critical": false,
-    "segments_served": [
-      "all"
-    ],
-    "skip": [],
     "tier_limit": [
       "A",
       "B",
@@ -781,6 +863,41 @@ export const screens: Screen[] = [
       "Q4.3a",
       "Q4.4"
     ],
+    "audience": {
+      "Q4.1": {
+        "S1": "shown",
+        "S2": "shown",
+        "S3": "shown",
+        "S4": "shown",
+        "S5": "shown",
+        "S6": "shown",
+        "S7": "shown",
+        "S8": "shown",
+        "S9": "shown"
+      },
+      "Q4.3": {
+        "S1": "hidden",
+        "S2": "shown",
+        "S3": "shown",
+        "S4": "shown",
+        "S5": "shown",
+        "S6": "shown",
+        "S7": "shown",
+        "S8": "shown",
+        "S9": "shown"
+      },
+      "Q4.4": {
+        "S1": "shown",
+        "S2": "shown",
+        "S3": "shown",
+        "S4": "shown",
+        "S5": "shown",
+        "S6": "shown",
+        "S7": "shown",
+        "S8": "shown",
+        "S9": "shown"
+      }
+    },
     "logged_as": [
       "main_home",
       "main_home_value",
@@ -1002,19 +1119,6 @@ export const screens: Screen[] = [
     "layout": "asymmetric",
     "grouped": false,
     "gate_critical": false,
-    "segments_served": [
-      "S3",
-      "S4",
-      "S6",
-      "S7",
-      "S9"
-    ],
-    "skip": [
-      "S1",
-      "S2",
-      "S5",
-      "S8"
-    ],
     "tier_limit": [
       "A",
       "B"
@@ -1025,6 +1129,19 @@ export const screens: Screen[] = [
       "Q4.2",
       "Q4.2a"
     ],
+    "audience": {
+      "Q4.2": {
+        "S1": "hidden",
+        "S2": "shown",
+        "S3": "shown",
+        "S4": "shown",
+        "S5": "shown",
+        "S6": "shown",
+        "S7": "shown",
+        "S8": "shown",
+        "S9": "shown"
+      }
+    },
     "logged_as": [
       "other_property",
       "other_property_value",
@@ -1136,10 +1253,6 @@ export const screens: Screen[] = [
     "layout": "asymmetric",
     "grouped": false,
     "gate_critical": false,
-    "segments_served": [
-      "all"
-    ],
-    "skip": [],
     "tier_limit": [
       "A",
       "B",
@@ -1150,6 +1263,19 @@ export const screens: Screen[] = [
     "q_refs": [
       "Q2.4"
     ],
+    "audience": {
+      "Q2.4": {
+        "S1": "shown",
+        "S2": "shown",
+        "S3": "shown",
+        "S4": "shown",
+        "S5": "shown",
+        "S6": "shown",
+        "S7": "shown",
+        "S8": "shown",
+        "S9": "shown"
+      }
+    },
     "logged_as": [
       "happy_place"
     ],
@@ -1173,10 +1299,6 @@ export const screens: Screen[] = [
     "layout": "transition",
     "grouped": false,
     "gate_critical": false,
-    "segments_served": [
-      "all"
-    ],
-    "skip": [],
     "tier_limit": [
       "A",
       "B"
@@ -1195,10 +1317,6 @@ export const screens: Screen[] = [
     "layout": "asymmetric",
     "grouped": false,
     "gate_critical": false,
-    "segments_served": [
-      "all"
-    ],
-    "skip": [],
     "tier_limit": [
       "A",
       "B"
@@ -1208,6 +1326,19 @@ export const screens: Screen[] = [
     "q_refs": [
       "Q6.1"
     ],
+    "audience": {
+      "Q6.1": {
+        "S1": "hidden",
+        "S2": "conditional",
+        "S3": "conditional",
+        "S4": "conditional",
+        "S5": "conditional",
+        "S6": "conditional",
+        "S7": "conditional",
+        "S8": "hidden",
+        "S9": "conditional"
+      }
+    },
     "logged_as": [
       "dependency_horizon"
     ],
@@ -1252,19 +1383,6 @@ export const screens: Screen[] = [
     "layout": "asymmetric",
     "grouped": true,
     "gate_critical": false,
-    "segments_served": [
-      "S2",
-      "S3",
-      "S4",
-      "S5",
-      "S6",
-      "S7",
-      "S8",
-      "S9"
-    ],
-    "skip": [
-      "S1"
-    ],
     "tier_limit": [
       "A",
       "B"
@@ -1275,6 +1393,30 @@ export const screens: Screen[] = [
       "Q6.2",
       "Q6.3"
     ],
+    "audience": {
+      "Q6.2": {
+        "S1": "hidden",
+        "S2": "shown",
+        "S3": "shown",
+        "S4": "shown",
+        "S5": "shown",
+        "S6": "shown",
+        "S7": "shown",
+        "S8": "shown",
+        "S9": "shown"
+      },
+      "Q6.3": {
+        "S1": "hidden",
+        "S2": "shown",
+        "S3": "shown",
+        "S4": "shown",
+        "S5": "shown",
+        "S6": "shown",
+        "S7": "shown",
+        "S8": "shown",
+        "S9": "shown"
+      }
+    },
     "logged_as": [
       "passing_on_intent",
       "will_and_lpa_status"
@@ -1361,19 +1503,6 @@ export const screens: Screen[] = [
     "layout": "asymmetric",
     "grouped": true,
     "gate_critical": false,
-    "segments_served": [
-      "S2",
-      "S3",
-      "S4",
-      "S5",
-      "S6",
-      "S7",
-      "S9"
-    ],
-    "skip": [
-      "S1",
-      "S8"
-    ],
     "tier_limit": [
       "A",
       "B"
@@ -1384,6 +1513,30 @@ export const screens: Screen[] = [
       "Q8.1",
       "Q8.2"
     ],
+    "audience": {
+      "Q8.1": {
+        "S1": "conditional",
+        "S2": "conditional",
+        "S3": "shown",
+        "S4": "shown",
+        "S5": "shown",
+        "S6": "conditional",
+        "S7": "conditional",
+        "S8": "hidden",
+        "S9": "conditional"
+      },
+      "Q8.2": {
+        "S1": "hidden",
+        "S2": "conditional",
+        "S3": "shown",
+        "S4": "shown",
+        "S5": "shown",
+        "S6": "conditional",
+        "S7": "conditional",
+        "S8": "hidden",
+        "S9": "conditional"
+      }
+    },
     "logged_as": [
       "earnings_protection_scale",
       "life_cover_status"
@@ -1436,10 +1589,6 @@ export const screens: Screen[] = [
     "layout": "transition",
     "grouped": false,
     "gate_critical": false,
-    "segments_served": [
-      "all"
-    ],
-    "skip": [],
     "tier_limit": [
       "A",
       "B"
@@ -1458,19 +1607,6 @@ export const screens: Screen[] = [
     "layout": "asymmetric",
     "grouped": true,
     "gate_critical": false,
-    "segments_served": [
-      "S2",
-      "S3",
-      "S4",
-      "S5",
-      "S6",
-      "S7",
-      "S8",
-      "S9"
-    ],
-    "skip": [
-      "S1"
-    ],
     "tier_limit": [
       "A",
       "B"
@@ -1481,6 +1617,30 @@ export const screens: Screen[] = [
       "Q7.1",
       "Q7.2"
     ],
+    "audience": {
+      "Q7.1": {
+        "S1": "shown",
+        "S2": "shown",
+        "S3": "shown",
+        "S4": "shown",
+        "S5": "shown",
+        "S6": "shown",
+        "S7": "shown",
+        "S8": "hidden",
+        "S9": "shown"
+      },
+      "Q7.2": {
+        "S1": "hidden",
+        "S2": "shown",
+        "S3": "shown",
+        "S4": "shown",
+        "S5": "shown",
+        "S6": "shown",
+        "S7": "shown",
+        "S8": "shown",
+        "S9": "shown"
+      }
+    },
     "logged_as": [
       "target_retirement_age",
       "retirement_feel"
@@ -1541,10 +1701,6 @@ export const screens: Screen[] = [
     "layout": "centred",
     "grouped": false,
     "gate_critical": false,
-    "segments_served": [
-      "all"
-    ],
-    "skip": [],
     "tier_limit": [
       "A",
       "B"
@@ -1552,6 +1708,19 @@ export const screens: Screen[] = [
     "q_refs": [
       "Q7.3"
     ],
+    "audience": {
+      "Q7.3": {
+        "S1": "hidden",
+        "S2": "hidden",
+        "S3": "shown",
+        "S4": "shown",
+        "S5": "shown",
+        "S6": "shown",
+        "S7": "shown",
+        "S8": "shown",
+        "S9": "shown"
+      }
+    },
     "logged_as": [
       "state_pension_awareness"
     ],
@@ -1591,19 +1760,6 @@ export const screens: Screen[] = [
     "layout": "transition",
     "grouped": false,
     "gate_critical": false,
-    "segments_served": [
-      "S5",
-      "S6"
-    ],
-    "skip": [
-      "S1",
-      "S2",
-      "S3",
-      "S4",
-      "S7",
-      "S8",
-      "S9"
-    ],
     "tier_limit": [
       "A",
       "B"
@@ -1623,19 +1779,6 @@ export const screens: Screen[] = [
     "layout": "asymmetric",
     "grouped": true,
     "gate_critical": false,
-    "segments_served": [
-      "S5",
-      "S6"
-    ],
-    "skip": [
-      "S1",
-      "S2",
-      "S3",
-      "S4",
-      "S7",
-      "S8",
-      "S9"
-    ],
     "tier_limit": [
       "A",
       "B"
@@ -1646,6 +1789,19 @@ export const screens: Screen[] = [
       "Q5.1",
       "Q5.1a"
     ],
+    "audience": {
+      "Q5.1": {
+        "S1": "hidden",
+        "S2": "hidden",
+        "S3": "hidden",
+        "S4": "hidden",
+        "S5": "shown",
+        "S6": "shown",
+        "S7": "hidden",
+        "S8": "hidden",
+        "S9": "conditional"
+      }
+    },
     "logged_as": [
       "role",
       "business_value_band"
@@ -1739,19 +1895,6 @@ export const screens: Screen[] = [
     "layout": "asymmetric",
     "grouped": true,
     "gate_critical": false,
-    "segments_served": [
-      "S5",
-      "S6"
-    ],
-    "skip": [
-      "S1",
-      "S2",
-      "S3",
-      "S4",
-      "S7",
-      "S8",
-      "S9"
-    ],
     "tier_limit": [
       "A",
       "B"
@@ -1762,6 +1905,30 @@ export const screens: Screen[] = [
       "Q5.2",
       "Q5.3"
     ],
+    "audience": {
+      "Q5.2": {
+        "S1": "hidden",
+        "S2": "hidden",
+        "S3": "hidden",
+        "S4": "hidden",
+        "S5": "shown",
+        "S6": "shown",
+        "S7": "hidden",
+        "S8": "hidden",
+        "S9": "conditional"
+      },
+      "Q5.3": {
+        "S1": "hidden",
+        "S2": "hidden",
+        "S3": "hidden",
+        "S4": "hidden",
+        "S5": "shown",
+        "S6": "shown",
+        "S7": "hidden",
+        "S8": "hidden",
+        "S9": "conditional"
+      }
+    },
     "logged_as": [
       "extraction_mix",
       "succession"
@@ -1844,10 +2011,6 @@ export const screens: Screen[] = [
     "layout": "transition",
     "grouped": false,
     "gate_critical": false,
-    "segments_served": [
-      "all"
-    ],
-    "skip": [],
     "tier_limit": [
       "A",
       "B",
@@ -1867,10 +2030,6 @@ export const screens: Screen[] = [
     "layout": "centred",
     "grouped": false,
     "gate_critical": false,
-    "segments_served": [
-      "all"
-    ],
-    "skip": [],
     "tier_limit": [
       "A",
       "B"
@@ -1878,6 +2037,19 @@ export const screens: Screen[] = [
     "q_refs": [
       "Q10.1"
     ],
+    "audience": {
+      "Q10.1": {
+        "S1": "hidden",
+        "S2": "shown",
+        "S3": "shown",
+        "S4": "shown",
+        "S5": "shown",
+        "S6": "shown",
+        "S7": "shown",
+        "S8": "shown",
+        "S9": "shown"
+      }
+    },
     "logged_as": [
       "tradeoff_pair_1",
       "tradeoff_pair_2",
@@ -1944,10 +2116,6 @@ export const screens: Screen[] = [
     "layout": "centred",
     "grouped": false,
     "gate_critical": false,
-    "segments_served": [
-      "all"
-    ],
-    "skip": [],
     "tier_limit": [
       "A",
       "B"
@@ -1955,6 +2123,19 @@ export const screens: Screen[] = [
     "q_refs": [
       "Q10.2"
     ],
+    "audience": {
+      "Q10.2": {
+        "S1": "shown",
+        "S2": "shown",
+        "S3": "shown",
+        "S4": "shown",
+        "S5": "shown",
+        "S6": "shown",
+        "S7": "shown",
+        "S8": "shown",
+        "S9": "shown"
+      }
+    },
     "logged_as": [
       "one_thing"
     ],
@@ -2014,10 +2195,6 @@ export const screens: Screen[] = [
     "layout": "centred",
     "grouped": false,
     "gate_critical": false,
-    "segments_served": [
-      "all"
-    ],
-    "skip": [],
     "tier_limit": [
       "A",
       "B",
@@ -2026,6 +2203,19 @@ export const screens: Screen[] = [
     "q_refs": [
       "Q10.3"
     ],
+    "audience": {
+      "Q10.3": {
+        "S1": "shown",
+        "S2": "shown",
+        "S3": "shown",
+        "S4": "shown",
+        "S5": "shown",
+        "S6": "shown",
+        "S7": "shown",
+        "S8": "shown",
+        "S9": "shown"
+      }
+    },
     "logged_as": [
       "urgency"
     ],
@@ -2068,10 +2258,6 @@ export const screens: Screen[] = [
     "layout": "asymmetric",
     "grouped": true,
     "gate_critical": false,
-    "segments_served": [
-      "all"
-    ],
-    "skip": [],
     "tier_limit": [
       "A",
       "B"
@@ -2082,6 +2268,30 @@ export const screens: Screen[] = [
       "Q9.1",
       "Q9.2"
     ],
+    "audience": {
+      "Q9.1": {
+        "S1": "shown",
+        "S2": "shown",
+        "S3": "shown",
+        "S4": "shown",
+        "S5": "shown",
+        "S6": "shown",
+        "S7": "shown",
+        "S8": "shown",
+        "S9": "shown"
+      },
+      "Q9.2": {
+        "S1": "conditional",
+        "S2": "conditional",
+        "S3": "conditional",
+        "S4": "conditional",
+        "S5": "conditional",
+        "S6": "conditional",
+        "S7": "conditional",
+        "S8": "conditional",
+        "S9": "conditional"
+      }
+    },
     "logged_as": [
       "current_adviser",
       "whats_missing"
@@ -2172,10 +2382,6 @@ export const screens: Screen[] = [
     "layout": "asymmetric",
     "grouped": false,
     "gate_critical": false,
-    "segments_served": [
-      "all"
-    ],
-    "skip": [],
     "tier_limit": [
       "A",
       "B",
@@ -2184,6 +2390,19 @@ export const screens: Screen[] = [
     "q_refs": [
       "Q4.A.1"
     ],
+    "audience": {
+      "Q4.A.1": {
+        "S1": "shown",
+        "S2": "shown",
+        "S3": "shown",
+        "S4": "shown",
+        "S5": "shown",
+        "S6": "shown",
+        "S7": "shown",
+        "S8": "shown",
+        "S9": "shown"
+      }
+    },
     "logged_as": [
       "pension_total_value",
       "has_db_pension",
@@ -2267,10 +2486,6 @@ export const screens: Screen[] = [
     "layout": "asymmetric",
     "grouped": true,
     "gate_critical": false,
-    "segments_served": [
-      "all"
-    ],
-    "skip": [],
     "tier_limit": [
       "A",
       "B",
@@ -2281,6 +2496,41 @@ export const screens: Screen[] = [
       "Q4.A.3",
       "Q4.A.4"
     ],
+    "audience": {
+      "Q4.A.2": {
+        "S1": "shown",
+        "S2": "shown",
+        "S3": "shown",
+        "S4": "shown",
+        "S5": "shown",
+        "S6": "shown",
+        "S7": "shown",
+        "S8": "shown",
+        "S9": "shown"
+      },
+      "Q4.A.3": {
+        "S1": "shown",
+        "S2": "shown",
+        "S3": "shown",
+        "S4": "shown",
+        "S5": "shown",
+        "S6": "shown",
+        "S7": "shown",
+        "S8": "shown",
+        "S9": "shown"
+      },
+      "Q4.A.4": {
+        "S1": "shown",
+        "S2": "shown",
+        "S3": "shown",
+        "S4": "shown",
+        "S5": "shown",
+        "S6": "shown",
+        "S7": "shown",
+        "S8": "shown",
+        "S9": "shown"
+      }
+    },
     "logged_as": [
       "cash_savings_band",
       "isa_balance_band",
@@ -2335,10 +2585,6 @@ export const screens: Screen[] = [
     "layout": "asymmetric",
     "grouped": true,
     "gate_critical": false,
-    "segments_served": [
-      "all"
-    ],
-    "skip": [],
     "tier_limit": [
       "A",
       "B",
@@ -2350,6 +2596,52 @@ export const screens: Screen[] = [
       "Q4.C.1",
       "Q4.C.2"
     ],
+    "audience": {
+      "Q4.B.1": {
+        "S1": "shown",
+        "S2": "shown",
+        "S3": "shown",
+        "S4": "shown",
+        "S5": "shown",
+        "S6": "shown",
+        "S7": "shown",
+        "S8": "shown",
+        "S9": "shown"
+      },
+      "Q4.B.2": {
+        "S1": "shown",
+        "S2": "shown",
+        "S3": "shown",
+        "S4": "shown",
+        "S5": "shown",
+        "S6": "shown",
+        "S7": "shown",
+        "S8": "shown",
+        "S9": "shown"
+      },
+      "Q4.C.1": {
+        "S1": "shown",
+        "S2": "shown",
+        "S3": "shown",
+        "S4": "shown",
+        "S5": "shown",
+        "S6": "shown",
+        "S7": "shown",
+        "S8": "shown",
+        "S9": "shown"
+      },
+      "Q4.C.2": {
+        "S1": "shown",
+        "S2": "shown",
+        "S3": "shown",
+        "S4": "shown",
+        "S5": "shown",
+        "S6": "shown",
+        "S7": "shown",
+        "S8": "shown",
+        "S9": "shown"
+      }
+    },
     "logged_as": [
       "monthly_saving_band",
       "employer_pension_pct_band",
@@ -2456,10 +2748,6 @@ export const screens: Screen[] = [
     "layout": "asymmetric",
     "grouped": true,
     "gate_critical": false,
-    "segments_served": [
-      "all"
-    ],
-    "skip": [],
     "tier_limit": [
       "A",
       "B",
@@ -2470,6 +2758,41 @@ export const screens: Screen[] = [
       "Q4.D.2",
       "Q4.D.3"
     ],
+    "audience": {
+      "Q4.D.1": {
+        "S1": "shown",
+        "S2": "shown",
+        "S3": "shown",
+        "S4": "shown",
+        "S5": "shown",
+        "S6": "shown",
+        "S7": "shown",
+        "S8": "shown",
+        "S9": "shown"
+      },
+      "Q4.D.2": {
+        "S1": "shown",
+        "S2": "shown",
+        "S3": "shown",
+        "S4": "shown",
+        "S5": "shown",
+        "S6": "shown",
+        "S7": "shown",
+        "S8": "shown",
+        "S9": "shown"
+      },
+      "Q4.D.3": {
+        "S1": "shown",
+        "S2": "shown",
+        "S3": "shown",
+        "S4": "shown",
+        "S5": "shown",
+        "S6": "shown",
+        "S7": "shown",
+        "S8": "shown",
+        "S9": "shown"
+      }
+    },
     "logged_as": [
       "state_pension_amount_band",
       "ni_qualifying_years_band",
@@ -2545,10 +2868,6 @@ export const screens: Screen[] = [
     "layout": "asymmetric",
     "grouped": false,
     "gate_critical": false,
-    "segments_served": [
-      "all"
-    ],
-    "skip": [],
     "tier_limit": [
       "A",
       "B",

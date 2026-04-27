@@ -2,10 +2,21 @@
  * The segment-aware question engine.
  *
  * Takes the five gating answers and returns the ordered list of question ids
- * the user will be asked, honouring the Y/C/N matrix. Conditional (C) cells
- * require an additional predicate to fire — those predicates live here, close
- * to the matrix they modify, so the whole conditional surface is legible in
- * one file.
+ * the user will be asked, honouring the per-screen audience block.
+ *
+ * Phase 4: audience now lives on each screen as `audience: { Q3.2: { S1: …,
+ * S2: …, … }, Q3.3: { … } }`. The matrix loader walks screens to build a flat
+ * `SegmentMatrix` keyed by questionId, plus a canonical `questionOrder` (in
+ * screen-file order). This engine consumes those two structures so the
+ * iteration logic stays unchanged from the pre-Phase-4 implementation.
+ *
+ * `Y` (shown), `C` (conditional), `N` (hidden) are the legacy cell labels —
+ * they correspond 1:1 to `shown` / `conditional` / `hidden` in the screen
+ * frontmatter.
+ *
+ * Conditional (`C`) cells require an additional predicate to fire — those
+ * predicates are keyed by QuestionId, NOT by screen id. A screen with multiple
+ * questions can have one predicate per question, each gated independently.
  */
 import { matrix, questionOrder } from '../questions/matrix';
 import { assignSegment } from './rules';
@@ -19,6 +30,9 @@ import type {
  * Conditional predicates — the "C" cells in the matrix. Each predicate is a
  * single function keyed by QuestionId. If a cell is C and the predicate
  * returns true, the question is asked; otherwise it is skipped silently.
+ *
+ * Keep predicates question-keyed (not screen-keyed) so a screen with multiple
+ * questions can gate each one independently.
  */
 const conditionals: Partial<Record<QuestionId, (a: GatingAnswers) => boolean>> = {
   /* Q3.2 essential spend — asked of HNW only if they left Q3.1 answered (not prefer_not). */
@@ -46,7 +60,7 @@ export function buildQuestionList(
 
   for (const id of questionOrder) {
     const row = matrix[id];
-    if (!row) continue; /* a new question in the order list with no matrix row yet */
+    if (!row) continue; /* a question id not yet wired into a screen's audience */
 
     const cell = row[segmentId];
     if (cell === 'N') continue;

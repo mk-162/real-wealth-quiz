@@ -41,12 +41,11 @@ The app validates this structure with `content/schema.ts`.
 | `layout` | Screen layout. Allowed values: `asymmetric`, `centred`, `transition`, `intro`. |
 | `grouped` | Whether the screen is treated as a grouped set of inputs. Usually `false`. |
 | `gate_critical` | Whether the screen is essential for assigning the main segment. Use cautiously. |
-| `segments_served` | Documentation/intended audience for the screen. When `q_refs` exists, the routing matrix is the source of truth. |
-| `skip` | Documentation/intended skipped segments. When `q_refs` exists, the routing matrix is the source of truth. |
 | `tier_limit` | Questionnaire lengths that include the screen. `A` = thorough, `B` = standard, `C` = quick. |
 | `image_family` | Image asset family/category for the visual treatment. |
 | `image_direction` | Art direction prompt or note for the image. |
-| `q_refs` | Links the screen to question IDs in the routing matrix, such as `Q4.2`. |
+| `q_refs` | Links the screen to question IDs the screen owns, such as `Q4.2`. |
+| `audience` | Per-question gating per segment. See below. |
 | `logged_as` | Answer keys saved from this screen, such as `other_property`. |
 | `conditional_logic` | Optional free-form note for complex routing or reveal rules. |
 | `inputs` | The form controls shown on the screen. See below. |
@@ -54,11 +53,48 @@ The app validates this structure with `content/schema.ts`.
 
 ## Routing Rule
 
-If a screen has `q_refs`, the app checks the routing matrix for those question IDs. A screen is shown for a segment when at least one referenced question is `Y` or `C` for that segment.
+Each screen owns one or more questions (`q_refs`). For every owned question
+the screen carries an `audience:` entry mapping each segment S1–S9 to one of
+three values:
 
-That means `segments_served` and `skip` are useful documentation, but the matrix is the source of truth when `q_refs` is present.
+- `shown` — this segment always sees the question.
+- `conditional` — this segment sees the question only if the engine
+  predicate (in `src/lib/segmentation/engine.ts`, keyed by question id)
+  returns true.
+- `hidden` — this segment never sees the question.
 
-If a screen has no `q_refs`, the app falls back to `segments_served`.
+A screen is shown for a segment if AT LEAST ONE of its audience entries is
+`shown` or `conditional` for that segment. Per-question conditional gating
+then runs at the question level inside the screen.
+
+Screens with NO audience block (transitions, intros) are always shown.
+
+Example:
+
+```yaml
+q_refs: ["Q3.2", "Q3.3"]
+audience:
+  "Q3.2":
+    S1: hidden
+    S2: shown
+    S3: shown
+    S4: shown
+    S5: shown
+    S6: shown
+    S7: shown
+    S8: shown
+    S9: shown
+  "Q3.3":
+    S1: hidden
+    S2: hidden
+    S3: shown
+    ...
+```
+
+Some `q_refs` may not have an audience entry — typically follow-up
+"a-suffix" inputs like `Q4.1a` that are gated by sibling-input
+`conditional_reveal` rules at the input level. The engine never iterates
+those independently; they ride along with their parent question.
 
 ## Input Fields
 
@@ -139,11 +175,16 @@ Use the empty form when the section default doesn't fit the specific question. L
 
 Key points:
 
-- `q_refs: ["Q4.2", "Q4.2a"]` links the screen to the routing matrix.
+- `q_refs: ["Q4.2", "Q4.2a"]` lists the question ids the screen owns. Only the
+  ones that need engine-level gating get an `audience:` entry — `Q4.2a` is a
+  sibling-reveal follow-up gated at the input level, so it has no audience
+  entry.
+- `audience: { "Q4.2": { S1: shown, ..., S9: shown } }` carries the per-segment
+  visibility for `Q4.2`.
 - `logged_as: [other_property, held_in_limited_company]` records both answers.
 - `other_property` is the main required radio field.
 - Choosing `two_or_more` or `portfolio` reveals `held_in_limited_company`.
-- `held_in_limited_company` is optional and asks whether any property is held in a limited company.
-- `tier_limit: [A, B]` means the screen appears in thorough and standard flows, not quick.
-- If the screen metadata and matrix disagree about segment visibility, the matrix wins because `q_refs` exists.
+- `held_in_limited_company` is optional and asks whether any property is held
+  in a limited company.
+- `tier_limit: [A, B, C]` means the screen appears in all three flow lengths.
 

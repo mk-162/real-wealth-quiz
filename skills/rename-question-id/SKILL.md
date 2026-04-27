@@ -9,16 +9,16 @@ description: Rename a question id (e.g. `Q3.1` → `Q3.1a`) across the matrix, e
 ## What this skill does
 
 Performs a transactional rename of a `questionId` across every file that references it:
-- `content/generated/matrix.json` — the row's `questionId` field.
-- `content/screens/*.md` — every screen's `q_refs` entry.
+- `content/screens/*.md` — every screen's `q_refs` entry AND its `audience:` block (the audience key is also keyed by questionId).
 - `content/provocations/*.md` + `content/awareness-checks/*.md` — any trigger DSL referencing the id (rare but possible).
 - `src/lib/segmentation/engine.ts` — any predicate keyed on the id.
+- `src/lib/questions/matrix.ts` — the hardcoded `questionOrder` array entry.
 - `src/lib/compass/inputs.ts` — any input-band mapper keyed on the id.
 - Any other code reference.
 
 ## Background
 
-Question ids are foreign keys into the matrix. A silent rename (change matrix row only, don't update screens) breaks the runtime: screens with the old q_ref fail to look up their visibility row.
+Question ids are foreign keys into the audience block on the owning screen. A silent rename (change one place, miss the others) breaks the runtime: the engine fails to find the audience row by qid and silently skips the question.
 
 The admin has a "rename question id" transactional action that does the cascade in one atomic commit. This skill documents the hand-edit equivalent.
 
@@ -40,13 +40,13 @@ The admin has a "rename question id" transactional action that does the cascade 
    cd master_template
    grep -rn "\"Q3.1\"" content/ src/
    grep -rn "'Q3.1'" content/ src/
-   grep -rn "Q3.1" content/generated/matrix.json
    ```
    Capture every hit. This is the work list.
 
 3. **Plan the rename. Each hit becomes one edit:**
-   - Matrix row: `"questionId": "Q3.1"` → `"questionId": "Q3.1a"`.
-   - Screen `q_refs`: `"Q3.1"` → `"Q3.1a"` in every affected screen.
+   - Owning screen `q_refs`: `"Q3.1"` → `"Q3.1a"`.
+   - Owning screen `audience:` key: `"Q3.1":` → `"Q3.1a":`.
+   - `src/lib/questions/matrix.ts` `questionOrder` array entry.
    - Engine predicate: `'Q3.1': (a) => ...` key renamed.
    - Trigger DSL: very rare; rename in place.
 
@@ -66,8 +66,8 @@ The admin has a "rename question id" transactional action that does the cascade 
 ## Files touched
 
 Many, by design:
-- `master_template/content/generated/matrix.json` (1 row).
-- `master_template/content/screens/*.md` (every screen that referenced the old id).
+- `master_template/content/screens/*.md` — owning screen's `q_refs` entry AND its `audience:` key.
+- `master_template/src/lib/questions/matrix.ts` — the `questionOrder` array entry.
 - `master_template/src/lib/segmentation/engine.ts` (if predicate exists).
 - `master_template/src/lib/compass/inputs.ts` (if band-mapper keyed on the id).
 - Any provocation / awareness file with trigger DSL that names the id (very rare).
@@ -87,18 +87,17 @@ Many, by design:
 
 **User:** "Rename Q3.1 to Q3.1a to make room for a new Q3.1 subquestion."
 
-Grep: let's say 5 hits.
-- `content/generated/matrix.json` — 1 hit (row key).
-- `content/screens/3.1-what-brought-you.md` — 1 hit (`q_refs`).
-- `src/lib/segmentation/engine.ts` — 0 hits (Q3.1 is Y-everywhere, no predicate).
+Grep: let's say a handful of hits.
+- `content/screens/3.5-money-today.md` — 2 hits (`q_refs` entry + `audience:` key for Q3.1).
+- `src/lib/questions/matrix.ts` — 1 hit (`questionOrder` entry).
+- `src/lib/segmentation/engine.ts` — 0 hits (Q3.1 has no predicate).
 - `src/lib/compass/inputs.ts` — 0 hits.
-- Other content — 0.
 
-Plan: 2 edits. Execute. Validate. Re-grep — expect zero. Summary:
+Plan: 3 edits. Execute. Validate. Re-grep — expect zero. Summary:
 
 > Renamed `Q3.1` → `Q3.1a` across 2 files:
-> - `content/generated/matrix.json` (row key)
-> - `content/screens/3.1-what-brought-you.md` (q_refs)
+> - `content/screens/3.5-money-today.md` (q_refs entry + audience key)
+> - `src/lib/questions/matrix.ts` (questionOrder entry)
 >
 > No engine predicates, no trigger DSL, no compass mapper referenced the old id. Zero residual hits on `Q3.1` post-rename. Now safe to add a new `Q3.1` for the new subquestion.
 
@@ -106,22 +105,22 @@ Plan: 2 edits. Execute. Validate. Re-grep — expect zero. Summary:
 
 **User:** "Rename Q5.2 to Q5.2a — we're adding branching."
 
-Q5.2 is referenced in matrix, in a screen, and has a conditional predicate. All three files flipped in one commit.
+Q5.2 is referenced in `4.C1.2-taking-money-out.md` (q_refs + audience key), in `src/lib/questions/matrix.ts` (questionOrder), and has a conditional predicate in `engine.ts`. All three files flipped in one commit.
 
 ### Example 3 — don't do this: rename in pieces
 
-Bad: rename matrix row today, rename screen tomorrow. Between commits, every user session targeting Q5.2 at runtime fails its visibility lookup. Always atomic.
+Bad: rename `q_refs` today, rename `audience:` key tomorrow. Between commits the engine's audience lookup misses the new id and silently skips the question. Always atomic.
 
 ## When NOT to use this skill
 
 - **Change cell values** → `change-matrix-cell`.
-- **Add a new matrix row** → `add-matrix-row`.
+- **Add a new question id** → `add-question-screen` (creates the screen + audience together).
 - **Rename an option value (not a question id)** → `change-answer-option` (with its own cascade).
 - **Restructure a whole section's numbering** — use this skill iteratively but plan the sequence carefully; each rename is atomic.
 
 ## Related skills
 
-- `add-matrix-row`, `change-matrix-cell`, `change-engine-predicate`, `change-answer-option`.
+- `add-question-screen`, `change-matrix-cell`, `change-engine-predicate`, `change-answer-option`.
 
 ## Gotchas
 

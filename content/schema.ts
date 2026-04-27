@@ -159,6 +159,26 @@ export const inputSchema = z.object({
 });
 export type Input = z.infer<typeof inputSchema>;
 
+/**
+ * The three audience cell values per (question, segment) pair.
+ *   shown        — always asked (was "Y")
+ *   conditional  — asked only if the engine predicate fires (was "C")
+ *   hidden       — never asked (was "N")
+ *
+ * After Phase 4, audience lives on each screen rather than a separate matrix
+ * file. The screen's `q_refs` listing names the questions the screen owns;
+ * `audience` carries one entry per qref (only those the engine should iterate),
+ * each entry a full S1-S9 map.
+ */
+export const audienceCell = z.enum(['shown', 'conditional', 'hidden']);
+export type AudienceCell = z.infer<typeof audienceCell>;
+
+export const audienceMap = z.record(
+  segmentId,
+  audienceCell,
+);
+export type AudienceMap = z.infer<typeof audienceMap>;
+
 export const screenFrontmatter = z.object({
   id: z.string(),
   screen_number: z.string(),
@@ -167,12 +187,27 @@ export const screenFrontmatter = z.object({
   layout: z.enum(['asymmetric', 'centred', 'transition', 'intro']),
   grouped: z.boolean().default(false),
   gate_critical: z.boolean().default(false),
-  segments_served: z.array(z.string()).default(['all']),
-  skip: z.array(z.string()).default([]),
   tier_limit: z.array(tier).default(['A', 'B', 'C']),
   image_family: z.string().optional(),
   image_direction: z.string().optional(),
+  /**
+   * Question ids the screen owns. The first ids in this list are typically
+   * those the engine iterates (matching keys in `audience` below); follow-up
+   * "a-suffix" inputs (e.g. `Q4.1a`) live in `inputs` and are gated by
+   * sibling reveals — they don't need an audience entry.
+   */
   q_refs: z.array(z.string()).default([]),
+  /**
+   * Per-question audience block. Keys MUST be a subset of `q_refs`. Each value
+   * is a full S1-S9 map of `shown | conditional | hidden`. Questions absent
+   * from this map are never iterated by the engine. Screens with no questions
+   * (transitions, intros) omit `audience` entirely.
+   *
+   * For `conditional` cells, the engine looks up a predicate keyed by question
+   * id in `src/lib/segmentation/engine.ts`. If no predicate exists, the
+   * question is silently skipped.
+   */
+  audience: z.record(z.string(), audienceMap).optional(),
   logged_as: z.array(z.string()).default([]),
   conditional_logic: z.string().optional(),
   inputs: z.array(inputSchema).default([]),

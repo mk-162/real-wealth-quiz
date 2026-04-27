@@ -1,112 +1,59 @@
-<!-- _AUDIT.md entry: 2.3 -->
 ---
 name: remove-matrix-row
-description: Delete a question row from `content/generated/matrix.json`. Use this skill whenever the user asks to drop a matrix row, remove a question from the matrix entirely, retire a q_ref, or clean up an orphan row. Triggers on phrasings like "drop Q10.3 from the matrix", "remove the old Q2.5 row", or "retire this question everywhere".
+description: RETIRED in Phase 4. Matrix rows no longer exist as a separate concept. To retire a question, remove its q_ref entry and audience entry from the owning screen file (and remove the input definition if it's no longer used). To retire a whole screen, delete the markdown file under `content/screens/`. Use `change-matrix-cell` if you only want to hide it from all segments.
 ---
 
-# Remove a matrix row
+# Remove a matrix row — RETIRED
 
-## What this skill does
+## What changed
 
-Deletes one row from `content/generated/matrix.json` and, in the same pass, surfaces every screen whose `q_refs` still points at the removed id — those are dangling references to clean up.
+Phase 4 of the simplification plan collapsed `content/generated/matrix.json`
+into per-screen `audience:` frontmatter blocks. There is no longer a separate
+matrix file or a notion of a "matrix row" detached from a screen — every
+question lives on exactly one owning screen, and removing the question means
+editing or deleting that screen.
 
-## Inputs you need from the user
+## What to do instead
 
-1. **The `questionId`.** `Q<x.y>`.
-2. **Intended follow-up.** Just remove the row and flag orphans? Or do the full deprecation — remove the row AND the screen that references it? This skill's scope is the matrix; screens are `1.8` (not in this batch).
+- **Want to retire a question completely?**
+  1. Open the owning screen under `master_template/content/screens/`.
+  2. Remove the questionId from the `q_refs` array.
+  3. Remove the matching entry from the `audience:` block.
+  4. Remove or rename the related `inputs[]` entry if no other question on
+     the screen uses it.
+  5. If the screen now has zero questions, consider deleting the screen file
+     entirely (and any orphaned `logged_as` references in code).
+  6. Run `npm run content:check`.
 
-## Workflow
+- **Want to hide a question from every segment but keep the data shape?**
+  Use `change-matrix-cell` to set every segment to `hidden`. The engine
+  silently skips it but the screen + audience entry remains — reversible
+  later.
 
-1. **Confirm the row exists.** Read `matrix.json`. If missing, stop — nothing to remove.
+- **Want to remove a `conditional` predicate?** Use `change-engine-predicate`
+  (delete the entry from the `conditionals` map in
+  `src/lib/segmentation/engine.ts`).
 
-2. **Grep for orphans before deleting.**
-   ```bash
-   cd master_template
-   grep -rn "\"<questionId>\"" content/screens/ src/lib/
-   ```
-   Look for:
-   - Screens with `q_refs: [..., "Q<x.y>", ...]`.
-   - Engine predicates keyed on the id (`'Q<x.y>': (a) => ...`).
-   - Trigger DSL or logged_as referencing it.
+## Cascade checklist when retiring a question
 
-3. **Present the cascade.** List what else mentions the id. Ask the user:
-   - Are they removing the question entirely (including the screen)? If yes, plan that as a separate commit.
-   - Are they leaving a dangling q_ref on purpose (unusual)?
-   - Do they want the matrix row removed but screens to keep their q_refs (breaks at runtime)?
+After removing the question, grep for the questionId across the codebase to
+catch any stragglers:
 
-4. **If a conditional predicate exists on this id, remove it too.** In `engine.ts`, delete the entry in `conditionals`. Confirm with user.
+```bash
+cd master_template
+grep -rn "Q4.B.3" content/ src/lib/
+```
 
-5. **Red flag: zero-Y column.** After removal, check each segment's column: if a segment now has zero `Y` cells across all remaining rows, that segment would see no questions. Surface this — it's almost always a mistake.
+Look for:
 
-6. **Remove the row.** JSON array splice. Preserve 2-space indent, trailing newline.
+- Other screens with `q_refs: [..., "Q4.B.3", ...]` (rare — there's exactly
+  one owning screen per question, but conditional-reveal references on
+  sibling inputs may name it).
+- Engine predicates keyed on the id in `engine.ts`.
+- Trigger DSL or `logged_as` that names the input id.
 
-7. **Validate.**
-   ```bash
-   npm run content:check
-   ```
-   Fails on dangling q_refs — that's the signal to clean up screens next (via audit 1.8 skill).
+## Why this skill is gone
 
-8. **Summarise.** Row removed, orphans surfaced, predicate (if any) removed, any zero-Y columns flagged.
-
-## Files touched
-
-- `master_template/content/generated/matrix.json`.
-- Possibly `master_template/src/lib/segmentation/engine.ts` (predicate removal).
-- Flagged (not edited by this skill): screen files with dangling q_refs.
-
-## Invariants — never break these
-
-- **Never leave a dangling q_ref without flagging.** The runtime skips unmatched q_refs but it's a visible warning.
-- **Never delete a row in the middle of array without checking order.** JSON arrays are ordered; the engine reads in declared order.
-- **A segment with zero Y cells is a red flag.** Confirm intent.
-- **Round-trip fidelity.** `JSON.stringify(arr, null, 2)` + `\n`.
-
-## Examples
-
-### Example 1 — remove a deprecated question
-
-**User:** "Drop Q10.3 — we never used it."
-
-Grep: no screens reference it. No predicate in `engine.ts`. Clean removal.
-
-Delete the row. Summary:
-
-> Removed `Q10.3` from matrix. No orphans. All 9 segment columns still have at least one `Y` cell per question — safe.
-
-### Example 2 — removal with live orphans
-
-**User:** "Drop Q4.B.3 — we're replacing it."
-
-Grep:
-- `content/screens/4.B.3-protection.md` — `q_refs: ["Q4.B.3"]`.
-- No engine predicate.
-
-Present:
-
-> Removing Q4.B.3 while screen `4.B.3-protection.md` still references it will leave a dangling q_ref (the runtime will skip the screen's matrix lookup silently — visible in dev warnings only).
->
-> Options:
-> 1. Remove the row AND the screen in one commit.
-> 2. Remove the q_ref from the screen first, then the row.
-> 3. Hold — you're mid-migration and the screen will be updated separately.
->
-> Which?
-
-### Example 3 — don't do this: silent removal
-
-Bad: user says "drop Q4.B.3"; you delete without grepping; the screen silently breaks.
-
-## When NOT to use this skill
-
-- **Flip cell values** → `change-matrix-cell`.
-- **Remove a predicate but keep the row** → `change-engine-predicate` (set back to `() => true` or rewrite).
-- **Remove the backing screen** → audit 1.8 (not in this batch).
-
-## Related skills
-
-- `change-matrix-cell`, `add-matrix-row`, `change-engine-predicate`.
-
-## Gotchas
-
-- **`content:check` catches dangling q_refs.** Run it — the failure message names the screen. Fix in a follow-up commit.
-- **Don't remove a row to "fix" a screen-level issue.** If a screen is showing wrongly, usually the fix is to flip cells, not delete the row.
+The old `remove-matrix-row` skill manipulated `content/generated/matrix.json`,
+which no longer exists. Keeping the skill alive would mislead future agents
+into trying to delete from a file that's been deleted.

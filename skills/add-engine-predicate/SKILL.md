@@ -30,13 +30,13 @@ Rules:
 
 ## Inputs you need from the user
 
-1. **The `questionId`.** Must be a C cell in matrix.json for at least one segment.
+1. **The `questionId`.** Must be a C cell in the screen's `audience:` block for at least one segment.
 2. **The predicate logic.** Plain English — "skip for retired users", "only ask business owners", "always fire".
 3. **Whether the predicate depends on `GatingAnswers` or a follow-up.** If follow-up, use the `() => true` pattern.
 
 ## Workflow
 
-1. **Verify the cell is C somewhere.** Open `matrix.json`, find the row, check at least one segment is `"C"`. If no C cells, adding a predicate does nothing — redirect to `change-matrix-cell` to set a cell to C first.
+1. **Verify the cell is `conditional` somewhere.** Find the screen owning the questionId (look in `content/screens/*.md` for a `q_refs` containing it), open its `audience:` block, and confirm at least one segment is `conditional` for that question. If no `conditional` cells exist, adding a predicate does nothing — redirect to `change-matrix-cell` to flip a cell first.
 
 2. **Verify the key isn't already in `conditionals`.** If it is, this is `change-engine-predicate`, not `add-engine-predicate`.
 
@@ -89,7 +89,7 @@ Rules:
 
 **User:** "Add a predicate for Q4.B.1 — skip it for retired users."
 
-Check matrix.json: Q4.B.1 has `S7: "C"` (pre-retirees are conditional). Good.
+Check the screen's `audience:` block: Q4.B.1 has `S7: conditional` (pre-retirees are conditional). Good.
 
 Add:
 ```typescript
@@ -119,11 +119,11 @@ User: "Add a predicate for Q1.1." Q1.1 is Y across all 9 segments. A predicate d
 
 - **Change existing logic** → `change-engine-predicate` (Tier 3).
 - **Flip cells Y/C/N** → `change-matrix-cell`.
-- **Add a matrix row** → `add-matrix-row`.
+- **Add a new question** → `add-question-screen` (creates the screen + audience together).
 
 ## Related skills
 
-- `change-matrix-cell`, `change-engine-predicate`, `add-matrix-row`.
+- `change-matrix-cell`, `change-engine-predicate`, `add-question-screen`.
 
 ## Gotchas
 
