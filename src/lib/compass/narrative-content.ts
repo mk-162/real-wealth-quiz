@@ -19,6 +19,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import matter from 'gray-matter';
+import { canPublishInProduction } from '../content/compliance';
 
 // ---------------------------------------------------------------------------
 // Page 08 — Segment CTA from content/segments/S[n]-*.md
@@ -97,11 +98,7 @@ function loadSegmentCtasOnce(): Map<string, SegmentCta> {
 export function loadSegmentCta(segmentId: string): SegmentCta | null {
   const cta = loadSegmentCtasOnce().get(segmentId);
   if (!cta) return null;
-  // Compliance gate is checked in production only; dev/staging are permissive.
-  if (process.env.NODE_ENV === 'production' && process.env.RW_BYPASS_COMPLIANCE !== '1'
-      && cta.compliance_status !== 'approved_to_ship') {
-    return null;
-  }
+  if (!canPublishInProduction(cta.compliance_status)) return null;
   return cta;
 }
 

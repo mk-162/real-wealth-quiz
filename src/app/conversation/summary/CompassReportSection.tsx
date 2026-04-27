@@ -20,6 +20,7 @@
 import Image from 'next/image';
 import { fixtureById, buildReport, scoreAllTiles } from '@/lib/compass';
 import { enrichSegmentView, loadMethodology, loadFiveThings } from '@/lib/compass/pdf-content';
+import { getWhereYouAre, getSilentGapsAndRead, loadSegmentCta } from '@/lib/compass/narrative-content';
 import { ReportView, PageFrame, CtaPanel, FiveThings } from '@/components/compass';
 import reportStyles from '@/app/report/master/[segment]/page.module.css';
 
@@ -56,6 +57,9 @@ export default function CompassReportSection({
 
   const methodology = loadMethodology(requireApproved);
   const fiveThings = loadFiveThings(enrichedView.awarenessCheckIds ?? []);
+  const whereYouAre = getWhereYouAre(segmentId);
+  const silentGapsAndRead = getSilentGapsAndRead(segmentId);
+  const segmentCta = loadSegmentCta(segmentId);
 
   const name = recipientName || 'your plan';
   const docTitle = `Your Wealth Report · ${name}`;
@@ -81,17 +85,17 @@ export default function CompassReportSection({
         footer="Manchester · Taunton · hello@realwealth.co.uk"
         label="Where you are today"
       >
-        <NarrativePlaceholder
-          eyebrow="Where you are today"
-          title="A quick picture of what you told us."
-          intro="This page opens the narrative conversation — the emotional tone, the &lsquo;in your own words&rsquo; pull quote, and the direct interpretation of the gating answers (age, household, work, income, estate)."
-          comingFrom="content/pages/summary-where-you-are.md · segments/s[n]-*.md"
-          blocks={[
-            { kicker: 'Context', body: 'A short 2-3 paragraph reflection on the shape of the person\'s life right now, using their own words (Q2.4 happy-place text).' },
-            { kicker: 'In your own words', body: 'A pullquote from Q2.4 styled in serif italic teal.' },
-            { kicker: 'Segment-tailored close', body: 'One paragraph positioning where we think they are, by segment (S1-S9).' },
-          ]}
-        />
+        <div className={reportStyles.sectionTitle}>
+          <span className={reportStyles.eyebrow}>Where you are today</span>
+          <h2 className={reportStyles.hSection}>A quick picture of what you told us.</h2>
+        </div>
+        {whereYouAre.openingParagraphs.map((para, i) => (
+          <p key={i} className={reportStyles.narrativePara}>{para}</p>
+        ))}
+        <blockquote className={reportStyles.narrativePullquote}>
+          {whereYouAre.pullQuote}
+        </blockquote>
+        <p className={reportStyles.narrativePara}>{whereYouAre.segmentClose}</p>
       </PageFrame>
 
       {/* 06 — Five things worth a conversation */}
@@ -131,16 +135,41 @@ export default function CompassReportSection({
         footer="Manchester · Taunton · hello@realwealth.co.uk"
         label="Silent gaps"
       >
-        <NarrativePlaceholder
-          eyebrow="Things we didn&rsquo;t ask — but noticed"
-          title="The shape of your answers says more than the answers themselves."
-          intro="Silent-gap selector + planner&rsquo;s-read panels. Existing runtime: src/lib/summary/silentGaps.ts."
-          comingFrom="src/lib/summary/silentGaps.ts (12 rules, segment-weighted ranking)"
-          blocks={[
-            { kicker: 'Silent gaps', body: '2-3 compact cards, each with icon + headline + one-line body.' },
-            { kicker: 'Planner&rsquo;s read', body: 'Three lenses (insight / context / practical move) in a 3-column grid.' },
-          ]}
-        />
+        <div className={reportStyles.sectionTitle}>
+          <span className={reportStyles.eyebrow}>Things we didn&rsquo;t ask — but noticed</span>
+          <h2 className={reportStyles.hSection}>The shape of your answers says more than the answers themselves.</h2>
+          <p className={reportStyles.intro}>
+            Based on the shape of what you&rsquo;ve told us, a few things stand out —
+            even though we didn&rsquo;t ask about them directly.
+          </p>
+        </div>
+
+        <div className={reportStyles.silentGapsGrid}>
+          {silentGapsAndRead.gaps.map((gap, i) => (
+            <div key={i} className={reportStyles.silentGapCard}>
+              <h3 className={reportStyles.silentGapTitle}>{gap.title}</h3>
+              <p className={reportStyles.silentGapBody}>{gap.body}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className={reportStyles.sectionTitleTight}>
+          <span className={reportStyles.eyebrow}>Planner&rsquo;s read</span>
+        </div>
+        <div className={reportStyles.plannersReadGrid}>
+          <div className={reportStyles.plannersReadCol}>
+            <div className={reportStyles.plannersReadKicker}>What we noticed</div>
+            <p className={reportStyles.plannersReadBody}>{silentGapsAndRead.plannersRead.insight}</p>
+          </div>
+          <div className={reportStyles.plannersReadCol}>
+            <div className={reportStyles.plannersReadKicker}>Why it matters now</div>
+            <p className={reportStyles.plannersReadBody}>{silentGapsAndRead.plannersRead.context}</p>
+          </div>
+          <div className={reportStyles.plannersReadCol}>
+            <div className={reportStyles.plannersReadKicker}>One practical move</div>
+            <p className={reportStyles.plannersReadBody}>{silentGapsAndRead.plannersRead.move}</p>
+          </div>
+        </div>
       </PageFrame>
 
       {/* 08 — Next step */}
@@ -153,20 +182,22 @@ export default function CompassReportSection({
       >
         <div className={reportStyles.sectionTitle}>
           <span className={reportStyles.eyebrow}>What happens next</span>
-          <h2 className={reportStyles.hSection}>Talk it through with a planner.</h2>
+          <h2 className={reportStyles.hSection}>
+            {segmentCta?.headline ?? 'Talk it through with a planner.'}
+          </h2>
           <p className={reportStyles.intro}>
-            You&rsquo;ve given us a thoughtful picture. The last step is the only one that matters —
-            a 30-minute conversation with a Real Wealth planner, tailored to you, no obligation.
+            {segmentCta?.body ??
+              'You\u2019ve given us a thoughtful picture. The last step is the only one that matters — a 30-minute conversation with a Real Wealth planner, tailored to you, no obligation.'}
           </p>
         </div>
 
         <div className={reportStyles.ctaWrap}>
           <CtaPanel
-            eyebrow="Book your free 30-minute consultation"
+            eyebrow={segmentCta?.helper ?? 'Book your free 30-minute consultation'}
             title={`Let's talk about you, ${name}.`}
-            body="Bring this report. We&rsquo;ll go through the amber tiles first, the red ones next, then decide what&rsquo;s worth acting on together."
-            buttonLabel="Book online"
-            buttonHref="https://calendly.com/realwealth/intro"
+            body="Bring this report — we\u2019ll go through the amber tiles first, the red ones next, then decide what\u2019s worth acting on together."
+            buttonLabel={segmentCta?.buttonLabel ?? 'Book online'}
+            buttonHref={segmentCta?.buttonHref ?? 'https://calendly.com/realwealth/intro'}
             phone="0161 768 7722"
             contact="hello@realwealth.co.uk"
           />

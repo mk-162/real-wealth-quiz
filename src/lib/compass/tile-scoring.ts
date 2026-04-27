@@ -450,20 +450,52 @@ function scoreProtection(inputs: CompassInputs, _report: CompassReport): TileSco
   const alreadyRetired = inputs.currentAge >= inputs.targetRetirementAge;
   if (alreadyRetired) return grey();
 
-  // Business owner — key-person risk flagged red.
+  // Business owner — key-person risk flagged red regardless of personal cover.
   if (inputs.businessValue !== 0) {
     return { status: 'red', scoreable: true, metrics: {} };
   }
 
-  const { hasDependentChildren, partnerPresent, mortgageEndAge } = inputs;
+  const { hasDependentChildren, partnerPresent, mortgageEndAge, lifeCoverStatus } = inputs;
   const mortgageActive = mortgageEndAge !== 'paid' && mortgageEndAge !== 'renting';
+  const hasExposure = hasDependentChildren || partnerPresent;
 
-  if (hasDependentChildren || partnerPresent) {
+  // ---- Use real protection signal when the screen fired ----
+  if (lifeCoverStatus !== undefined) {
+    if (!hasExposure) {
+      // No dependants + no partner: check income protection confidence only.
+      const yearsToRetirement = inputs.targetRetirementAge - inputs.currentAge;
+      if (lifeCoverStatus === 'no' && yearsToRetirement > PROTECTION_YEARS_TO_RETIREMENT_AMBER) {
+        return { status: 'amber', scoreable: true, metrics: {} };
+      }
+      return grey();
+    }
+    // Has dependants or partner — score from actual cover.
+    if (lifeCoverStatus === 'no') {
+      return { status: 'red', scoreable: true, metrics: {} };
+    }
+    if (lifeCoverStatus === 'through_work_only') {
+      // Work-only cover stops at job change. Amber — still a gap worth a conversation.
+      return { status: 'amber', scoreable: true, metrics: {} };
+    }
+    if (lifeCoverStatus === 'unknown') {
+      // Chose "not sure" — treat as amber, awareness is the goal.
+      return { status: 'amber', scoreable: true, metrics: {} };
+    }
+    // personal_policy or both — cover is in place.
+    // Flag amber only if low earnings-protection confidence despite having life cover.
+    const conf = inputs.earningsProtectionConfidence;
+    if (conf !== undefined && conf <= 2) {
+      return { status: 'amber', scoreable: true, metrics: {} };
+    }
+    return { status: 'green', scoreable: true, metrics: {} };
+  }
+
+  // ---- Fallback: proxy signals when screen 4.B.3 didn't fire ----
+  if (hasExposure) {
     const status: TileStatus = mortgageActive ? 'red' : 'amber';
     return { status, scoreable: true, metrics: {} };
   }
 
-  // No dependants, no partner.
   const yearsToRetirement = inputs.targetRetirementAge - inputs.currentAge;
   if (yearsToRetirement > PROTECTION_YEARS_TO_RETIREMENT_AMBER) {
     return { status: 'amber', scoreable: true, metrics: {} };

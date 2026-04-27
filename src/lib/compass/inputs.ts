@@ -498,7 +498,11 @@ export function buildCompassInputs(answers: PartialAnswersMap): CompassInputs {
     willInPlace,
     lpaInPlace,
 
-    // §9 Assumptions
+    // §9 Protection signals (screen 4.B.3 — fires only for certain segments)
+    lifeCoverStatus: mapLifeCoverStatus(getStr(ids.lifeCoverStatus)),
+    earningsProtectionConfidence: mapEarningsProtection(getNum(ids.earningsProtectionScale, 0)),
+
+    // §10 Assumptions
     riskProfile: 'balanced',
   };
 
@@ -534,6 +538,22 @@ function estimateHomeValueFromEstate(estate: WealthBand): WealthBand | 0 {
     default:
       return '250-500k';
   }
+}
+
+function mapLifeCoverStatus(
+  raw: string | undefined,
+): CompassInputs['lifeCoverStatus'] {
+  if (raw === undefined) return undefined;
+  const allowed = ['through_work_only', 'personal_policy', 'both', 'no'] as const;
+  if ((allowed as readonly string[]).includes(raw)) {
+    return raw as CompassInputs['lifeCoverStatus'];
+  }
+  return 'unknown'; // covers 'not_sure' and any future values
+}
+
+function mapEarningsProtection(raw: number): CompassInputs['earningsProtectionConfidence'] {
+  if (raw < 1 || raw > 5) return undefined;
+  return raw as 1 | 2 | 3 | 4 | 5;
 }
 
 function mapStatePensionAwareness(raw: string | undefined): 'yes' | 'no' | 'partial' {

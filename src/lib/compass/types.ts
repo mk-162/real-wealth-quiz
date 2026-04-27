@@ -87,7 +87,16 @@ export interface CompassInputs {
   willInPlace: boolean;
   lpaInPlace: boolean;
 
-  // §9 Assumption knobs (optional)
+  // §9 Protection signals (optional — screen 4.B.3 only fires for relevant segments)
+  /** Life cover status as reported on screen 4.B.3. `undefined` when the screen didn't fire. */
+  lifeCoverStatus?: 'through_work_only' | 'personal_policy' | 'both' | 'no' | 'unknown';
+  /**
+   * Self-reported confidence (1–5 Likert) that income is protected against illness/injury.
+   * 1 = very low, 5 = very high. `undefined` when the screen didn't fire.
+   */
+  earningsProtectionConfidence?: 1 | 2 | 3 | 4 | 5;
+
+  // §10 Assumption knobs (optional)
   riskProfile?: RiskProfile;
 }
 

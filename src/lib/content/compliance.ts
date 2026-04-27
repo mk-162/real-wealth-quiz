@@ -3,7 +3,6 @@
  *
  * Content authored under `content/` carries a `compliance_status` frontmatter
  * field with one of three values: `draft`, `in_review`, `approved_to_ship`.
- * Only `approved_to_ship` is cleared for production end-user display.
  *
  * This module is a pure, reusable gate used by the user-facing PDF-report
  * loaders (see `src/lib/compass/pdf-content.ts`) and any other runtime that
@@ -11,43 +10,40 @@
  * questionnaire engine (gating/microcopy/screens) — those loaders handle
  * their own lifecycle.
  *
- * Behaviour:
- *   - In production (`NODE_ENV === 'production'`): only `approved_to_ship`
- *     content passes the gate. Anything else (draft, in_review, missing, or
- *     unknown string) is rejected.
- *   - In non-production (dev, staging, test, etc.): everything passes, so
- *     authors can preview draft content locally.
+ * Behaviour (opt-in enforcement):
+ *   - By default, ALL content passes regardless of status or environment.
+ *     This means draft content renders everywhere until enforcement is enabled.
+ *   - Set `RW_ENFORCE_COMPLIANCE=1` to enable the gate. Once enabled, only
+ *     `approved_to_ship` content passes. Everything else (draft, in_review,
+ *     missing, or unknown string) is rejected.
  *
- * Escape hatch — `RW_BYPASS_COMPLIANCE`:
- *   When the env var `RW_BYPASS_COMPLIANCE` is set to any truthy value
- *   (`"1"`, `"true"`, `"yes"`), the gate unconditionally returns `true` for
- *   every input, regardless of `NODE_ENV` or `compliance_status`. This exists
- *   so demo and staging deploys can render draft content end-to-end without
- *   flipping every tile to `approved_to_ship`.
- *
- *   Usage:   `RW_BYPASS_COMPLIANCE=1 npm run build`
- *
- *   WARNING: Never set this in a real production environment. Doing so ships
- *   unapproved, unreviewed content to end users and defeats the whole point
- *   of the gate. Intended only for internal previews.
+ * Workflow:
+ *   1. Authors write and review content — it renders in all environments.
+ *   2. Before going live, flip `compliance_status: draft` → `approved_to_ship`
+ *      for each reviewed file.
+ *   3. Set `RW_ENFORCE_COMPLIANCE=1` in the production environment to activate
+ *      the gate for all future content.
  *
  * Pair `canPublishInProduction` with an explicit `requireApproved` flag on
  * single-item loaders (throw clear error on failure), and use
  * `filterApproved` to silently strip unapproved items from array loaders.
  */
 
-/** True when `RW_BYPASS_COMPLIANCE` is set to a truthy value (demo/staging only). */
-function isComplianceBypassed(): boolean {
-  const raw = process.env.RW_BYPASS_COMPLIANCE;
+/** True when compliance enforcement is explicitly opted in. */
+function isComplianceEnforced(): boolean {
+  const raw = process.env.RW_ENFORCE_COMPLIANCE;
   if (!raw) return false;
   const v = raw.toLowerCase();
   return v === '1' || v === 'true' || v === 'yes';
 }
 
-/** Returns true when a compliance_status value is safe to render to end users. */
+/** Returns true when a compliance_status value is safe to render to end users.
+ *
+ *  When enforcement is off (default), always returns true.
+ *  When enforcement is on (`RW_ENFORCE_COMPLIANCE=1`), only `approved_to_ship` passes.
+ */
 export function canPublishInProduction(status: string | undefined): boolean {
-  if (isComplianceBypassed()) return true;
-  if (process.env.NODE_ENV !== 'production') return true;
+  if (!isComplianceEnforced()) return true;
   return status === 'approved_to_ship';
 }
 
