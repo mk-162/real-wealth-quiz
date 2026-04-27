@@ -1,3 +1,5 @@
+<!-- ARCHIVED 2026-04-27 — superseded by docs/SIMPLIFICATION_PLAN_2026-04-27.md and 10 days of subsequent work. Kept for historical reference. -->
+
 # Audit Handoff - 2026-04-17
 
 ## Current State
