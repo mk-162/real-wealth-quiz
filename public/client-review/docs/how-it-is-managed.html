@@ -34,13 +34,16 @@
 <p>Read this first if someone asks &quot;can you tweak that question?&quot; or &quot;change the CTA for retirees&quot; and you are not sure which file to open.</p>
 <p>---</p>
 <h3>1. The big picture</h3>
-<p>The service is a Next.js app (folder: <code>master_template/</code>). Every piece of user-facing content is stored as a markdown file under <code>master_template/content/</code>. A build script validates those files, compiles them into typed code, and the app reads from that. One spreadsheet — <code>Question Segment Master.xlsx</code> — still controls one thing only: which questions each of the 9 segments sees.</p>
+<p>The service is a Next.js app (folder: <code>master_template/</code>). Every piece of user-facing content is stored as a markdown file under <code>master_template/content/</code>. A build script validates those files, compiles them into typed code, and the app reads from that. Each screen file declares its own audience — i.e. which segments see it — in its frontmatter, alongside its question text.</p>
 <p>So there are exactly <strong>two places</strong> where &quot;the source of truth&quot; lives:</p>
 <ol>
-<li><strong><code>master_template/content/</code></strong> — all wording, options, CTAs, error messages, tone copy.</li>
-<li><strong><code>Question Segment Master.xlsx</code></strong> (Sheet 2) — the Y / C / N matrix that decides which questions appear for each segment.</li>
+<li><strong><code>master_template/content/</code></strong> — all wording, options, CTAs, error messages, tone copy, <strong>and</strong> the audience for each screen (which segments see it).</li>
+<li><strong><code>src/lib/segmentation/engine.ts</code></strong> — the engine predicates that gate <code>conditional</code> audience cells (e.g. &quot;S5 only sees Q3.2 if income is not &#039;prefer_not_to_say&#039;&quot;).</li>
 </ol>
-<p>Everything else (the catalogues the app imports, the JSON matrix, the rendered HTML for the client review site) is <strong>generated</strong>. Do not edit generated files by hand — they will be overwritten on the next build.</p>
+<p>Everything else (the catalogues the app imports, the rendered HTML for the client review site) is <strong>generated</strong> by the build. Do not edit those by hand — they are overwritten on the next build. The legacy <code>content/generated/matrix.json</code> and <code>Question Segment Master.xlsx</code> pipelines are gone — audience now lives on the screen file itself.</p>
+<h4>Audience precedence — non-obvious rule</h4>
+<p>A screen&#039;s <code>audience: { Q3.2: { S1: hidden, S2: shown, ... } }</code> block in frontmatter is the runtime gate. There is no separate matrix. If a screen carries multiple questions (e.g. Q3.1 and Q4.5 grouped on the same screen), each question carries its own audience block keyed by <code>questionId</code>.</p>
+<p>Cell values are <code>shown | hidden | conditional</code>. A <code>conditional</code> cell needs a matching predicate in <code>src/lib/segmentation/engine.ts</code> keyed by the questionId — without one, the engine silently treats it as hidden.</p>
 <p>---</p>
 <h3>2. Golden rules before you edit anything</h3>
 <ol>
@@ -52,8 +55,8 @@
 </ol>
 <p>---</p>
 <h3>3. Common client requests — what to edit</h3>
-<p>Use the table below as a lookup. File paths are relative to <code>master_template/</code>.</p>
-<div class="doc-table-wrap"><table><thead><tr><th>Client says...</th><th>Edit this</th><th>How to do it</th></tr></thead><tbody><tr><td>&quot;Change the wording of Q3.1&quot;</td><td><code>content/screens/3.1-*.md</code></td><td>Edit the headline, sub, or inputs in the markdown body. Save.</td></tr><tr><td>&quot;Add a new answer option to Q2.3&quot;</td><td><code>content/screens/2.3-*.md</code></td><td>Add an item under the <code>inputs</code> frontmatter block.</td></tr><tr><td>&quot;Change what shows on the retiree&#039;s summary CTA&quot;</td><td><code>content/segments/s8-*.md</code></td><td>Edit the CTA heading and body.</td></tr><tr><td>&quot;Update the error message when someone skips a required field&quot;</td><td><code>content/microcopy/errors.md</code></td><td>Edit the entry for the relevant error key.</td></tr><tr><td>&quot;Change the homepage hero line&quot;</td><td><code>content/pages/home.md</code></td><td>Edit the hero block.</td></tr><tr><td>&quot;Add a compliance callout when someone answers X&quot;</td><td><code>content/provocations/&lt;slug&gt;.md</code></td><td>Create a new file. Set <code>compliance_status: draft</code> until signed off.</td></tr><tr><td>&quot;Change who sees Q5.3 (business exit)&quot;</td><td><code>Question Segment Master.xlsx</code> (Sheet 2), then run <code>npm run parse:matrix</code></td><td>Flip the Y/C/N cell for the segment.</td></tr><tr><td>&quot;Change how the 5 gating answers decide the segment&quot;</td><td><code>src/lib/segmentation/rules.ts</code></td><td>Edit the ranked predicates. Engineering change — not content.</td></tr><tr><td>&quot;Change which question comes next after Q2.4&quot;</td><td><code>src/lib/segmentation/engine.ts</code> or the screen frontmatter</td><td>Ordering is driven by matrix + frontmatter; ask an engineer if unsure.</td></tr><tr><td>&quot;Update the Voice and Tone rules&quot;</td><td><code>../Brand Assets/Voice and Tone.md</code> (parent folder)</td><td>Edit the source. Run <code>npm run client-review:build</code> to refresh the review site.</td></tr></tbody></table></div>
+<p>Use the table below as a lookup. File paths are relative to <code>master_template/</code>. For a more granular reference covering every editing surface, see <code>docs/EDITING_FLOWS.md</code>.</p>
+<div class="doc-table-wrap"><table><thead><tr><th>Client says...</th><th>Edit this</th><th>How to do it</th></tr></thead><tbody><tr><td>&quot;Change the wording of Q3.1&quot;</td><td><code>content/screens/3.5-money-today.md</code> (or whichever screen carries Q3.1)</td><td>Edit the headline, sub, or input label in the markdown body / frontmatter. Save.</td></tr><tr><td>&quot;Add a new answer option to Q2.3&quot;</td><td><code>content/screens/3.4-working-life.md</code></td><td>Add an item under the <code>inputs[*].options</code> frontmatter list.</td></tr><tr><td>&quot;Change what shows on the retiree&#039;s summary CTA&quot;</td><td><code>content/segments/s8-*.md</code></td><td>Edit the <code># Headline / # Body / # Cta</code> sections.</td></tr><tr><td>&quot;Update the error message when someone skips a required field&quot;</td><td><code>content/microcopy/errors.md</code></td><td>Edit the entry for the relevant error key.</td></tr><tr><td>&quot;Change the homepage hero line&quot;</td><td><code>content/pages/home.md</code></td><td>Edit the hero block.</td></tr><tr><td>&quot;Add a compliance callout when someone answers X&quot;</td><td><code>content/provocations/&lt;slug&gt;.md</code></td><td>Create a new file. Set <code>compliance_status: draft</code> until signed off.</td></tr><tr><td>&quot;Change who sees Q5.3 (business exit)&quot;</td><td><code>content/screens/4.C1.*.md</code> (the screen that carries Q5.3)</td><td>Flip the cell in the screen&#039;s <code>audience</code> block, or use the admin app&#039;s matrix editor.</td></tr><tr><td>&quot;Change how the 5 gating answers decide the segment&quot;</td><td><code>src/lib/segmentation/rules.ts</code></td><td>Edit the ranked predicates. Engineering change — not content.</td></tr><tr><td>&quot;Change which question comes next after Q2.4&quot;</td><td>Screen ordering is driven by file name + frontmatter</td><td>Rename the file (<code>3.4-...md</code> → <code>3.5-...md</code>) and update any <code>q_refs</code>. Ask an engineer if unsure.</td></tr><tr><td>&quot;Update the Voice and Tone rules&quot;</td><td><code>../Brand Assets/Voice and Tone.md</code> (parent folder)</td><td>Edit the source. Run <code>npm run client-review:build</code> to refresh the review site.</td></tr></tbody></table></div>
 <p>---</p>
 <h3>4. Step-by-step: editing a question</h3>
 <p>This is the most common request. Example: the client wants to soften the wording of Q1.1 (&quot;What brought you here today?&quot;).</p>
@@ -65,7 +68,7 @@
    git checkout dev
    git pull</code></pre>
 <ol>
-<li>Open <code>content/screens/1.1-what-brought-you.md</code> in your editor.</li>
+<li>Open <code>content/screens/3.1-what-brought-you.md</code> in your editor.</li>
 <li>Edit the headline or sub-copy. Do not change the <code>id</code> field in the frontmatter — the app uses it to find the screen.</li>
 <li>Save the file.</li>
 <li>In the terminal, validate:</li>
@@ -80,7 +83,7 @@
 <ol>
 <li>Commit:</li>
 </ol>
-<pre><code>   git add content/screens/1.1-what-brought-you.md
+<pre><code>   git add content/screens/3.1-what-brought-you.md
    git commit -m &quot;Soften Q1.1 headline per client feedback&quot;
    git push origin dev</code></pre>
 <ol>
@@ -89,26 +92,30 @@
 </ol>
 <p>---</p>
 <h3>5. Step-by-step: changing which segments see a question</h3>
-<p>This is a matrix change, not a content change. Example: the client decides S1 (Early Accumulator) should also see Q3.2 (monthly essential spending).</p>
+<p>This is an audience change, not a content change. Example: the client decides S1 (Early Accumulator) should also see Q3.2 (monthly essential spending).</p>
+<p>Two paths — pick whichever is faster for you:</p>
+<h4>Path A — Admin app (recommended for content leads)</h4>
 <ol>
-<li>Open <code>Question Segment Master.xlsx</code> (in the <code>Real Wealth/</code> folder, one level above <code>master_template/</code>).</li>
-<li>Go to Sheet 2. Find the Q3.2 row and the S1 column. Change the cell from <code>N</code> to <code>Y</code>.</li>
-<li>Save and close the file.</li>
-<li>Regenerate the matrix JSON:</li>
+<li>Open the admin app. Pick <code>master_template/</code> as the project folder.</li>
+<li>Go to <strong>Segments</strong> → <strong>Matrix</strong> tab. The matrix is built by walking every screen file and reading its <code>audience</code> block.</li>
+<li>Find the Q3.2 row and the S1 column. Click the cell to cycle <code>hidden → conditional → shown</code>.</li>
+<li>Click <strong>Save</strong> — the admin writes back to whichever screen file owns the questionId (in this case the screen carrying Q3.2 in its <code>q_refs</code>).</li>
+<li>Commit from the terminal: <code>git add content/screens/&lt;file&gt;.md &amp;&amp; git commit -m &quot;S1 now sees Q3.2&quot; &amp;&amp; git push origin dev</code>.</li>
 </ol>
-<pre><code>   npx tsx scripts/parse-segment-master.ts</code></pre>
+<h4>Path B — Direct frontmatter edit (for engineers)</h4>
 <ol>
-<li>This writes <code>content/generated/matrix.json</code>. Do not edit that file by hand.</li>
-<li>Run the full content check:</li>
+<li>Find the screen that carries Q3.2 — search for <code>q_refs:</code> mentioning <code>Q3.2</code> (e.g. <code>content/screens/3.5-money-today.md</code>).</li>
+<li>Open the file. Find the <code>audience:</code> block. Locate the <code>&quot;Q3.2&quot;:</code> entry and flip <code>S1: hidden</code> to <code>S1: shown</code>.</li>
+<li>Save.</li>
+<li>Run <code>npm run content:check</code> to catch shape errors.</li>
+<li>Commit + push as above.</li>
 </ol>
-<pre><code>   npm run content:build</code></pre>
+<h4>Either path</h4>
 <ol>
-<li>Preview locally and confirm S1 users now see Q3.2. (Easiest way: use the dev-only segment override URL parameter — ask an engineer if you do not remember it.)</li>
-<li>Commit both the xlsx and the regenerated matrix.json:</li>
+<li>Vercel builds a preview on <code>dev</code>. Share with the client.</li>
+<li>If the new cell is <code>conditional</code>, make sure <code>src/lib/segmentation/engine.ts</code> has a predicate for that questionId — the engine silently skips conditional cells without a predicate. For predicates that depend on a follow-up answer (not the 5 gating answers), return <code>true</code> and let the screen&#039;s <code>conditional_reveal</code> do runtime gating — see <code>Q4.C.2</code>, <code>Q4.1a</code>, <code>Q4.3a</code> for the pattern.</li>
+<li>Only when the client approves: PR <code>dev</code> → <code>main</code>.</li>
 </ol>
-<pre><code>   git add &quot;../Question Segment Master.xlsx&quot; content/generated/matrix.json
-   git commit -m &quot;S1 now sees Q3.2 per client request&quot;
-   git push origin dev</code></pre>
 <p>---</p>
 <h3>6. Step-by-step: adding or editing a provocation</h3>
 <p>Provocations are the short commercial callouts that fire on specific answer patterns (e.g. &quot;the GBP 2m cliff&quot; for estates over GBP 2m). Every provocation needs CFP and Compliance sign-off before it can render in production.</p>
@@ -117,7 +124,7 @@
 <li>Name the new file with a clear slug, e.g. <code>content/provocations/new-pension-allowance.md</code>.</li>
 <li>Fill in the frontmatter: <code>id</code>, <code>name</code>, <code>trigger</code>, <code>segments</code>, <code>compliance_status</code>.</li>
 <li>Set <code>compliance_status: draft</code> while you are drafting.</li>
-<li>Write the body copy in markdown.</li>
+<li>Write the body copy in markdown using the canonical sections: <code># Headline / # Body / # Cta</code> (Notes optional).</li>
 <li>Run <code>npm run content:check</code>.</li>
 <li>Send the file to the CFP and the Compliance reviewer. They review the body and the trigger logic.</li>
 <li>When both approve, change <code>compliance_status</code> to <code>approved_to_ship</code>. <strong>This is the flag that lets it render in production.</strong></li>
@@ -125,7 +132,7 @@
 </ol>
 <p>---</p>
 <h3>7. How a change flows to production</h3>
-<pre><code>Your edit (markdown / xlsx)
+<pre><code>Your edit (markdown content)
    ↓
 npm run content:build (validates + compiles)
    ↓
@@ -153,7 +160,7 @@ npm run typecheck         # TypeScript
 npm run build             # full Next.js production build
 npm run voice:check       # flags banned phrases against the Voice and Tone rules
 npx playwright test       # end-to-end user journey tests</code></pre>
-<p>The safe dev checkpoint at commit <code>0eaa2a4</code> passed all of the above. If your change breaks any of them, fix it before pushing or revert to the checkpoint.</p>
+<p>If your change breaks any of them, fix it before pushing.</p>
 <p>---</p>
 <h3>9. Refreshing the client review site</h3>
 <p>The <code>/client-review</code> dashboard (at <code>http://localhost:3000/client-review</code>) is a static bundle generated from the markdown docs. If you edit any of the source documents it links to — README, Decision Log, Voice and Tone, this guide, etc. — rebuild it:</p>
@@ -161,10 +168,10 @@ npx playwright test       # end-to-end user journey tests</code></pre>
 <p>Then commit the regenerated files under <code>public/client-review/</code> along with the source markdown.</p>
 <p>---</p>
 <h3>10. Key files map</h3>
-<div class="doc-table-wrap"><table><thead><tr><th>File or folder</th><th>What it controls</th></tr></thead><tbody><tr><td><code>content/screens/*.md</code></td><td>Question wording, options, layout</td></tr><tr><td><code>content/pages/*.md</code></td><td>Homepage, data-capture, summary structure</td></tr><tr><td><code>content/segments/*.md</code></td><td>Segment-specific CTAs and overlays</td></tr><tr><td><code>content/provocations/*.md</code></td><td>Compliance-gated callouts</td></tr><tr><td><code>content/awareness-checks/*.md</code></td><td>&quot;Something worth noticing&quot; educational prompts</td></tr><tr><td><code>content/microcopy/*.md</code></td><td>Errors, toasts, emails, ARIA labels</td></tr><tr><td><code>content/schema.ts</code></td><td>Validation rules for every content type</td></tr><tr><td><code>Question Segment Master.xlsx</code> (Sheet 2)</td><td>Which questions each segment sees (Y / C / N)</td></tr><tr><td><code>scripts/parse-segment-master.ts</code></td><td>Reads the xlsx and writes <code>matrix.json</code></td></tr><tr><td><code>scripts/content-build.ts</code></td><td>Validates and compiles all markdown into typed code</td></tr><tr><td><code>scripts/build-client-review-site.mjs</code></td><td>Rebuilds the <code>/client-review</code> dashboard</td></tr><tr><td><code>src/lib/segmentation/rules.ts</code></td><td>How answers map to one of 9 segments</td></tr><tr><td><code>src/lib/segmentation/engine.ts</code></td><td>Conditional question-display logic</td></tr><tr><td><code>src/lib/content/catalogue.ts</code></td><td><strong>Auto-generated</strong> — do not edit</td></tr><tr><td><code>src/lib/content/generated-order.ts</code></td><td><strong>Auto-generated</strong> — do not edit</td></tr><tr><td><code>content/generated/matrix.json</code></td><td><strong>Auto-generated</strong> — do not edit</td></tr></tbody></table></div>
+<div class="doc-table-wrap"><table><thead><tr><th>File or folder</th><th>What it controls</th></tr></thead><tbody><tr><td><code>content/screens/*.md</code></td><td>Question wording, options, layout, <strong>and</strong> audience (which segments see each question)</td></tr><tr><td><code>content/pages/*.md</code></td><td>Homepage, data-capture, summary structure</td></tr><tr><td><code>content/segments/*.md</code></td><td>Segment-specific CTAs and overlays</td></tr><tr><td><code>content/provocations/*.md</code></td><td>Compliance-gated callouts</td></tr><tr><td><code>content/awareness-checks/*.md</code></td><td>&quot;Something worth noticing&quot; educational prompts</td></tr><tr><td><code>content/microcopy/*.md</code></td><td>Errors, toasts, emails, ARIA labels</td></tr><tr><td><code>content/report/*.md</code></td><td>The 9-page report — methodology, health gauge, takeaways, planning grid tiles, segment goals, awareness checks, assumptions footer</td></tr><tr><td><code>content/schema.ts</code></td><td>Validation rules for every content type</td></tr><tr><td><code>scripts/content-build.ts</code></td><td>Validates and compiles all markdown into typed code</td></tr><tr><td><code>scripts/build-client-review-site.mjs</code></td><td>Rebuilds the <code>/client-review</code> dashboard</td></tr><tr><td><code>src/lib/segmentation/rules.ts</code></td><td>How answers map to one of 9 segments</td></tr><tr><td><code>src/lib/segmentation/engine.ts</code></td><td>Conditional cell predicates — one per <code>questionId</code></td></tr><tr><td><code>src/lib/questions/matrix.ts</code></td><td>Builds the in-memory <code>SegmentMatrix</code> from screen audience blocks at module load</td></tr><tr><td><code>src/lib/compass/tax-year-2025-26.ts</code></td><td>UK tax/regulatory constants — annual update file</td></tr><tr><td><code>src/lib/content/catalogue.ts</code></td><td><strong>Auto-generated</strong> — do not edit</td></tr></tbody></table></div>
 <p>---</p>
 <h3>11. Who owns what</h3>
-<div class="doc-table-wrap"><table><thead><tr><th>Area</th><th>Owner</th></tr></thead><tbody><tr><td>Copy, tone, voice</td><td>Real Wealth content lead</td></tr><tr><td>Provocations and awareness checks</td><td>Real Wealth CFP + Compliance (must sign off)</td></tr><tr><td>Segment rules and engine</td><td>Engineering</td></tr><tr><td>Question-segment matrix (xlsx)</td><td>Real Wealth content lead, with engineering review</td></tr><tr><td>Visual design and brand assets</td><td>Real Wealth brand + design</td></tr><tr><td>Deployment (Vercel) and infrastructure</td><td>Engineering</td></tr></tbody></table></div>
+<div class="doc-table-wrap"><table><thead><tr><th>Area</th><th>Owner</th></tr></thead><tbody><tr><td>Copy, tone, voice</td><td>Real Wealth content lead</td></tr><tr><td>Provocations and awareness checks</td><td>Real Wealth CFP + Compliance (must sign off)</td></tr><tr><td>Segment rules and engine</td><td>Engineering</td></tr><tr><td>Question audience (per-screen)</td><td>Real Wealth content lead, with engineering review</td></tr><tr><td>Tax-year constants</td><td>Engineering, with annual review</td></tr><tr><td>Visual design and brand assets</td><td>Real Wealth brand + design</td></tr><tr><td>Deployment (Vercel) and infrastructure</td><td>Engineering</td></tr></tbody></table></div>
 <p>---</p>
 <h3>12. If something goes wrong</h3>
 <ul>
@@ -179,7 +186,7 @@ npx playwright test       # end-to-end user journey tests</code></pre>
 <pre><code># Start work
 git checkout dev &amp;&amp; git pull
 
-# Edit files under content/ or the xlsx
+# Edit files under content/
 
 # Validate
 npm run content:check

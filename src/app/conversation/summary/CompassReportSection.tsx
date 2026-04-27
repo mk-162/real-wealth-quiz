@@ -25,7 +25,12 @@
  *      the user's real inputs.
  */
 import { fixtureById, buildReport, scoreAllTiles, type CompassInputs } from '@/lib/compass';
-import { enrichSegmentView, loadMethodology, loadAllExpandedChecks } from '@/lib/compass/pdf-content';
+import {
+  enrichSegmentView,
+  loadMethodology,
+  loadAllExpandedChecks,
+  loadAssumptionsContent,
+} from '@/lib/compass/pdf-content';
 import { getWhereYouAre, getSilentGapsAndRead, loadSegmentCta } from '@/lib/compass/narrative-content';
 import { ReportView, PageFrame, CtaPanel } from '@/components/compass';
 import { CoverPage, NarrativePlaceholder, MethodologySection, formatPageNum } from '@/app/report/master/[segment]/report-helpers';
@@ -95,6 +100,7 @@ export default function CompassReportSection({
         fixture={enrichedFixture}
         recipientName={name}
         startPageNum={2}
+        assumptionsBodyTemplate={loadAssumptionsContent()?.body ?? null}
       />
 
       {/* 05 — Where you are today */}

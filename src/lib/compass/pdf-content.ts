@@ -800,6 +800,52 @@ export function loadMethodology(requireApproved = false): MethodologyContent | n
 }
 
 // ---------------------------------------------------------------------------
+// Assumptions footer loader — content/report/assumptions.md
+// ---------------------------------------------------------------------------
+
+export interface AssumptionsContent {
+  /** Raw body string. Contains `{token}` placeholders the renderer fills. */
+  body: string;
+  compliance_status?: string;
+}
+
+let _assumptionsCache: AssumptionsContent | null = null;
+
+function loadAssumptionsOnce(): AssumptionsContent | null {
+  if (_assumptionsCache) return _assumptionsCache;
+  const file = path.join(CONTENT_ROOT, 'assumptions.md');
+  if (!fs.existsSync(file)) return null;
+  const raw = fs.readFileSync(file, 'utf8');
+  const parsed = matter(raw);
+  const fm = parsed.data as { compliance_status?: string };
+  // Canonical shape: a single `# Body` H1.
+  const h1Sections = splitByH1(parsed.content);
+  const bodyH1 = h1Sections.find((s) => /^body$/i.test(s.heading));
+  const body = (bodyH1 ? bodyH1.body : parsed.content).trim();
+  _assumptionsCache = { body, compliance_status: fm.compliance_status };
+  return _assumptionsCache;
+}
+
+/**
+ * Returns the assumptions footer content (the prose printed at the bottom of
+ * every chart page). The body contains `{token}` placeholders that the
+ * `<Assumptions>` component fills with engine-derived values.
+ *
+ * Returns `null` if the file is missing OR if the file's compliance gate
+ * blocks publication. Render fall back to an inline default in that case.
+ */
+export function loadAssumptionsContent(requireApproved = false): AssumptionsContent | null {
+  const content = loadAssumptionsOnce();
+  if (!content) return null;
+  if (requireApproved) {
+    assertApproved('content/report/assumptions.md', content.compliance_status);
+  } else if (!canPublishInProduction(content.compliance_status)) {
+    return null;
+  }
+  return content;
+}
+
+// ---------------------------------------------------------------------------
 // Convenience — enrich a SegmentView with content-agent data
 // ---------------------------------------------------------------------------
 

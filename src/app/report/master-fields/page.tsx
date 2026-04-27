@@ -14,6 +14,7 @@
 import Image from 'next/image';
 import { buildReport } from '@/lib/compass';
 import { FIELDS_FIXTURE } from '@/lib/compass/fixtures-fields';
+import { loadAssumptionsContent } from '@/lib/compass/pdf-content';
 import { ReportView, PageFrame, CtaPanel, FiveThings } from '@/components/compass';
 import styles from '../master/[segment]/page.module.css';
 
@@ -96,6 +97,7 @@ export default function MasterFieldsReport() {
         recipientName="{recipientName}"
         startPageNum={2}
         totalPages={TOTAL_PAGES}
+        assumptionsBodyTemplate={loadAssumptionsContent()?.body ?? null}
       />
 
       {/* 05 — Where you are today */}

@@ -1,3 +1,20 @@
+/**
+ * ARCHIVED — 2026-04-27.
+ *
+ * This script used to parse `Question Segment Master.xlsx` into
+ * `content/generated/matrix.json`. Both inputs and outputs are gone:
+ *
+ * - The xlsx pipeline was retired during phase S2 of the simplification plan
+ *   (see `docs/SIMPLIFICATION_PLAN_2026-04-27.md`).
+ * - `content/generated/matrix.json` was deleted during phase S1; audience
+ *   now lives on each screen file in frontmatter and is assembled by
+ *   `src/lib/questions/matrix.ts`.
+ *
+ * The script is no longer wired into any npm script or CI. It is kept here
+ * solely as a reference for the original xlsx → JSON parsing approach and
+ * may be deleted once nobody needs to look at it.
+ */
+
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
 import { inflateRawSync } from 'node:zlib';

@@ -16,12 +16,12 @@ Before making any edit:
 
 1. **Challenge the need.** Ask: "What about this cohort isn't covered by any of S1–S9? Walk me through a concrete user whose answers would land them in the new segment."
 2. **Summarise the cascade.** The new segment affects:
-   - `content/schema.ts` — the `segmentId` enum.
+   - `content/schema.ts` — the `segmentId` enum (and any audience cell schemas that enumerate `S1..S9`).
    - `content/segments/S10-<slug>.md` — new CTA file.
-   - `content/generated/matrix.json` — add `S10` column to every existing row.
+   - **Every `content/screens/*.md` file's `audience` block** — add `S10: hidden` (or whatever default) under each `questionId` key. There is no separate matrix file; audience lives on each screen.
+   - **Every per-segment report block** under `content/report/` — add a `# S10` body section to each `kind: per_segment` file.
    - `src/lib/segmentation/types.ts` — extend the `SegmentId` TypeScript union.
    - `src/lib/segmentation/rules.ts` — add a ranked predicate.
-   - `content/generated/rules.json` — add the new rule metadata (if the admin reads from it).
    - `admin_app/app/page.tsx` + `admin_app/app/profiles/page.tsx` — `SEGMENT_LABELS` constants.
    - Every admin `SEGMENTS` array — display labels and orderings.
    - Every test fixture that enumerates segments.
@@ -54,14 +54,16 @@ See `docs/Guide.md` §End-to-end data flow and `src/lib/segmentation/` for the s
    - Same rules as `change-segment-cta` for budgets and voice.
    - Compliance-gate the CTA copy — this is new commercial copy, needs review.
 
-4. **Add the S10 column to every matrix row.**
-   - `content/generated/matrix.json` — open, add `"S10": "Y"` (or `N`/`C`) to every existing row. Default to the most conservative value (N or C) unless you're sure.
-   - Row count × 1 new column = many small edits. Script-drive with `JSON.stringify(arr, null, 2) + '\n'`.
+4. **Add the S10 cell to every screen's audience block.**
+   - Walk every file in `content/screens/`. For each, locate the `audience:` block in frontmatter.
+   - For every `questionId` key under `audience:`, add `S10: hidden` (or `shown` / `conditional`). Default to `hidden` unless you're sure.
+   - Many screens × every audience block = many small edits. Script-drive with a YAML round-trip; do not hand-edit.
+   - If you choose `conditional` for any cell, you must also add a predicate keyed by that questionId in `src/lib/segmentation/engine.ts`.
+   - Walk `content/report/` per-segment files and add a `# S10` body section to each.
 
 5. **Add the ranked predicate.**
    - `src/lib/segmentation/rules.ts` — add the new rule.
    - Insert at the correct rank position. A predicate narrowing existing S3 (say) must fire BEFORE S3.
-   - If `content/generated/rules.json` exists and drives the metadata, add an entry there too — same rank.
 
 6. **Admin constants.**
    - `admin_app/app/page.tsx` — extend `SEGMENT_LABELS`.
@@ -90,19 +92,20 @@ See `docs/Guide.md` §End-to-end data flow and `src/lib/segmentation/` for the s
 Many:
 - `master_template/content/schema.ts`.
 - `master_template/content/segments/S10-<slug>.md` (new).
-- `master_template/content/generated/matrix.json` (every row).
+- `master_template/content/screens/*.md` — every screen's `audience` block.
+- `master_template/content/report/**/*.md` — every per-segment block needs a `# S10` body section.
 - `master_template/src/lib/segmentation/types.ts`.
 - `master_template/src/lib/segmentation/rules.ts`.
-- `master_template/content/generated/rules.json` (if authoritative).
-- `master_template/admin_app/app/page.tsx`.
-- `master_template/admin_app/app/profiles/page.tsx`.
+- `admin_app/app/page.tsx`.
+- `admin_app/app/profiles/page.tsx`.
 - Any other admin constants / test fixtures that enumerate segments.
 
 ## Invariants — never break these
 
 - **Human-confirm gate first.**
 - **Rank order matters.** First-match wins. A new predicate that's too broad dead-codes a downstream predicate.
-- **Every matrix row must have the S10 column.** Missing columns fail schema validation.
+- **Every screen's audience block must have an S10 cell for every questionId it carries.** Missing cells fail schema validation.
+- **Every per-segment report block must have an S10 body section.** Missing sections fail validation.
 - **Content schema and TS union must agree.** Zod `segmentId` + TS `SegmentId` stay in lockstep.
 - **New CTA starts at `compliance_status: draft`** (or whatever the segment CTA schema defaults to; segment CTAs currently don't have a compliance_status field, but the copy still needs CFP + Compliance review before ship).
 - **Existing sessions are grandfathered** — they stay at their old segmentId until the next run.
@@ -118,7 +121,8 @@ Many:
 > Cascade for adding S10:
 > - Schema + TypeScript union extension.
 > - New `content/segments/S10-young-inheritor.md` CTA file.
-> - S10 column added to every matrix row (N currently — which Y/C/N defaults do you want?).
+> - S10 cell added to every screen's audience block (default `hidden`; flip to `shown`/`conditional` per question).
+> - `# S10` body section added to every per-segment report block under `content/report/`.
 > - New predicate: `age <= 40 AND estate >= 500_000`. Ranked where?
 > - Admin constants in 2+ files.
 > - Tests: fixture for a 32-year-old with £800k estate.
@@ -152,11 +156,11 @@ Always add at least one fixture. The predicate is where behaviour lives; tests p
 - `change-segment-assignment-rules` — predicate-only changes.
 - `change-segment-cta` — edit an existing CTA.
 - `advance-compliance-status` — advance the new CTA after review.
-- `add-matrix-row` — pattern for adding JSON rows (here, we add columns — similar formatting discipline).
+- `edit-screen-audience` — pattern for editing per-screen audience cells (here, we add a new column to every screen — same discipline).
 
 ## Gotchas
 
 - **Rank is where most bugs hide.** A new predicate placed after a broader existing one never fires. Walk through 3–4 concrete user patterns and confirm they route correctly.
-- **The matrix is wide.** Adding a column to every row = touching potentially 50+ rows. Script it — don't hand-edit, or one row will get missed.
+- **Audience blocks are wide.** Adding S10 = touching every screen file (currently ~30) and every per-segment report block (currently ~20). Script it — don't hand-edit, or one will get missed.
 - **The admin has many places that enumerate segments.** Grep `"S1" "S2"` across `admin_app/` — find them all.
-- **Fidelity tests may flag drift.** The admin has a schema-drift test that compares its vendored schemas against the master. Add S10 in one place, not the other = test fail.
+- **Schema imports directly from master post-S5.** No more vendored mirror. Schema changes in `master_template/content/schema.ts` flow through immediately.

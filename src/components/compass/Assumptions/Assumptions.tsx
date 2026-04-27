@@ -1,41 +1,73 @@
 /**
  * Assumptions — published methodology footer.
  *
- * Uses the engine's `buildAssumptions()` output to produce a one-paragraph
- * block. Every chart page carries a version of this.
+ * Renders a compact "ASSUMPTIONS · Risk profile X · Cash Y · …" line at the
+ * bottom of every chart page.
+ *
+ * Source of truth for the prose lives in `content/report/assumptions.md`
+ * (canonical `kind: global` shape, `# Body` section). Engine-derived values
+ * flow in via `assumptions` and substitute into the body's `{token}`
+ * placeholders. If `bodyTemplate` is not supplied (because the call site
+ * couldn't load the markdown, or for tests), we fall back to a hardcoded
+ * string identical to the markdown's default — visual parity guaranteed.
+ *
+ * Loading the markdown is the caller's responsibility — this component is a
+ * pure renderer so it stays usable from any client/server context. Pure
+ * helpers live in `./tokens.ts` to keep them testable without React or CSS.
  */
 
 import type { CompassReport } from '@/lib/compass/types';
+import {
+  buildAssumptionTokens,
+  applyAssumptionTokens,
+  DEFAULT_BODY_TEMPLATE,
+  DEFAULT_NOT_MODELLED,
+} from './tokens';
 import styles from './Assumptions.module.css';
 
 export interface AssumptionsProps {
   assumptions: CompassReport['assumptions'];
-  /** Additional "not modelled" trailing clause. Already defaulted to sensible list. */
+  /**
+   * Body template loaded from `content/report/assumptions.md`. May be `null`
+   * (gating blocked publication, file missing, or test bypass) — in that case
+   * the component falls back to the hardcoded default.
+   */
+  bodyTemplate?: string | null;
+  /** Additional "not modelled" trailing clause. Defaulted to a sensible list. */
   notModelled?: string;
 }
 
 export function Assumptions({
   assumptions,
-  notModelled = 'Not modelled: long-term care costs, sequence-of-return variations, lifetime gifts, business relief, divorce, future tax-rule changes.',
+  bodyTemplate,
+  notModelled = DEFAULT_NOT_MODELLED,
 }: AssumptionsProps) {
-  const incomeGrowth = assumptions.incomeGrowthRate ?? '2.5% real';
-  const taxResidence = assumptions.taxResidence ?? 'rest of UK';
-  const risk = assumptions.riskProfile ?? 'balanced';
-  const sacrifice = assumptions.salarySacrificeApplied === 'yes' ? ' · salary sacrifice applied' : '';
+  const tokens = buildAssumptionTokens(assumptions, notModelled);
+  const template = bodyTemplate?.trim() || DEFAULT_BODY_TEMPLATE;
+  const filled = applyAssumptionTokens(template, tokens);
   return (
     <p className={styles.block}>
-      <strong>Assumptions</strong>{' '}
-      · Risk profile {risk} (growth {assumptions.investmentGrowthRate})
-      · Cash {assumptions.cashGrowthRate}
-      · Inflation {assumptions.inflation}
-      · Real income growth {incomeGrowth}
-      · State pension £{assumptions.statePensionFullRate} full rate from age {assumptions.statePensionAge}
-      · DC pension access from age {assumptions.pensionAccessAge}
-      · NI years assumed {assumptions.niYearsAssumed}
-      · Tax residence {taxResidence}{sacrifice}
-      · Life expectancy {assumptions.lifeExpectancy}
-      · Tax year {assumptions.taxYear}.
-      {' '}{notModelled}
+      {renderAssumptionLine(filled)}
     </p>
   );
+}
+
+/**
+ * Render the substituted line, handling the single bit of inline markdown
+ * we use: `**ASSUMPTIONS**` → <strong>ASSUMPTIONS</strong>. Anything else is
+ * treated as literal text.
+ */
+function renderAssumptionLine(line: string): React.ReactNode {
+  const parts = line.split(/(\*\*[^*]+\*\*)/g);
+  return parts.map((part, index) => {
+    const m = part.match(/^\*\*(.+)\*\*$/);
+    if (m) {
+      return (
+        <strong key={index}>
+          {m[1]}
+        </strong>
+      );
+    }
+    return <span key={index}>{part}</span>;
+  });
 }

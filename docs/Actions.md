@@ -2,7 +2,9 @@
 
 Things you need to do, grouped by urgency. Each item is self-contained — you can do them in any order within a section.
 
-Last updated: 2026-04-27
+Last updated: 2026-04-27 (post-simplification S5/S2/S4/S3/S1).
+
+> **Quick orient:** for a lookup table mapping every kind of edit to its file + validator + skill, see [`EDITING_FLOWS.md`](./EDITING_FLOWS.md).
 
 ---
 

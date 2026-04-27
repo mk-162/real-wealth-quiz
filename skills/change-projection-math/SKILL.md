@@ -29,7 +29,7 @@ Supporting files:
 - `src/lib/compass/types.ts` — `ProjectionYear`, `CompassInputs`, `CompassReport`.
 - `src/lib/compass/tile-scoring.ts` — scores 12 planning-grid tiles from inputs + report.
 - `src/lib/compass/inputs.ts` — maps runtime answers → engine bands.
-- Possibly `src/lib/compass/assumptions.ts` — named constants (growth rates, inflation, tax-band thresholds).
+- `src/lib/compass/tax-year-2025-26.ts` — single source of truth for every UK tax / regulatory constant (use `edit-tax-year-constants` for in-year changes; `annual-tax-year-update` for the rollover).
 
 ## Inputs you need from the user
 

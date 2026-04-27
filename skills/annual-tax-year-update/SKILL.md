@@ -9,9 +9,10 @@ description: Perform the annual tax-year update — new state pension figures, a
 ## What this skill does
 
 Rolls the app forward to a new UK tax year by adding new rates / figures / assumptions while preserving the historical ones. Touches:
-- `tax-rules-<year>.yaml` (if the project uses per-year yaml files) — add a new one; never overwrite.
-- `src/lib/compass/assumptions.ts` — extend, not replace, any year-keyed constants.
-- `templates/_archive/report-legacy-mustache-2026-03/real-wealth-report.html` — methodology page, any year-specific disclosure.
+- `src/lib/compass/tax-year-<year>.ts` — copy the existing `tax-year-2025-26.ts` to a new file (`tax-year-2027-28.ts` etc.). Never overwrite.
+- Every importer of the old constants — switch to the new file. Typecheck catches misses.
+- `content/report/methodology.md` — the published assumptions table (Section 2). Must match the new constants exactly.
+- `content/report/assumptions.md` — the printed footer (already content-driven post-S5; values flow via `{tokens}`, but any prose mentioning a year needs updating).
 - `content/pages/*.md` — any year-keyed prose (consumer-duty page, FAQ).
 - Fixture tests keyed on specific years.
 

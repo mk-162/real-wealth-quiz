@@ -8,7 +8,14 @@ description: Edit regulatory and compliance copy in the Real Wealth report — d
 
 ## What this skill does
 
-Updates regulatory prose in the report's template (`templates/_archive/report-legacy-mustache-2026-03/real-wealth-report.html`) or in any supporting static content file (`content/report/static/disclaimer.md` if it exists; some is template-inline). Also touches `content/pages/summary.md` `fca_footer.disclosure` for the summary-page footer.
+Updates regulatory prose across the surfaces where it lives post-simplification:
+- `content/report/methodology.md` — the published 9th-page methodology (Section 5: regulatory disclosures).
+- `content/report/assumptions.md` — the printed assumptions footer.
+- `content/pages/summary.md` `fca_footer.disclosure` — the summary-page FCA footer strip.
+- `content/pages/consumer-duty.md` and `content/pages/privacy.md` — standalone regulatory pages.
+- React components under `src/app/report/` and `src/components/compass/` for any cover/page-ribbon disclaimers (engineering change).
+
+(The legacy mustache template at `templates/_archive/report-legacy-mustache-2026-03/real-wealth-report.html` is archived — it doesn't render in production. Don't edit it.)
 
 ## Human confirm gate (Tier 3) — regulatory content
 
@@ -26,11 +33,12 @@ Before making any edit:
 Regulatory copy is the most compliance-sensitive text in the app. FCA Consumer Duty and Conduct of Business Sourcebook (COBS) rules govern what financial firms must disclose. Changes need CFP + Compliance review.
 
 Places to find regulatory copy:
-- `templates/_archive/report-legacy-mustache-2026-03/real-wealth-report.html` — cover disclaimer, page ribbons, methodology page.
-- `content/pages/summary.md` → `fca_footer.disclosure` — the summary page FCA strip.
+- `content/report/methodology.md` — the methodology page's Section 5 (regulatory disclosures); use `edit-report-block-global` for the actual edit.
+- `content/report/assumptions.md` — the printed assumptions footer.
+- `content/pages/summary.md` → `fca_footer.disclosure` — the summary page FCA strip; use `edit-page-nested-frontmatter` for the actual edit.
 - `content/pages/consumer-duty.md` — the consumer-duty explainer.
 - `content/pages/privacy.md` — the privacy notice.
-- Possibly `content/report/static/disclaimer.md` if that file tree exists.
+- Cover disclaimer ribbon — currently a React component string; engineering change.
 
 ## Inputs you need from the user
 

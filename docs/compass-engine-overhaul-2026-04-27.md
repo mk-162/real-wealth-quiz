@@ -6,6 +6,14 @@
 
 This document is self-contained. The receiving agent does not need any prior conversation context.
 
+> **Post-simplification footnote (2026-04-27).** This handoff was written against the engine state immediately after the overhaul. Several authoring surfaces it references have since been simplified — see `docs/SIMPLIFICATION_PLAN_2026-04-27.md` for the full sequence. Most-relevant deltas for anyone reading this doc cold:
+>
+> - **Audience now lives on the screen file** — `content/generated/matrix.json` is gone. Each screen frontmatter carries an `audience` block keyed by `questionId`. The matrix the engine consumes is built at module load by walking every screen (`src/lib/questions/matrix.ts`).
+> - **Report content unified** — `content/pdf-report/` was renamed to `content/report/`, and per-segment report blocks now use a canonical `kind: per_segment` shape with `# S1 … # S9` body sections (or `kind: global` with `# Body`).
+> - **Body sections unified** — every content type uses a small canonical vocabulary (`# Headline / # Body / # Cta / # Notes`, with awareness using `# Body Aware|Partial|Unaware`).
+> - **Tax-year constants** stay where this doc puts them — `src/lib/compass/tax-year-2025-26.ts`. The admin now ships a structured-form editor for that file at `/tax-year`.
+> - **Assumptions footer copy** has been lifted out of `src/components/compass/Assumptions/Assumptions.tsx` into `content/report/assumptions.md` (canonical `kind: global` shape).
+
 ---
 
 ## 1. What changed in one paragraph

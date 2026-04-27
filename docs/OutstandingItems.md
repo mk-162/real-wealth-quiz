@@ -2,7 +2,18 @@
 
 Known gaps, tech debt, and unfinished threads. Grouped by severity.
 
-Last updated: 2026-04-27 (page 06 redesign session)
+Last updated: 2026-04-27 (post-simplification S5/S2/S4/S3/S1).
+
+## Closed in the simplification phases
+
+These items from the prior round of outstanding work were addressed by phases S1–S5:
+
+- **`content/generated/matrix.json` + xlsx pipeline** — replaced by per-screen `audience:` frontmatter blocks (S1). The legacy script `scripts/parse-segment-master.ts` is archived in-place with a header comment.
+- **3 folders for "the report"** (`content/report/` empty stubs, `content/pdf-report/` live, `templates/report/` dead) — collapsed to one folder `content/report/` (S2).
+- **6+ bespoke pdf-report file shapes** — unified to one canonical shape: `kind: per_segment` (with `# S1 … # S9`) or `kind: global` (with `# Body`) (S4).
+- **Body-section vocabulary drift** — every editable content type now uses a small canonical vocabulary (`# Headline / # Body / # Cta / # Notes` and per-type variants). Provocations, segment CTAs, awareness checks, screens all aligned (S3).
+- **Vendored schema mirror in `admin_app`** — replaced by direct `@master/schema` import via Turbopack workspace root config (S5). Drift test + sync script removed.
+- **Backup xlsx files in parent folder** — irrelevant post-simplification (xlsx pipeline retired); item closed.
 
 ---
 

@@ -99,18 +99,33 @@ Per skill-creator guidance, skills tend to under-trigger. Counter with slightly 
 Every skill that edits `content/` must explicitly call out the three project-wide invariants where relevant:
 
 1. **Ids are immutable.** Never change `id`, `screen_number`, `questionId`, or equivalent primary keys without an explicit rename skill.
-2. **Matrix precedence.** `segments_served: [all]` is declarative; the matrix row gates visibility. Never "fix" one to match the other silently.
+2. **Audience is per-question, on the screen.** Each screen carries an `audience:` block keyed by `questionId` with a `shown | conditional | hidden` cell per segment S1–S9. There is no separate matrix file. A `conditional` cell needs a matching predicate in `src/lib/segmentation/engine.ts` keyed by the same `questionId`. Never invent or remove a cell silently — schema rejects malformed audience blocks.
 3. **Round-trip fidelity.** Any file the admin app touches must re-parse to identical bytes. If you're writing a script not going through the admin, use `gray-matter` + `yaml` AST mode, never naive string replace.
 
 ## Validation commands — the canonical set
 
 Every skill's Workflow section should name the relevant validator. Standard commands from `master_template/`:
 
-- `npm run content:check` — Zod shape + body sections + matrix + q_refs.
+- `npm run content:check` — Zod shape + body sections + audience cells + q_refs.
 - `npm run voice:check` — banned phrases.
 - `npm run typecheck` — TS compile for any code change.
 - `npm run test` — full Vitest suite (admin app only has this).
 - `npm run build` — full Next.js build; catches any content → catalogue regeneration error.
+
+## Canonical body-section vocabulary (post-S3)
+
+Every editable content type uses a small canonical vocabulary for body sections. Skills that touch bodies must use the right names — the loader and integrity tray match exactly.
+
+| Type | Sections |
+|---|---|
+| Screen | `# Headline`, `# Sub`, optional `# Pullquote`, `# Body` (transition/intro layouts) |
+| Segment / overlay CTA | `# Headline`, `# Body`, `# Cta`, `# Cta Helper` |
+| Provocation | `# Headline`, `# Body`, `# Cta`, optional `# Notes` |
+| Awareness check | `# Headline`, `# Body Aware`, `# Body Partial`, `# Body Unaware` |
+| Report block, `kind: per_segment` | `# S1` … `# S9` (one per segment) |
+| Report block, `kind: global` | `# Body` |
+
+Old section names (`# Stem`, `# Aware body`, `# Close`, `# Button`, `# Helper`) and old field names (`provocation.close`, `segment.button`, `segment.helper`, `awareness.stem`) were removed in S3. Any skill referencing them is stale — rewrite to the table above.
 
 Skills that touch the admin app's own code should also call out its tests: `cd admin_app && npm run test`.
 

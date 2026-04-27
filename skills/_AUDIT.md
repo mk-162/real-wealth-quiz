@@ -2,7 +2,7 @@
 
 **Purpose.** Every category of change an AI editor (or human) could make to the Real Wealth content + report. Each entry names the files touched, the validation steps, the invariants to protect, and the likely invocation phrase. The skills in this folder are generated from this audit — one skill per entry that's worth automating.
 
-**Last updated:** 2026-04-24.
+**Last updated:** 2026-04-27 (post-simplification S5/S2/S4/S3/S1).
 
 **Audience.** Primarily AI agents doing bulk edits. Also humans who need a single index of what can change where.
 
@@ -71,9 +71,9 @@ Change types are grouped by surface. Within each group they're ordered from safe
 
 ### 1.7 Add a new screen
 - **What:** create a new questionnaire screen file under `content/screens/`.
-- **Files touched:** new file; optionally `content/generated/matrix.json` to declare new q_refs; optionally `src/lib/segmentation/engine.ts` if the new question is a `C` cell.
-- **Invariants:** filename format `<section>.<n>-<slug>.md`. Every field in `screenFrontmatter` (content/schema.ts). `id: screen.<section>.<n>.<slug-snake>`. `q_refs` either references existing matrix rows or requires new rows.
-- **Validation:** `npm run content:check`. Integrity scan for `q_refs` existence.
+- **Files touched:** new file (frontmatter contains the per-question `audience:` block — no separate matrix file). Optionally `src/lib/segmentation/engine.ts` if any audience cell is `conditional`. Add the new question id to `src/lib/questions/matrix.ts#questionOrder`.
+- **Invariants:** filename format `<section>.<n>-<slug>.md`. Every field in `screenFrontmatter` (content/schema.ts). `id: screen.<section>.<n>.<slug-snake>`. Every q_ref the engine should iterate has a matching `audience:` entry covering all 9 segments (`shown` / `conditional` / `hidden`).
+- **Validation:** `npm run content:check`. Integrity scan for q_ref / audience-key alignment.
 - **Trigger phrases:** "add a new screen for X", "create a question about Y".
 
 ### 1.8 Remove a screen
@@ -86,8 +86,8 @@ Change types are grouped by surface. Within each group they're ordered from safe
 ### 1.9 Reorder screens within a section
 - **What:** change `screen_number` values or rename files to change display order.
 - **Files touched:** screen files (rename + bump `screen_number`). `content/README.md` if it lists order.
-- **Invariants:** `screen_number` unique within section. The runtime reads `generated-order.ts` — `content:build` regenerates it.
-- **Validation:** `npm run content:build` produces the new order; run the app and confirm.
+- **Invariants:** `screen_number` unique within section. The runtime walks screens in `screen_number` order (the legacy `generated-order.ts` artefact was deleted in S1).
+- **Validation:** `npm run content:build` produces the catalogue; run the app and confirm.
 - **Trigger phrases:** "move X before Y", "reorder the money-today section".
 
 ### 1.10 Change the section a screen belongs to
@@ -178,7 +178,7 @@ Change types are grouped by surface. Within each group they're ordered from safe
 
 ### 3.3 Add a new segment (e.g. S10)
 - **What:** introduce a tenth segment.
-- **Files touched:** **major change.** `content/segments/S10-<slug>.md` (new). `matrix.json` (add S10 column to every row). `src/lib/segmentation/rules.ts` (new ranked predicate). `src/lib/segmentation/types.ts` (extend SegmentId union). `content/schema.ts` (extend segmentId enum). Every admin SEGMENT_LABELS + SEGMENTS array.
+- **Files touched:** **major change.** `content/segments/S10-<slug>.md` (new). Every screen file's `audience:` block (add the S10 cell to every questionId entry). Every per-segment report block under `content/report/` (add a `# S10` body section). `src/lib/segmentation/rules.ts` (new ranked predicate). `src/lib/segmentation/types.ts` (extend SegmentId union). `content/schema.ts` (extend segmentId enum). Every admin SEGMENT_LABELS + SEGMENTS array.
 - **Invariants:** segmentation predicate must be ordered so the new one fires BEFORE an existing predicate it narrows; otherwise it's dead code.
 - **Validation:** `npm run typecheck` + `npm run test` + full content:check. Add a test for the new predicate's hit conditions.
 - **Trigger phrases:** "we need a new segment for X".
@@ -399,7 +399,7 @@ The four pre-S4 banded-insight skills (`edit-banded-insight`, `edit-banding-case
 
 ### 8.5 Edit the projection engine (code change)
 - **What:** change the math in `src/lib/compass/projection.ts` — assumptions, formulas, bands, tax-year rates.
-- **Files touched:** `src/lib/compass/projection.ts` + `types.ts` + `assumptions.ts` if present.
+- **Files touched:** `src/lib/compass/projection.ts` + `types.ts` + `tax-year-2025-26.ts` (centralised tax/regulatory constants).
 - **Invariants:** keep the engine deterministic. Pure TypeScript, no side effects. Every output field must still be typed by `ProjectionYear`.
 - **Validation:** `npm run typecheck` + `npm run test`. Fixture regression against a known input/output.
 - **Trigger phrases:** "bump the balanced growth rate to 6.5%".
@@ -471,10 +471,11 @@ The following pre-S4 surfaces no longer exist as authored content:
 
 ### 10.3 Tax-year update (annual)
 - **What:** update tax-year constants, state pension figures, allowances, etc.
-- **Files touched:** `tax-rules-<year>.yaml` (if present) + `src/lib/compass/assumptions.ts` + report methodology copy.
-- **Invariants:** keep old tax-year files for replaying old sessions under their correct rates (immutable snapshot principle).
-- **Validation:** `npm run test` with fixture sessions from the old year — outputs unchanged.
+- **Files touched:** `src/lib/compass/tax-year-2025-26.ts` (single source of truth for every UK tax/regulatory constant) + `content/report/methodology.md` (the published assumptions table). Admin surface: `/tax-year` structured-form editor.
+- **Invariants:** when rolling to a new tax year, copy the file to `tax-year-<new-yr>.ts` and switch imports — keep the old file intact for replaying old sessions (immutable snapshot principle).
+- **Validation:** `npm run typecheck` + `npm run test` with fixture sessions from the old year — outputs unchanged.
 - **Trigger phrases:** "update to the 2027/28 tax rules".
+- **Skill:** `edit-tax-year-constants`.
 
 ### 10.4 Compliance ledger update
 - **What:** after CFP/compliance review, flip multiple provocations + awareness checks through the compliance workflow in one pass.
@@ -526,7 +527,7 @@ Based on frequency × risk:
 - 1.3, 1.4 Add/remove options
 - 1.5 Add conditional reveal
 - 1.7 Add a new screen
-- 2.2, 2.3 Add/remove matrix rows
+- 2.2, 2.3 Audience cell additions / question retirement (formerly "matrix rows")
 - 2.4, 2.5 Predicate changes
 - 4.2, 4.3 Provocation trigger / segments
 - 4.4 Add new provocation
@@ -536,6 +537,7 @@ Based on frequency × risk:
 - 9.1–9.4 Image management
 - 10.1 Rename id
 - 10.2 Bulk find/replace
+- 10.3 Tax-year constants (in-year patch via `edit-tax-year-constants`; assumptions footer via `edit-assumptions-footer`)
 
 **Tier 3 — occasional / high-risk (human-review required):**
 - 1.8 Remove a screen

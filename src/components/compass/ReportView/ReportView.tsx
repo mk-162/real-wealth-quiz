@@ -43,6 +43,13 @@ export interface ReportViewProps {
   hideFrame?: boolean;
   /** Kept for backward compat — no-op in the new design. */
   hideHeaders?: boolean;
+  /**
+   * Pre-loaded body template for the Assumptions footer (from
+   * `loadAssumptionsContent()`). Server-side callers should pass this; client
+   * pages that can't run the loader leave it `undefined` and the renderer
+   * falls back to the hardcoded default template — visual parity guaranteed.
+   */
+  assumptionsBodyTemplate?: string | null;
 }
 
 const SEGMENT_NAMES: Record<string, string> = {
@@ -63,6 +70,7 @@ export function ReportView({
   startPageNum = 2,
   totalPages,
   hideFrame = false,
+  assumptionsBodyTemplate,
 }: ReportViewProps) {
   const report = buildReport(fixture.inputs);
   const name = recipientName ?? SEGMENT_NAMES[fixture.view.segmentId] ?? 'your plan';
@@ -226,7 +234,7 @@ export function ReportView({
             phone="0161 768 7722"
             contact="realwealth.co.uk"
           />
-          <Assumptions assumptions={assumptions} />
+          <Assumptions assumptions={assumptions} bodyTemplate={assumptionsBodyTemplate ?? null} />
         </div>
       </Page>
     </>

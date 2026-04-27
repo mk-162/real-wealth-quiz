@@ -2,7 +2,7 @@
 
 How to verify the app is working — automated tests, URL shortcuts, manual journeys, and visual QA.
 
-Last updated: 2026-04-24
+Last updated: 2026-04-27 (post-simplification S5/S2/S4/S3/S1).
 
 ---
 

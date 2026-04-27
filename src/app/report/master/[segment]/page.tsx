@@ -26,7 +26,12 @@
 
 import { notFound } from 'next/navigation';
 import { FIXTURES, fixtureById, buildReport, scoreAllTiles } from '@/lib/compass';
-import { enrichSegmentView, loadMethodology, loadAllExpandedChecks } from '@/lib/compass/pdf-content';
+import {
+  enrichSegmentView,
+  loadMethodology,
+  loadAllExpandedChecks,
+  loadAssumptionsContent,
+} from '@/lib/compass/pdf-content';
 import { getWhereYouAre, getSilentGapsAndRead, loadSegmentCta } from '@/lib/compass/narrative-content';
 import { ReportView, PageFrame, CtaPanel } from '@/components/compass';
 import { CoverPage, NarrativePlaceholder, MethodologySection, formatPageNum } from './report-helpers';
@@ -96,6 +101,7 @@ export default async function MasterReport({
         fixture={enrichedFixture}
         recipientName={name}
         startPageNum={2}
+        assumptionsBodyTemplate={loadAssumptionsContent()?.body ?? null}
       />
 
       {/* 05 — Where you are today */}

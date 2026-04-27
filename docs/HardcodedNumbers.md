@@ -2,9 +2,11 @@
 
 A specific integrity problem in tile content: some numbers in tile notes are engine-computed (personalised per client), others are hardcoded in the prose (same for every client in that segment). Currently the reader can't tell which is which.
 
-Reference doc for Monday's conversation. Don't act on this before we've talked through the approach.
+Reference doc. Read alongside `EDITING_FLOWS.md` and `OutstandingItems.md`.
 
-Last updated: 2026-04-24
+Last updated: 2026-04-27 (Solution 2 — central constants file — has been implemented; see `src/lib/compass/tax-year-2025-26.ts` and the `edit-tax-year-constants` skill).
+
+> **Status update.** Of the five solutions sketched below, **Solution 2 has shipped** — every UK regulatory constant lives in `src/lib/compass/tax-year-2025-26.ts` (single source of truth) with a methodology-page mirror at `content/report/methodology.md` Section 2. The published assumptions footer now also flows from `content/report/assumptions.md` (Solution 2-adjacent — content-driven). Solutions 1, 3, 4 remain open; Solution 5 (pragmatic combo) is still the recommended sequencing for the rest.
 
 ---
 
