@@ -1,5 +1,7 @@
 ---
-id: grid.protection
+id: report.tile.protection
+kind: per_segment
+title: "Protection insurance"
 tile_number: 11
 label: "Protection insurance"
 what_it_checks: "Life cover, critical illness, and income protection — whether in place personally vs through work only vs absent."

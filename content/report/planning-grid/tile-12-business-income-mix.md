@@ -1,5 +1,7 @@
 ---
-id: grid.business_income_mix
+id: report.tile.business_income_mix
+kind: per_segment
+title: "Income mix"
 tile_number: 12
 label_owners: "Business exit"
 label_others: "Income mix"

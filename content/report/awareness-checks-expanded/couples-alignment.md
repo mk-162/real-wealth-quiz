@@ -1,5 +1,6 @@
 ---
-id: pdf.expanded.couples_alignment
+id: report.expanded.couples_alignment
+kind: global
 source_id: pitfall.couples_alignment
 title: "Couples alignment — expanded PDF copy"
 compliance_status: draft

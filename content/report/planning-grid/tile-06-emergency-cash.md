@@ -1,5 +1,7 @@
 ---
-id: grid.emergency_cash
+id: report.tile.emergency_cash
+kind: per_segment
+title: "Emergency cash"
 tile_number: 6
 label: "Emergency cash"
 what_it_checks: "Cash reserves vs 3–6 months of essential monthly spend. Threshold adjusts: 3 months for dual-earner no-dependants; 6 months for single-earner with dependants; 9 months for self-employed."

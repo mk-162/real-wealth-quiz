@@ -1,5 +1,7 @@
 ---
-id: grid.tax_efficiency
+id: report.tile.tax_efficiency
+kind: per_segment
+title: "Tax efficiency"
 tile_number: 5
 label: "Tax efficiency"
 what_it_checks: "Whether the main tax-reduction levers are being used: £100k personal allowance trap, annual ISA allowance, pension relief, couples' allowance splitting, higher-rate reclaim."

@@ -1,5 +1,7 @@
 ---
-id: grid.mortgage
+id: report.tile.mortgage
+kind: per_segment
+title: "Mortgage"
 tile_number: 8
 label: "Mortgage"
 what_it_checks: "For homeowners: years remaining on the mortgage vs target retirement age, and payment-to-income ratio. For renters: shown as informational — not red/green."

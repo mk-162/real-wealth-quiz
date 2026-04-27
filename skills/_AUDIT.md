@@ -337,114 +337,81 @@ Pages are heavier-frontmatter than screens — big nested objects (summary.md's 
 
 ---
 
-## 8. Report construction (`content/report/*` + `templates/_archive/report-legacy-mustache-2026-03/*.html` + `src/lib/compass/*`)
+## 8. Report construction (`content/report/*` + `src/lib/compass/*`)
 
-This is the biggest surface — the PDF report has template, blocks, per-section content, chart bindings, image bindings, and the projection engine underneath.
+After Phase 2 / S4, every file under `content/report/` follows one canonical shape:
 
-### 8.1 Edit a banded insight's body
-- **What:** change the body prose for one `banding_cases[]` entry.
-- **Files touched:** `content/report/insights/<slug>.md`.
-- **Invariants:** character budget (`report.insight.body` 200/420). Every `{{placeholder}}` token must exist in the registry.
-- **Validation:** admin integrity checks `report:banding-exhaustiveness`, `report:placeholder-known`.
-- **Trigger phrases:** "rewrite the cash-surplus insight for the 3–6 months band".
+```yaml
+---
+id: report.<slug>
+kind: per_segment | global
+title: <short label>
+description: <optional>
+compliance_status: draft | cfp_signed | compliance_signed | approved_to_ship
+# kind-specific extras (tile thresholds, source_id, etc.) ride along here
+---
 
-### 8.2 Add / remove a banding case
-- **What:** add a new `{ when, body }` entry to an insight's `banding_cases[]`, or delete one.
-- **Files touched:** the insight md.
-- **Invariants:** `when` DSL must parse. The matrix of all input bands × all cases must be exhaustively covered by `when` predicates OR the `fallback` field.
-- **Validation:** admin's coverage panel turns green. Integrity scan.
-- **Trigger phrases:** "add a case for very-low cash savings".
+# S1 ... # S9   (per_segment)
+# Body          (global)
+```
 
-### 8.3 Edit an insight's fallback
-- **What:** change the fallback body used when no banding case matches.
-- **Files touched:** the insight md.
-- **Invariants:** `report.insight.fallback` budget 140/220. Prefer a non-empty fallback — the safety net.
-- **Validation:** as above.
-- **Trigger phrases:** "update the cash-insight fallback".
+The renderer (`src/app/report/master/[segment]/page.tsx`) reads via `src/lib/compass/pdf-content.ts`. The admin app's `/report` route exposes a generic editor (`admin_app/features/report/`) with one frontmatter form + one MarkdownEditor pane per body section.
 
-### 8.4 Edit a static block (context / think / tip)
-- **What:** rewrite a `context`, `think`, or `tip` static block.
-- **Files touched:** `content/report/<kind>/<slug>.md`.
-- **Invariants:** `report.static.body` budget 260/520.
-- **Validation:** admin integrity scan.
-- **Trigger phrases:** "update the cash context paragraph", "new tip for pension".
+The four pre-S4 banded-insight skills (`edit-banded-insight`, `edit-banding-cases`, `edit-static-report-block`, `add-report-section`) have been retired. The four canonical-block skills below replace them.
 
-### 8.5 Add / remove a report block
-- **What:** introduce or delete a block in any section.
-- **Files touched:** `content/report/<kind>/<section>-<slug>.md` (new) or deletion. Also ordering (sibling `_order.json` or `order` frontmatter — see admin's ordering decision).
-- **Invariants:** section must be one of `cash | expenditure | fin_life_planning | protection | investment | pension | property_mortgage | tax_optimisation | where_you_are | actions`. Compliance gating starts `draft`.
-- **Validation:** admin integrity scan.
-- **Trigger phrases:** "add a new tip in the pension section".
+### 8.1 Edit a per-segment body section
+- **What:** rewrite the body under one `# S<n>` H1 inside a `kind: per_segment` block (tile note for one segment, gauge interpretation, takeaway banner, goal entry).
+- **Files touched:** `content/report/<path>.md` — one file, one segment section.
+- **Invariants:** preserve `{value_token}` placeholders; never change `id`/`kind`/`title`; never advance `compliance_status` as a side effect (use 8.6).
+- **Validation:** `npm run content:check` + `npm run voice:check`.
+- **Trigger phrases:** "rewrite the S2 health-gauge line", "update the retirement tile note for S5", "soften the S9 takeaway banner".
+- **Skill:** `edit-report-block-segment`.
 
-### 8.6 Change block ordering within a section
-- **What:** reorder the blocks rendered within a section.
-- **Files touched:** section's `_order.json` sibling OR per-block `order` frontmatter (depending on how Agent 4 wired it).
-- **Invariants:** every block has an entry. No duplicates.
-- **Validation:** admin integrity scan.
-- **Trigger phrases:** "move the tip above the context on cash".
+### 8.2 Edit the body of a global block
+- **What:** rewrite the body (or a sub-section under `# Body`) inside a `kind: global` block — methodology page, expanded awareness check, assumptions footer.
+- **Files touched:** `content/report/<path>.md` — one file, one body sub-section.
+- **Invariants:** methodology numbers must trace to a source citation; regulatory disclosures need explicit CFP+Compliance confirmation before edit.
+- **Validation:** `npm run content:check` + `npm run voice:check`.
+- **Trigger phrases:** "update the methodology", "rewrite the LPA expanded paragraph", "the BADR expanded copy is dated".
+- **Skill:** `edit-report-block-global`.
 
-### 8.7 Add a new report section
-- **What:** introduce a new `section` key beyond the existing 10.
-- **Files touched:** `admin_app/shared/schema.ts`'s `reportSection` enum. `templates/_archive/report-legacy-mustache-2026-03/real-wealth-report.html` to render it. `content/report/<kind>/<new-section>-*.md`.
-- **Invariants:** major change — update the template, the enum, and every admin place that maps sections to UI.
-- **Validation:** `npm run typecheck` + admin regression.
-- **Trigger phrases:** "add a Philanthropy section to the report".
+### 8.3 Add a new report block
+- **What:** create a new file under `content/report/` in the canonical shape.
+- **Files touched:** new `.md` file. Optionally a tile-number slot allocation if it's a planning-grid tile.
+- **Invariants:** new blocks start at `compliance_status: draft`; `id` mints in the right namespace; `kind` matches the body shape.
+- **Validation:** `npm run content:check`. Render check on `/report/master/<segment>` recommended.
+- **Trigger phrases:** "add a new report tile for X", "we need a new expanded awareness check", "scaffold an assumptions footer".
+- **Skill:** `add-report-block`.
 
-### 8.8 Change a chart binding
-- **What:** swap which chart slug a section uses, or rebind its input variables.
-- **Files touched:** `content/report/charts/<section>-<slug>.md`.
-- **Invariants:** `chart_slug` must exist in `content/charts/manifest.json`. `inputs` must match that chart's required input-variable names.
-- **Validation:** admin integrity check `report:chart-slug-exists`.
-- **Trigger phrases:** "swap the chart on the cash section".
+### 8.4 Advance compliance status on a report block
+- **What:** walk the `compliance_status` field through the four-state ladder for one block.
+- **Files touched:** one `content/report/<path>.md` — one frontmatter field.
+- **Invariants:** human confirm gate is mandatory; no lateral skips by default; sign-off attribution captured in commit message (the canonical block has no signoff_date frontmatter).
+- **Validation:** `npm run content:check`. For `approved_to_ship`, optionally `NODE_ENV=production npm run build` to verify the production gate.
+- **Trigger phrases:** "mark the LPA expanded copy as CFP-signed", "the methodology is approved", "this tile is ready to ship".
+- **Skill:** `change-block-compliance-status`.
 
-### 8.9 Add / remove / rename a chart in the manifest
-- **What:** extend the chart catalogue. Requires the programmatic-chart generator agent's buy-in.
-- **Files touched:** `content/charts/manifest.json`. Likely the chart-generator codebase too.
-- **Invariants:** `slug` unique. `thumbnail_path` resolves. `inputs` schema stable for consumers.
-- **Validation:** integrity scan on any chart ref that used the renamed/removed slug.
-- **Trigger phrases:** "add a new chart called runway_years".
-
-### 8.10 Change an image binding
-- **What:** swap the image a report section uses.
-- **Files touched:** `content/report/images/<slug>.md`.
-- **Invariants:** `image` path resolves to a file in `content/images/`. Alt text present. `width_px` set.
-- **Validation:** admin integrity check `report:image-file-exists`.
-- **Trigger phrases:** "use a different image on the investment page".
-
-### 8.11 Edit a placeholder token
-- **What:** rename, add, or remove a `{{mustache}}` token used in the template or insight bodies.
-- **Files touched:** `templates/_archive/report-legacy-mustache-2026-03/real-wealth-report.html` AND `admin_app/shared/placeholders.ts` (the registry) AND any insight body that uses the old name.
-- **Invariants:** the template's set of tokens and the registry must stay in sync. Renaming requires a grep + update across all insights.
-- **Validation:** admin integrity check `report:placeholder-known`.
-- **Trigger phrases:** "rename the {{snapshot_stat_1_val}} token to {{net_worth}}".
-
-### 8.12 Change the HTML template structure
-- **What:** restructure `templates/_archive/report-legacy-mustache-2026-03/real-wealth-report.html` — new page, rearranged panels, different layout.
-- **Files touched:** the HTML + CSS. Possibly `templates/_archive/report-legacy-mustache-2026-03/tokens.css`.
-- **Invariants:** all `{{mustache}}` tokens in the template must exist in the registry. Print CSS pagination breakpoints preserved.
-- **Validation:** manual render of a real session. Regression on the admin's rendered preview.
-- **Trigger phrases:** "add a new page between cover and snapshot".
-
-### 8.13 Edit the disclaimer / methodology / caveats
-- **What:** change the legal / compliance copy printed in the report's grey caveat ribbons, final methodology page, or cover disclaimer.
-- **Files touched:** `templates/_archive/report-legacy-mustache-2026-03/real-wealth-report.html` and/or `content/report/static/disclaimer.md` (if present).
-- **Invariants:** compliance sign-off required before this can ship. Never change without a CFP review.
-- **Validation:** compliance review captured in the commit.
-- **Trigger phrases:** "update the methodology page".
-
-### 8.14 Per-segment report variants
-- **What:** show a different block, chart, or copy fragment based on the respondent's segment.
-- **Files touched:** the insight / static block frontmatter gains a `segments_served` field OR a new `segment` block type. The template gains conditional rendering.
-- **Invariants:** respect the same matrix-over-segments_served rule: segment is declarative, the resolver decides. Keep one authoritative source.
-- **Validation:** admin preview cycles through S1–S9 and renders the correct variant for each.
-- **Trigger phrases:** "the S9 HNW report should show a different top-line", "per-segment CTA copy".
-
-### 8.15 Edit the projection engine (code change)
+### 8.5 Edit the projection engine (code change)
 - **What:** change the math in `src/lib/compass/projection.ts` — assumptions, formulas, bands, tax-year rates.
 - **Files touched:** `src/lib/compass/projection.ts` + `types.ts` + `assumptions.ts` if present.
 - **Invariants:** keep the engine deterministic. Pure TypeScript, no side effects. Every output field must still be typed by `ProjectionYear`.
 - **Validation:** `npm run typecheck` + `npm run test`. Fixture regression against a known input/output.
 - **Trigger phrases:** "bump the balanced growth rate to 6.5%".
+
+### 8.6 Change an image binding (still relevant where used)
+- **What:** swap the image a global block (typically an expanded awareness check) uses.
+- **Files touched:** the relevant `content/report/<path>.md` (frontmatter `image_slug` extra).
+- **Invariants:** the slug must resolve to an asset under `public/report-preview/assets/illustrations/<slug>.svg`.
+- **Validation:** manual render. (No dedicated admin integrity check after the Phase 2 simplification.)
+- **Trigger phrases:** "change the image on the LPA expanded page".
+- **Skill:** `change-image-binding`.
+
+### 8.7 Retired surfaces (post-Phase 2)
+The following pre-S4 surfaces no longer exist as authored content:
+- Banded insights, static `context`/`think`/`tip` blocks, banding cases, fallbacks. **Replaced by:** the canonical `kind: per_segment | global` block (8.1–8.4 above).
+- Mustache HTML template (`templates/_archive/report-legacy-mustache-2026-03/real-wealth-report.html`). **Replaced by:** React components under `src/app/report/` and `src/components/compass/`. Template-structure changes are now code edits (not in this audit).
+- Chart-binding files (`content/report/charts/<slug>.md`). **Replaced by:** chart components in `src/components/compass/` consuming the projection engine directly. No content surface.
+- `report:banding-exhaustiveness`, `report:placeholder-known`, `report:chart-slug-exists`, `report:insight-has-fallback` integrity checks. **Replaced by:** `report:frontmatter-valid` + `report:compliance-draft`.
 
 ---
 
@@ -545,8 +512,9 @@ Based on frequency × risk:
 - 4.1 Edit a provocation body
 - 4.6 Advance compliance_status
 - 7.1 Edit microcopy
-- 8.1 Edit a banded insight
-- 8.4 Edit a static report block
+- 8.1 Edit a per-segment body section
+- 8.2 Edit the body of a global block
+- 8.4 Advance compliance status on a report block
 
 **Tier 2 — weekly / monthly:**
 - 1.3, 1.4 Add/remove options
@@ -557,9 +525,8 @@ Based on frequency × risk:
 - 4.2, 4.3 Provocation trigger / segments
 - 4.4 Add new provocation
 - 5.x Awareness checks
-- 8.2, 8.3 Banding cases + fallback
-- 8.5, 8.6 Report block add/order
-- 8.8, 8.10 Chart + image bindings
+- 8.3 Add a new report block
+- 8.6 Change an image binding
 - 9.1–9.4 Image management
 - 10.1 Rename id
 - 10.2 Bulk find/replace
@@ -570,12 +537,7 @@ Based on frequency × risk:
 - 3.3, 3.4 Add/remove a segment
 - 3.5 Segment-assignment rules
 - 6.3 Add/remove a page
-- 8.7 Add new report section
-- 8.11 Placeholder rename
-- 8.12 Template restructure
-- 8.13 Methodology / disclaimer copy
-- 8.14 Per-segment report variants
-- 8.15 Projection engine math
+- 8.5 Projection engine math
 - 10.3 Tax-year update
 
 Skills in `skills/` are generated from this audit, one per entry. Tier-3 skills include a mandatory human-confirm gate.

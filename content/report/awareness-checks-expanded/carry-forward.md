@@ -1,5 +1,6 @@
 ---
-id: pdf.expanded.carry_forward
+id: report.expanded.carry_forward
+kind: global
 source_id: pitfall.carry_forward
 title: "Pension carry-forward — expanded PDF copy"
 compliance_status: draft

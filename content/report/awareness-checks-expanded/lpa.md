@@ -1,5 +1,6 @@
 ---
-id: pdf.expanded.lpa
+id: report.expanded.lpa
+kind: global
 source_id: pitfall.lpa
 title: "Lasting Power of Attorney — expanded PDF copy"
 image_slug: lpa-shield

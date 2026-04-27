@@ -1,5 +1,6 @@
 ---
-id: pdf.expanded.iht_mitigation
+id: report.expanded.iht_mitigation
+kind: global
 source_id: pitfall.iht_mitigation
 title: "IHT mitigation — expanded PDF copy"
 image_slug: iht-tree

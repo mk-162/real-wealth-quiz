@@ -1,5 +1,7 @@
 ---
-id: grid.state_pension
+id: report.tile.state_pension
+kind: per_segment
+title: "State pension"
 tile_number: 3
 label: "State pension"
 what_it_checks: "NI qualifying years vs the 35 required for the full new state pension (£11,502/yr, 2025/26 rate)."

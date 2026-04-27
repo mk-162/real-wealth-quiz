@@ -1,5 +1,7 @@
 ---
-id: grid.retirement_readiness
+id: report.tile.retirement_readiness
+kind: per_segment
+title: "Retirement readiness"
 tile_number: 1
 label: "Retirement readiness"
 what_it_checks: "Projected wealth at the user's target retirement age vs the wealth needed to sustain their stated spend for a 95-year life expectancy."

@@ -1,5 +1,7 @@
 ---
-id: grid.investment_strategy
+id: report.tile.investment_strategy
+kind: per_segment
+title: "Investment strategy"
 tile_number: 4
 label: "Investment strategy"
 what_it_checks: "Wrapper diversification (ISA, pension, GIA) and broad risk-to-horizon match. Business concentration flagged separately."

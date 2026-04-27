@@ -1,5 +1,7 @@
 ---
-id: grid.estate_planning
+id: report.tile.estate_planning
+kind: per_segment
+title: "Estate planning"
 tile_number: 9
 label: "Estate planning"
 what_it_checks: "Will currency (reviewed in last 2 years vs older vs absent) and Lasting Power of Attorney status (health, finance, both, neither)."

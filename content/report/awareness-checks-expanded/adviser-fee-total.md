@@ -1,5 +1,6 @@
 ---
-id: pdf.expanded.adviser_fee_total
+id: report.expanded.adviser_fee_total
+kind: global
 source_id: pitfall.adviser_fee_total
 title: "Adviser fee total — expanded PDF copy"
 compliance_status: draft

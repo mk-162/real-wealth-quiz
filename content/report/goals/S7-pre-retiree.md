@@ -1,11 +1,14 @@
 ---
-id: pdf.goals.S7
+id: report.goals.S7
+kind: per_segment
 segment: S7
 title: "Goals & Wellbeing — S7 Pre-Retiree Affluent"
 compliance_status: draft
 ---
 
-# Goal 1 — Retire at 65 without reducing lifestyle
+# S7
+
+## Goal 1 — Retire at 65 without reducing lifestyle
 
 status: green
 capacity: "Projected wealth 135% of the retirement target. The plan delivers this comfortably with no changes required at this stage."
@@ -13,7 +16,7 @@ rationale: "Fully supported. The work now is sequencing and tax efficiency — n
 
 ---
 
-# Goal 2 — Travel extensively while health allows (~£15,000 extra per year)
+## Goal 2 — Travel extensively while health allows (~£15,000 extra per year)
 
 status: green
 capacity: "The surplus above the baseline retirement target covers this with comfortable margin for the first decade of retirement. The question is which pot funds it most efficiently for tax."
@@ -21,7 +24,7 @@ rationale: "Achievable. The drawdown sequencing conversation is the natural next
 
 ---
 
-# Goal 3 — Help grandchildren with education or property deposits
+## Goal 3 — Help grandchildren with education or property deposits
 
 status: amber
 capacity: "Annual gifting capacity is available and the inheritance tax clock matters at this estate level. The 7-year gifting allowance is not currently running — there is no cost to starting it now, and a meaningful cost to not starting it."
@@ -29,7 +32,7 @@ rationale: "This goal costs the estate more in inheritance tax for every year th
 
 ---
 
-# Goal 4 — Stay in the current home for as long as possible
+## Goal 4 — Stay in the current home for as long as possible
 
 status: green
 capacity: "No mortgage, adequate income, and sufficient liquid assets to maintain the property. This goal is well-supported by the plan. The care-cost risk is worth acknowledging as a second-order consideration — not urgent, but worth knowing the numbers."

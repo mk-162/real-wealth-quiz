@@ -1,5 +1,6 @@
 ---
-id: pdf.expanded.pension_iht_2027
+id: report.expanded.pension_iht_2027
+kind: global
 source_id: pitfall.pension_iht_2027
 title: "Pension IHT 2027 change — expanded PDF copy"
 compliance_status: draft

@@ -1,17 +1,18 @@
 ---
-id: pdf.health_gauge
+id: report.health_gauge
+kind: per_segment
 title: Financial health gauge — per-segment interpretation lines
 description: >
   One plain-English sentence per segment (plus zone variants where the score can swing
   meaningfully). Rendered directly below the gauge needle. Must name the score in
   plain English and anchor it to the single most relevant lever for that segment.
   Max 30 words. No jargon. No directive language ("you should…").
+compliance_status: draft
 zones:
   red:   "0–69% — Material shortfall. Changes needed."
   amber: "70–89% — Short of target. Small changes close most of it."
   green: "90–115% — On track."
   blue:  "116%+ — Ahead of target. Choices available."
-compliance_status: draft
 ---
 
 # S1 — Early Accumulator

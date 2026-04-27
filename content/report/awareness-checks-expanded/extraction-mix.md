@@ -1,5 +1,6 @@
 ---
-id: pdf.expanded.extraction_mix
+id: report.expanded.extraction_mix
+kind: global
 source_id: pitfall.extraction_mix
 title: "Extraction mix — expanded PDF copy"
 compliance_status: draft

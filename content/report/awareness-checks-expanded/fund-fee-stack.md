@@ -1,5 +1,6 @@
 ---
-id: pdf.expanded.fund_fee_stack
+id: report.expanded.fund_fee_stack
+kind: global
 source_id: pitfall.fund_fee_stack
 title: "Fund fee stack — expanded PDF copy"
 compliance_status: draft

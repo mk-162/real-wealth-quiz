@@ -1,5 +1,6 @@
 ---
-id: pdf.methodology
+id: report.methodology
+kind: global
 title: Methodology page — PDF report last page
 description: >
   Every assumption used in generating this report, the source for each,
@@ -9,40 +10,36 @@ description: >
 compliance_status: draft
 ---
 
-# Page heading
+# Body
+
+## Page heading
 
 How this report was built — and what it doesn't tell you.
 
----
-
-# Opening paragraph
+## Opening paragraph
 
 This report was generated from the answers you gave in the conversation. Every number you see is an estimate built on the assumptions listed below. None of it is a projection of your personal finances. None of it constitutes financial advice. It is a starting point — the kind of picture a planner would sketch on a first call to make sure they're asking the right questions.
 
----
+## Section 1 — The Financial Health Score
 
-# Section 1 — The Financial Health Score
-
-## What it measures
+### What it measures
 The score compares your projected liquid wealth at your target retirement age against the wealth you would need to sustain your stated spending for the rest of your life.
 
 **Score = projected liquid wealth at retirement ÷ wealth needed × 100**
 
 A score of 100 means you are exactly on track, on the assumptions below. Above 100 means a buffer. Below 100 means a gap.
 
-## What "wealth needed" means
+### What "wealth needed" means
 Wealth needed = your stated retirement annual spend × 25.
 
 The "× 25" figure is derived from the 4% safe-withdrawal rate — a widely used rule of thumb that assumes a portfolio can sustain a 4% annual withdrawal indefinitely at balanced risk levels. It is a heuristic, not a guarantee.
 
 Your stated retirement spend is taken from your answers. If you chose "roughly the same as now," we used your essential and non-essential spending bands. If you chose "a bit more" or "a bit less," we adjusted the baseline by ±20%.
 
-## What "projected liquid wealth at retirement" means
+### What "projected liquid wealth at retirement" means
 We model your current liquid assets — pensions, ISAs, investments, and cash savings — growing at the balanced growth rate (see below), with your stated monthly saving contribution added each year until retirement. Illiquid assets (the family home, a business, inherited property) are excluded from the projection unless you told us they are part of the retirement plan.
 
----
-
-# Section 2 — Growth and inflation assumptions
+## Section 2 — Growth and inflation assumptions
 
 | Assumption | Value used | Source / basis |
 |---|---|---|
@@ -69,9 +66,7 @@ We model your current liquid assets — pensions, ISAs, investments, and cash sa
 | BADR rate (Business Asset Disposal Relief) | 14% to April 2026; 18% from April 2026 | Autumn 2024 Budget |
 | Corporation tax | 25% main rate | HMRC, 2025/26 tax year |
 
----
-
-# Section 3 — How we mapped your answers to numbers
+## Section 3 — How we mapped your answers to numbers
 
 Your answers used bands, not exact figures. We mapped each band to a midpoint for calculation purposes. Where you chose "prefer not to say" for a field that drives a major chart element, that element is shown in grey with an "assumed" label rather than silently defaulted.
 
@@ -104,9 +99,7 @@ Your answers used bands, not exact figures. We mapped each band to a midpoint fo
 | Savings and investments | £1m–£3m | £1,800,000 |
 | Savings and investments | £3m or more | £4,000,000 |
 
----
-
-# Section 4 — What this report cannot show
+## Section 4 — What this report cannot show
 
 **Your exact numbers.** We worked from bands. The real figures — your pension values, mortgage balance, investment portfolio costs, protection policy terms — will shift every number on this page. That is what the first planning conversation is for.
 
@@ -118,26 +111,24 @@ Your answers used bands, not exact figures. We mapped each band to a midpoint fo
 
 **Costs.** We have not deducted adviser fees, platform charges, or fund management costs from the projection. Your all-in annual cost (typically 0.7%–2.0%) will reduce the terminal value. We flagged this where it is material; ask your planner to show you the all-in figure as a single number.
 
----
+## Section 5 — Regulatory disclosures
 
-# Section 5 — Regulatory disclosures
-
-## Not financial advice
+### Not financial advice
 
 This report is for general information purposes only. It does not constitute a personal recommendation, financial advice, or a regulated investment recommendation within the meaning of the Financial Services and Markets Act 2000. The information presented is illustrative. No action should be taken on the basis of this report without first taking regulated advice from a qualified financial planner.
 
-## About Real Wealth Partners Ltd
+### About Real Wealth Partners Ltd
 
 Real Wealth Partners Ltd is authorised and regulated by the Financial Conduct Authority (FRN 1037186). Registered in England and Wales, company number 16498380. Registered office: Office 1, First Floor, 14–18 Tib Lane, Manchester, M2 4JB. A wholly owned subsidiary of Real Wealth Group Ltd.
 
-## Data
+### Data
 
 The answers you provided are held by Real Wealth Partners Ltd in accordance with our Privacy Notice (available at realwealth.co.uk/privacy). We do not share your personal data with third parties outside the Real Wealth Group without your consent.
 
-## Tax year
+### Tax year
 
 All rates, allowances, and thresholds in this report are for the 2025/26 tax year unless otherwise stated. This report does not automatically update when rates change.
 
-## Scottish taxpayers
+### Scottish taxpayers
 
 If you pay income tax under Scottish rates, the calculation applies a simplified uplift rather than modelling all six Scottish income tax bands individually. Your actual liability may differ. This is noted where the Scottish rate structure creates a meaningful difference from the rest-of-UK rates used in this report.

@@ -1,5 +1,6 @@
 ---
-id: pdf.expanded.overpayment_vs_cash
+id: report.expanded.overpayment_vs_cash
+kind: global
 source_id: pitfall.overpayment_vs_cash
 title: "Mortgage overpayment vs cash — expanded PDF copy"
 compliance_status: draft

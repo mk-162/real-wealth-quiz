@@ -1,5 +1,6 @@
 ---
-id: pdf.expanded.tapered_annual_allowance
+id: report.expanded.tapered_annual_allowance
+kind: global
 source_id: pitfall.tapered_annual_allowance
 title: "Tapered annual allowance — expanded PDF copy"
 compliance_status: draft

@@ -1,5 +1,7 @@
 ---
-id: grid.pension_contributions
+id: report.tile.pension_contributions
+kind: per_segment
+title: "Pension contributions"
 tile_number: 2
 label: "Pension contributions"
 what_it_checks: "Contribution rate (employee + employer) vs age-divided-by-two rule of thumb as a percentage of gross income."

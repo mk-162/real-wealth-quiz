@@ -1,5 +1,6 @@
 ---
-id: pdf.expanded.mpaa
+id: report.expanded.mpaa
+kind: global
 source_id: pitfall.mpaa
 title: "MPAA — expanded PDF copy"
 compliance_status: draft

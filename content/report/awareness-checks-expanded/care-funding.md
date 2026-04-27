@@ -1,5 +1,6 @@
 ---
-id: pdf.expanded.care_funding
+id: report.expanded.care_funding
+kind: global
 source_id: pitfall.care_funding
 title: "Care funding — expanded PDF copy"
 compliance_status: draft

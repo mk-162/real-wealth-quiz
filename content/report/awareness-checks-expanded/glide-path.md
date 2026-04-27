@@ -1,5 +1,6 @@
 ---
-id: pdf.expanded.glide_path
+id: report.expanded.glide_path
+kind: global
 source_id: pitfall.glide_path
 title: "Glide path — expanded PDF copy"
 compliance_status: draft

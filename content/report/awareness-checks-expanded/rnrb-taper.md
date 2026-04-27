@@ -1,5 +1,6 @@
 ---
-id: pdf.expanded.rnrb_taper
+id: report.expanded.rnrb_taper
+kind: global
 source_id: pitfall.rnrb_taper
 title: "RNRB taper — expanded PDF copy"
 compliance_status: draft

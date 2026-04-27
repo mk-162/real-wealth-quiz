@@ -1,5 +1,6 @@
 ---
-id: pdf.expanded.badr_timing
+id: report.expanded.badr_timing
+kind: global
 source_id: pitfall.badr_timing
 title: "BADR timing — expanded PDF copy"
 compliance_status: draft

@@ -1,5 +1,6 @@
 ---
-id: pdf.expanded.pension_consolidation
+id: report.expanded.pension_consolidation
+kind: global
 source_id: pitfall.pension_consolidation
 title: "Pension consolidation — expanded PDF copy"
 compliance_status: draft

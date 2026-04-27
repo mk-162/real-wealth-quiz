@@ -1,5 +1,6 @@
 ---
-id: pdf.expanded.pension_as_extraction
+id: report.expanded.pension_as_extraction
+kind: global
 source_id: pitfall.pension_as_extraction
 title: "Pension as extraction — expanded PDF copy"
 compliance_status: draft

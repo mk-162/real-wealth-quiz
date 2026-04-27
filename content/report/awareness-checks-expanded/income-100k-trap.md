@@ -1,5 +1,6 @@
 ---
-id: pdf.expanded.income_trap_100k
+id: report.expanded.income_trap_100k
+kind: global
 source_id: pitfall.income_trap_100k
 title: "The £100,000 income tax trap — expanded PDF copy"
 image_slug: tax-trap

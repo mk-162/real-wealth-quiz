@@ -1,5 +1,6 @@
 ---
-id: pdf.takeaway_banners
+id: report.takeaway_banners
+kind: per_segment
 title: Headline takeaway banners — one per segment
 description: >
   The single sentence a reader will remember a week after reading Page 1.

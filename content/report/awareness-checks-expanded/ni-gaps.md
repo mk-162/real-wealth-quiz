@@ -1,5 +1,6 @@
 ---
-id: pdf.expanded.ni_gaps
+id: report.expanded.ni_gaps
+kind: global
 source_id: pitfall.ni_gaps
 title: "NI gaps — expanded PDF copy"
 compliance_status: draft

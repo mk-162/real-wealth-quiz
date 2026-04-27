@@ -9,11 +9,16 @@
  * `'use client'`) — never from client components. The parsed result is then
  * serialised and passed as props into the client component tree.
  *
- * File format (content agent's convention):
- *   - One YAML frontmatter block at the top
- *   - Body split by `# …` headings into per-segment or per-goal sections
- *   - Each section has `key: value` lines (not YAML; loose key-value lines),
- *     where values may be quoted and may span multiple lines
+ * Canonical file format (Phase 2 / S4):
+ *   - YAML frontmatter with `id`, `kind` (per_segment | global), `title`,
+ *     optional `description`, `compliance_status`, plus any kind-specific
+ *     extras (tile thresholds, gauge zones, etc.) ride along untouched.
+ *   - Body split by `# S1` … `# S9` H1 sections for `per_segment` blocks,
+ *     or a single `# Body` H1 for `global` blocks.
+ *   - Inside per-segment sections, the historic `key: value` micro-format
+ *     (status / note / capacity / rationale) still drives tile + goal
+ *     parsing. Long-form sub-sections (gauge zone variants, banner
+ *     headline + supporting copy) live under H2 headings.
  *
  * Parsed results are memoised; the loader reads the filesystem once per
  * build.
@@ -371,16 +376,33 @@ function loadGoalsOnce(): Map<string, GoalsEntry> {
   }
 
   for (const file of fs.readdirSync(GOALS_DIR)) {
-    if (!file.endsWith('.md')) continue;
+    if (!file.endsWith('.md') || file === 'README.md') continue;
     const full = path.join(GOALS_DIR, file);
     const raw = fs.readFileSync(full, 'utf8');
     const parsed = matter(raw);
-    const fm = parsed.data as { segment?: string; compliance_status?: string };
-    const segId = fm.segment;
+    const fm = parsed.data as { segment?: string; id?: string; compliance_status?: string };
+
+    // Canonical id format `report.goals.S<n>` (or legacy `pdf.goals.S<n>`)
+    // is the source of truth — fall back to `segment:` for files that still
+    // carry the old extra field.
+    const idMatch = typeof fm.id === 'string' ? /\.(S\d)$/.exec(fm.id) : null;
+    const segId = idMatch?.[1] ?? fm.segment;
     if (!segId) continue;
 
+    // Each goals file is for ONE segment. The canonical body wraps the
+    // segment's goals under a single `# S<n>` H1, with one H2 per goal.
+    // `extractGoalIndex` returns null for headings that aren't `Goal N` —
+    // the segment H1 is naturally skipped.
     const goals: WellbeingGoal[] = [];
-    for (const section of splitByH1(parsed.content)) {
+    const segmentSections = splitByH1(parsed.content)
+      .filter((s) => extractSegmentId(s.heading) === segId);
+    const goalSections = segmentSections.length > 0
+      // New canonical shape: H2 sub-sections under the segment H1.
+      ? segmentSections.flatMap((s) => splitByH2(s.body))
+      // Pre-migration shape: H1 `# Goal N — …` sections at the top level.
+      : splitByH1(parsed.content);
+
+    for (const section of goalSections) {
       const idx = extractGoalIndex(section.heading);
       if (idx === null) continue;
       const kv = parseKeyValues(section.body);
@@ -723,12 +745,18 @@ function loadMethodologyOnce(): MethodologyContent | null {
   const parsed = matter(raw);
   const fm = parsed.data as { title?: string; compliance_status?: string };
 
+  // Canonical shape: a single `# Body` H1 with H2 sub-sections inside.
+  // Pre-migration shape used H1 sub-sections directly. We accept both so
+  // the loader stays compatible across the migration boundary.
   const h1Sections = splitByH1(parsed.content);
+  const bodyH1 = h1Sections.find((s) => /^body$/i.test(s.heading));
+  const innerSections = bodyH1 ? splitByH2(bodyH1.body) : h1Sections;
+
   let pageHeading = '';
   let openingParagraph = '';
   const sections: { heading: string; body: string }[] = [];
 
-  for (const s of h1Sections) {
+  for (const s of innerSections) {
     if (/^page heading/i.test(s.heading)) {
       pageHeading = s.body.trim();
     } else if (/^opening paragraph/i.test(s.heading)) {

@@ -1,5 +1,7 @@
 ---
-id: grid.debt_position
+id: report.tile.debt_position
+kind: per_segment
+title: "Debt position"
 tile_number: 7
 label: "Debt position"
 what_it_checks: "Non-mortgage debt only (credit cards, loans, car finance, student debt, director's loans). Mortgage is scored separately."

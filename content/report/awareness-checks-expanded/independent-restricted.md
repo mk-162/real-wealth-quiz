@@ -1,5 +1,6 @@
 ---
-id: pdf.expanded.independent_restricted
+id: report.expanded.independent_restricted
+kind: global
 source_id: pitfall.independent_restricted
 title: "Independent vs restricted — expanded PDF copy"
 compliance_status: draft

@@ -1,5 +1,6 @@
 ---
-id: pdf.expanded.emergency_fund_sizing
+id: report.expanded.emergency_fund_sizing
+kind: global
 source_id: pitfall.emergency_fund_sizing
 title: "Emergency fund sizing — expanded PDF copy"
 compliance_status: draft

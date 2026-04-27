@@ -1,5 +1,6 @@
 ---
-id: pdf.expanded.ssp_gap
+id: report.expanded.ssp_gap
+kind: global
 source_id: pitfall.ssp_gap
 title: "SSP gap — expanded PDF copy"
 compliance_status: draft

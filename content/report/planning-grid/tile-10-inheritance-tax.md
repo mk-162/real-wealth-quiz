@@ -1,5 +1,7 @@
 ---
-id: grid.inheritance_tax
+id: report.tile.inheritance_tax
+kind: per_segment
+title: "Inheritance tax"
 tile_number: 10
 label: "Inheritance tax"
 what_it_checks: "Estimated estate value vs nil-rate band (£325k) plus residence nil-rate band (£175k per person, tapering above £2m). From April 2027, unused pension wealth is included."

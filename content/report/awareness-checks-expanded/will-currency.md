@@ -1,5 +1,6 @@
 ---
-id: pdf.expanded.will_currency
+id: report.expanded.will_currency
+kind: global
 source_id: pitfall.will_currency
 title: "Will currency — expanded PDF copy"
 compliance_status: draft

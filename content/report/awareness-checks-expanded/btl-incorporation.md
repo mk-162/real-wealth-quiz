@@ -1,5 +1,6 @@
 ---
-id: pdf.expanded.btl_incorporation
+id: report.expanded.btl_incorporation
+kind: global
 source_id: pitfall.btl_incorporation
 title: "BTL incorporation — expanded PDF copy"
 compliance_status: draft

@@ -21,6 +21,7 @@ import {
   screenFrontmatter,
   microcopyGroupSchema,
   pageSchema,
+  reportBlockFrontmatter,
   type Provocation,
   type AwarenessCheck,
   type SegmentCta,
@@ -213,6 +214,40 @@ function loadPages(): Page[] {
   return items;
 }
 
+/**
+ * Validate every file under content/report/ against the canonical
+ * `reportBlockFrontmatter` schema. This loader does not emit anything into
+ * the catalogue — `pdf-content.ts` reads these files directly at SSG time —
+ * but `content:check` should fail loudly if a report file's frontmatter
+ * drifts from the canonical shape.
+ */
+function validateReportBlocks(): void {
+  const reportDir = join(CONTENT_DIR, 'report');
+  if (!existsSync(reportDir)) return;
+
+  const walk = (dir: string): string[] => {
+    const out: string[] = [];
+    for (const entry of readdirSync(dir, { withFileTypes: true })) {
+      if (entry.name.startsWith('_') || entry.name === 'README.md') continue;
+      const full = join(dir, entry.name);
+      if (entry.isDirectory()) {
+        out.push(...walk(full));
+      } else if (entry.isFile() && entry.name.endsWith('.md')) {
+        out.push(full);
+      }
+    }
+    return out;
+  };
+
+  for (const file of walk(reportDir)) {
+    const raw = matter(readFileSync(file, 'utf8'));
+    const fm = reportBlockFrontmatter.safeParse(raw.data);
+    if (!fm.success) {
+      recordError(file, fm.error.issues.map((i) => `${i.path.join('.')}: ${i.message}`).join('; '));
+    }
+  }
+}
+
 function loadMicrocopy(): MicrocopyGroup[] {
   const files = listMd(join(CONTENT_DIR, 'microcopy'));
   const items: MicrocopyGroup[] = [];
@@ -393,6 +428,9 @@ function main() {
     pages: loadPages(),
     microcopy: loadMicrocopy(),
   };
+
+  // Validate report blocks (canonical shape — Phase 2/S4).
+  validateReportBlocks();
 
   if (errors.length > 0) {
     console.error('\n✗ Content build failed — fix the files below and rerun.\n');

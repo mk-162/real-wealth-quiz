@@ -1,5 +1,6 @@
 ---
-id: pdf.expanded.savings_tax_efficiency
+id: report.expanded.savings_tax_efficiency
+kind: global
 source_id: pitfall.savings_tax_efficiency
 title: "Savings tax efficiency — expanded PDF copy"
 compliance_status: draft

@@ -1,5 +1,6 @@
 ---
-id: pdf.expanded.group_life_fragility
+id: report.expanded.group_life_fragility
+kind: global
 source_id: pitfall.group_life_fragility
 title: "Group life fragility — expanded PDF copy"
 compliance_status: draft

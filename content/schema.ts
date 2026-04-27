@@ -225,6 +225,64 @@ export const microcopyGroupSchema = z.object({
 export type MicrocopyGroup = z.infer<typeof microcopyGroupSchema>;
 
 /* ---------------------------------------------------------------- */
+/* Report blocks (canonical PDF-report shape)                        */
+/* ---------------------------------------------------------------- */
+
+/**
+ * Every file under `content/report/` follows the same shape after the
+ * Phase 2 (S4) simplification:
+ *
+ *   ---
+ *   id: report.<slug>
+ *   kind: per_segment | global
+ *   title: <short label>
+ *   description: <optional one-line note>
+ *   compliance_status: draft | cfp_signed | compliance_signed | approved_to_ship
+ *   # any kind-specific structured config (e.g. tile thresholds) goes here
+ *   ---
+ *
+ *   # S1 ... # S9   (per_segment)
+ *   # Body          (global)
+ *
+ * The frontmatter validates as a closed shape (universal fields + a loose
+ * `extras` bucket for kind-specific config — tile thresholds, gauge zone
+ * descriptors, awareness expanded source_id, etc.). Per-shape semantics live
+ * in the renderer (`src/lib/compass/pdf-content.ts`), not the schema.
+ */
+
+export const reportBlockKind = z.enum(['per_segment', 'global']);
+export type ReportBlockKind = z.infer<typeof reportBlockKind>;
+
+/**
+ * Universal frontmatter every report block carries. Per-shape extras come
+ * through verbatim — Zod's `.passthrough()` lets unknown keys ride along
+ * untouched, preserving round-trip fidelity for tile thresholds, gauge zone
+ * descriptors, awareness `source_id`, and so on.
+ */
+export const reportBlockFrontmatter = z
+  .object({
+    id: z.string(),
+    kind: reportBlockKind,
+    title: z.string(),
+    description: z.string().optional(),
+    compliance_status: complianceStatus.default('draft'),
+  })
+  .passthrough();
+export type ReportBlockFrontmatter = z.infer<typeof reportBlockFrontmatter>;
+
+/**
+ * A parsed report block — frontmatter + raw body. Per-segment blocks split
+ * into a `# S1`..`# S9` map; global blocks expose a single `# Body` (or
+ * inherit the raw body when no `# Body` heading is used). The split happens
+ * at the loader level, not the schema level — see `pdf-content.ts`.
+ */
+export const reportBlockSchema = reportBlockFrontmatter.extend({
+  /** Raw markdown body after the frontmatter fence. */
+  body: z.string(),
+});
+export type ReportBlock = z.infer<typeof reportBlockSchema>;
+
+/* ---------------------------------------------------------------- */
 /* Catalogues (what content:build emits)                             */
 /* ---------------------------------------------------------------- */
 
