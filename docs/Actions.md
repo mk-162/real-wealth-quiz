@@ -2,7 +2,7 @@
 
 Things you need to do, grouped by urgency. Each item is self-contained — you can do them in any order within a section.
 
-Last updated: 2026-04-24
+Last updated: 2026-04-27
 
 ---
 
@@ -22,11 +22,12 @@ Open http://localhost:5000/report/master/S2 and confirm the planning-grid tiles 
 
 ### 2. Decide the compliance path for demo
 
-Most tile markdown is still `compliance_status: draft`. Pick one:
+Most tile markdown is still `compliance_status: draft`. The compliance gate is **opt-in** — by default all content renders everywhere (dev, staging, production) until you enable enforcement.
 
-- **Demo from localhost only** — do nothing. Dev mode is permissive.
-- **Demo from a deployed URL** (Vercel / staging) — set `RW_BYPASS_COMPLIANCE=1` in the environment. Documented in `src/lib/content/compliance.ts`. Never set this in real production.
-- **Go to production properly** — review each `content/pdf-report/*.md` with compliance, flip `compliance_status: draft` → `approved_to_ship` file-by-file. Only then does `NODE_ENV=production npm run build` succeed without the escape hatch.
+- **Demo from localhost or any deployed URL** — do nothing. All content passes through.
+- **Go to production properly** — review each `content/pdf-report/*.md` with compliance, flip `compliance_status: draft` → `approved_to_ship` file-by-file. Then set `RW_ENFORCE_COMPLIANCE=1` in the production environment to activate the gate. Only `approved_to_ship` content will render once the gate is enabled.
+
+See `src/lib/content/compliance.ts` for the gate implementation.
 
 ### 3. Spot-check the 9 segment reports
 
@@ -50,13 +51,7 @@ If a tile note reads awkwardly for the engine's status, that's a content tweak i
 
 ## Soon (before sharing with real prospects)
 
-### 4. Add the business-value question
-
-`buildCompassInputs` still hardcodes `businessValue: 0` because no questionnaire screen captures business value directly. Today it's rolled into `estate_band`. S5 and S6 (business owners) therefore score as non-owners on tiles 04 (investment concentration) and 12 (business exit vs income mix) for real clients.
-
-See `content/screens/4.C1.1-your-role.md` and `4.C1.2-taking-money-out.md` — these capture role and extraction mix but not value. Adding a `business_value_band` input alongside these is the fix.
-
-### 5. Approve the rest of the PDF content
+### 4. Approve the rest of the PDF content
 
 Everything in `content/pdf-report/` is currently `compliance_status: draft`:
 
@@ -67,9 +62,9 @@ Everything in `content/pdf-report/` is currently `compliance_status: draft`:
 - `goals/S[n]-*.md` × 9 (wellbeing goals)
 - `awareness-checks-expanded/*.md` × 26
 
-Compliance review → flip each file's `compliance_status: draft` → `approved_to_ship`.
+Compliance review → flip each file's `compliance_status: draft` → `approved_to_ship` → then set `RW_ENFORCE_COMPLIANCE=1` in the production environment.
 
-### 6. Restart dev after any markdown change
+### 5. Restart dev after any markdown change
 
 See Action 1. Flag this to anyone else authoring content on the project.
 
@@ -122,9 +117,9 @@ npm run content:build                       # writes src/lib/content/catalogue.t
 # Matrix regeneration (after editing xlsx)
 npx tsx scripts/parse-segment-master.ts
 
-# Production build (fails on draft content unless bypass set)
+# Production build (all content passes by default)
 npm run build
-RW_BYPASS_COMPLIANCE=1 npm run build        # bypass for demo/staging
+RW_ENFORCE_COMPLIANCE=1 npm run build       # enable compliance gate (only approved_to_ship renders)
 ```
 
 ---

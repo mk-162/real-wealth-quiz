@@ -36,7 +36,7 @@ export interface PageFrameProps {
 export function PageFrame({
   docTitle,
   pageNum,
-  totalPages = 8,
+  totalPages,
   footer,
   showIllusTag = true,
   logoSrc = '/report-preview/assets/logo-wordmark.svg',
@@ -66,7 +66,11 @@ export function PageFrame({
       <footer className={styles.chromeBot}>
         <span>{footer}</span>
         <span className={styles.pageNum}>
-          {pageNum} &middot; {String(totalPages).padStart(2, '0')}
+          {totalPages !== undefined ? (
+            <>{pageNum} &middot; {String(totalPages).padStart(2, '0')}</>
+          ) : (
+            pageNum
+          )}
         </span>
       </footer>
     </section>

@@ -27,9 +27,9 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { FIXTURES, fixtureById, buildReport, scoreAllTiles } from '@/lib/compass';
-import { enrichSegmentView, loadMethodology, loadFiveThings } from '@/lib/compass/pdf-content';
+import { enrichSegmentView, loadMethodology, loadAllExpandedChecks } from '@/lib/compass/pdf-content';
 import { getWhereYouAre, getSilentGapsAndRead, loadSegmentCta } from '@/lib/compass/narrative-content';
-import { ReportView, PageFrame, CtaPanel, FiveThings } from '@/components/compass';
+import { ReportView, PageFrame, CtaPanel } from '@/components/compass';
 import styles from './page.module.css';
 
 export function generateStaticParams() {
@@ -47,8 +47,6 @@ const SEGMENT_NAMES: Record<string, string> = {
   S8: 'Margaret',
   S9: 'Charles',
 };
-
-const TOTAL_PAGES = 9;
 
 export default async function MasterReport({
   params,
@@ -77,13 +75,17 @@ export default async function MasterReport({
   const enrichedFixture = { ...fixture, view: enrichedView };
 
   const methodology = loadMethodology(requireApproved);
-  const fiveThings = loadFiveThings(enrichedView.awarenessCheckIds ?? []);
+  const allChecks = loadAllExpandedChecks();
   const whereYouAre = getWhereYouAre(fixture.view.segmentId);
   const silentGapsAndRead = getSilentGapsAndRead(fixture.view.segmentId);
   const segmentCta = loadSegmentCta(fixture.view.segmentId);
 
   const name = SEGMENT_NAMES[fixture.view.segmentId] ?? 'your plan';
   const docTitle = `Your Wealth Report · ${name}`;
+
+  // Page-number helper. Page 06 onwards is variable-length (one page per check).
+  const N = allChecks.length;
+  const p = (n: number) => String(n).padStart(2, '0');
 
   return (
     <div className={`rw-doc ${styles.doc}`}>
@@ -95,14 +97,12 @@ export default async function MasterReport({
         fixture={enrichedFixture}
         recipientName={name}
         startPageNum={2}
-        totalPages={TOTAL_PAGES}
       />
 
       {/* 05 — Where you are today */}
       <PageFrame
         docTitle={docTitle}
         pageNum="05"
-        totalPages={TOTAL_PAGES}
         footer="Manchester · Taunton · hello@realwealth.co.uk"
         label="Where you are today"
       >
@@ -119,40 +119,29 @@ export default async function MasterReport({
         <p className={styles.narrativePara}>{whereYouAre.segmentClose}</p>
       </PageFrame>
 
-      {/* 06 — Five things worth a conversation */}
-      <PageFrame
-        docTitle={docTitle}
-        pageNum="06"
-        totalPages={TOTAL_PAGES}
-        footer="Manchester · Taunton · hello@realwealth.co.uk"
-        label="Five things"
-      >
-        <div className={styles.sectionTitle}>
-          <span className={styles.eyebrow}>What we&rsquo;d talk through</span>
-          <h2 className={styles.hSection}>Five things worth a conversation.</h2>
-          <p className={styles.intro}>
-            Four areas where a short conversation moves the dial — and one that tends to matter more
-            than people realise. Everything here comes from the detail of what you&rsquo;ve told us.
-          </p>
-        </div>
-        {fiveThings.standard.length === 0 ? (
-          <NarrativePlaceholder
-            eyebrow="What we&rsquo;d talk through"
-            title="Five things worth a conversation."
-            intro="No curated list is set for this segment yet. Once triggers fire against real answers, this page will show 4 cards + 1 featured."
-            comingFrom="content/pdf-report/awareness-checks-expanded/*.md via segmentView.awarenessCheckIds"
-            blocks={[]}
-          />
-        ) : (
-          <FiveThings selection={fiveThings} />
-        )}
-      </PageFrame>
+      {/* 06…06+N-1 — All awareness checks, one page each */}
+      {allChecks.map((check, idx) => (
+        <PageFrame
+          key={check.sourceId}
+          docTitle={docTitle}
+          pageNum={p(6 + idx)}
+          footer="Manchester · Taunton · hello@realwealth.co.uk"
+          label={check.title}
+        >
+          <div className={styles.sectionTitle}>
+            <span className={styles.eyebrow}>Things worth a conversation</span>
+            <h2 className={styles.hSection}>{check.title}</h2>
+          </div>
+          {check.paragraphs.map((para, i) => (
+            <p key={i} className={styles.narrativePara}>{para}</p>
+          ))}
+        </PageFrame>
+      ))}
 
-      {/* 07 — Silent gaps + Planner's read */}
+      {/* Silent gaps + Planner's read */}
       <PageFrame
         docTitle={docTitle}
-        pageNum="07"
-        totalPages={TOTAL_PAGES}
+        pageNum={p(6 + N)}
         footer="Manchester · Taunton · hello@realwealth.co.uk"
         label="Silent gaps"
       >
@@ -193,11 +182,10 @@ export default async function MasterReport({
         </div>
       </PageFrame>
 
-      {/* 08 — Next step (CTA from content/segments/S[n]-*.md) */}
+      {/* Next step (CTA from content/segments/S[n]-*.md) */}
       <PageFrame
         docTitle={docTitle}
-        pageNum="08"
-        totalPages={TOTAL_PAGES}
+        pageNum={p(7 + N)}
         footer="Manchester · Taunton · hello@realwealth.co.uk"
         label="Next step"
       >
@@ -238,11 +226,10 @@ export default async function MasterReport({
         </div>
       </PageFrame>
 
-      {/* 09 — Methodology */}
+      {/* Methodology */}
       <PageFrame
         docTitle={docTitle}
-        pageNum="09"
-        totalPages={TOTAL_PAGES}
+        pageNum={p(8 + N)}
         footer="Real Wealth Partners Ltd · Authorised and regulated by the Financial Conduct Authority"
         label="Methodology"
         showIllusTag={false}
@@ -274,12 +261,11 @@ export default async function MasterReport({
         )}
       </PageFrame>
 
-      {/* 09 continued — the rest of the methodology (split across pages if long) */}
+      {/* Methodology continued */}
       {methodology && methodology.sections.length > 3 && (
         <PageFrame
           docTitle={docTitle}
-          pageNum="09"
-          totalPages={TOTAL_PAGES}
+          pageNum={p(9 + N)}
           footer="Real Wealth Partners Ltd · Authorised and regulated by the Financial Conduct Authority"
           label="Methodology (continued)"
           showIllusTag={false}
@@ -332,7 +318,7 @@ function CoverPage({ name, segmentLabel, persona }: { name: string; segmentLabel
         <div className={styles.coverMeta}>
           <span className={styles.coverMetaLabel}>WEALTH REPORT</span>
           <span className={styles.coverMetaDate}>
-            {new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })} · {TOTAL_PAGES} pages
+            {new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
           </span>
         </div>
       </div>
@@ -364,7 +350,7 @@ function CoverPage({ name, segmentLabel, persona }: { name: string; segmentLabel
 
       <div className={styles.coverBottom}>
         <span>realwealth.co.uk</span>
-        <span>01 · 0{TOTAL_PAGES}</span>
+        <span>01</span>
       </div>
     </section>
   );

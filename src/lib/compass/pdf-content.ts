@@ -649,6 +649,22 @@ export function loadExpandedAwarenessCheck(sourceId: string): ExpandedAwarenessC
 }
 
 /**
+ * Returns all expanded awareness checks, sorted by source_id, filtered through
+ * the compliance gate. In dev/staging all items pass; with RW_ENFORCE_COMPLIANCE=1
+ * set only `approved_to_ship` items are included.
+ *
+ * Used by page 06 which shows the full library unconditionally — one PageFrame
+ * per check, no per-segment trigger selection.
+ */
+export function loadAllExpandedChecks(): ExpandedAwarenessCheck[] {
+  const map = loadExpandedOnce();
+  const all = Array.from(map.values());
+  const filtered = filterApproved(all.map(r => ({ ...r, compliance_status: r.complianceStatus })));
+  filtered.sort((a, b) => a.sourceId.localeCompare(b.sourceId));
+  return filtered;
+}
+
+/**
  * Batch loader for the per-segment "Five things" page.
  *
  * Takes the content-agent's expanded copy library and a segment's curated list

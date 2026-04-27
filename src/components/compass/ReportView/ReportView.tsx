@@ -61,7 +61,7 @@ export function ReportView({
   fixture,
   recipientName,
   startPageNum = 2,
-  totalPages = 8,
+  totalPages,
   hideFrame = false,
 }: ReportViewProps) {
   const report = buildReport(fixture.inputs);

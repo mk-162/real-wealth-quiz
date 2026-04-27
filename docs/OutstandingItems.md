@@ -2,28 +2,16 @@
 
 Known gaps, tech debt, and unfinished threads. Grouped by severity.
 
-Last updated: 2026-04-24
+Last updated: 2026-04-27 (page 06 redesign session)
 
 ---
 
 ## Code — real client impact
 
-### `businessValue` hardcoded to 0 in buildCompassInputs
-**File:** `src/lib/compass/inputs.ts`
-**Impact:** S5/S6 (business owners) score as non-owners for tile 04 (investment concentration) and tile 12 (business exit vs income mix). Engine treats their business as if it didn't exist.
-**Fix:** Add a business-value question to the questionnaire. Suggested: a new `business_value_band` input on `content/screens/4.C1.1-your-role.md` (alongside the existing `role` field). Register in `INPUT_QUESTION_IDS` and wire in `buildCompassInputs`.
-**Effort:** ~1 hr.
-
 ### `ownPensionContribPct` defaults to `'unsure'` when fixtures bypass the mapper
 **File:** `src/lib/compass/inputs.ts`
 **Impact:** Real questionnaire sessions now feed through correctly (the screen was added in today's Wave 1C). But the 9 fixtures in `src/lib/compass/fixtures.ts` pre-date the question and set the field directly. Fixture previews therefore use whatever the fixture author wrote, not the new mapping. Not a real-client issue — only affects preview pages.
 **Fix:** None needed right now. Fixtures are preview-only data.
-
-### Protection tile uses proxy signals, not real protection answers
-**File:** `src/lib/compass/tile-scoring.ts` (scoreProtection)
-**Impact:** The questionnaire captures `lifeCoverStatus` and `earningsProtectionScale` in raw session answers, but these don't flow into `CompassInputs`. Engine falls back to dependants/partner/mortgage proxies. Scoring is directionally correct but less precise than it could be.
-**Fix:** Surface protection answers through `CompassInputs` — add `lifeCoverKnown: boolean` or similar. Then update `scoreProtection` to use the real signal.
-**Effort:** ~1 hr, mostly plumbing through `inputs.ts` + fixtures.
 
 ### `_tileCache` in pdf-content.ts doesn't invalidate on markdown changes
 **File:** `src/lib/compass/pdf-content.ts`
