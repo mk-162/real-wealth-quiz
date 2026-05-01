@@ -18,14 +18,13 @@ export interface SummaryInputs {
   mainHome: string | null;
   otherProperty: string | null;
   pensionPots: string | null;
-  investmentsBand: string | null;
+  liquidWealthAmount: number | null;
   estateBand: string | null;
   succession: string | null;
   willAndLpaStatus: string[];
   passingOnIntent: string | null;
   targetRetirementAge: number | null;
   retirementFeel: string | null;
-  statePensionAwareness: string | null;
   earningsProtectionScale: number | null;
   lifeCoverStatus: string | null;
   currentAdviser: string | null;

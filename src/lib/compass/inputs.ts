@@ -59,8 +59,6 @@ export const INPUT_QUESTION_IDS = {
   mortgageBalance: 'mortgage_balance',             // under 4.A.3 — a BAND, not a number
   mortgageBalanceRaw: 'mortgage_balance_amount',   // optional exact slider companion
   pensionPots: 'pension_pots',
-  pensionTotalBandOld: 'pension_total_band',       // legacy compound band inside 4.A.3
-  investmentsBand: 'investments_band',
   otherProperty: 'other_property',
   otherPropertyValueRaw: 'other_property_value',
   otherPropertyMortgageBalanceRaw: 'other_property_mortgage_balance',
@@ -80,9 +78,8 @@ export const INPUT_QUESTION_IDS = {
   earningsProtectionScale: 'earnings_protection_scale',
   lifeCoverStatus: 'life_cover_status',
 
-  // §6 Retirement horizon (4.C.1, 4.C.2)
+  // §6 Retirement horizon (4.C.1)
   retirementFeel: 'retirement_feel',
-  statePensionAwareness: 'state_pension_awareness',
 
   // §7 Business branch (4.C1.1, 4.C1.2)
   role: 'role',
@@ -137,7 +134,7 @@ const INCOME_LABEL_TO_BAND: Record<string, IncomeBand> = {
   gt200k: '200k+',
 };
 
-/** Wealth bands for 4.E.1 pension + 4.E.2 liquid-wealth + 4.A.3 investments. */
+/** Wealth bands for 4.E.1 pension + 4.E.2 liquid-wealth. */
 const WEALTH_LABEL_TO_BAND: Record<string, WealthBand | 0> = {
   none: 0,
   lt25k: '<25k',
@@ -152,12 +149,6 @@ const WEALTH_LABEL_TO_BAND: Record<string, WealthBand | 0> = {
   // 4.E.2 cash/ISA/GIA bands top out earlier — map the gt* to highest sensible slot.
   gt250k: '250-500k', // cash savings cap — treat as mid of the open tail
   gt500k: '500k-1m',  // ISA/GIA cap
-
-  // 4.A.3 investments_band compact labels
-  lt50k: '<25k',            // "under £50k" — nudged down one band to stay conservative
-  '50k_to_250k': '100-250k',
-  '250k_to_1m': '500k-1m',
-  '1m_to_3m': '2-3m',
 };
 
 /** Estate band — screen 3.5 `estate_band` (underscore format, not `250to500k`). */
@@ -196,14 +187,6 @@ const MORTGAGE_BAL_LABEL_TO_BAND: Record<string, WealthBand | 0> = {
 };
 // NB: overwrite lt100k above so the common case ends up in 25-100k not <25k.
 MORTGAGE_BAL_LABEL_TO_BAND.lt100k = '25-100k';
-
-/** Legacy pension_total_band (4.A.3 compound reveal) — mostly same compact labels. */
-const PENSION_LEGACY_LABEL_TO_BAND: Record<string, WealthBand | 0> = {
-  lt100k: '25-100k',
-  '100k_to_250k': '100-250k',
-  '250k_to_500k': '250-500k',
-  gt500k: '500k-1m',
-};
 
 /** Monthly-saving band — 4.E.3 `monthly_saving_band`. */
 const SAVING_LABEL_TO_BAND: Record<string, SpendBand> = {
@@ -440,7 +423,6 @@ export function buildCompassInputs(answers: PartialAnswersMap): CompassInputs {
   const pensionPotsRaw = getStr(ids.pensionPots);
   // If the 4.E.1 screen fired it overrides everything.
   const pensionDirect = getStr(ids.pensionTotalValue);
-  const pensionLegacy = getStr(ids.pensionTotalBandOld);
   // Numeric value (slider) — preferred over band collapse.
   const pensionDirectNumeric = numericIfPresent(answers[ids.pensionTotalValue]);
 
@@ -449,8 +431,6 @@ export function buildCompassInputs(answers: PartialAnswersMap): CompassInputs {
     totalPensionValue = lookup(WEALTH_LABEL_TO_BAND, pensionDirect, '<25k');
   } else if (pensionDirectNumeric !== undefined) {
     totalPensionValue = numericToWealthBand(pensionDirectNumeric);
-  } else if (pensionLegacy !== undefined) {
-    totalPensionValue = lookup(PENSION_LEGACY_LABEL_TO_BAND, pensionLegacy, '<25k');
   } else if (pensionPotsRaw === 'none') {
     totalPensionValue = 0;
   } else if (pensionPotsRaw === 'one') {
@@ -465,36 +445,21 @@ export function buildCompassInputs(answers: PartialAnswersMap): CompassInputs {
 
   // -------- Liquid wealth (cash / ISA / GIA) --------------------------------
 
-  // If the 4.E.2 screen fired we have direct bands. Otherwise split the legacy
-  // investments_band roughly 1/3-1/3-1/3 between cash/ISA/GIA.
-  const legacyInvestmentsRaw = getStr(ids.investmentsBand);
-  const hasDirectLiquid =
-    answers[ids.cashSavings] !== undefined ||
-    answers[ids.isaBalance] !== undefined ||
-    answers[ids.giaBalance] !== undefined;
-
-  // Numeric slider values for liquid wealth — preferred over band collapse.
+  // The 4.E.2 sliders are the only source. Numeric values are preferred over
+  // band collapse; bands are honoured only if a slider hasn't been touched.
   const cashNumeric = numericIfPresent(answers[ids.cashSavings]);
   const isaNumeric = numericIfPresent(answers[ids.isaBalance]);
   const giaNumeric = numericIfPresent(answers[ids.giaBalance]);
 
-  let cashSavings: WealthBand | 0;
-  let isaBalance: WealthBand | 0;
-  let giaBalance: WealthBand | 0;
-  if (hasDirectLiquid) {
-    cashSavings = cashNumeric !== undefined ? numericToWealthBand(cashNumeric) : wealth(ids.cashSavings, '<25k');
-    isaBalance = isaNumeric !== undefined ? numericToWealthBand(isaNumeric) : wealth(ids.isaBalance, 0);
-    giaBalance = giaNumeric !== undefined ? numericToWealthBand(giaNumeric) : wealth(ids.giaBalance, 0);
-  } else if (legacyInvestmentsRaw !== undefined) {
-    // Legacy investments_band is the combined lump — attribute to ISA by default.
-    isaBalance = lookup(WEALTH_LABEL_TO_BAND, legacyInvestmentsRaw, 0);
-    cashSavings = '<25k';
-    giaBalance = 0;
-  } else {
-    cashSavings = '<25k';
-    isaBalance = 0;
-    giaBalance = 0;
-  }
+  const cashSavings: WealthBand | 0 = cashNumeric !== undefined
+    ? numericToWealthBand(cashNumeric)
+    : wealth(ids.cashSavings, '<25k');
+  const isaBalance: WealthBand | 0 = isaNumeric !== undefined
+    ? numericToWealthBand(isaNumeric)
+    : wealth(ids.isaBalance, 0);
+  const giaBalance: WealthBand | 0 = giaNumeric !== undefined
+    ? numericToWealthBand(giaNumeric)
+    : wealth(ids.giaBalance, 0);
 
   // -------- Will / LPA flags -------------------------------------------------
 
@@ -504,10 +469,9 @@ export function buildCompassInputs(answers: PartialAnswersMap): CompassInputs {
 
   // -------- State pension awareness & amount --------------------------------
 
-  const awarenessRaw = getStr(ids.statePensionAwareness);
-  const statePensionKnown: 'yes' | 'no' | 'partial' = mapStatePensionAwareness(awarenessRaw);
-
   const spAmountRaw = getStr(ids.statePensionAmount);
+  const statePensionKnown: 'yes' | 'no' | 'partial' = mapStatePensionKnown(spAmountRaw);
+
   const statePensionExpectedAmount: number | undefined =
     spAmountRaw !== undefined
       ? STATE_PENSION_AMOUNT_TO_ANNUAL[spAmountRaw]
@@ -558,9 +522,22 @@ export function buildCompassInputs(answers: PartialAnswersMap): CompassInputs {
     isaBalanceRaw: isaNumeric,
     giaBalanceRaw: giaNumeric,
 
-    // §3 Income
+    // §3 Income — household figure is now synthesized from per-person sliders
+    // (Q3.3: your_gross_income + partner_gross_income). The legacy
+    // `income_amount` companion was never wired to a screen; we derive the
+    // exact household figure here so the projection engine has it.
     householdGrossIncome: lookup(INCOME_LABEL_TO_BAND, getStr(ids.householdGrossIncome), '50-100k'),
-    householdGrossIncomeRaw: numericIfPresent(answers[ids.householdGrossIncomeRaw]),
+    householdGrossIncomeRaw: ((): number | undefined => {
+      const yours = numericIfPresent(answers['your_gross_income']);
+      const partners = numericIfPresent(answers['partner_gross_income']);
+      if (yours === undefined && partners === undefined) {
+        // Neither slider answered — fall back to the legacy `income_amount`
+        // field if a future screen wires it up; otherwise the engine reads
+        // the banded value via `householdGrossIncome`.
+        return numericIfPresent(answers[ids.householdGrossIncomeRaw]);
+      }
+      return (yours ?? 0) + (partners ?? 0);
+    })(),
     isScottishTaxpayer: getBool(ids.scottishTaxpayer, false),
     monthlySavingAmount: lookup(SAVING_LABEL_TO_BAND, getStr(ids.monthlySaving), '<1.5k'),
     monthlySavingAmountRaw: numericIfPresent(answers[ids.monthlySaving]),
@@ -679,10 +656,9 @@ function mapEarningsProtection(raw: number): CompassInputs['earningsProtectionCo
   return raw as 1 | 2 | 3 | 4 | 5;
 }
 
-function mapStatePensionAwareness(raw: string | undefined): 'yes' | 'no' | 'partial' {
-  if (raw === 'yes_checked') return 'yes';
-  if (raw === 'roughly') return 'partial';
-  if (raw === 'no_should_check' || raw === 'not_relevant_yet') return 'no';
+function mapStatePensionKnown(raw: string | undefined): 'yes' | 'no' | 'partial' {
+  if (raw === 'full_rate' || raw === 'none') return 'yes';
+  if (raw === 'partial') return 'partial';
   return 'no';
 }
 

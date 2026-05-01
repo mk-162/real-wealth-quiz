@@ -63,7 +63,7 @@ export const questions: Question[] = [
       { value: 'specific', label: 'Specific question in mind' },
       { value: 'life_change', label: 'A life change coming up' },
       { value: 'on_track', label: "Checking I'm on track" },
-      { value: 'suggested', label: 'Partner or adviser suggested it' },
+      { value: 'suggested', label: 'Someone suggested it' },
     ],
   },
   {

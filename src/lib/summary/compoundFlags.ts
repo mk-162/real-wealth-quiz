@@ -11,7 +11,7 @@
  * Copy is sourced from content/pages/summary.md spotlight_flags.
  */
 import { pageValue } from '@/lib/content';
-import { incomeAtLeast, investmentsAtLeast } from './inputs';
+import { incomeAtLeast, liquidWealthAtLeast } from './inputs';
 import type { SpotlightFlag, SummaryInputs } from './types';
 
 interface Candidate {
@@ -84,10 +84,10 @@ const CANDIDATES: Candidate[] = [
     fallback: FALLBACKS.mortgage_and_high_cash,
     triggers: (i) => {
       const mortgage = i.mainHome === 'own_mortgage';
-      const cash = investmentsAtLeast(i.investmentsBand, '50to250k');
+      const cash = liquidWealthAtLeast(i.liquidWealthAmount, 50_000);
       const income = incomeAtLeast(i.incomeBand, '50to100k');
       return mortgage && cash && income
-        ? ['main_home.own_mortgage', `investments_band.${i.investmentsBand}`, `income_band.${i.incomeBand}`]
+        ? ['main_home.own_mortgage', `liquid_wealth.${i.liquidWealthAmount}`, `income_band.${i.incomeBand}`]
         : null;
     },
   },

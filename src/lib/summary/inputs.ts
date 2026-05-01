@@ -23,6 +23,19 @@ function toNumber(v: unknown): number | null {
   return null;
 }
 
+function sumLiquidWealth(...parts: unknown[]): number | null {
+  let total = 0;
+  let any = false;
+  for (const p of parts) {
+    const n = toNumber(p);
+    if (n !== null) {
+      total += n;
+      any = true;
+    }
+  }
+  return any ? total : null;
+}
+
 export function buildSummaryInputs(
   session: Session | null,
   segmentId: string,
@@ -41,14 +54,13 @@ export function buildSummaryInputs(
     mainHome: toString(a.main_home),
     otherProperty: toString(a.other_property),
     pensionPots: toString(a.pension_pots),
-    investmentsBand: toString(a.investments_band),
+    liquidWealthAmount: sumLiquidWealth(a.cash_savings_band, a.isa_balance_band, a.gia_balance_band),
     estateBand: toString(a.estate_band),
     succession: toString(a.succession),
     willAndLpaStatus: toStringArray(a.will_and_lpa_status),
     passingOnIntent: toString(a.passing_on_intent),
     targetRetirementAge: toNumber(a.target_retirement_age),
     retirementFeel: toString(a.retirement_feel),
-    statePensionAwareness: toString(a.state_pension_awareness),
     earningsProtectionScale: toNumber(a.earnings_protection_scale),
     lifeCoverStatus: toString(a.life_cover_status),
     currentAdviser: overrides.currentAdviser ?? toString(a.current_adviser),
@@ -76,11 +88,6 @@ export function estateAtLeast(band: string | null, minBand: string): boolean {
   return idx >= 0 && min >= 0 && idx >= min;
 }
 
-/** Investments/cash bands in ascending order. */
-const INVEST_ORDER: string[] = ['lt50k', '50to250k', '250k_1m', '1m_3m', 'gt3m'];
-export function investmentsAtLeast(band: string | null, minBand: string): boolean {
-  if (!band) return false;
-  const idx = INVEST_ORDER.indexOf(band);
-  const min = INVEST_ORDER.indexOf(minBand);
-  return idx >= 0 && min >= 0 && idx >= min;
+export function liquidWealthAtLeast(amount: number | null, threshold: number): boolean {
+  return amount !== null && amount >= threshold;
 }

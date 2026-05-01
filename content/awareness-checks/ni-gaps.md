@@ -2,8 +2,8 @@
 id: pitfall.ni_gaps
 core: true
 rank: 8
-trigger: "age >= 45 AND state_pension_awareness != 'yes_checked'"
-placement: "after Block C Screen 4.C.2 (state pension question) if triggered"
+trigger: "age >= 45 AND state_pension_amount_band in ['partial', 'no_idea']"
+placement: "after Block E Screen 4.E.4 (state pension and NI) if triggered"
 source: "DWP state pension rates 2024/25; HMRC Class 3 NI rates"
 compliance_status: draft
 tier_limit: [A, B]

@@ -31,7 +31,7 @@ export const screens: Screen[] = [
     "logged_as": [],
     "inputs": [],
     "headline": "Let's talk about the life you're planning for.",
-    "sub": "A few honest questions. No right answers, no scorecard — a Wealth Report by the end. You can stop any time; we'll save what you've told us so far.",
+    "sub": "Once you've answered all these questions, we will generate a wealth report for you. To ensure your complete privacy, this data does not leave your device. You must save this download or print report if you want to keep it.",
     "body": "Eyebrow: BEFORE WE START.\nPrimary button: Begin →.\nNo back button on this screen."
   },
   {
@@ -220,7 +220,8 @@ export const screens: Screen[] = [
     "q_refs": [
       "Q2.1",
       "Q2.2",
-      "Q2.2a"
+      "Q2.2a",
+      "Q2.2b"
     ],
     "audience": {
       "Q2.1": {
@@ -244,11 +245,23 @@ export const screens: Screen[] = [
         "S7": "shown",
         "S8": "shown",
         "S9": "shown"
+      },
+      "Q2.2b": {
+        "S1": "shown",
+        "S2": "shown",
+        "S3": "shown",
+        "S4": "shown",
+        "S5": "shown",
+        "S6": "shown",
+        "S7": "shown",
+        "S8": "shown",
+        "S9": "shown"
       }
     },
     "logged_as": [
       "age",
       "household",
+      "your_gross_income",
       "youngest_child_band",
       "scottish_taxpayer"
     ],
@@ -268,7 +281,7 @@ export const screens: Screen[] = [
       {
         "id": "scottish_taxpayer",
         "label": "Where do you pay income tax?",
-        "label_helper": "Scottish residents pay slightly different rates above the personal allowance. Pick whichever describes most of the year.",
+        "label_helper": "Pick the country where you spend most of the tax year.",
         "control": "radio",
         "options": [
           {
@@ -280,6 +293,19 @@ export const screens: Screen[] = [
             "label": "Scotland"
           }
         ],
+        "required": true
+      },
+      {
+        "id": "your_gross_income",
+        "label": "Your gross annual income (£)",
+        "label_helper": "Salary and dividends, before tax. Leave at 0 if you're not currently working.",
+        "control": "slider",
+        "range": {
+          "min": 0,
+          "max": 300000,
+          "default": 0,
+          "step": 5000
+        },
         "required": true
       },
       {
@@ -306,7 +332,7 @@ export const screens: Screen[] = [
           },
           {
             "value": "elderly_parent",
-            "label": "An elderly parent or relative we support",
+            "label": "An elderly parent or relative I support",
             "icon": "heart-hand"
           },
           {
@@ -346,7 +372,6 @@ export const screens: Screen[] = [
       {
         "id": "partner_age",
         "label": "Your partner's age",
-        "label_helper": "Used to set the household's joint horizon and any guaranteed income they bring in.",
         "control": "slider",
         "range": {
           "min": 25,
@@ -360,7 +385,7 @@ export const screens: Screen[] = [
       {
         "id": "partner_gross_income",
         "label": "Their gross annual income (£)",
-        "label_helper": "Salary plus dividends, before tax. 0 if not currently working.",
+        "label_helper": "Salary and dividends, before tax. Leave at 0 if they're not working.",
         "control": "slider",
         "range": {
           "min": 0,
@@ -374,7 +399,7 @@ export const screens: Screen[] = [
       {
         "id": "partner_pension_value",
         "label": "Their pension pot (£)",
-        "label_helper": "Combined across all their pensions today. 0 if you'd rather skip — we'll model the household with conservative defaults.",
+        "label_helper": "All their pensions combined. Leave at 0 to skip.",
         "control": "slider",
         "range": {
           "min": 0,
@@ -387,7 +412,7 @@ export const screens: Screen[] = [
       }
     ],
     "headline": "Tell us a little about you.",
-    "sub": "Two quick ones — they shape everything that follows."
+    "sub": "A few quick questions — they shape everything that follows."
   },
   {
     "id": "screen.3.4.work_status",
@@ -476,21 +501,9 @@ export const screens: Screen[] = [
     "image_family": "family_2_money_today",
     "image_direction": "A leather notebook, a fountain pen, a fresh coffee cup, a stack of unopened mail. The texture of an adult life.",
     "q_refs": [
-      "Q3.1",
       "Q4.5"
     ],
     "audience": {
-      "Q3.1": {
-        "S1": "shown",
-        "S2": "shown",
-        "S3": "shown",
-        "S4": "shown",
-        "S5": "shown",
-        "S6": "shown",
-        "S7": "shown",
-        "S8": "shown",
-        "S9": "shown"
-      },
       "Q4.5": {
         "S1": "shown",
         "S2": "shown",
@@ -504,44 +517,9 @@ export const screens: Screen[] = [
       }
     },
     "logged_as": [
-      "income_band",
-      "estate_band",
-      "earners_one_or_two"
+      "estate_band"
     ],
-    "conditional_logic": "if income >= £100k, reveal earners_one_or_two",
     "inputs": [
-      {
-        "id": "income_band",
-        "label": "Your household's annual income, before tax",
-        "control": "radio",
-        "options": [
-          {
-            "value": "lt50k",
-            "label": "Under £50,000"
-          },
-          {
-            "value": "50to100k",
-            "label": "£50,000 – £100,000"
-          },
-          {
-            "value": "100to125k",
-            "label": "£100,000 – £125,000"
-          },
-          {
-            "value": "125to200k",
-            "label": "£125,000 – £200,000"
-          },
-          {
-            "value": "gt200k",
-            "label": "£200,000 or more"
-          },
-          {
-            "value": "prefer_not",
-            "label": "I'd rather not say"
-          }
-        ],
-        "required": true
-      },
       {
         "id": "estate_band",
         "label": "If you added everything up — home, pensions, investments, business — where would you land?",
@@ -578,23 +556,6 @@ export const screens: Screen[] = [
           }
         ],
         "required": true
-      },
-      {
-        "id": "earners_one_or_two",
-        "label": "Is that across one earner or two?",
-        "control": "radio",
-        "options": [
-          {
-            "value": "one",
-            "label": "One"
-          },
-          {
-            "value": "two_or_more",
-            "label": "Two or more"
-          }
-        ],
-        "required": false,
-        "conditional_reveal": "only when income_band in [100to125k, 125to200k, gt200k]"
       }
     ],
     "headline": "A picture of where your money sits.",
@@ -859,9 +820,7 @@ export const screens: Screen[] = [
     "q_refs": [
       "Q4.1",
       "Q4.1a",
-      "Q4.3",
-      "Q4.3a",
-      "Q4.4"
+      "Q4.3"
     ],
     "audience": {
       "Q4.1": {
@@ -885,17 +844,6 @@ export const screens: Screen[] = [
         "S7": "shown",
         "S8": "shown",
         "S9": "shown"
-      },
-      "Q4.4": {
-        "S1": "shown",
-        "S2": "shown",
-        "S3": "shown",
-        "S4": "shown",
-        "S5": "shown",
-        "S6": "shown",
-        "S7": "shown",
-        "S8": "shown",
-        "S9": "shown"
       }
     },
     "logged_as": [
@@ -903,8 +851,6 @@ export const screens: Screen[] = [
       "main_home_value",
       "mortgage_balance_amount",
       "pension_pots",
-      "pension_total_band",
-      "investments_band",
       "personal_loans_amount",
       "credit_card_amount"
     ],
@@ -985,78 +931,15 @@ export const screens: Screen[] = [
           },
           {
             "value": "four_six",
-            "label": "Four to six",
-            "conditional_reveal": "pension_total_band"
+            "label": "Four to six"
           },
           {
             "value": "more_than_six",
-            "label": "More than six",
-            "conditional_reveal": "pension_total_band"
+            "label": "More than six"
           },
           {
             "value": "no_idea",
             "label": "Genuinely no idea"
-          }
-        ],
-        "required": true
-      },
-      {
-        "id": "pension_total_band",
-        "label": "Any sense of the combined value?",
-        "control": "radio",
-        "options": [
-          {
-            "value": "lt100k",
-            "label": "Under £100,000"
-          },
-          {
-            "value": "100k_to_250k",
-            "label": "£100,000 – £250,000"
-          },
-          {
-            "value": "250k_to_500k",
-            "label": "£250,000 – £500,000"
-          },
-          {
-            "value": "gt500k",
-            "label": "£500,000+"
-          },
-          {
-            "value": "no_idea",
-            "label": "No idea — that's part of what I'd like to know"
-          }
-        ],
-        "required": false,
-        "conditional_reveal": "only when pension_pots >= four_six"
-      },
-      {
-        "id": "investments_band",
-        "label": "Savings and investments outside pensions and property",
-        "control": "radio",
-        "options": [
-          {
-            "value": "lt50k",
-            "label": "Under £50,000"
-          },
-          {
-            "value": "50k_to_250k",
-            "label": "£50,000 – £250,000"
-          },
-          {
-            "value": "250k_to_1m",
-            "label": "£250,000 – £1m"
-          },
-          {
-            "value": "1m_to_3m",
-            "label": "£1m – £3m"
-          },
-          {
-            "value": "gt3m",
-            "label": "£3m or more"
-          },
-          {
-            "value": "prefer_not",
-            "label": "I'd rather not say"
           }
         ],
         "required": true
@@ -1692,65 +1575,6 @@ export const screens: Screen[] = [
       }
     ],
     "headline": "The day you don't have to go to work."
-  },
-  {
-    "id": "screen.4.C.2.state_pension",
-    "screen_number": "4.C.2",
-    "title": "State pension",
-    "section": "retirement_horizon",
-    "layout": "centred",
-    "grouped": false,
-    "gate_critical": false,
-    "tier_limit": [
-      "A",
-      "B"
-    ],
-    "q_refs": [
-      "Q7.3"
-    ],
-    "audience": {
-      "Q7.3": {
-        "S1": "hidden",
-        "S2": "hidden",
-        "S3": "shown",
-        "S4": "shown",
-        "S5": "shown",
-        "S6": "shown",
-        "S7": "shown",
-        "S8": "shown",
-        "S9": "shown"
-      }
-    },
-    "logged_as": [
-      "state_pension_awareness"
-    ],
-    "conditional_logic": "only fires if age >= 45",
-    "inputs": [
-      {
-        "id": "state_pension_awareness",
-        "control": "radio",
-        "options": [
-          {
-            "value": "yes_checked",
-            "label": "Yes — I've checked it"
-          },
-          {
-            "value": "roughly",
-            "label": "Roughly"
-          },
-          {
-            "value": "no_should_check",
-            "label": "No — I should check"
-          },
-          {
-            "value": "not_relevant_yet",
-            "label": "Not relevant to me yet"
-          }
-        ],
-        "required": true
-      }
-    ],
-    "headline": "Do you know when you'll get the full new state pension — and how much it will be?"
   },
   {
     "id": "screen.4.C1.0.transition",
@@ -3181,8 +3005,8 @@ export const awareness: AwarenessCheck[] = [
   {
     "id": "pitfall.ni_gaps",
     "core": true,
-    "trigger": "age >= 45 AND state_pension_awareness != 'yes_checked'",
-    "placement": "after Block C Screen 4.C.2 (state pension question) if triggered",
+    "trigger": "age >= 45 AND state_pension_amount_band in ['partial', 'no_idea']",
+    "placement": "after Block E Screen 4.E.4 (state pension and NI) if triggered",
     "source": "DWP state pension rates 2024/25; HMRC Class 3 NI rates",
     "rank": 8,
     "tier_limit": [

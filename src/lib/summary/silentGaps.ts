@@ -7,7 +7,7 @@
  * renders when 2+ match — "the point is surprise, not volume".
  */
 import { pageValue } from '@/lib/content';
-import { estateAtLeast, incomeAtLeast, investmentsAtLeast } from './inputs';
+import { estateAtLeast, incomeAtLeast, liquidWealthAtLeast } from './inputs';
 import type { SilentGap, SummaryInputs } from './types';
 
 type GapId =
@@ -95,7 +95,7 @@ const RULES: Rule[] = [
     triggers: (i) => {
       const hasOlderKids = i.household.includes('adult_children');
       const bigEstate = estateAtLeast(i.estateBand, '1m_to_2m');
-      const bigCash = investmentsAtLeast(i.investmentsBand, '250k_1m');
+      const bigCash = liquidWealthAtLeast(i.liquidWealthAmount, 250_000);
       return hasOlderKids && (bigEstate || bigCash);
     },
     weight: () => 8,
@@ -108,7 +108,7 @@ const RULES: Rule[] = [
   {
     id: 'investment_bonds',
     triggers: (i) =>
-      investmentsAtLeast(i.investmentsBand, '50to250k') &&
+      liquidWealthAtLeast(i.liquidWealthAmount, 50_000) &&
       incomeAtLeast(i.incomeBand, '100to125k'),
     weight: () => 6,
   },
