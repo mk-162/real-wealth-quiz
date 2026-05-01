@@ -1,7 +1,7 @@
 ---
 id: pitfall.emergency_fund_sizing
 core: false
-trigger: "cash < 3 * essential_monthly_spend"
+trigger: "cash_savings_band in ['lt25k'] AND essential_monthly_spend in ['3_5to5k', '5to7_5k', '7_5to12k', 'gt12k']"
 placement: "Tier A only, after Block A if triggered"
 source: "FCA Financial Lives Survey 2024; Money and Pensions Service benchmarks"
 compliance_status: draft

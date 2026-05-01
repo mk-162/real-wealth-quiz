@@ -18,6 +18,7 @@
     "client-review:build": "node scripts/build-client-review-site.mjs",
     "content:check": "tsx scripts/content-build.ts --check-only",
     "voice:check": "tsx scripts/voice-grep.ts",
+    "test:audit": "tsx scripts/test-audit-suite.ts",
     "test:e2e": "playwright test"
   },
   "dependencies": {

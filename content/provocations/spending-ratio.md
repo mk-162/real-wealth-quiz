@@ -1,6 +1,6 @@
 ---
 id: prov.spending_ratio
-trigger: "essential_monthly_spend > 0.5 * income_band_midpoint"
+trigger: "essential_monthly_spend in ['3_5to5k', '5to7_5k', '7_5to12k', 'gt12k'] AND income_band in ['lt50k', '50to100k']"
 segments: [all]
 compliance_status: draft
 version: 0.1.0

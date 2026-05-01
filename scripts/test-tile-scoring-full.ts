@@ -10,7 +10,7 @@
  *                                 — content loader + per-tile template
  *                                   substitution via applyTemplate
  *
- * Then for each of the 12 resulting PlanningTile objects it asserts:
+ * Then for each of the 9 resulting PlanningTile objects it asserts:
  *   1. `status` is one of 'green' | 'amber' | 'red' | 'grey'
  *   2. `label` is a non-empty string
  *   3. `note`  is a non-empty string
@@ -20,9 +20,9 @@
  *              it catches content/engine mismatches when tile markdown is
  *              rewritten to use templates.
  *
- * That's 9 segments × 12 tiles = 108 tile checks, each carrying all four
+ * That's 9 segments × 9 tiles = 81 tile checks, each carrying all four
  * assertions. Layout: one outer describe per segment (9), one `it` per tile
- * (12), with the 4 assertions inside each `it`.
+ * (9), with the 4 assertions inside each `it`.
  *
  * Runner: `node:test` (built-in) via `tsx`. Matches scripts/test-tile-scoring.ts.
  *
@@ -84,23 +84,24 @@ function findUnresolvedTokens(note: string): string[] {
 }
 
 // -----------------------------------------------------------------------------
-// One describe block per fixture, one `it` per tile (12 per fixture).
-// 9 × 12 = 108 tile-level tests, each with 4 assertions.
+// One describe block per fixture, one `it` per tile (9 per fixture).
+// 9 × 9 = 81 tile-level tests, each with 4 assertions.
 // -----------------------------------------------------------------------------
 
 for (const f of FIXTURES) {
-  describe(`${f.view.segmentId} (${f.view.segmentLabel}): 12 tiles render cleanly`, () => {
+  describe(`${f.view.segmentId} (${f.view.segmentLabel}): 9 tiles render cleanly`, () => {
     // Build once per fixture, reuse across tile-level tests.
     const report = buildReport(f.inputs);
     const tileScores = scoreAllTiles(f.inputs, report);
     const tiles = loadPlanningTiles(f.view.segmentId, tileScores);
 
-    // Defensive: the grid is always 12 positional slots.
-    it(`${f.view.segmentId}: loader returns exactly 12 tiles`, () => {
+    // Defensive: the grid is always 9 positional slots (post-simplification —
+    // state-pension, IHT, and the dual-variant 12th tile were dropped).
+    it(`${f.view.segmentId}: loader returns exactly 9 tiles`, () => {
       assert.equal(
         tiles.length,
-        12,
-        `${f.view.segmentId}: expected 12 tiles, got ${tiles.length}`,
+        9,
+        `${f.view.segmentId}: expected 9 tiles, got ${tiles.length}`,
       );
     });
 
@@ -150,7 +151,7 @@ for (const f of FIXTURES) {
     }
 
     // Clean summary log per segment — the task spec asks for lines like
-    //   "S2: 12/12 tiles rendered ok"
+    //   "S2: 9/9 tiles rendered ok"
     // We emit this after the `it` definitions; `node:test` runs `it`s in
     // order within a `describe` but logs synchronously, so we use a final
     // synchronous `it` that prints the roll-up. This keeps the log clean
@@ -176,7 +177,7 @@ for (const f of FIXTURES) {
       }
       // Log for visibility. Using assert.ok with a rich message means the
       // summary appears in the test output regardless of pass/fail mode.
-      // When ok === 12 this always passes; when < 12 the earlier per-tile
+      // When ok === 9 this always passes; when < 9 the earlier per-tile
       // `it`s will have already surfaced the exact failures.
       console.log(
         `${f.view.segmentId}: ${ok}/${tiles.length} tiles rendered ok` +
