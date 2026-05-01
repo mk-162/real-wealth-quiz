@@ -3,6 +3,9 @@ id: report.expanded.couples_alignment
 kind: global
 source_id: pitfall.couples_alignment
 title: "Couples alignment — expanded PDF copy"
+image_slug: placeholder
+pull_quote: "The fifteen minutes spent establishing what both partners actually want, side by side, is often the most useful part of a first planning meeting."
+worth_a_conversation: "Most planners will set time aside in a first meeting specifically for the partner who hasn't been close to the numbers — the briefing it produces tends to be the one the rest of the plan rests on."
 compliance_status: draft
 ---
 

@@ -3,6 +3,16 @@ id: report.expanded.badr_timing
 kind: global
 source_id: pitfall.badr_timing
 title: "BADR timing — expanded PDF copy"
+image_slug: placeholder
+risk_band: urgent
+key_facts:
+  - label: Rate to April 2025
+    value: "10%"
+  - label: From April 2025
+    value: "14%"
+  - label: From April 2026
+    value: "18%"
+worth_a_conversation: "If an exit is on the horizon within five years, modelling the tax position now — before heads of terms — is usually where the conversation pays for itself."
 compliance_status: draft
 ---
 

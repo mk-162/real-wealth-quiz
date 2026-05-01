@@ -3,6 +3,15 @@ id: report.expanded.group_life_fragility
 kind: global
 source_id: pitfall.group_life_fragility
 title: "Group life fragility — expanded PDF copy"
+image_slug: placeholder
+key_facts:
+  - label: Typical death-in-service multiple
+    value: "3–4× salary"
+  - label: Personal life + IP premium (40, healthy)
+    value: "Under £50/month"
+  - label: Cover after leaving employer
+    value: "None"
+worth_a_conversation: "Quick check of the exact terms and limits of existing group cover is usually the starting point — what's covered, until what age, and what happens at the moment of leaving."
 compliance_status: draft
 ---
 

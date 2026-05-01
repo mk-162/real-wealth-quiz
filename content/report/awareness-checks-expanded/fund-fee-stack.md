@@ -3,6 +3,9 @@ id: report.expanded.fund_fee_stack
 kind: global
 source_id: pitfall.fund_fee_stack
 title: "Fund fee stack — expanded PDF copy"
+image_slug: placeholder
+pull_quote: "On a £1m portfolio over twenty years, a 0.6% difference in all-in cost is roughly £140,000 of terminal value — the size of a small inheritance, decided by a single line on a fact sheet."
+worth_a_conversation: "Asking for the all-in cost as one annual percentage and one pound figure is standard. If the layers can't be added up promptly, the answer to that question is usually informative on its own."
 compliance_status: draft
 ---
 

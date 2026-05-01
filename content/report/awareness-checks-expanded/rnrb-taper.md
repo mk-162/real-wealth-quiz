@@ -3,6 +3,15 @@ id: report.expanded.rnrb_taper
 kind: global
 source_id: pitfall.rnrb_taper
 title: "RNRB taper — expanded PDF copy"
+image_slug: placeholder
+key_facts:
+  - label: RNRB per person
+    value: "£175,000"
+  - label: Taper starts at
+    value: "£2,000,000"
+  - label: Fully withdrawn at (per person)
+    value: "£2,350,000"
+pull_quote: "A family with a £2.5m estate may assume they have the full £500,000 residence band — in practice they have lost most of it, and the bill is £200,000–£500,000 higher than the simple sum suggests."
 compliance_status: draft
 ---
 

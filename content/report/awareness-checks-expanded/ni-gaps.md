@@ -3,6 +3,16 @@ id: report.expanded.ni_gaps
 kind: global
 source_id: pitfall.ni_gaps
 title: "NI gaps — expanded PDF copy"
+image_slug: placeholder
+key_facts:
+  - label: Full state pension (2025/26)
+    value: "£11,502/yr"
+  - label: Qualifying years required
+    value: "35"
+  - label: Voluntary Class 3 cost
+    value: "~£824/yr"
+pull_quote: "For most people in reasonable health, filling a genuine NI gap typically returns 10–15 times its cost over a normal retirement."
+worth_a_conversation: "The 90-second check on gov.uk shows the current position. If there's a gap, working out which years are fillable is a short conversation with a quantified answer."
 compliance_status: draft
 ---
 

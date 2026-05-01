@@ -3,6 +3,15 @@ id: report.expanded.adviser_fee_total
 kind: global
 source_id: pitfall.adviser_fee_total
 title: "Adviser fee total — expanded PDF copy"
+image_slug: placeholder
+key_facts:
+  - label: Adviser fee
+    value: "0.5%–1.0%"
+  - label: Platform charge
+    value: "0.15%–0.35%"
+  - label: Fund OCF
+    value: "0.05%–0.9%"
+worth_a_conversation: "Ask for the total all-in cost — adviser, platform and funds combined — as a single percentage and a single pound figure. If it can't be produced quickly, that itself is useful information."
 compliance_status: draft
 ---
 

@@ -3,6 +3,18 @@ id: report.expanded.tapered_annual_allowance
 kind: global
 source_id: pitfall.tapered_annual_allowance
 title: "Tapered annual allowance — expanded PDF copy"
+image_slug: placeholder
+key_facts:
+  - label: Taper threshold (adjusted income)
+    value: "£260,000"
+  - label: Allowance at £300,000 income
+    value: "£40,000"
+  - label: Tapered floor
+    value: "£10,000"
+at_a_glance:
+  - "£1 of allowance lost for every £2 of adjusted income above £260,000."
+  - "Charge is settled on the individual's tax return — not deducted at source."
+  - "Carry-forward from previous years can supplement the reduced figure."
 compliance_status: draft
 ---
 

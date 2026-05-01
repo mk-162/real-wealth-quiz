@@ -3,6 +3,18 @@ id: report.expanded.emergency_fund_sizing
 kind: global
 source_id: pitfall.emergency_fund_sizing
 title: "Emergency fund sizing — expanded PDF copy"
+image_slug: placeholder
+key_facts:
+  - label: Dual-income, no dependants
+    value: "~3 months"
+  - label: Single earner, dependants
+    value: "~6 months"
+  - label: Self-employed or variable
+    value: "9–12 months"
+at_a_glance:
+  - "Most common emergencies last longer than three months — illness, redundancy, property gap."
+  - "At three months' cover, any of these forces the sale of longer-term investments."
+  - "The right buffer depends on income stability and access to alternative liquidity."
 compliance_status: draft
 ---
 

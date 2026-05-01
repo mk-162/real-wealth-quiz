@@ -4,6 +4,15 @@ kind: global
 source_id: pitfall.income_trap_100k
 title: "The £100,000 income tax trap — expanded PDF copy"
 image_slug: tax-trap
+key_facts:
+  - label: Trap band
+    value: "£100,000–£125,140"
+  - label: Effective marginal rate
+    value: "~60%"
+  - label: Tax-free childcare loss
+    value: "Up to £10,000"
+pull_quote: "A £15,000 pay rise in this band can cost £9,000 in tax — and another £10,000 in lost childcare entitlement if there are two young children."
+worth_a_conversation: "Most often resolved with a pension contribution or salary sacrifice that brings adjusted net income back below £100,000. A planner will usually run the numbers in a single sitting."
 compliance_status: draft
 ---
 

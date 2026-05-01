@@ -3,6 +3,16 @@ id: report.expanded.pension_iht_2027
 kind: global
 source_id: pitfall.pension_iht_2027
 title: "Pension IHT 2027 change — expanded PDF copy"
+image_slug: placeholder
+risk_band: urgent
+key_facts:
+  - label: Rule change date
+    value: "April 2027"
+  - label: Current treatment
+    value: "Outside the estate"
+  - label: Possible added IHT bill (£500k pot)
+    value: "~£200,000"
+worth_a_conversation: "For families with a large pension and a taxable estate, this is a live conversation now — drawdown sequencing, gifting, and trust work all benefit from a head-start before the change lands."
 compliance_status: draft
 ---
 

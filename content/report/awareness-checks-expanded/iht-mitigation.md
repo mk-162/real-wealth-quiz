@@ -4,6 +4,19 @@ kind: global
 source_id: pitfall.iht_mitigation
 title: "IHT mitigation — expanded PDF copy"
 image_slug: iht-tree
+risk_band: watch
+key_facts:
+  - label: Nil-rate band per person
+    value: "£325,000"
+  - label: Plus residence NRB
+    value: "Up to £175,000"
+  - label: Default rate above
+    value: "40%"
+at_a_glance:
+  - "Gifting under the seven-year rule — full exemption if you survive seven years."
+  - "Trust structures — control preserved while assets sit outside the estate."
+  - "Business Relief investments — IHT-exempt after two years."
+worth_a_conversation: "Two to five years of structured planning typically lifts £150,000–£400,000 out of the bill. The conversation is about making sure the right people receive what you intended, not about avoiding tax."
 compliance_status: draft
 ---
 

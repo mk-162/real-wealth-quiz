@@ -3,6 +3,12 @@ id: report.expanded.glide_path
 kind: global
 source_id: pitfall.glide_path
 title: "Glide path — expanded PDF copy"
+image_slug: placeholder
+at_a_glance:
+  - "Pre-2015 defaults assumed annuity purchase and shifted to bonds and cash near retirement."
+  - "Post-2015 defaults assume drawdown and stay in equities for longer."
+  - "Whether yours fits your plan depends on how you'll actually take the pension."
+worth_a_conversation: "Easiest checkpoint is the default fund's investment fact sheet — it shows the current allocation and any automatic de-risking. In the five years before retirement, this is one of the higher-leverage things to look at."
 compliance_status: draft
 ---
 

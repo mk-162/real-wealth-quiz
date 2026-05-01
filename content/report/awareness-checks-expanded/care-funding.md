@@ -3,6 +3,15 @@ id: report.expanded.care_funding
 kind: global
 source_id: pitfall.care_funding
 title: "Care funding — expanded PDF copy"
+image_slug: placeholder
+key_facts:
+  - label: Annual cost
+    value: "£60,000–£100,000"
+  - label: Means-test threshold
+    value: "£23,250"
+  - label: Average stay length
+    value: "~30 months"
+worth_a_conversation: "Worth raising before circumstances force it. Most of the levers — annuities, pre-funded bonds, property structures — are only available while everyone still has capacity."
 compliance_status: draft
 ---
 

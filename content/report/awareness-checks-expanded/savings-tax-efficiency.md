@@ -3,6 +3,15 @@ id: report.expanded.savings_tax_efficiency
 kind: global
 source_id: pitfall.savings_tax_efficiency
 title: "Savings tax efficiency — expanded PDF copy"
+image_slug: placeholder
+key_facts:
+  - label: ISA allowance
+    value: "£20,000"
+  - label: CGT annual exempt amount
+    value: "£3,000"
+  - label: Dividend allowance
+    value: "£500"
+worth_a_conversation: "For couples, the combined annual capacity across these allowances is around £46,500. \"Bed and ISA\" — moving holdings inside the wrapper across multiple tax years — is the usual starting move when there are meaningful assets sitting outside one."
 compliance_status: draft
 ---
 

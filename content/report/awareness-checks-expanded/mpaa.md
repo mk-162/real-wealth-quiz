@@ -3,6 +3,15 @@ id: report.expanded.mpaa
 kind: global
 source_id: pitfall.mpaa
 title: "MPAA — expanded PDF copy"
+image_slug: placeholder
+key_facts:
+  - label: Standard annual allowance
+    value: "£60,000"
+  - label: After MPAA trigger
+    value: "£10,000"
+  - label: Reduction
+    value: "~83%, permanent"
+worth_a_conversation: "Worth checking your drawdown history before assuming the standard allowance still applies. A small early withdrawal — even years ago — may have permanently reset the limit."
 compliance_status: draft
 ---
 

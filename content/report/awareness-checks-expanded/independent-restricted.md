@@ -3,6 +3,12 @@ id: report.expanded.independent_restricted
 kind: global
 source_id: pitfall.independent_restricted
 title: "Independent vs restricted — expanded PDF copy"
+image_slug: placeholder
+at_a_glance:
+  - "Independent — required to consider the whole of market."
+  - "Restricted — limited to a defined range, sometimes to a single provider."
+  - "The status sits in the firm's initial disclosure document, usually within the first few pages."
+worth_a_conversation: "If you're not sure which you're getting, asking directly is a standard question — \"are you independent or restricted, and what does the restriction cover?\" Real Wealth is independent."
 compliance_status: draft
 ---
 

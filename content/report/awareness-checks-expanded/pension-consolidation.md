@@ -3,6 +3,15 @@ id: report.expanded.pension_consolidation
 kind: global
 source_id: pitfall.pension_consolidation
 title: "Pension consolidation — expanded PDF copy"
+image_slug: placeholder
+key_facts:
+  - label: Old workplace charges
+    value: "1.0%–1.5%"
+  - label: Modern equivalents
+    value: "0.2%–0.5%"
+  - label: Average forgotten balance
+    value: "£40,000–£60,000"
+worth_a_conversation: "First step is usually a current valuation and key features document for each old pot — worth doing regardless of whether consolidation turns out to be the answer for that particular scheme."
 compliance_status: draft
 ---
 

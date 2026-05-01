@@ -3,6 +3,15 @@ id: report.expanded.btl_incorporation
 kind: global
 source_id: pitfall.btl_incorporation
 title: "BTL incorporation — expanded PDF copy"
+image_slug: placeholder
+key_facts:
+  - label: Section 24 in force since
+    value: "April 2017"
+  - label: Company corp tax (main rate)
+    value: "25%"
+  - label: One-off incorporation cost
+    value: "£5,000–£15,000"
+worth_a_conversation: "Best run jointly with a tax accountant who knows the portfolio — the answer hinges on the specific numbers, not the general rule."
 compliance_status: draft
 ---
 

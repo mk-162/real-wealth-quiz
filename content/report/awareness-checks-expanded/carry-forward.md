@@ -3,6 +3,16 @@ id: report.expanded.carry_forward
 kind: global
 source_id: pitfall.carry_forward
 title: "Pension carry-forward — expanded PDF copy"
+image_slug: placeholder
+risk_band: watch
+key_facts:
+  - label: Annual allowance
+    value: "£60,000"
+  - label: Look-back window
+    value: "3 tax years"
+  - label: Possible single-year contribution
+    value: "Up to ~£200,000"
+worth_a_conversation: "Best run in the autumn of a good year — by April, the oldest year of unused allowance has dropped off and can't be recovered."
 compliance_status: draft
 ---
 

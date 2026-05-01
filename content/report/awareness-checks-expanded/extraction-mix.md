@@ -3,6 +3,15 @@ id: report.expanded.extraction_mix
 kind: global
 source_id: pitfall.extraction_mix
 title: "Extraction mix — expanded PDF copy"
+image_slug: placeholder
+key_facts:
+  - label: Salary at NI threshold
+    value: "£12,570"
+  - label: Dividend allowance
+    value: "£500"
+  - label: Typical annual saving
+    value: "£15,000–£20,000"
+worth_a_conversation: "Most useful when the planner and accountant compare notes — the corporate view and the personal-tax view together usually reveal gaps neither party was seeing alone."
 compliance_status: draft
 ---
 

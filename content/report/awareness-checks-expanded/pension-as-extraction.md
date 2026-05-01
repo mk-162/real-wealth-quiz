@@ -3,6 +3,16 @@ id: report.expanded.pension_as_extraction
 kind: global
 source_id: pitfall.pension_as_extraction
 title: "Pension as extraction — expanded PDF copy"
+image_slug: placeholder
+risk_band: watch
+key_facts:
+  - label: Corp tax saved on £60k contribution
+    value: "£15,000"
+  - label: All-in advantage vs dividend
+    value: "30%–40%"
+  - label: Standard annual allowance
+    value: "£60,000"
+worth_a_conversation: "Best timed before a profitable year-end — once the corporation tax position is settled, the window to shelter that profit into a pension has closed for the year."
 compliance_status: draft
 ---
 

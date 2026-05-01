@@ -3,6 +3,15 @@ id: report.expanded.ssp_gap
 kind: global
 source_id: pitfall.ssp_gap
 title: "SSP gap — expanded PDF copy"
+image_slug: placeholder
+key_facts:
+  - label: SSP rate
+    value: "£116.75/week"
+  - label: SSP duration
+    value: "Up to 28 weeks"
+  - label: Personal IP premium (late 30s, healthy)
+    value: "£30–£60/month"
+pull_quote: "Serious illness severe enough to stop work for more than six months is considerably more likely than early death before retirement — yet income protection is far less widely held than life cover."
 compliance_status: draft
 ---
 

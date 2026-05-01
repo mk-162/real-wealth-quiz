@@ -3,6 +3,18 @@ id: report.expanded.overpayment_vs_cash
 kind: global
 source_id: pitfall.overpayment_vs_cash
 title: "Mortgage overpayment vs cash — expanded PDF copy"
+image_slug: placeholder
+key_facts:
+  - label: Mortgage at 5% — guaranteed return
+    value: "5% net"
+  - label: Equivalent gross savings rate (40% tax)
+    value: "~8.3%"
+  - label: Overpayment limit (most products)
+    value: "10% of balance/yr"
+at_a_glance:
+  - "After-tax comparison — a guaranteed mortgage rate beats most current cash rates."
+  - "Liquidity matters — money inside the house is harder to retrieve than cash."
+  - "Live calculation — the right answer shifts as rates and the emergency fund change."
 compliance_status: draft
 ---
 

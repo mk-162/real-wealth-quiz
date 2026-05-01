@@ -3,6 +3,12 @@ id: report.expanded.will_currency
 kind: global
 source_id: pitfall.will_currency
 title: "Will currency — expanded PDF copy"
+image_slug: placeholder
+at_a_glance:
+  - "Re-read every five years and after any significant life event."
+  - "Common quiet mismatches — out-of-date executors, missing stepchildren, pre-divorce drafting."
+  - "Updating a simple will costs a few hundred pounds."
+worth_a_conversation: "If the will hasn't been reviewed since a material change in family or finances, this is usually the first thing to settle — most other planning conversations rest on it."
 compliance_status: draft
 ---
 
