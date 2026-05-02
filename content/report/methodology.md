@@ -224,7 +224,7 @@ All projection numbers are presented in **today's pounds** (real terms). Income,
 
 ## Section 4 — How we mapped your answers to numbers
 
-Your answers used bands, not exact figures. We mapped each band to a midpoint for calculation purposes. Where the form offered a slider rather than a band (e.g. exact income), the engine uses the slider value directly and ignores the band midpoint. Where you chose "prefer not to say" for a field that drives a major chart element, that element is shown in grey with an "assumed" label rather than silently defaulted.
+Your answers used bands, not exact figures. We mapped each band to a midpoint for calculation purposes. Where the form offered a slider rather than a band (e.g. exact income), the engine uses the slider value directly and ignores the band midpoint. Where you skipped a question or chose "prefer not to say", we substitute a sensible default value so the report can still render — your planner will pick this up in the first conversation and rerun the projection with your actual figures. Defaults applied silently; if a critical figure is unknown, the planner will tell you.
 
 The values below are the exact midpoints the engine uses, sourced from `master_template/src/lib/compass/projection.ts`.
 
