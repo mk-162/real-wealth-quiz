@@ -1,0 +1,59 @@
+/* ReportViewClient — page shell for /conversation/report.
+ *
+ * The banner sticks to the top via its own component CSS. The
+ * .reportFrame centres the 794px-wide A4 pages on a wider canvas,
+ * matching the master report route's centring.
+ */
+
+.shell {
+  min-height: 100vh;
+  background: var(--paper-cool, #f4f1ec);
+  padding-bottom: 48px;
+}
+
+.reportFrame {
+  margin: 0 auto;
+  max-width: 794px;
+  padding: 24px 0 0;
+}
+
+/* When printing, strip the cool background and zero padding so the
+ * paper output is just the report sheets. The banner hides via its
+ * own @media print rule. */
+@media print {
+  .shell {
+    background: #ffffff;
+    padding: 0;
+  }
+  .reportFrame {
+    padding: 0;
+    max-width: none;
+  }
+}
+
+/* Incomplete state — shown when the user hits /conversation/report
+ * without completing the conversation first. */
+.incomplete {
+  max-width: 480px;
+  margin: 80px auto 0;
+  padding: 0 24px;
+  text-align: center;
+}
+
+.incompleteTitle {
+  font-family: 'Fraunces', Georgia, serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: 32px;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  color: var(--ink, #353535);
+  margin: 0 0 16px;
+}
+
+.incompleteBody {
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--ink-soft, #5a5a5a);
+  margin: 0 0 28px;
+}

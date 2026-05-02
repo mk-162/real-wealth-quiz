@@ -65,15 +65,19 @@
 }
 
 /* ==== Action row ============================================== */
-
+/* Spacing notes: the panel's own border + bottom padding already
+   separate the action row from the inputs above it visually. The
+   previous design had a hairline rule + 48px margin + 24px padding
+   stacked above the buttons, which read as "another section" and
+   pushed Continue off the fold on a 1080p laptop for screens with
+   more than two inputs. The single --space-md margin keeps a sense
+   of grouping without the redundant divider or wasted whitespace. */
 .actions {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-md);
-  margin-top: var(--space-xl);
-  padding-top: var(--space-md);
-  border-top: var(--rule-fine);
+  margin-top: var(--space-md);
   flex-wrap: wrap;
 }
 

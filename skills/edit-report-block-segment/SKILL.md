@@ -33,7 +33,7 @@ This skill targets per-segment blocks ONLY. For global blocks, use `edit-report-
 1. **Locate the file.** Common locations:
    - `content/report/health-gauge.md` (per-segment gauge copy + zones)
    - `content/report/takeaway-banners.md` (per-segment headline + supporting copy)
-   - `content/report/planning-grid/tile-NN-*.md` (12 tile files)
+   - `content/report/planning-grid/tile-NN-*.md` (9 active tile files; tile-03, tile-10, and tile-12 were retired in the 2026-Q2 simplification and are no longer loaded)
    - `content/report/goals/SX-*.md` (9 goals files — each one is for ONE segment)
 
 2. **Read the file whole.** Confirm `kind: per_segment` in the frontmatter. Note neighbouring segment sections to anchor voice.

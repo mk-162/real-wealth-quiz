@@ -1,5 +1,5 @@
 /**
- * PlanningGrid — 12 universal tiles in a 3×4 layout.
+ * PlanningGrid — 9 universal tiles in a 3×3 layout.
  *
  * Status colours are a fundamentally different kind of signal from the rest
  * of the report: they say "this area is good / worth reviewing / needs your

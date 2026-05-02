@@ -157,20 +157,22 @@ export function ReportView({
         </div>
         <BalanceStrip balanceSheet={balanceSheet} />
 
-        <div className={styles.pushBottom}>
-          <div style={{ marginTop: 18 }}>
-            <Takeaway title={view.headline.title} body={view.headline.body} />
-          </div>
+        {/* Takeaway sits naturally after the assets row — no push-to-bottom.
+            With the disclaimer band claiming the page foot, anchoring the
+            takeaway to the bottom of the body squashes it against the
+            regulatory text. Inline placement reads better. */}
+        <div style={{ marginTop: 18 }}>
+          <Takeaway title={view.headline.title} body={view.headline.body} />
         </div>
       </Page>
 
       {/* ---------- PLANNING GRID + GOALS ---------- */}
       <Page pageNum={startPageNum + 1} footer={footerAddress} label="Planning grid">
         <div className={styles.sectionTitle}>
-          <span className={styles.eyebrow}>Planning grid · 12 areas at a glance</span>
+          <span className={styles.eyebrow}>Planning grid · 9 areas at a glance</span>
           <h2 className={styles.hSection}>Where you&rsquo;re strong, where to look next.</h2>
           <p className={styles.intro}>
-            Twelve planning areas, colour-coded by where you&rsquo;ve told us your head is at.
+            Nine planning areas, colour-coded by where you&rsquo;ve told us your head is at.
             Tiles marked <strong style={{ color: 'var(--rw-orange)' }}>Attention</strong>
             {' '}are where a small change now saves a bigger conversation later.
           </p>
@@ -198,12 +200,12 @@ export function ReportView({
 
         <MilestoneStrip items={milestones} />
 
-        <div style={{ marginTop: 14, marginBottom: 12 }}>
+        <div style={{ marginTop: 10, marginBottom: 8 }}>
           <LifetimeWealthChart
             data={projection}
             targetRetirementAge={inputs.targetRetirementAge}
             depletionAge={depletion?.age}
-            height={280}
+            height={210}
           />
         </div>
 
@@ -225,14 +227,13 @@ export function ReportView({
           ))}
         </div>
 
-        <div className={styles.stackGap} style={{ marginTop: 8 }}>
+        <div className={styles.stackGap} style={{ marginTop: 4, gap: 8 }}>
           <CtaPanel
             eyebrow="Book a conversation"
             title={`Let's talk about you, ${name}.`}
-            buttonLabel="Book online"
-            buttonHref="https://calendly.com/realwealth/intro"
             phone="0161 768 7722"
-            contact="realwealth.co.uk"
+            contact="realwealth.co.uk/contact"
+            contactHref="https://realwealth.co.uk/get-in-touch/"
           />
           <Assumptions assumptions={assumptions} bodyTemplate={assumptionsBodyTemplate ?? null} />
         </div>

@@ -23,10 +23,19 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: center;
+  /* Top-anchor content. Centring made label-only cards float in the
+     middle of the 104px floor while title+description cards visually
+     filled the box, breaking the family resemblance between the two
+     shapes. Anchoring to the top edge gives both shapes the same
+     starting position. */
+  justify-content: flex-start;
   gap: var(--space-2xs);
   padding: var(--space-md);
-  min-height: 104px;
+  /* Compact floor for label-only cards (multi_select, card_select with
+     short labels). The full 104px floor is restored below for cards
+     that include a description (awareness checks, option grids with
+     supporting copy). */
+  min-height: 64px;
   background: var(--paper);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
@@ -40,6 +49,10 @@
     box-shadow var(--duration-default) var(--ease-default),
     background var(--duration-default) var(--ease-default),
     transform var(--duration-fast) var(--ease-default);
+}
+
+.card[data-has-desc='true'] {
+  min-height: 104px;
 }
 
 .card:hover {

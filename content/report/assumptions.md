@@ -11,4 +11,4 @@ compliance_status: draft
 
 # Body
 
-**ASSUMPTIONS** · Risk profile {risk_profile} (growth {investment_growth_rate}) · Cash {cash_growth_rate} · Inflation {inflation} · Real income growth {income_growth_rate} · State pension £{state_pension_full_rate} full rate from age {state_pension_age} · DC pension access from age {pension_access_age} · NI years assumed {ni_years_assumed} · Tax residence {tax_residence}{salary_sacrifice_clause} · Life expectancy {life_expectancy} · Tax year {tax_year}. {not_modelled}
+**ASSUMPTIONS** · Risk profile {risk_profile} (growth {investment_growth_rate}) · Cash {cash_growth_rate} · Inflation {inflation} · Real income growth {income_growth_rate} · State pension £{state_pension_full_rate} full rate from age {state_pension_age} · DC pension access from age {pension_access_age} · NI years assumed {ni_years_assumed} · Tax residence {tax_residence}{salary_sacrifice_clause} · Retirement income (state, DB, 75% of pension drawdowns) taxed at marginal rate; 25% pension tax-free portion capped lifetime at £268,275; CGT applied to GIA drawdowns · Life expectancy {life_expectancy} · Tax year {tax_year}. {not_modelled}

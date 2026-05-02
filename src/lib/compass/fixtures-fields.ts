@@ -15,15 +15,15 @@ import type { Fixture } from './fixtures';
 import type { CompassInputs, SegmentView, PlanningTile, WellbeingGoal } from './types';
 
 const TILE_KEYS = [
-  'retirement', 'pension', 'statePension', 'investment',
-  'tax', 'cash', 'debt', 'mortgage',
-  'estate', 'iht', 'protection', 'twelfth',
+  'retirement', 'pension', 'investment',
+  'tax', 'cash', 'debt',
+  'mortgage', 'estate', 'protection',
 ] as const;
 
 const TILE_STATUSES: PlanningTile['status'][] = [
-  'green', 'amber', 'grey', 'amber',
-  'green', 'amber', 'amber', 'green',
-  'red', 'green', 'red', 'amber',
+  'green', 'amber', 'amber',
+  'green', 'amber', 'amber',
+  'green', 'red', 'red',
 ];
 
 const GOAL_ALIGNMENTS: WellbeingGoal['alignment'][] = ['amber', 'green', 'amber', 'amber'];

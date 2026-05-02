@@ -405,7 +405,7 @@ This is the runtime `session.answers` key set the engine consumes via `buildComp
 | `db_pension_annual_income` | `dbPensionAnnualIncome` | Slider |
 | `db_pension_start_age` | `dbPensionStartAge` | Slider |
 | `dependency_horizon` | (informational) | |
-| `earners_one_or_two` | (informational) | |
+| `earners_one_or_two` | RETIRED 2026-Q2 — replaced by per-person `your_gross_income` + `partner_gross_income` sliders | |
 | `earnings_protection_scale` | `earningsProtectionConfidence` | 1–5 Likert |
 | `employer_pension_pct_band` | `employerPensionContribPct` + `…Raw` | Slider 0–25 |
 | `essential_monthly_spend` | `essentialMonthlySpend` | Banded radio |
@@ -418,7 +418,9 @@ This is the runtime `session.answers` key set the engine consumes via `buildComp
 | `held_in_limited_company` | (informational) | |
 | `household` | sets `partnerPresent`, `hasDependentChildren`, `hasElderlyParents` | Multi-select |
 | `income_amount` | `householdGrossIncomeRaw` | Reserved (slider companion, not yet on form) |
-| `income_band` | `householdGrossIncome` | Banded radio |
+| `income_band` | `householdGrossIncome` | DERIVED 2026-Q2 from `your_gross_income + partner_gross_income` (synthesized in `saveSession`); the standalone radio was retired |
+| `your_gross_income` | (sums into `householdGrossIncomeRaw` and band) | Slider 0–300k on Q3.3 |
+| `partner_gross_income` | `partnerGrossIncome` (and contributes to derived `householdGrossIncome`) | Slider 0–300k on Q3.3, conditional on partner present |
 | `investments_band` | (legacy fallback for `isaBalance` when 4.E.2 didn't fire) | |
 | `isa_balance_band` | `isaBalance` + `isaBalanceRaw` | Slider |
 | `life_cover_status` | `lifeCoverStatus` | |

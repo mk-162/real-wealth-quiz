@@ -33,7 +33,7 @@ import {
   loadAssumptionsContent,
 } from '@/lib/compass/pdf-content';
 import { getWhereYouAre, getSilentGapsAndRead, loadSegmentCta } from '@/lib/compass/narrative-content';
-import { ReportView, PageFrame, CtaPanel } from '@/components/compass';
+import { ReportView, PageFrame, CtaPanel, AwarenessCheckPage } from '@/components/compass';
 import { CoverPage, NarrativePlaceholder, MethodologySection, formatPageNum } from './report-helpers';
 import styles from './page.module.css';
 
@@ -133,13 +133,7 @@ export default async function MasterReport({
           footer="Manchester · Taunton · hello@realwealth.co.uk"
           label={check.title}
         >
-          <div className={styles.sectionTitle}>
-            <span className={styles.eyebrow}>Things worth a conversation</span>
-            <h2 className={styles.hSection}>{check.title}</h2>
-          </div>
-          {check.paragraphs.map((para, i) => (
-            <p key={i} className={styles.narrativePara}>{para}</p>
-          ))}
+          <AwarenessCheckPage check={check} />
         </PageFrame>
       ))}
 
@@ -237,7 +231,6 @@ export default async function MasterReport({
         pageNum={p(8 + N)}
         footer="Real Wealth Partners Ltd · Authorised and regulated by the Financial Conduct Authority"
         label="Methodology"
-        showIllusTag={false}
       >
         <div className={styles.sectionTitle}>
           <span className={styles.eyebrow}>Methodology</span>
@@ -273,8 +266,7 @@ export default async function MasterReport({
           pageNum={p(9 + N)}
           footer="Real Wealth Partners Ltd · Authorised and regulated by the Financial Conduct Authority"
           label="Methodology (continued)"
-          showIllusTag={false}
-        >
+          >
           <div className={styles.sectionTitle}>
             <span className={styles.eyebrow}>Methodology — continued</span>
           </div>

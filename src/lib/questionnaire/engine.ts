@@ -325,7 +325,7 @@ export function useQuestionnaireEngine(tier: TierSlug): EngineState & EngineActi
   const isFirst = currentIndex === 0;
   /* Positional "last screen" indicator — true whenever the user is on the
      last visible screen. The conversation page uses this alongside a
-     `canCompleteFlow` guard before routing to /conversation/details, so
+     `canCompleteFlow` guard before routing to /conversation/summary, so
      that sudden mid-flow shrinkage of `visibleScreens` (e.g. an
      aggressive segment hides several downstream screens) doesn't fire
      the completion route before the user has actually answered the

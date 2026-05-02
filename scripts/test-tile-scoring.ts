@@ -79,9 +79,9 @@ function makeInputs(overrides: Partial<CompassInputs> = {}): CompassInputs {
 
 const VALID_STATUSES: ReadonlyArray<TileStatus> = ['green', 'amber', 'red', 'grey'];
 const TILE_KEYS: ReadonlyArray<TileKey> = [
-  'retirement', 'pension', 'statePension', 'investment',
-  'tax', 'cash', 'debt', 'mortgage',
-  'estate', 'iht', 'protection', 'twelfth',
+  'retirement', 'pension', 'investment',
+  'tax', 'cash', 'debt',
+  'mortgage', 'estate', 'protection',
 ];
 
 /** Build a full TileScoreMap for the given input overrides. */
@@ -171,37 +171,6 @@ describe('scorePension', () => {
       ownPensionContribPct: '0-3',
     });
     assert.equal(r.pension.status, 'red');
-  });
-});
-
-describe('scoreStatePension', () => {
-  it('grey for currentAge < 30', () => {
-    const r = score({ currentAge: 28, targetRetirementAge: 65 });
-    assert.equal(r.statePension.status, 'grey');
-  });
-
-  it('green at 35+ NI years', () => {
-    const r = score({ niQualifyingYears: '35+' });
-    assert.equal(r.statePension.status, 'green');
-  });
-
-  it('amber in 25-34 NI years band', () => {
-    const r = score({ niQualifyingYears: '30-35' });
-    assert.equal(r.statePension.status, 'amber');
-  });
-
-  it('red when NI years well below threshold', () => {
-    const r = score({ niQualifyingYears: '<10', currentAge: 35 });
-    assert.equal(r.statePension.status, 'red');
-  });
-
-  it('sanity override: claimed 35+ NI but expected amount tiny → amber', () => {
-    const r = score({
-      niQualifyingYears: '35+',
-      statePensionKnown: 'yes',
-      statePensionExpectedAmount: 5_000,
-    });
-    assert.equal(r.statePension.status, 'amber');
   });
 });
 
@@ -462,50 +431,6 @@ describe('scoreEstate', () => {
   });
 });
 
-describe('scoreIht', () => {
-  it('grey when estate below £100k', () => {
-    const r = score({ totalEstate: '<25k', mainHomeValue: 0 });
-    assert.equal(r.iht.status, 'grey');
-  });
-
-  it('green when allowances cover estate', () => {
-    // Married couple with home: 325k*2 + 175k*2 = 1m allowance. 500k-1m estate
-    // at 750k mid → 0 tax.
-    const r = score({
-      totalEstate: '500k-1m',
-      mainHomeValue: '250-500k',
-      isMarriedOrCP: true,
-      homeLeftToDescendants: true,
-    });
-    assert.equal(r.iht.status, 'green');
-  });
-
-  it('amber when small IHT bill', () => {
-    // Single person, no RNRB: 325k allowance. Estate mid 500-1m = 750k.
-    // Taxable 425k × 40% = 170k → too high for amber.
-    // Need <50k bill: 325k + (taxable * 0.4 < 50k) → taxable < 125k → estate < 450k
-    // "250-500k" mid=375k. 375-325=50k * 0.4 = 20k → amber.
-    const r = score({
-      totalEstate: '250-500k',
-      mainHomeValue: 0,
-      isMarriedOrCP: false,
-      homeLeftToDescendants: false,
-    });
-    assert.equal(r.iht.status, 'amber');
-  });
-
-  it('red when IHT bill is material', () => {
-    const r = score({
-      totalEstate: '3m+', // 4m mid, RNRB fully tapered
-      mainHomeValue: '1-2m',
-      isMarriedOrCP: true,
-      homeLeftToDescendants: true,
-    });
-    assert.equal(r.iht.status, 'red');
-    assert.ok(Number(r.iht.metrics.iht_exposure_k) > 50);
-  });
-});
-
 describe('scoreProtection', () => {
   it('grey when already retired', () => {
     const r = score({ currentAge: 70, targetRetirementAge: 60 });
@@ -558,65 +483,6 @@ describe('scoreProtection', () => {
       businessValue: 0,
     });
     assert.equal(r.protection.status, 'grey');
-  });
-});
-
-describe('scoreTwelfth', () => {
-  it('business owner low concentration → green', () => {
-    const r = score({
-      businessValue: '25-100k', // 62.5k
-      mainHomeValue: '1-2m',
-      totalPensionValue: '500k-1m',
-    });
-    assert.equal(r.twelfth.status, 'green');
-  });
-
-  it('business owner moderate concentration → amber', () => {
-    const r = score({
-      businessValue: '250-500k', // 375k
-      mainHomeValue: '500k-1m',  // 750k
-      totalPensionValue: '25-100k',
-      mainHomeMortgageBalance: 0,
-    });
-    assert.equal(r.twelfth.status, 'amber');
-  });
-
-  it('business owner high concentration → red', () => {
-    const r = score({
-      businessValue: '1-2m', // 1.5m
-      mainHomeValue: '100-250k',
-      totalPensionValue: '<25k',
-      isaBalance: '<25k',
-      mainHomeMortgageBalance: 0,
-    });
-    assert.equal(r.twelfth.status, 'red');
-  });
-
-  it('non-owner already retired → green', () => {
-    const r = score({
-      currentAge: 70,
-      targetRetirementAge: 60,
-      businessValue: 0,
-    });
-    assert.equal(r.twelfth.status, 'green');
-  });
-
-  it('non-owner strong saver + ISA → green', () => {
-    const r = score({
-      businessValue: 0,
-      monthlySavingAmount: '3-5k',
-      isaBalance: '25-100k',
-    });
-    assert.equal(r.twelfth.status, 'green');
-  });
-
-  it('non-owner weak pattern → amber', () => {
-    const r = score({
-      businessValue: 0,
-      monthlySavingAmount: '<1.5k',
-      isaBalance: 0,
-    });
-    assert.equal(r.twelfth.status, 'amber');
   });
 });
 

@@ -102,7 +102,7 @@ const MINIMAL: CompassInputs = {
   statePensionKnown: 'no',
   niQualifyingYears: '<10',
   niQualifyingYearsRaw: 0,
-  totalEstate: 'lt500k',
+  totalEstate: '<25k',
   isMarriedOrCP: false,
   homeLeftToDescendants: false,
   willInPlace: false,

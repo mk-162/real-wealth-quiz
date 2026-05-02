@@ -116,17 +116,28 @@ id: report.expanded.income_100k_trap
 kind: global
 title: "£100k income tax trap — expanded copy"
 source_id: pitfall.income_100k_trap
+# Optional rich-block fields — add the 1–3 that earn their slot. Delete unused.
+# image_slug: tax-trap                       # → public/report-preview/assets/illustrations/<slug>.svg
+# risk_band: watch                           # low | watch | urgent
+# key_facts:                                 # 2–4 numbered facts, italic teal display value
+#   - label: Effective marginal rate
+#     value: "60%"
+#   - label: Income band
+#     value: "£100k–£125,140"
+# pull_quote: "Every £1,000 of pension contribution in this band saves £600 of tax."
+# at_a_glance:                               # 2–3 bullets, ≤90 chars each
+#   - "Personal allowance tapers £1 for every £2 above £100k."
+#   - "Pension contributions reduce adjusted net income, restoring the allowance."
+# worth_a_conversation: "A carry-forward calculation in autumn is usually the move that closes this band cleanly."
 compliance_status: draft
 ---
 
-# Body
-
 # The £100k income tax trap
 
-_TODO: write the three-paragraph expanded copy._
+_TODO: write the three-paragraph expanded copy. Context → specifics → bridge._
 ```
 
-(Note: expanded awareness files use the H1 inside `# Body` as the rendered page heading.)
+(Note: expanded awareness files do NOT wrap the body in `# Body`. The first H1 in the body is the rendered page heading. Rich-block fields render conditionally — see `edit-report-block-global` SKILL.md for the full spec and the page-fit budget.)
 
 ### Example 3 — don't do this: skip the kind decision
 
@@ -157,5 +168,5 @@ Refuse. New blocks ship at `draft` and only advance through the compliance workf
 
 - **The renderer caches.** After adding a new file in dev, restart `npm run dev:next` (or wait for the file watcher) so the loader picks it up.
 - **`source_id` must match.** Expanded awareness blocks bind to `content/awareness-checks/<slug>.md` via `source_id`. A typo here means the renderer falls back to the unaware-body in the source file.
-- **Tile numbering is positional.** Tile slot 1 always renders top-left; tile 12 always renders bottom-right (with the dual-variant flip for owners vs others). Adding a tile means picking a free slot or having a renderer conversation.
+- **Tile numbering is positional.** The grid is 9 tiles in a 3×3 (slot 1 top-left, slot 9 bottom-right). The previous 12-tile design carried a dual-variant 12th tile (Business exit / Income mix) and dedicated state-pension and IHT tiles; those were retired in the 2026-Q2 simplification. Adding a tile beyond the 9 means a renderer conversation, not a content edit.
 - **The admin editor surfaces new blocks automatically.** No code change needed — the tree walks the folder.

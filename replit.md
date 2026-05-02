@@ -35,7 +35,7 @@ OptionTile, CardGrid and TierTile all follow the same rule: selected state uses 
 - All `--ink-*` text tokens clear WCAG AA on the warm paper background.
 - `--stone` is **decoration only** (borders, dividers). Use `--ink-soft` for small/secondary text.
 - Focus states: 2–4px teal ring (`--teal-tint-15`) with no layout shift.
-- Form errors are wired with `aria-describedby` + `role="alert"` (see `src/app/conversation/details/page.tsx`).
+- Form errors are wired with `aria-describedby` + `role="alert"` (see `src/components/ReportCapture/ReportCapture.tsx`).
 - Reduced motion preferences are respected globally in `base.css`.
 
 ## Architecture

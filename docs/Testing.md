@@ -83,8 +83,7 @@ npx tsx --test scripts/test-tile-scoring-full.ts 2>&1 | grep -E "fail|unresolved
 | `http://localhost:5000/conversation` | Questionnaire entry |
 | `http://localhost:5000/conversation?tier=standard` | Questionnaire, standard tier preset |
 | `http://localhost:5000/conversation?tier=thorough` | Questionnaire, thorough tier preset |
-| `http://localhost:5000/conversation/details` | Data-capture page |
-| `http://localhost:5000/conversation/summary` | Summary page (email-gated; see §3 for unlock) |
+| `http://localhost:5000/conversation/summary` | Summary page (hosts the email-gate; see §3 for unlock) |
 | `http://localhost:5000/conversation/support` | Distress-signpost page (Samaritans / NHS 111) |
 | `http://localhost:5000/privacy` | Privacy policy |
 | `http://localhost:5000/consumer-duty` | Consumer Duty statement |
@@ -217,9 +216,9 @@ localStorage.getItem('real-wealth:report-unlocked');   // 'true' or null
    - Estate: £500k - £1m
    - Happy place: "Breakfast on the porch."
    - ...continue answering the remaining screens (they're short)
-5. Submit → `/conversation/details`.
-6. Fill email + consent → submit.
-7. Lands on `/conversation/summary` with the 9-page report embedded after the considered list.
+5. Submit → lands on `/conversation/summary`.
+6. Fill email + consent on the inline ReportCapture banner → submit. (If `RESEND_API_KEY` is unset locally, the API returns 200 in preview mode without sending; the unlock still flips. Production requires the key.)
+7. The 9-page report appears embedded after the considered list.
 8. Scroll through all 9 pages. Confirm:
    - Cover shows first name
    - Tile grid shows per-client statuses (e.g. cash tile has real £k amount)

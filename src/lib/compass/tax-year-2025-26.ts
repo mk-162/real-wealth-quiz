@@ -130,6 +130,17 @@ export const ANNUAL_ALLOWANCE_TAPER_ADJUSTED_INCOME = 260_000;
 /** Minimum tapered AA (floor). */
 export const ANNUAL_ALLOWANCE_TAPERED_FLOOR = 10_000;
 
+/**
+ * Money Purchase Annual Allowance (MPAA).
+ *
+ * Once a user "flexibly accesses" their pension (income drawdown, UFPLS, etc.)
+ * the AA for further DC pension contributions drops to £10k for the rest of
+ * their working life. We model this when the user flags
+ * `isFlexiblyAccessingPension: true` AND is still working AND has reached
+ * pension access age. The MPAA stacks with the tapered AA — the lower wins.
+ */
+export const MPAA_LIMIT = 10_000;
+
 /** Lump Sum Allowance (replaces 25% of LTA cap from 6 Apr 2024). */
 export const LUMP_SUM_ALLOWANCE = 268_275;
 
@@ -182,6 +193,17 @@ export const HICBC_UPPER = 80_000;
 // -----------------------------------------------------------------------------
 
 export const INFLATION = 0.025;
+
+/**
+ * REVIEW: 2.5% real cash growth (≈ 5% nominal at our 2.5% inflation assumption)
+ * is high relative to the long-run real return on instant-access cash, which is
+ * typically near 0% real over decades. This figure was inherited from the
+ * Compass Report Kit port and has not been recalibrated. Consider lowering to
+ * 0% real (cash that simply tracks inflation) in a future tax-year revision.
+ *
+ * Until then, clients with large cash positions see slightly optimistic
+ * trajectories. Disclosed in `content/report/methodology.md` Section 5.
+ */
 export const CASH_GROWTH = 0.025;
 
 /**

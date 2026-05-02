@@ -30,19 +30,12 @@ import {
   INCOME_MID,
   SPEND_MID_MONTHLY,
   CONTRIB_PCT_MID,
-  NI_YEARS_MID,
   mortgageEndAgeToNumber,
 } from './projection';
 import {
-  STATE_PENSION_FULL,
-  STATE_PENSION_FULL_QUALIFYING_YEARS as STATE_PENSION_FULL_YEARS,
   TAX_TRAP_LOWER,
   TAX_TRAP_UPPER,
   BASIC_RATE_LIMIT as TAX_BASIC_RATE_THRESHOLD,
-  IHT_NRB,
-  IHT_RNRB_PER_PERSON,
-  IHT_RNRB_TAPER_START,
-  IHT_RATE,
 } from './tax-year-2025-26';
 
 // -----------------------------------------------------------------------------
@@ -55,11 +48,6 @@ const RETIREMENT_AMBER_PCT = 70;
 
 const PENSION_GREEN_RATIO = 1.0;
 const PENSION_AMBER_RATIO = 0.60;
-
-const SP_MIN_AGE = 30;
-const SP_GREEN_YEARS = 35;
-const SP_AMBER_YEARS = 25;
-const SP_SANITY_AMOUNT_THRESHOLD = 8_000;
 
 const INV_BUSINESS_CONCENTRATION_RED = 0.40;
 const INV_MIN_TOTAL_INVESTABLE = 5_000;
@@ -78,18 +66,7 @@ const MORTGAGE_AMBER_PTI_PCT = 25;
 const ESTATE_YOUNG_AGE = 30;
 const ESTATE_MIDDLE_AGE = 50;
 
-const IHT_MIN_ESTATE = 100_000;
-const IHT_AMBER_MAX_BILL = 50_000;
-
 const PROTECTION_YEARS_TO_RETIREMENT_AMBER = 10;
-
-const TWELFTH_BIZ_RED = 0.50;
-const TWELFTH_BIZ_AMBER = 0.25;
-const TWELFTH_SAVING_STRONG: ReadonlyArray<CompassInputs['monthlySavingAmount']> = [
-  '3-5k',
-  '5-8k',
-  '8k+',
-];
 
 // -----------------------------------------------------------------------------
 // Helpers
@@ -169,39 +146,6 @@ function scorePension(inputs: CompassInputs, _report: CompassReport): TileScore 
       age_target_pct: fmt(ageTargetPct),
       pension_k: fmt(pensionValue / 1000),
       gap_k: fmt(gap / 1000),
-    },
-  };
-}
-
-function scoreStatePension(inputs: CompassInputs, _report: CompassReport): TileScore {
-  if (inputs.currentAge < SP_MIN_AGE) return grey();
-
-  const niMid = NI_YEARS_MID[inputs.niQualifyingYears];
-  let status: TileStatus;
-  if (niMid >= SP_GREEN_YEARS) status = 'green';
-  else if (niMid >= SP_AMBER_YEARS) status = 'amber';
-  else status = 'red';
-
-  // Sanity override: client claims full NI record but expected amount is low.
-  if (
-    inputs.statePensionKnown === 'yes' &&
-    typeof inputs.statePensionExpectedAmount === 'number' &&
-    inputs.statePensionExpectedAmount < SP_SANITY_AMOUNT_THRESHOLD &&
-    inputs.niQualifyingYears === '35+'
-  ) {
-    status = 'amber';
-  }
-
-  const expected =
-    inputs.statePensionExpectedAmount ??
-    STATE_PENSION_FULL * Math.min(1, niMid / STATE_PENSION_FULL_YEARS);
-
-  return {
-    status,
-    scoreable: true,
-    metrics: {
-      ni_yr: fmt(niMid),
-      sp_annual_k: fmt(expected / 1000),
     },
   };
 }
@@ -407,35 +351,6 @@ function scoreEstate(inputs: CompassInputs, _report: CompassReport): TileScore {
   return { status, scoreable: true, metrics: {} };
 }
 
-function scoreIht(inputs: CompassInputs, _report: CompassReport): TileScore {
-  const estateMid = wealthMid(inputs.totalEstate);
-  if (estateMid < IHT_MIN_ESTATE) return grey();
-
-  const homeMid = wealthMid(inputs.mainHomeValue);
-  const allowancePerPerson =
-    IHT_NRB + (inputs.homeLeftToDescendants && homeMid > 0 ? IHT_RNRB_PER_PERSON : 0);
-  const totalAllowance = inputs.isMarriedOrCP ? allowancePerPerson * 2 : allowancePerPerson;
-  const rnrbTaper = Math.max(0, (estateMid - IHT_RNRB_TAPER_START) / 2);
-  const effectiveAllowance = Math.max(IHT_NRB, totalAllowance - rnrbTaper);
-  const taxableEstate = Math.max(0, estateMid - effectiveAllowance);
-  const roughIhtBill = Math.round(taxableEstate * IHT_RATE);
-
-  let status: TileStatus;
-  if (roughIhtBill === 0) status = 'green';
-  else if (roughIhtBill < IHT_AMBER_MAX_BILL) status = 'amber';
-  else status = 'red';
-
-  return {
-    status,
-    scoreable: true,
-    metrics: {
-      estate_k: fmt(estateMid / 1000),
-      nil_rate_total_k: fmt(effectiveAllowance / 1000),
-      iht_exposure_k: fmt(roughIhtBill / 1000),
-    },
-  };
-}
-
 function scoreProtection(inputs: CompassInputs, _report: CompassReport): TileScore {
   const alreadyRetired = inputs.currentAge >= inputs.targetRetirementAge;
   if (alreadyRetired) return grey();
@@ -493,42 +408,12 @@ function scoreProtection(inputs: CompassInputs, _report: CompassReport): TileSco
   return grey();
 }
 
-function scoreTwelfth(inputs: CompassInputs, report: CompassReport): TileScore {
-  const business = wealthMid(inputs.businessValue);
-  const alreadyRetired = inputs.currentAge >= inputs.targetRetirementAge;
-
-  if (inputs.businessValue !== 0) {
-    // Business-owner flavour: concentration vs total net worth.
-    const netWorth = report.balanceSheet.netWorth;
-    const bizConc = netWorth > 0 ? business / netWorth : 0;
-    let status: TileStatus;
-    if (bizConc >= TWELFTH_BIZ_RED) status = 'red';
-    else if (bizConc >= TWELFTH_BIZ_AMBER) status = 'amber';
-    else status = 'green';
-    return {
-      status,
-      scoreable: true,
-      metrics: { business_pct: fmt(bizConc * 100) },
-    };
-  }
-
-  // Non-owner: "income mix" proxy — saving habit + tax-wrapper diversification.
-  if (alreadyRetired) {
-    return { status: 'green', scoreable: true, metrics: {} };
-  }
-
-  const strongSaver = TWELFTH_SAVING_STRONG.includes(inputs.monthlySavingAmount);
-  const hasIsa = inputs.isaBalance !== 0;
-  const status: TileStatus = strongSaver && hasIsa ? 'green' : 'amber';
-  return { status, scoreable: true, metrics: {} };
-}
-
 // -----------------------------------------------------------------------------
 // Top-level entry point
 // -----------------------------------------------------------------------------
 
 /**
- * Score all 12 planning-grid tiles for the given client.
+ * Score all 9 planning-grid tiles for the given client.
  *
  * Returns a `TileScoreMap` keyed by `TileKey` — every tile is present; `grey` /
  * `scoreable: false` entries mean the engine chose not to score (downstream
@@ -536,18 +421,15 @@ function scoreTwelfth(inputs: CompassInputs, report: CompassReport): TileScore {
  */
 export function scoreAllTiles(inputs: CompassInputs, report: CompassReport): TileScoreMap {
   const map: Record<TileKey, TileScore> = {
-    retirement:   scoreRetirement(inputs, report),
-    pension:      scorePension(inputs, report),
-    statePension: scoreStatePension(inputs, report),
-    investment:   scoreInvestment(inputs, report),
-    tax:          scoreTax(inputs, report),
-    cash:         scoreCash(inputs, report),
-    debt:         scoreDebt(inputs, report),
-    mortgage:     scoreMortgage(inputs, report),
-    estate:       scoreEstate(inputs, report),
-    iht:          scoreIht(inputs, report),
-    protection:   scoreProtection(inputs, report),
-    twelfth:      scoreTwelfth(inputs, report),
+    retirement: scoreRetirement(inputs, report),
+    pension:    scorePension(inputs, report),
+    investment: scoreInvestment(inputs, report),
+    tax:        scoreTax(inputs, report),
+    cash:       scoreCash(inputs, report),
+    debt:       scoreDebt(inputs, report),
+    mortgage:   scoreMortgage(inputs, report),
+    estate:     scoreEstate(inputs, report),
+    protection: scoreProtection(inputs, report),
   };
   return map;
 }

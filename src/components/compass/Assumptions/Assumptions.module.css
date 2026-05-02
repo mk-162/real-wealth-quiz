@@ -1,13 +1,14 @@
 /* Assumptions — methodology footnote block. */
 
 .block {
-  font-size: 10px;
-  line-height: 1.5;
+  font-size: 9.5px;
+  line-height: 1.4;
   color: var(--rw-ink-muted);
-  background: var(--rw-paper-warm);
-  border: 1px solid var(--rw-border-subtle);
-  border-radius: var(--rw-radius-md);
-  padding: 10px 14px;
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--rw-border-subtle);
+  border-radius: 0;
+  padding: 8px 0 0;
 }
 
 .block strong {
@@ -15,5 +16,5 @@
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  font-size: 9.5px;
+  font-size: 9px;
 }

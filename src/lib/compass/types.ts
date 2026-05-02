@@ -147,6 +147,14 @@ export interface CompassInputs {
 
   // §10 Assumption knobs (optional)
   riskProfile?: RiskProfile;
+
+  /**
+   * MPAA flag — set true when the user has flexibly accessed pension money
+   * (income drawdown / UFPLS / etc.) and is still working. Triggers the
+   * Money Purchase Annual Allowance: contribution allowance drops to £10k.
+   * See PROJECTION_TAX_FIX_PLAN §6.5. Default: false.
+   */
+  isFlexiblyAccessingPension?: boolean;
 }
 
 // -----------------------------------------------------------------------------
@@ -198,6 +206,15 @@ export interface ProjectionYear {
   totalExpense: number;
   netSavings: number;
 
+  /**
+   * Total tax paid in this year (income tax on state/DB pension + income tax
+   * on the taxable portion of pension drawdowns + CGT on GIA drawdowns).
+   * Surfaced for tooltips and the methodology-disclosure tile. Always 0
+   * outside the retirement / drawdown phase since accumulation tax is netted
+   * inside `yearIncome`.
+   */
+  taxPaid: number;
+
   // Flags
   isRetired: boolean;
   isPensionAccessible: boolean;
@@ -232,10 +249,18 @@ export interface CompassReport {
 // -----------------------------------------------------------------------------
 
 export type TileStatus = 'green' | 'amber' | 'red' | 'grey';
+/**
+ * Nine planning-grid tiles, rendered in a 3×3.
+ *
+ * State-pension, IHT, and the dual-variant 12th tile (business / income mix)
+ * were dropped in the simplification — state-pension was largely double-counting
+ * with `retirement`, IHT only registered above the £500k+ band so was grey for
+ * most segments, and the 12th tile only meaningfully fired for S5/S6.
+ */
 export type TileKey =
-  | 'retirement' | 'pension' | 'statePension' | 'investment'
-  | 'tax' | 'cash' | 'debt' | 'mortgage'
-  | 'estate' | 'iht' | 'protection' | 'twelfth';
+  | 'retirement' | 'pension' | 'investment'
+  | 'tax' | 'cash' | 'debt'
+  | 'mortgage' | 'estate' | 'protection';
 
 export interface PlanningTile {
   key: TileKey;
@@ -281,7 +306,7 @@ export interface SegmentView {
     title: string;
     body: string;
   };
-  grid: PlanningTile[];      // 12 tiles, always in TileKey order
+  grid: PlanningTile[];      // 9 tiles, always in TileKey order
   goals: WellbeingGoal[];    // 3-5 goals
   nextSteps: string[];       // 3 advisor conversation starters
   bullets: { tone: 'good' | 'warn' | 'risk' | 'info'; text: string }[]; // page-2 chart commentary

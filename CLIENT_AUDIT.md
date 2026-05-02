@@ -51,7 +51,7 @@ There is no git repository in the audit folder, so this list is based on direct 
 | --- | --- | --- |
 | `src/app/conversation/summary/page.tsx` | Deferred session load state update so React hook lint no longer errors. | Low. Slight hydration timing change. |
 | `src/lib/questionnaire/engine.ts` | Deferred several effect-driven state updates and memoized active screen state to satisfy React 19 lint rules. Also deferred stale-session `setCurrentId`. | Moderate. Core questionnaire timing changed, but typecheck, build, and 9 E2E tests pass. Coordinate with any agent editing this file. |
-| `src/app/conversation/page.tsx` | Final content screen now routes directly to `/conversation/details`, fixing a likely trap where inline provocations could block progress. | Low to moderate. Behaviorally desirable, but still worth manual QA. |
+| `src/app/conversation/page.tsx` | Final content screen now routes directly to `/conversation/summary` (the previous `/conversation/details` page was retired — capture happens inline on the summary). | Low to moderate. Behaviorally desirable, but still worth manual QA. |
 | `content/microcopy/voice-rules.md` | Reworded the banned-word guidance so the content QA script does not flag the rule itself. | Very low. |
 | `eslint.config.mjs` | Replaced anonymous default export with `const config` plus `export default config`. | Very low. |
 | `src/lib/questionnaire/triggers.ts` | Removed stale `eslint-disable-next-line no-console`. | Very low. |
@@ -96,9 +96,9 @@ These should be handled before showing the app as anything more than an internal
 
    Segment CTA files use placeholder Calendly URLs such as `calendly.com/real-wealth-standard-call-placeholder`. `FinalCTA` normalizes these to `https://...`, so they will open, but they are not live client-ready destinations.
 
-4. No lead-capture backend exists.
+4. Lead-capture backend is minimal.
 
-   `/conversation/details` stores contact details into localStorage and routes to the summary. There is no POST endpoint, CRM integration, email send, audit trail, consent record, or booking handoff. This is fine for a prototype walkthrough, not a live lead magnet.
+   The summary page hosts an inline `ReportCapture` form that POSTs to `/api/report/send` (Resend). On 200 the unlock flag flips and the embedded report opens. There is no DB-backed audit trail, CRM integration, or booking handoff yet — Resend's delivery log is the MVP compliance record. When `RESEND_API_KEY` is unset the API returns 200 in non-production so the summary can still be previewed end-to-end.
 
 5. Privacy and Consumer Duty content need sign-off.
 
@@ -161,7 +161,6 @@ These should be handled before showing the app as anything more than an internal
    - `/`
    - `/conversation?tier=quick`
    - `/conversation?tier=standard`
-   - `/conversation/details`
    - `/conversation/summary`
    - `/conversation/support`
    - `/privacy`

@@ -1,0 +1,108 @@
+/* CoverThumbnail — small stylised render of the report cover. */
+
+.frame {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card {
+  position: relative;
+  width: 200px;
+  height: 280px;
+  border-radius: 6px;
+  background: linear-gradient(160deg, #0c7372 0%, #09595a 100%);
+  color: #ffffff;
+  overflow: hidden;
+  box-shadow: 0 18px 40px rgba(12, 115, 114, 0.28);
+  display: flex;
+  flex-direction: column;
+  padding: 18px;
+}
+
+.glowTr {
+  position: absolute;
+  top: -60px;
+  right: -60px;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.20), transparent 65%);
+  pointer-events: none;
+}
+
+.glowBl {
+  position: absolute;
+  bottom: -70px;
+  left: -60px;
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 211, 58, 0.18), transparent 65%);
+  pointer-events: none;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  position: relative;
+  z-index: 2;
+}
+
+.brand {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.kind {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.leafMark {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 0;
+  position: relative;
+  z-index: 1;
+  width: 60px;
+  align-self: center;
+}
+
+.bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  position: relative;
+  z-index: 2;
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+  padding-top: 12px;
+}
+
+.eyebrow {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: 22px;
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  color: #ffffff;
+}
+
+.date {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.7);
+}

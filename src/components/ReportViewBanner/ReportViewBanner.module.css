@@ -1,0 +1,103 @@
+/* ReportViewBanner — sticky top band on /conversation/report.
+ *
+ * Orange-tinted strip with privacy message + three actions.
+ * Hidden on print so the saved PDF contains only the report.
+ */
+
+.banner {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: var(--rw-orange-soft, #fff1e6);
+  border-bottom: 1px solid rgba(255, 104, 1, 0.25);
+  padding: 14px 20px;
+}
+
+.inner {
+  max-width: 980px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.message {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink, #353535);
+  margin: 0;
+  flex: 1 1 320px;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.primaryButton {
+  background: var(--rw-orange, #ff6801);
+  color: #ffffff;
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 120ms ease;
+}
+
+.primaryButton:hover {
+  background: #e35a00;
+}
+
+.secondaryButton {
+  background: var(--paper, #ffffff);
+  color: var(--ink, #353535);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  padding: 10px 18px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 120ms ease, border-color 120ms ease;
+}
+
+.secondaryButton:hover {
+  background: var(--rw-paper-warm, #faf7f2);
+  border-color: rgba(0, 0, 0, 0.25);
+}
+
+.linkButton {
+  background: transparent;
+  border: 0;
+  padding: 6px 4px;
+  font: inherit;
+  font-size: 13px;
+  color: var(--rw-teal, #0c7372);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.linkButton:hover {
+  color: var(--rw-teal-deep, #09595a);
+}
+
+.primaryButton:focus-visible,
+.secondaryButton:focus-visible,
+.linkButton:focus-visible {
+  outline: 2px solid var(--rw-teal, #0c7372);
+  outline-offset: 2px;
+}
+
+/* Hide the banner entirely when printing — the saved PDF contains the
+ * report only. */
+@media print {
+  .banner { display: none !important; }
+}

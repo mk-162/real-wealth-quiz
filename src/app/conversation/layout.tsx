@@ -1,6 +1,6 @@
 /**
- * Layout wrapper for the three conversation screens:
- * questionnaire → details → summary.
+ * Layout wrapper for the conversation flow:
+ * questionnaire → summary (the summary page hosts the email-gate inline).
  *
  * The wrapper pins the FCA footer and gives each child the paper background.
  */

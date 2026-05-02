@@ -32,7 +32,7 @@ import {
   loadAssumptionsContent,
 } from '@/lib/compass/pdf-content';
 import { getWhereYouAre, getSilentGapsAndRead, loadSegmentCta } from '@/lib/compass/narrative-content';
-import { ReportView, PageFrame, CtaPanel } from '@/components/compass';
+import { ReportView, PageFrame, CtaPanel, AwarenessCheckPage } from '@/components/compass';
 import { CoverPage, NarrativePlaceholder, MethodologySection, formatPageNum } from '@/app/report/master/[segment]/report-helpers';
 import reportStyles from '@/app/report/master/[segment]/page.module.css';
 // The .rw-doc / .rw-eyebrow / .rw-h-section global classes used by the
@@ -132,13 +132,7 @@ export default function CompassReportSection({
           footer="Manchester · Taunton · hello@realwealth.co.uk"
           label={check.title}
         >
-          <div className={reportStyles.sectionTitle}>
-            <span className={reportStyles.eyebrow}>Things worth a conversation</span>
-            <h2 className={reportStyles.hSection}>{check.title}</h2>
-          </div>
-          {check.paragraphs.map((para, i) => (
-            <p key={i} className={reportStyles.narrativePara}>{para}</p>
-          ))}
+          <AwarenessCheckPage check={check} />
         </PageFrame>
       ))}
 
@@ -232,7 +226,6 @@ export default function CompassReportSection({
         pageNum={p(8 + N)}
         footer="Real Wealth Partners Ltd · Authorised and regulated by the Financial Conduct Authority"
         label="Methodology"
-        showIllusTag={false}
       >
         <div className={reportStyles.sectionTitle}>
           <span className={reportStyles.eyebrow}>Methodology</span>
@@ -268,8 +261,7 @@ export default function CompassReportSection({
           pageNum={p(9 + N)}
           footer="Real Wealth Partners Ltd · Authorised and regulated by the Financial Conduct Authority"
           label="Methodology (continued)"
-          showIllusTag={false}
-        >
+          >
           <div className={reportStyles.sectionTitle}>
             <span className={reportStyles.eyebrow}>Methodology — continued</span>
           </div>

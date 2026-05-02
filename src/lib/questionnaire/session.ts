@@ -80,11 +80,47 @@ export function loadSession(): Session | null {
   }
 }
 
+/**
+ * Derive the household income band from the respondent's + partner's raw
+ * income sliders, using the same band thresholds the previous `income_band`
+ * radio used.
+ *
+ * Why: when we removed the household-income band radio (Q3.1) in favour of
+ * asking each individual's income via the sliders on Q3.3, every downstream
+ * consumer (segmentation gate, trigger DSL, summary resolvers, compass
+ * inputs) still expects `answers.income_band` to be present. We synthesize
+ * it here on save so the rest of the system keeps working unchanged. The
+ * caller's `session.answers.income_band` from a legacy session also wins
+ * if no raw values are set — old sessions remain readable.
+ */
+function deriveIncomeBand(your: number, partner: number): string | undefined {
+  const total = (your || 0) + (partner || 0);
+  if (total <= 0) return undefined;
+  if (total < 50_000) return 'lt50k';
+  if (total < 100_000) return '50to100k';
+  if (total < 125_000) return '100to125k';
+  if (total < 200_000) return '125to200k';
+  return 'gt200k';
+}
+
+function synthesizeAnswers(answers: Record<string, unknown>): Record<string, unknown> {
+  const your = typeof answers.your_gross_income === 'number' ? answers.your_gross_income : 0;
+  const partner = typeof answers.partner_gross_income === 'number' ? answers.partner_gross_income : 0;
+  if (your <= 0 && partner <= 0) return answers; // no raw data, leave any legacy income_band alone
+  const band = deriveIncomeBand(your, partner);
+  if (band === undefined) return answers;
+  return { ...answers, income_band: band };
+}
+
 /** Safely persist the session. No-ops on SSR. */
 export function saveSession(session: Session): void {
   if (typeof window === 'undefined') return;
   try {
-    const toSave: Session = { ...session, updatedAt: new Date().toISOString() };
+    const toSave: Session = {
+      ...session,
+      answers: synthesizeAnswers(session.answers),
+      updatedAt: new Date().toISOString(),
+    };
     window.localStorage.setItem(SESSION_KEY, JSON.stringify(toSave));
   } catch {
     /* Quota exceeded or unavailable — silently drop. */

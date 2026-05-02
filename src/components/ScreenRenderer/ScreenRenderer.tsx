@@ -131,6 +131,14 @@ function QuestionLayout(props: ScreenRendererProps) {
         return inputs.map((input) => {
           const visible = shouldShowInput(input, inputs, answers);
           const isConditional = isConditionalInput(input, inputs);
+          // Skip the wrapper entirely when a conditional input is hidden
+          // — otherwise the `.inputSlot + .inputSlot` divider rule draws a
+          // hairline + ~108px of margin/padding above an invisible slot,
+          // which reads as a "horizontal rule that does nothing" between
+          // the visible inputs and the action row. The SlideSwap exit
+          // animation is sacrificed; the entrance still runs when the
+          // conditional opens.
+          if (isConditional && !visible) return null;
           const rendered = visible ? (
             <InputRenderer
               input={input}

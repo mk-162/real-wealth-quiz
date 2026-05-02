@@ -1,49 +1,37 @@
 /**
  * POST /api/report/send
  *
- * Validates a submission, rate-limits per IP, and delivers the Wealth
- * Report email via Resend. The compliance record for MVP is Resend's
- * own delivery log — we do not persist anything server-side. Phase 2
- * adds a DB-backed consent log + magic-link verification.
+ * Records the user's email + contact-consent at the moment they ask to
+ * open the report. The report itself is browser-only — we do NOT email
+ * a copy. Resend integration was removed when the flow shifted to a
+ * privacy-first design (the report lives only in the user's localStorage;
+ * we keep no server-side copy of the financial answers).
+ *
+ * The endpoint is rate-limited per IP and the body shape is validated.
+ * For now, the consent record is logged to stdout — Phase 2 wires it to
+ * a durable store so the marketing team has a contactable list of users
+ * who opted in. Until then, treat the server log as the audit trail.
  *
  * Expected body:
  *   {
- *     firstName:        string,
- *     email:            string,
- *     consentService:   true,        // required
- *     consentMarketing: boolean,
- *     session:          Session|null // for deriving summaryIntro
+ *     email:          string,
+ *     consentContact: boolean,    // "I'd like a planner to get in touch"
+ *     session:        Session|null  // for context only; not retained
  *   }
  *
  * Responses:
  *   200 { ok: true }
  *   400 { ok: false, error: "..." }   — validation
  *   429 { ok: false, error: "..." }   — rate limited
- *   500 { ok: false, error: "..." }   — send failed / config missing
  */
 import { NextResponse } from 'next/server';
-import { Resend } from 'resend';
 import { checkRateLimit } from '@/lib/emails/rateLimit';
-import {
-  renderReportEmailHtml,
-  renderReportEmailText,
-} from '@/lib/emails/reportEmail';
-import { buildSummaryInputs, selectEmotionalIntro } from '@/lib/summary';
-import type { Session } from '@/lib/questionnaire/session';
-import {
-  segment as runSegmentation,
-  upgradeSegment,
-  type GatingAnswers,
-  type HouseholdTag,
-} from '@/lib/segmentation';
 
 export const runtime = 'nodejs';
 
 interface Body {
-  firstName?: unknown;
   email?: unknown;
-  consentService?: unknown;
-  consentMarketing?: unknown;
+  consentContact?: unknown;
   session?: unknown;
 }
 
@@ -62,36 +50,19 @@ export async function POST(req: Request) {
     );
   }
 
-  const firstName =
-    typeof body.firstName === 'string' ? body.firstName.trim() : '';
   const email =
     typeof body.email === 'string' ? body.email.trim().toLowerCase() : '';
-  const consentService = body.consentService === true;
-  const consentMarketing = body.consentMarketing === true;
+  const consentContact = body.consentContact === true;
 
-  if (!firstName) {
-    return NextResponse.json(
-      { ok: false, error: 'First name is required.' },
-      { status: 400 },
-    );
-  }
   if (!EMAIL_RE.test(email)) {
     return NextResponse.json(
       { ok: false, error: 'A valid email address is required.' },
       { status: 400 },
     );
   }
-  if (!consentService) {
-    return NextResponse.json(
-      {
-        ok: false,
-        error: 'We need your permission to email your report.',
-      },
-      { status: 400 },
-    );
-  }
 
-  // Rate limit by client IP (best-effort — see rateLimit.ts for trade-offs).
+  // Best-effort per-IP rate limit. The endpoint is unauthenticated so this
+  // is the only barrier to scripted abuse.
   const ip = clientIp(req);
   const rl = checkRateLimit(ip, RATE_LIMIT_PER_IP, RATE_LIMIT_WINDOW_MS);
   if (!rl.ok) {
@@ -104,77 +75,16 @@ export async function POST(req: Request) {
     );
   }
 
-  // Config check.
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) {
-    console.error('[report/send] RESEND_API_KEY missing');
-    return NextResponse.json(
-      { ok: false, error: 'Email sending is not configured.' },
-      { status: 500 },
-    );
-  }
-  const from =
-    process.env.RESEND_FROM_EMAIL ?? 'Real Wealth <reports@realwealth.co.uk>';
+  // Audit-trail log line. Picked up by whatever log aggregator the
+  // hosting environment provides. Phase 2 replaces this with a durable
+  // store + a marketing dashboard.
+  console.info('[report/send] consent recorded', {
+    email,
+    consentContact,
+    ts: new Date().toISOString(),
+  });
 
-  // Derive the summary intro from the session so the email copy is
-  // personalised to the segment the user landed on. If the session
-  // isn't usable we fall back to a neutral line.
-  const session = (body.session ?? null) as Session | null;
-  const summaryIntro = deriveSummaryIntro(session);
-
-  const origin = new URL(req.url).origin;
-  const reportUrl = `${origin}/conversation/summary`;
-  const unsubscribeUrl = `${origin}/privacy?email=${encodeURIComponent(email)}`;
-  const privacyUrl = `${origin}/privacy`;
-
-  try {
-    const resend = new Resend(apiKey);
-    const tags = [
-      { name: 'consent_marketing', value: consentMarketing ? 'yes' : 'no' },
-      { name: 'consent_version', value: '2026-04' },
-    ];
-    const result = await resend.emails.send({
-      from,
-      to: email,
-      subject: `${firstName}, your Real Wealth Report is ready`,
-      html: renderReportEmailHtml({
-        firstName,
-        summaryIntro,
-        reportUrl,
-        unsubscribeUrl,
-        privacyUrl,
-      }),
-      text: renderReportEmailText({
-        firstName,
-        summaryIntro,
-        reportUrl,
-        unsubscribeUrl,
-        privacyUrl,
-      }),
-      tags,
-      headers: {
-        // RFC 2369 / 8058 one-click unsubscribe for Gmail/Outlook list
-        // hygiene. Honouring this is enforced by an endpoint we add in
-        // the privacy/unsubscribe task.
-        'List-Unsubscribe': `<${unsubscribeUrl}>`,
-        'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
-      },
-    });
-    if (result.error) {
-      console.error('[report/send] Resend error', result.error);
-      return NextResponse.json(
-        { ok: false, error: 'Could not send the email right now.' },
-        { status: 500 },
-      );
-    }
-    return NextResponse.json({ ok: true });
-  } catch (err) {
-    console.error('[report/send] unexpected error', err);
-    return NextResponse.json(
-      { ok: false, error: 'Could not send the email right now.' },
-      { status: 500 },
-    );
-  }
+  return NextResponse.json({ ok: true });
 }
 
 function clientIp(req: Request): string {
@@ -183,58 +93,4 @@ function clientIp(req: Request): string {
   const real = req.headers.get('x-real-ip');
   if (real) return real.trim();
   return 'anonymous';
-}
-
-function deriveSummaryIntro(session: Session | null): string {
-  const fallback =
-    'A few areas stood out in what you told us — the sort of thing worth a planner putting 30 minutes into with you.';
-  if (!session) return fallback;
-  try {
-    const answers = (session.answers ?? {}) as Record<string, unknown>;
-    const gating: Partial<GatingAnswers> = {
-      age: typeof answers.age === 'number' ? answers.age : undefined,
-      household: Array.isArray(answers.household)
-        ? (answers.household as HouseholdTag[])
-        : undefined,
-      workStatus:
-        typeof answers.work_status === 'string'
-          ? (answers.work_status as GatingAnswers['workStatus'])
-          : undefined,
-      income:
-        typeof answers.income_band === 'string'
-          ? (answers.income_band as GatingAnswers['income'])
-          : undefined,
-      estate:
-        typeof answers.estate_band === 'string'
-          ? (answers.estate_band as GatingAnswers['estate'])
-          : undefined,
-    };
-    const gateReady =
-      gating.age !== undefined &&
-      gating.household !== undefined &&
-      gating.workStatus !== undefined &&
-      gating.income !== undefined &&
-      gating.estate !== undefined;
-    let segmentId = 'S2';
-    if (gateReady) {
-      const { segmentId: base } = runSegmentation(gating as GatingAnswers);
-      const q53 =
-        typeof answers.succession === 'string' ? answers.succession : undefined;
-      segmentId = upgradeSegment(base, q53);
-    }
-    const inputs = buildSummaryInputs(session, segmentId, {
-      urgency: typeof answers.urgency === 'string' ? answers.urgency : null,
-      currentAdviser:
-        typeof answers.current_adviser === 'string'
-          ? answers.current_adviser
-          : null,
-      happyPlace:
-        typeof answers.happy_place === 'string' ? answers.happy_place : null,
-    });
-    const intro = selectEmotionalIntro(inputs);
-    return intro?.copy?.trim() || fallback;
-  } catch (err) {
-    console.error('[report/send] deriveSummaryIntro failed', err);
-    return fallback;
-  }
 }

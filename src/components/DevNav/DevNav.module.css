@@ -46,6 +46,22 @@
   background: rgba(255, 255, 255, 0.12);
 }
 
+.resetButton {
+  font: inherit;
+  color: var(--paper);
+  background: rgba(255, 137, 100, 0.18);
+  border: 1px solid rgba(255, 137, 100, 0.35);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: background var(--duration-default) var(--ease-default);
+  margin-left: 4px;
+}
+
+.resetButton:hover {
+  background: rgba(255, 137, 100, 0.32);
+}
+
 @media (max-width: 480px) {
   .strip {
     bottom: 8px;

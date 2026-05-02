@@ -174,11 +174,12 @@ function bodyToHtml(md: string): string {
       continue;
     }
 
+    if (/^###\s+/.test(line)) { out.push(`<h5>${escapeHtml(line.replace(/^###\s+/, ''))}</h5>`); i++; continue; }
     if (/^##\s+/.test(line)) { out.push(`<h4>${escapeHtml(line.replace(/^##\s+/, ''))}</h4>`); i++; continue; }
     if (line.trim() === '') { out.push(''); i++; continue; }
 
     const para: string[] = [line]; i++;
-    while (i < lines.length && lines[i].trim() !== '' && !/^##\s+/.test(lines[i]) && !/^\s*\|/.test(lines[i])) {
+    while (i < lines.length && lines[i].trim() !== '' && !/^#{2,3}\s+/.test(lines[i]) && !/^\s*\|/.test(lines[i])) {
       para.push(lines[i++]);
     }
     out.push(`<p>${inline(para.join(' '))}</p>`);

@@ -1,13 +1,15 @@
 .shell {
   min-height: 100vh;
   background: var(--paper-warm);
-  /* Ensure the dev-nav chip doesn't cover the last interactive row on mobile. */
-  padding-bottom: 100px;
+  /* Just enough room for the floating dev-nav chip not to overlap the
+     action row on mobile. The chip is centred so it can clip the
+     buttons; ~72px clears it without burning extra scroll. */
+  padding-bottom: 72px;
 }
 
 @media (min-width: 768px) {
   .shell {
-    padding-bottom: var(--space-xl);
+    padding-bottom: var(--space-md);
   }
 }
 
@@ -114,6 +116,41 @@
   text-transform: uppercase;
   color: var(--ink-soft);
   font-weight: 600;
+}
+
+.resetLink {
+  font: inherit;
+  font-size: var(--fs-micro);
+  letter-spacing: var(--ls-wider);
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 600;
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  padding: 4px 12px;
+  cursor: pointer;
+  transition: background var(--duration-default) var(--ease-default),
+              border-color var(--duration-default) var(--ease-default),
+              color var(--duration-default) var(--ease-default);
+}
+
+.resetLink:hover {
+  background: var(--paper-warm);
+  border-color: var(--brand-orange);
+  color: var(--brand-orange);
+}
+
+.resetLink:focus-visible {
+  outline: 2px solid var(--brand-teal);
+  outline-offset: 2px;
+}
+
+@media (max-width: 600px) {
+  .resetLink {
+    /* Keep visible but compact on small screens. */
+    padding: 4px 8px;
+  }
 }
 
 @media (max-width: 600px) {

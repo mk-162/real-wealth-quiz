@@ -19,3 +19,4 @@ export * from './MilestoneStrip';
 export * from './Assumptions';
 export * from './CtaPanel';
 export * from './FiveThings';
+export * from './AwarenessCheckPage';

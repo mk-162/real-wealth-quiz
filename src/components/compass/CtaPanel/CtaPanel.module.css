@@ -1,15 +1,20 @@
-/* CtaPanel — Page-3 teal gradient CTA with orange button. */
+/* CtaPanel — teal gradient CTA used on the Projection and Next-step pages.
+ *
+ * Two right-side layouts:
+ *   .rightWithButton — original "online + phone fallback" stack
+ *   .rightCompact    — print-first "phone primary + URL link" stack
+ */
 
 .panel {
   position: relative;
   background: var(--rw-gradient-teal);
-  border-radius: var(--rw-radius-lg);
-  padding: 24px 28px;
+  border-radius: var(--rw-radius-md);
+  padding: 16px 22px;
   color: var(--rw-paper);
   overflow: hidden;
   display: grid;
   grid-template-columns: 1fr auto;
-  gap: 24px;
+  gap: 18px;
   align-items: center;
 }
 
@@ -26,14 +31,14 @@
 
 .eyebrow {
   display: inline-block;
-  font-size: 10px;
+  font-size: 9.5px;
   font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.82);
   padding-left: 26px;
   position: relative;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
 }
 
 .eyebrow::before {
@@ -49,10 +54,10 @@
   font-family: var(--rw-font-display);
   font-style: italic;
   font-weight: 300;
-  font-size: 24px;
+  font-size: 21px;
   line-height: 1.1;
   letter-spacing: -0.015em;
-  margin: 0 0 6px;
+  margin: 0;
   color: var(--rw-paper);
 }
 
@@ -64,7 +69,8 @@
   max-width: 46ch;
 }
 
-.right {
+/* ---- Right column — variant with online button ---- */
+.rightWithButton {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -73,7 +79,19 @@
   z-index: 1;
 }
 
-/* Phone number — prominent, for print readers who can't click the button. */
+/* ---- Right column — print-first variant ---- */
+.rightCompact {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  position: relative;
+  z-index: 1;
+  text-align: right;
+  max-width: 240px;
+}
+
+/* ---- Phone (online variant — fallback after button) ---- */
 .phone {
   display: inline-flex;
   align-items: baseline;
@@ -105,6 +123,24 @@
   font-feature-settings: "tnum";
 }
 
+/* ---- Phone (print-first variant — primary CTA) ---- */
+.phonePrimary {
+  text-decoration: none;
+  color: var(--rw-paper);
+  line-height: 1;
+}
+
+.phonePrimaryNumber {
+  font-family: var(--rw-font-display);
+  font-style: italic;
+  font-weight: 300;
+  font-size: 26px;
+  letter-spacing: -0.015em;
+  color: var(--rw-paper);
+  font-feature-settings: "tnum";
+}
+
+/* ---- Online button ---- */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -122,6 +158,7 @@
   box-shadow: 0 12px 24px -10px rgba(255, 104, 1, 0.55);
 }
 
+/* ---- Contact line (URL or email) ---- */
 .contact {
   font-size: 10px;
   letter-spacing: 0.08em;
@@ -130,8 +167,24 @@
   text-align: right;
 }
 
-@media (max-width: 640px) {
-  .panel { grid-template-columns: 1fr; }
-  .right { align-items: flex-start; }
-  .contact { text-align: left; }
+.contactLink {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.92);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-feature-settings: "tnum";
 }
+
+.contactLink:hover {
+  color: var(--rw-paper);
+}
+
+/* On print, drop hover-only effects; the underline remains so the URL
+ * reads as a clickable address even when the page is paper. */
+@media print {
+  .contactLink {
+    color: var(--rw-paper) !important;
+  }
+}
+
+/* No mobile breakpoint — fixed-width report container. */

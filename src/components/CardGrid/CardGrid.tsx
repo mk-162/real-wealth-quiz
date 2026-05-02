@@ -48,6 +48,13 @@ export function CardGrid({
     >
       {items.map((item, i) => {
         const isSelected = selected.includes(item.value);
+        // `data-has-desc` drives the compact-vs-full card shape in CSS.
+        // Multi-select / single-label cards (no description) get a smaller
+        // min-height so a single-line option (e.g. "A partner") doesn't
+        // float in the middle of a 104px card. The full shape (used by
+        // awareness checks) keeps the larger floor so title + description
+        // pairs share a consistent footprint.
+        const hasDesc = !!item.description && item.description.trim() !== '';
         return (
           <button
             key={item.value}
@@ -55,13 +62,14 @@ export function CardGrid({
             role={mode === 'single' ? 'radio' : 'checkbox'}
             aria-checked={isSelected}
             data-selected={isSelected}
+            data-has-desc={hasDesc}
             className={styles.card}
             onClick={() => onToggle(item.value)}
             style={{ animationDelay: `${i * 60}ms` }}
           >
             {item.icon ? <span className={styles.icon}>{item.icon}</span> : null}
             <span className={styles.title}>{item.title}</span>
-            <span className={styles.desc}>{item.description}</span>
+            {hasDesc ? <span className={styles.desc}>{item.description}</span> : null}
             {item.reveal ? (
               <span className={styles.reveal} aria-hidden={!isSelected}>
                 {item.reveal}

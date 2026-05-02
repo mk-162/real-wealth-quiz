@@ -1,15 +1,15 @@
 .shell {
   max-width: var(--container-max);
   margin: 0 auto;
-  /* Reduced from space-lg/space-xxl to space-md/space-lg to keep each
-     question fitting on one viewport on a 1080p laptop. */
-  padding: var(--space-md) var(--gutter) var(--space-lg);
+  /* Reduced from space-lg/space-xxl to space-sm/space-md so a 6-option
+     screen + the action row both fit on a 1080p laptop without scroll. */
+  padding: var(--space-sm) var(--gutter) var(--space-md);
   animation: fadeUp var(--duration-default) var(--ease-default) both;
 }
 
 @media (min-width: 768px) {
   .shell {
-    padding: var(--space-lg) var(--gutter) var(--space-xl);
+    padding: var(--space-md) var(--gutter) var(--space-md);
   }
 }
 

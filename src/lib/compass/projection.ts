@@ -48,7 +48,12 @@ import {
   ANNUAL_ALLOWANCE_TAPER_THRESHOLD,
   ANNUAL_ALLOWANCE_TAPER_ADJUSTED_INCOME,
   ANNUAL_ALLOWANCE_TAPERED_FLOOR,
+  MPAA_LIMIT,
   LUMP_SUM_ALLOWANCE,
+  ISA_ANNUAL_ALLOWANCE,
+  CAPITAL_GAINS_ALLOWANCE,
+  CGT_BASIC_RATE,
+  CGT_HIGHER_RATE,
   INFLATION,
   CASH_GROWTH,
   INCOME_GROWTH,
@@ -277,18 +282,217 @@ export function taperedAnnualAllowance(adjustedIncome: number, thresholdIncome: 
 }
 
 /**
- * Cap pension contribution at the (tapered) Annual Allowance. Returns the
- * permitted amount and the £ excess that would have been disallowed.
+ * Cap pension contribution at the (tapered) Annual Allowance, and at the
+ * Money Purchase Annual Allowance (MPAA) if the user has flexibly accessed
+ * their pension. The MPAA stacks with the tapered AA — the lower wins.
+ *
+ * Returns the permitted amount, the £ excess that would have been
+ * disallowed, the cap that was applied, and a flag indicating whether the
+ * MPAA was the binding constraint (useful for disclosure / explainer copy).
  */
 export function applyAnnualAllowanceCap(
   desiredContribution: number,
   grossIncome: number,
   employerContribution: number,
-): { permitted: number; excess: number; cap: number } {
+  mpaaApplies: boolean = false,
+): { permitted: number; excess: number; cap: number; mpaaCapped: boolean } {
   const adjusted = grossIncome + employerContribution;
-  const cap = taperedAnnualAllowance(adjusted, grossIncome);
+  const taperedCap = taperedAnnualAllowance(adjusted, grossIncome);
+  const cap = mpaaApplies ? Math.min(taperedCap, MPAA_LIMIT) : taperedCap;
   const permitted = Math.min(desiredContribution, cap);
-  return { permitted, excess: Math.max(0, desiredContribution - cap), cap };
+  return {
+    permitted,
+    excess: Math.max(0, desiredContribution - cap),
+    cap,
+    mpaaCapped: mpaaApplies && MPAA_LIMIT < taperedCap,
+  };
+}
+
+// -----------------------------------------------------------------------------
+// Retirement-phase tax helpers (PROJECTION_TAX_FIX_PLAN §6)
+//
+// CONFIRMED METHODOLOGY DECISIONS (28 Apr 2026, see PROJECTION_TAX_FIX_PLAN.md
+// §15 for full decisions log). Changes to any of these constants or
+// assumptions must be reflected in:
+//   1. PROJECTION_TAX_FIX_PLAN.md decisions log
+//   2. The disclosure text in `buildAssumptions()` below
+//   3. A code comment at the assumption site
+// -----------------------------------------------------------------------------
+
+/**
+ * §5.1 GIA cost-basis assumption — confirmed 28 Apr 2026.
+ *
+ * Each GIA withdrawal is treated as 50% taxable gain, 50% return of capital.
+ * Industry-standard simplification for long-held diversified portfolios.
+ * See PROJECTION_TAX_FIX_PLAN.md §5.1.
+ */
+export const GIA_GAIN_FRACTION = 0.5;
+
+/**
+ * §5.3 TFC consumption pattern — confirmed 28 Apr 2026.
+ *
+ * Each pension withdrawal is 25% tax-free (until cumulative LSA reached) +
+ * 75% taxed as income at the user's marginal rate. Models flexi-access
+ * drawdown — the most common HNW pattern.
+ * See PROJECTION_TAX_FIX_PLAN.md §5.3.
+ */
+export const PENSION_TFC_FRACTION = 0.25;
+
+/**
+ * Tax state + DB pension as income, stacked on any other taxable income
+ * the user has that year (e.g. work income for users still earning past
+ * State Pension Age). Returns net cash actually delivered, the gross
+ * taxable amount (for use as a stacking base for subsequent pot draws),
+ * and the income tax paid. NI is not applied — neither state nor DB
+ * pensions are NI'able under UK rules.
+ */
+export function taxRetirementGuaranteed(
+  statePension: number,
+  dbPension: number,
+  otherTaxableIncome: number,
+  isScottish: boolean,
+): { netGuaranteed: number; grossTaxable: number; taxPaid: number } {
+  const grossTaxable = statePension + dbPension;
+  if (grossTaxable <= 0) {
+    return { netGuaranteed: 0, grossTaxable: 0, taxPaid: 0 };
+  }
+  const baseTax = incomeTax(otherTaxableIncome, isScottish);
+  const stackedTax = incomeTax(otherTaxableIncome + grossTaxable, isScottish);
+  const taxPaid = stackedTax - baseTax;
+  return {
+    netGuaranteed: grossTaxable - taxPaid,
+    grossTaxable,
+    taxPaid,
+  };
+}
+
+/**
+ * Compute the TFC / taxable / tax breakdown of a known gross pension
+ * withdrawal `gross`. Inverse of `grossUpPensionDraw`.
+ *
+ * Encapsulates the §5.3 flexi-access rule: 25% TFC up to `lsaRemaining`,
+ * remainder taxed at marginal rate stacked on `otherTaxableIncome`.
+ */
+export function computePensionDrawTax(
+  gross: number,
+  lsaRemaining: number,
+  otherTaxableIncome: number,
+  isScottish: boolean,
+): { tfc: number; taxable: number; tax: number } {
+  if (gross <= 0) return { tfc: 0, taxable: 0, tax: 0 };
+  const tfc = Math.min(PENSION_TFC_FRACTION * gross, Math.max(0, lsaRemaining));
+  const taxable = gross - tfc;
+  const baseTax = incomeTax(otherTaxableIncome, isScottish);
+  const totalTax = incomeTax(otherTaxableIncome + taxable, isScottish);
+  return { tfc, taxable, tax: totalTax - baseTax };
+}
+
+/**
+ * Compute the CGT due on a known gross GIA withdrawal `gross`. Inverse
+ * of `grossUpGiaDraw`.
+ *
+ * Per §5.1, gain is fixed at 50% of the gross. CGT is split between
+ * 18% (gain falling in the basic-rate band of total taxable income)
+ * and 24% (gain falling above), per current UK rules.
+ */
+export function computeGiaCgt(
+  gross: number,
+  otherTaxableIncome: number,
+  cgtAllowanceRemaining: number,
+): { gain: number; taxableGain: number; cgt: number } {
+  if (gross <= 0) return { gain: 0, taxableGain: 0, cgt: 0 };
+  const gain = gross * GIA_GAIN_FRACTION;
+  const taxableGain = Math.max(0, gain - Math.max(0, cgtAllowanceRemaining));
+  // Headroom in the basic-rate band that the gain can fall into. Income
+  // already in the basic band consumes some of this width.
+  const postPaIncome = Math.max(0, otherTaxableIncome - PERSONAL_ALLOWANCE);
+  const basicBandWidth = BASIC_RATE_LIMIT - PERSONAL_ALLOWANCE;
+  const basicHeadroom = Math.max(0, basicBandWidth - postPaIncome);
+  const gainInBasic = Math.min(taxableGain, basicHeadroom);
+  const gainInHigher = Math.max(0, taxableGain - gainInBasic);
+  const cgt = gainInBasic * CGT_BASIC_RATE + gainInHigher * CGT_HIGHER_RATE;
+  return { gain, taxableGain, cgt };
+}
+
+/**
+ * Solve for the gross pension withdrawal needed to deliver `netNeeded`
+ * after the §5.3 flexi-access tax treatment.
+ *
+ * Algorithm: Newton iteration with a clamped step size. The marginal rate
+ * approximation accounts for PA tapering between £100k–£125,140 (effective
+ * 60% on that slice). Converges in 3–5 iterations for typical inputs;
+ * bounded at 10 as a safety net.
+ */
+export function grossUpPensionDraw(
+  netNeeded: number,
+  lsaRemaining: number,
+  otherTaxableIncome: number,
+  isScottish: boolean,
+): { gross: number; tfc: number; taxable: number; tax: number } {
+  if (netNeeded <= 0) return { gross: 0, tfc: 0, taxable: 0, tax: 0 };
+  const lsa = Math.max(0, lsaRemaining);
+
+  // Initial guess: assume basic-rate (20%) on 75% of G plus 25% TFC.
+  // i.e. net ≈ G − 0.75G × 0.20 = 0.85G  ⇒  G ≈ netNeeded / 0.85.
+  let G = netNeeded / 0.85;
+
+  for (let iter = 0; iter < 10; iter++) {
+    const r = computePensionDrawTax(G, lsa, otherTaxableIncome, isScottish);
+    const net = G - r.tax;
+    const err = netNeeded - net;
+    if (Math.abs(err) < 0.5) {
+      return { gross: G, tfc: r.tfc, taxable: r.taxable, tax: r.tax };
+    }
+    // Approximate marginal income-tax rate for the next slice of taxable.
+    const stacked = otherTaxableIncome + r.taxable;
+    let marginalRate: number;
+    if (stacked <= PERSONAL_ALLOWANCE) marginalRate = 0;
+    else if (stacked <= BASIC_RATE_LIMIT) marginalRate = 0.20;
+    else if (stacked <= PA_TAPER_START) marginalRate = 0.40;
+    else if (stacked <= HIGHER_RATE_LIMIT) marginalRate = 0.60; // PA taper
+    else marginalRate = 0.45;
+    // d(taxable)/dG = 0.75 if a slice of G's TFC is still under the LSA cap,
+    // else 1 (cap binds, every additional pound is fully taxable).
+    const tfcStillAvailable = PENSION_TFC_FRACTION * G < lsa;
+    const taxableSlope = tfcStillAvailable ? 1 - PENSION_TFC_FRACTION : 1;
+    const slope = 1 - taxableSlope * marginalRate;
+    G += err / Math.max(0.40, slope); // floor to keep step size sane
+  }
+  // Convergence not reached — return the closest answer we have.
+  const final = computePensionDrawTax(G, lsa, otherTaxableIncome, isScottish);
+  return { gross: G, tfc: final.tfc, taxable: final.taxable, tax: final.tax };
+}
+
+/**
+ * Solve for the gross GIA withdrawal needed to deliver `netNeeded` after CGT.
+ * See `grossUpPensionDraw` for the iteration approach.
+ */
+export function grossUpGiaDraw(
+  netNeeded: number,
+  otherTaxableIncome: number,
+  cgtAllowanceRemaining: number,
+): { gross: number; gain: number; taxableGain: number; cgt: number } {
+  if (netNeeded <= 0) return { gross: 0, gain: 0, taxableGain: 0, cgt: 0 };
+
+  // Initial guess: ~7% effective CGT (50% gain × 18% rate, allowance pads it).
+  let G = netNeeded * 1.08;
+
+  for (let iter = 0; iter < 10; iter++) {
+    const r = computeGiaCgt(G, otherTaxableIncome, cgtAllowanceRemaining);
+    const net = G - r.cgt;
+    const err = netNeeded - net;
+    if (Math.abs(err) < 0.5) {
+      return { gross: G, gain: r.gain, taxableGain: r.taxableGain, cgt: r.cgt };
+    }
+    // Marginal CGT rate depends on whether the gain has overflowed basic band.
+    const postPaIncome = Math.max(0, otherTaxableIncome - PERSONAL_ALLOWANCE);
+    const basicBandWidth = BASIC_RATE_LIMIT - PERSONAL_ALLOWANCE;
+    const marginalCgt = postPaIncome + r.taxableGain > basicBandWidth ? CGT_HIGHER_RATE : CGT_BASIC_RATE;
+    const slope = 1 - GIA_GAIN_FRACTION * marginalCgt;
+    G += err / Math.max(0.80, slope);
+  }
+  const final = computeGiaCgt(G, otherTaxableIncome, cgtAllowanceRemaining);
+  return { gross: G, gain: final.gain, taxableGain: final.taxableGain, cgt: final.cgt };
 }
 
 // -----------------------------------------------------------------------------
@@ -322,52 +526,112 @@ function resolveMortgageEndAge(i: CompassInputs): number {
 }
 
 /**
- * Drawdown source picker — A6 tax-optimised order.
+ * Tax-aware drawdown source picker — A6 order, with gross-up math so the
+ * NET cash delivered to the user equals `shortfall` regardless of the tax
+ * cost.
  *
- * Order, in real-world UK terms:
- *   1. Cash buffer (no tax, instant access)
- *   2. GIA (use CGT allowance + dividend allowance — lowest marginal cost)
- *   3. Pension up to the basic-rate band (25% tax-free + balance taxed at low rate)
- *   4. ISA (preserved last — tax-free wrapper, IHT-friendly post-Apr 2027)
+ * Drawdown order (in real-world UK terms):
+ *   1. Cash buffer — tax-free (PSA on interest is small and absorbed in
+ *      the growth rate; deliberately not modelled separately).
+ *   2. GIA — apply CGT (§5.1: 50/50 gain split, £3k annual allowance,
+ *      18%/24% by band).
+ *   3. Pension (only after pension access age) — apply 25% TFC up to LSA
+ *      cap (§5.3), remainder taxed at marginal income rate.
+ *   4. ISA — tax-free wrapper preserved for late-life flexibility + IHT.
  *
- * The rough heuristic here trims pension if the cumulative pension draw in a
- * year would push taxable income above the basic rate band; it avoids hitting
- * higher-rate tax to fund retirement spend if other pots can absorb it.
+ * The function tracks tax paid, LSA consumed, and updates a running
+ * `otherTaxableIncome` figure that the next pot's gross-up stacks on top
+ * of (so e.g. a pension draw mid-year sees the basic-rate band already
+ * partly consumed by state + DB pension).
+ *
+ * If a pot is too small to cover the remaining shortfall after gross-up,
+ * we drain it entirely (computing the actual tax on the full balance) and
+ * fall through to the next pot.
  */
 function drawFrom(
   shortfall: number,
   balances: { cash: number; gia: number; pension: number; isa: number },
-  flags: { isPensionAccessible: boolean }
-): { drawn: { cash: number; gia: number; pension: number; isa: number }; remaining: number } {
+  ctx: {
+    isPensionAccessible: boolean;
+    lsaRemaining: number;
+    otherTaxableIncome: number;
+    cgtAllowanceRemaining: number;
+    isScottish: boolean;
+  },
+): {
+  drawn: { cash: number; gia: number; pension: number; isa: number };
+  remaining: number;
+  taxPaid: number;
+  lsaConsumed: number;
+  newTaxableIncome: number;
+} {
   let remaining = shortfall;
   const drawn = { cash: 0, gia: 0, pension: 0, isa: 0 };
+  let taxPaid = 0;
+  let lsaConsumed = 0;
+  let cgtAllowanceLeft = ctx.cgtAllowanceRemaining;
+  let otherTaxable = ctx.otherTaxableIncome;
 
-  // 1. Cash
+  // 1. Cash — tax-free at the point of withdrawal.
   const cashDraw = Math.min(balances.cash, remaining);
   drawn.cash = cashDraw;
   remaining -= cashDraw;
-  if (remaining <= 0) return { drawn, remaining };
-
-  // 2. GIA (CGT + dividend allowances absorb most tax for typical drawdowns)
-  const giaDraw = Math.min(balances.gia, remaining);
-  drawn.gia = giaDraw;
-  remaining -= giaDraw;
-  if (remaining <= 0) return { drawn, remaining };
-
-  // 3. Pension (only after pension access age)
-  if (flags.isPensionAccessible) {
-    const pensionDraw = Math.min(balances.pension, remaining);
-    drawn.pension = pensionDraw;
-    remaining -= pensionDraw;
-    if (remaining <= 0) return { drawn, remaining };
+  if (remaining <= 0) {
+    return { drawn, remaining: 0, taxPaid, lsaConsumed, newTaxableIncome: otherTaxable };
   }
 
-  // 4. ISA (last — tax-free wrapper preserved for late-life flexibility + IHT)
+  // 2. GIA — gross-up for CGT.
+  if (balances.gia > 0) {
+    const grossed = grossUpGiaDraw(remaining, otherTaxable, cgtAllowanceLeft);
+    if (grossed.gross <= balances.gia) {
+      // Full gross-up fits — shortfall met.
+      drawn.gia = grossed.gross;
+      taxPaid += grossed.cgt;
+      cgtAllowanceLeft = Math.max(0, cgtAllowanceLeft - grossed.gain);
+      remaining = 0;
+      return { drawn, remaining: 0, taxPaid, lsaConsumed, newTaxableIncome: otherTaxable };
+    }
+    // Pot too small: take it all, recompute actual CGT and net delivered.
+    const fullDraw = computeGiaCgt(balances.gia, otherTaxable, cgtAllowanceLeft);
+    drawn.gia = balances.gia;
+    taxPaid += fullDraw.cgt;
+    cgtAllowanceLeft = Math.max(0, cgtAllowanceLeft - fullDraw.gain);
+    remaining -= balances.gia - fullDraw.cgt;
+  }
+  if (remaining <= 0) {
+    return { drawn, remaining: 0, taxPaid, lsaConsumed, newTaxableIncome: otherTaxable };
+  }
+
+  // 3. Pension — gross-up for 25% TFC + 75% taxable.
+  if (ctx.isPensionAccessible && balances.pension > 0) {
+    const lsaLeft = Math.max(0, ctx.lsaRemaining - lsaConsumed);
+    const grossed = grossUpPensionDraw(remaining, lsaLeft, otherTaxable, ctx.isScottish);
+    if (grossed.gross <= balances.pension) {
+      drawn.pension = grossed.gross;
+      taxPaid += grossed.tax;
+      lsaConsumed += grossed.tfc;
+      otherTaxable += grossed.taxable;
+      remaining = 0;
+      return { drawn, remaining: 0, taxPaid, lsaConsumed, newTaxableIncome: otherTaxable };
+    }
+    // Pot too small: drain it.
+    const fullDraw = computePensionDrawTax(balances.pension, lsaLeft, otherTaxable, ctx.isScottish);
+    drawn.pension = balances.pension;
+    taxPaid += fullDraw.tax;
+    lsaConsumed += fullDraw.tfc;
+    otherTaxable += fullDraw.taxable;
+    remaining -= balances.pension - fullDraw.tax;
+  }
+  if (remaining <= 0) {
+    return { drawn, remaining: 0, taxPaid, lsaConsumed, newTaxableIncome: otherTaxable };
+  }
+
+  // 4. ISA — tax-free, no gross-up needed.
   const isaDraw = Math.min(balances.isa, remaining);
   drawn.isa = isaDraw;
   remaining -= isaDraw;
 
-  return { drawn, remaining };
+  return { drawn, remaining, taxPaid, lsaConsumed, newTaxableIncome: otherTaxable };
 }
 
 export function buildProjection(i: CompassInputs): ProjectionYear[] {
@@ -378,6 +642,12 @@ export function buildProjection(i: CompassInputs): ProjectionYear[] {
   let isa = resolveAmount(i.isaBalanceRaw, i.isaBalance);
   let gia = resolveAmount(i.giaBalanceRaw, i.giaBalance);
   let pension = bs.assets.pension;
+
+  // §5.2 (PROJECTION_TAX_FIX_PLAN): assume the user's full Lump Sum
+  // Allowance is unused at projection start. `lsaUsed` ratchets up over
+  // years as 25% TFC is consumed; once it reaches LUMP_SUM_ALLOWANCE the
+  // gross-up math switches to taxing 100% of pension drawdowns.
+  let lsaUsed = 0;
 
   const growth = GROWTH_BY_RISK[i.riskProfile ?? 'balanced'];
 
@@ -434,12 +704,20 @@ export function buildProjection(i: CompassInputs): ProjectionYear[] {
     const employerContrib = yearGrossIncome * (employerPct / 100);
     const totalContribDesired = desiredOwnContrib + employerContrib;
 
-    // A9: Apply Annual Allowance cap (with taper for high earners).
-    const aaCheck = applyAnnualAllowanceCap(totalContribDesired, yearGrossIncome, employerContrib);
+    // A9 (PROJECTION_TAX_FIX_PLAN §6.5): MPAA reduces AA to £10k once the
+    // user has flexibly accessed their pension AND is still working AND has
+    // reached pension access age. Stacks with tapered AA — lower wins.
+    const mpaaApplies = !!i.isFlexiblyAccessingPension && !isRetired && isPensionAccessible;
+    const aaCheck = applyAnnualAllowanceCap(totalContribDesired, yearGrossIncome, employerContrib, mpaaApplies);
     const annualPensionContrib = aaCheck.permitted;
 
-    // Income tax / NI on working income.
+    // Track running totals for this year. yearTaxableIncomeBase is the
+    // gross taxable-income figure that subsequent retirement-pot draws
+    // stack on top of for marginal-rate calculations.
     let yearIncome = 0;
+    let yearTaxableIncomeBase = 0;
+    let yearTaxPaid = 0;
+
     if (!isRetired) {
       // Salary sacrifice reduces taxable + NI'able income by the OWN contribution.
       const sacrificed = useSalarySacrifice ? Math.min(desiredOwnContrib, aaCheck.permitted) : 0;
@@ -455,9 +733,28 @@ export function buildProjection(i: CompassInputs): ProjectionYear[] {
       const netPartnerIncome = Math.max(0, yearPartnerIncome - partnerTax - partnerNi);
 
       yearIncome += netUserIncome + netPartnerIncome;
+      // The user's own taxable income forms the stacking base for any
+      // state / DB pension hitting them while they're still working.
+      // Partner income is treated as a separate tax person — not included.
+      yearTaxableIncomeBase += taxableIncome;
     }
-    if (isStatePensionAge) yearIncome += baseStatePension;
-    if (age >= dbStartAge) yearIncome += dbAnnualIncome;
+
+    // D1 + D2 (PROJECTION_TAX_FIX_PLAN §6.1): state and DB pension are
+    // taxable income, stacked on whatever taxable income the user already
+    // has from work that year (zero if fully retired).
+    const stateThisYear = isStatePensionAge ? baseStatePension : 0;
+    const dbThisYear = age >= dbStartAge ? dbAnnualIncome : 0;
+    if (stateThisYear + dbThisYear > 0) {
+      const guaranteed = taxRetirementGuaranteed(
+        stateThisYear,
+        dbThisYear,
+        yearTaxableIncomeBase,
+        i.isScottishTaxpayer,
+      );
+      yearIncome += guaranteed.netGuaranteed;
+      yearTaxableIncomeBase += guaranteed.grossTaxable;
+      yearTaxPaid += guaranteed.taxPaid;
+    }
 
     const livingExpense = isRetired
       ? (alreadyRetired
@@ -469,21 +766,37 @@ export function buildProjection(i: CompassInputs): ProjectionYear[] {
     const netCashFlow = yearIncome - yearExpense;
 
     if (!isRetired) {
+      // A6 (PROJECTION_TAX_FIX_PLAN §6.4): cap ISA contribution at the
+      // £20k annual allowance, spillover to GIA.
       const surplusToInvestments = monthlySavings * 12;
-      isa += surplusToInvestments;
+      const isaContribution = Math.min(surplusToInvestments, ISA_ANNUAL_ALLOWANCE);
+      const giaSpillover = surplusToInvestments - isaContribution;
+      isa += isaContribution;
+      gia += giaSpillover;
       pension += annualPensionContrib;
       cash += Math.max(0, netCashFlow - surplusToInvestments);
     } else if (netCashFlow < 0) {
-      // A6: Tax-optimised drawdown — cash → GIA → pension → ISA.
+      // D3 + D4 + D5 (PROJECTION_TAX_FIX_PLAN §6.2 + 6.3): tax-aware
+      // drawdown order — cash → GIA → pension → ISA, with gross-up so
+      // the NET cash delivered equals the shortfall.
+      const lsaRemainingThisYear = Math.max(0, LUMP_SUM_ALLOWANCE - lsaUsed);
       const result = drawFrom(
         -netCashFlow,
         { cash, gia, pension, isa },
-        { isPensionAccessible },
+        {
+          isPensionAccessible,
+          lsaRemaining: lsaRemainingThisYear,
+          otherTaxableIncome: yearTaxableIncomeBase,
+          cgtAllowanceRemaining: CAPITAL_GAINS_ALLOWANCE,
+          isScottish: i.isScottishTaxpayer,
+        },
       );
       cash -= result.drawn.cash;
       gia -= result.drawn.gia;
       pension -= result.drawn.pension;
       isa -= result.drawn.isa;
+      yearTaxPaid += result.taxPaid;
+      lsaUsed += result.lsaConsumed;
     } else {
       // Retired with surplus — top up cash buffer first, then ISA.
       cash += netCashFlow;
@@ -506,6 +819,7 @@ export function buildProjection(i: CompassInputs): ProjectionYear[] {
       totalIncome: Math.round(yearIncome),
       totalExpense: Math.round(yearExpense),
       netSavings: Math.round(netCashFlow),
+      taxPaid: Math.round(yearTaxPaid),
       isRetired,
       isPensionAccessible,
     });
@@ -625,23 +939,74 @@ export function buildAssumptions(i: CompassInputs): Record<string, string | numb
   const userPensionAccessAge = pensionAccessAgeForUser(birthYear);
   const incomeUsed = resolveAmount(i.householdGrossIncomeRaw, undefined) || INCOME_MID[i.householdGrossIncome];
   return {
+    // -------- Macro / growth --------
     incomeMidpoint: Math.round(incomeUsed),
     investmentGrowthRate: `${GROWTH_BY_RISK[i.riskProfile ?? 'balanced'] * 100}%`,
     cashGrowthRate: `${CASH_GROWTH * 100}%`,
     inflation: `${INFLATION * 100}%`,
     incomeGrowthRate: `${INCOME_GROWTH * 100}% real`,
     lifeExpectancy: LIFE_EXPECTANCY,
+
+    // -------- Pension entitlements --------
     statePensionFullRate: STATE_PENSION_FULL,
     statePensionAge: userStatePensionAge,
     pensionAccessAge: userPensionAccessAge,
     retirementSpendRatio: i.retirementSpendRatio,
     niYearsAssumed: resolveNiYears(i.niQualifyingYearsRaw, i.niQualifyingYears),
+
+    // -------- Profile flags --------
     riskProfile: i.riskProfile ?? 'balanced',
     salarySacrificeApplied: i.salarySacrificeInUse ? 'yes' : 'no',
     taxResidence: i.isScottishTaxpayer ? 'Scotland' : 'rest of UK',
+
+    // -------- Allowance constants --------
     annualAllowance: ANNUAL_ALLOWANCE,
     lumpSumAllowance: LUMP_SUM_ALLOWANCE,
+    isaAnnualAllowance: ISA_ANNUAL_ALLOWANCE,
+    cgtAnnualAllowance: CAPITAL_GAINS_ALLOWANCE,
+    mpaaLimit: MPAA_LIMIT,
     taxYear: TAX_YEAR,
+
+    // -------- Methodology decisions (PROJECTION_TAX_FIX_PLAN §5) --------
+    // Each of these sentences is the disclosure the client sees. Wording
+    // changes here must be mirrored in PROJECTION_TAX_FIX_PLAN.md §10.
+    incomeTaxOnRetirement:
+      'Income tax is applied to your state pension, any DB pension, and to ' +
+      '75% of every pension drawdown. Your marginal rate is calculated under the ' +
+      'rUK or Scottish bands as appropriate to your tax residence.',
+    pensionTaxFreePortion:
+      '25% of every pension withdrawal is treated as tax-free, until the ' +
+      `lifetime Lump Sum Allowance of £${LUMP_SUM_ALLOWANCE.toLocaleString('en-GB')} ` +
+      'has been reached. Withdrawals after that point are taxed in full as income.',
+    lsaStartingPosition:
+      'We assume your full Lump Sum Allowance is unused at the start of the ' +
+      'projection. If you have previously taken a tax-free lump sum from any ' +
+      'pension, the actual tax cost of your future drawdowns will be higher than shown.',
+    drawdownPattern:
+      'Pension drawdowns are modelled as flexi-access with the 25% tax-free ' +
+      'portion taken pro-rata across years. UFPLS-style front-loaded lump sums ' +
+      'are not modelled.',
+    giaCgtModel:
+      'Capital Gains Tax is applied to GIA withdrawals. We assume each ' +
+      `withdrawal is ${GIA_GAIN_FRACTION * 100}% taxable gain and ${(1 - GIA_GAIN_FRACTION) * 100}% return of capital — ` +
+      'the industry-standard assumption for long-held diversified portfolios. ' +
+      `CGT is charged above the £${CAPITAL_GAINS_ALLOWANCE.toLocaleString('en-GB')} annual allowance ` +
+      `at ${CGT_BASIC_RATE * 100}% (basic-rate band) or ${CGT_HIGHER_RATE * 100}% (higher-rate band) ` +
+      'depending on your other taxable income that year.',
+    isaContributionCap:
+      `ISA contributions are capped at the £${ISA_ANNUAL_ALLOWANCE.toLocaleString('en-GB')} annual ` +
+      'allowance. Any surplus you intend to save above that is directed to your ' +
+      'General Investment Account.',
+    mpaaModelled: i.isFlexiblyAccessingPension
+      ? `Money Purchase Annual Allowance applied: contribution allowance reduced to £${MPAA_LIMIT.toLocaleString('en-GB')} from pension access age.`
+      : 'Money Purchase Annual Allowance: not applicable based on your inputs.',
+    niOnRetirementIncome:
+      'No National Insurance is applied to pension or state pension income, ' +
+      'consistent with UK rules.',
+    dividendTaxAndPsa:
+      'Dividend tax on GIA holdings and Personal Savings Allowance on cash ' +
+      'interest are not modelled separately — they are absorbed into the ' +
+      'growth rates published above.',
   };
 }
 

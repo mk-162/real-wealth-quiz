@@ -442,6 +442,13 @@
   margin: 10px 0 4px;
 }
 
+.methodologyBody h5 {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--rw-ink);
+  margin: 8px 0 2px;
+}
+
 .methodologyBody p { margin: 0 0 6px; }
 
 .methodologyTable {

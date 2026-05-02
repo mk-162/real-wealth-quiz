@@ -220,16 +220,13 @@ export interface TileContent {
 const TILE_FILE_TO_KEY: Record<string, TileKey> = {
   'tile-01-retirement-readiness.md': 'retirement',
   'tile-02-pension-contributions.md': 'pension',
-  'tile-03-state-pension.md': 'statePension',
   'tile-04-investment-strategy.md': 'investment',
   'tile-05-tax-efficiency.md': 'tax',
   'tile-06-emergency-cash.md': 'cash',
   'tile-07-debt-position.md': 'debt',
   'tile-08-mortgage.md': 'mortgage',
   'tile-09-estate-planning.md': 'estate',
-  'tile-10-inheritance-tax.md': 'iht',
   'tile-11-protection.md': 'protection',
-  'tile-12-business-income-mix.md': 'twelfth',
 };
 
 let _tileCache: TileContent[] | null = null;
@@ -606,16 +603,67 @@ export function loadTakeaway(segmentId: string, requireApproved = false): Takeaw
 // and is joined back to expanded copy via the `source_id` frontmatter field.
 // ---------------------------------------------------------------------------
 
+/** A single statistic for the optional key-facts strip — label + display value. */
+export interface KeyFact {
+  label: string;
+  value: string;
+}
+
+/** Risk-band chip beside the title — visual cue for the reader's eye. */
+export type RiskBand = 'low' | 'watch' | 'urgent';
+
 export interface ExpandedAwarenessCheck {
   /** `pitfall.<slug>` — matches `id` on the original awareness-check file. */
   sourceId: string;
   /** H1 heading from the expanded body ("Lasting Power of Attorney — the legal gap…"). */
   title: string;
-  /** Three body paragraphs: context / specifics / bridge. Length varies. */
+  /** Body paragraphs (context / specifics / bridge — 1-3 typical). Length varies. */
   paragraphs: string[];
   /** Optional illustration slug → `/report-preview/assets/illustrations/<slug>.svg`. */
   imageSlug?: string;
+  /** Optional pull-out quote rendered between paragraphs 1 and 2. */
+  pullQuote?: string;
+  /** Optional 2-4 stat strip rendered below the title. */
+  keyFacts?: KeyFact[];
+  /** Optional 3-bullet "at a glance" callout. */
+  atAGlance?: string[];
+  /** Optional planner-voice callout box rendered at page foot. */
+  worthAConversation?: string;
+  /** Optional risk-band chip rendered next to the title. */
+  riskBand?: RiskBand;
   complianceStatus: string;
+}
+
+function parseKeyFacts(raw: unknown): KeyFact[] | undefined {
+  if (!Array.isArray(raw)) return undefined;
+  const out: KeyFact[] = [];
+  for (const item of raw) {
+    if (!item || typeof item !== 'object') continue;
+    const r = item as { label?: unknown; value?: unknown };
+    if (typeof r.label === 'string' && typeof r.value === 'string') {
+      out.push({ label: r.label.trim(), value: r.value.trim() });
+    }
+  }
+  return out.length > 0 ? out : undefined;
+}
+
+function parseStringList(raw: unknown): string[] | undefined {
+  if (!Array.isArray(raw)) return undefined;
+  const out = raw
+    .filter((x): x is string => typeof x === 'string')
+    .map((s) => s.trim())
+    .filter((s) => s.length > 0);
+  return out.length > 0 ? out : undefined;
+}
+
+function parseRiskBand(raw: unknown): RiskBand | undefined {
+  return raw === 'low' || raw === 'watch' || raw === 'urgent' ? raw : undefined;
+}
+
+function parseString(raw: unknown): string | undefined {
+  if (typeof raw !== 'string') return undefined;
+  const t = raw.trim();
+  return t.length > 0 ? t : undefined;
 }
 
 const EXPANDED_DIR = path.join(CONTENT_ROOT, 'awareness-checks-expanded');
@@ -639,6 +687,11 @@ function loadExpandedOnce(): Map<string, ExpandedAwarenessCheck> {
     const fm = parsed.data as {
       source_id?: string;
       image_slug?: string;
+      pull_quote?: unknown;
+      key_facts?: unknown;
+      at_a_glance?: unknown;
+      worth_a_conversation?: unknown;
+      risk_band?: unknown;
       compliance_status?: string;
     };
     if (!fm.source_id) continue;
@@ -657,6 +710,11 @@ function loadExpandedOnce(): Map<string, ExpandedAwarenessCheck> {
       title: section.heading.trim(),
       paragraphs,
       imageSlug: fm.image_slug,
+      pullQuote: parseString(fm.pull_quote),
+      keyFacts: parseKeyFacts(fm.key_facts),
+      atAGlance: parseStringList(fm.at_a_glance),
+      worthAConversation: parseString(fm.worth_a_conversation),
+      riskBand: parseRiskBand(fm.risk_band),
       complianceStatus: fm.compliance_status ?? 'draft',
     });
   }

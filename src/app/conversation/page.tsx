@@ -21,9 +21,17 @@ import { Logo } from '@/components/Logo';
 import { SlideSwap } from '@/components/SlideSwap';
 import { QuestionShell } from '@/components/QuestionShell';
 import { AwarenessCheck } from '@/components/AwarenessCheck';
-import { ProvocationCard } from '@/components/ProvocationCard';
+// ProvocationCard import intentionally removed — sidebar provocation cards
+// are no longer rendered in-flow (Apr 2026, user feedback: questionnaire
+// felt verbose, banners interrupted at the wrong time). Provocation content
+// files and the engine's inlineProvocations selector are kept so the data
+// can be surfaced in the PDF report later. To restore in-flow rendering,
+// re-import ProvocationCard and restore the `aside` prop block below.
 import { useQuestionnaireEngine, type TierSlug } from '@/lib/questionnaire';
+import { clearSession } from '@/lib/questionnaire/session';
 import styles from './page.module.css';
+
+const UNLOCK_KEY = 'real-wealth:report-unlocked';
 
 export default function QuestionnairePage() {
   return (
@@ -49,7 +57,8 @@ function Questionnaire() {
     canCompleteFlow,
     canAdvance,
     chipMeta,
-    inlineProvocations,
+    // inlineProvocations: still computed by the engine, but not rendered
+    // in-flow. See note above on the ProvocationCard import.
     firedAwareness,
   } = engine;
 
@@ -73,7 +82,7 @@ function Questionnaire() {
     }
     const onPopState = (e: PopStateEvent) => {
       const state = e.state as { __wc_back_sentinel?: boolean } | null;
-      // Case (a): user returned from /conversation/details — sentinel
+      // Case (a): user returned from /conversation/summary — sentinel
       // is the new top. Leave engine untouched.
       if (state && state.__wc_back_sentinel) return;
       // Case (b): sentinel was popped. Step back in-flow if we can.
@@ -117,15 +126,17 @@ function Questionnaire() {
   const sectionLabel = chipMeta?.label ?? 'Conversation';
 
   const handleNext = () => {
-    /* Route to the details page only when the user is on the last
+    /* Route to the summary page only when the user is on the last
        visible content screen AND the gate is complete. `canCompleteFlow`
        guards against the "jumps straight to final step" bug — when
        segmentation shrinks `visibleScreens` mid-flow the user could find
        themselves positionally on the last screen without having
        answered every gate question; routing in that case would jump
-       them to /details before the flow was really done. */
+       them to /summary before the flow was really done. The summary
+       hosts the email-gate (ReportCapture) inline, so we no longer need
+       a separate data-capture page. */
     if (active.kind === 'content' && isLast && canCompleteFlow) {
-      router.push('/conversation/details');
+      router.push('/conversation/summary');
       return;
     }
     engine.next();
@@ -180,6 +191,29 @@ function Questionnaire() {
               ? `${Math.round(progress * 100)}%`
               : `${tierParam} · ${debugScreenLabel} · ${segmentId ?? '—'}`}
           </span>
+          {/* Reset link — wipes session + unlock flag and returns to the
+              homepage tier picker (so the user can pick a shorter version
+              if they want, rather than being dropped straight back into
+              standard-tier Q1). The native confirm() guard stops accidental
+              clicks losing answers mid-flow. */}
+          <button
+            type="button"
+            className={styles.resetLink}
+            onClick={() => {
+              if (typeof window === 'undefined') return;
+              if (!window.confirm('Clear all answers and start over?')) return;
+              clearSession();
+              try {
+                window.localStorage.removeItem(UNLOCK_KEY);
+              } catch {
+                /* ignore */
+              }
+              window.location.href = '/';
+            }}
+            title="Wipe session + unlock flag, return to the homepage"
+          >
+            ↻ Start over
+          </button>
         </div>
       </header>
       {/* ProgressBar intentionally not rendered — the live realwealth.co.uk
@@ -217,26 +251,7 @@ function Questionnaire() {
             isLast={isLast}
             canAdvance={canAdvance}
             continueLabel={'Continue →'}
-            aside={
-              inlineProvocations.length > 0 ? (
-                <div className={styles.inlineProv}>
-                  {inlineProvocations.map((p) => (
-                    <ProvocationCard
-                      key={p.id}
-                      headline={p.headline}
-                      body={p.body}
-                      closing={p.cta}
-                      complianceTag={
-                        process.env.NODE_ENV !== 'production' &&
-                        p.compliance_status !== 'approved_to_ship'
-                          ? p.compliance_status
-                          : null
-                      }
-                    />
-                  ))}
-                </div>
-              ) : null
-            }
+            aside={null}
           />
         )}
       </SlideSwap>

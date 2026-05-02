@@ -3,36 +3,34 @@
 .strip {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
+  gap: 6px;
 }
 
 .cell {
-  padding: 10px 12px;
-  background: var(--rw-paper);
-  border: 1px solid var(--rw-border-subtle);
-  border-radius: var(--rw-radius-md);
-  box-shadow: var(--rw-shadow-sm);
+  padding: 7px 10px;
+  background: var(--rw-paper-warm);
+  border: 0;
+  border-radius: var(--rw-radius-sm);
 }
 
 .cellAlert {
   background: #fef2f2;
-  border-color: #fecaca;
 }
 
 .kicker {
-  font-size: 9px;
+  font-size: 8.5px;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--rw-ink-muted);
-  margin-bottom: 2px;
+  margin-bottom: 1px;
 }
 
 .val {
   font-family: var(--rw-font-display);
   font-style: italic;
   font-weight: 300;
-  font-size: 22px;
+  font-size: 19px;
   line-height: 1.05;
   color: var(--rw-teal);
   letter-spacing: -0.02em;
@@ -41,11 +39,10 @@
 .cellAlert .val { color: var(--rw-orange); }
 
 .sub {
-  font-size: 10.5px;
+  font-size: 10px;
   color: var(--rw-ink-soft);
-  margin-top: 3px;
+  margin-top: 2px;
 }
 
-@media (max-width: 640px) {
-  .strip { grid-template-columns: repeat(2, 1fr); }
-}
+/* No mobile breakpoint — the report renders at fixed A4 width, always
+ * giving 4 cells room to sit side-by-side. */

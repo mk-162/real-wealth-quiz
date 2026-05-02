@@ -203,7 +203,6 @@ export default function MasterFieldsReport() {
         totalPages={TOTAL_PAGES}
         footer="Real Wealth Partners Ltd · Authorised and regulated by the Financial Conduct Authority"
         label="Methodology"
-        showIllusTag={false}
       >
         <div className={styles.sectionTitle}>
           <span className={styles.eyebrow}>Methodology</span>
