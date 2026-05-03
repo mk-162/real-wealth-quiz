@@ -1,3 +1,5 @@
+'use client';
+
 /**
  * PrioritySliders — several importance sliders stacked in a single panel.
  * Each row has a short label, a right-aligned PRIORITY LEVEL tag, and a

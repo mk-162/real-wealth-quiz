@@ -1,3 +1,5 @@
+'use client';
+
 /**
  * CurrencySlider — a labelled range slider with a live currency readout.
  * Pattern lifted from the property_mortgage prototype screen.

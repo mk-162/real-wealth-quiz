@@ -1,3 +1,5 @@
+'use client';
+
 /**
  * ResumeBanner — a small, dismissible notice that announces the user has
  * returned to a questionnaire session mid-flow. Copy from

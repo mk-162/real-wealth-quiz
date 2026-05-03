@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, type FormEvent } from 'react';
 import { Button } from '@/components/Button';
 import styles from './ReportCapture.module.css';

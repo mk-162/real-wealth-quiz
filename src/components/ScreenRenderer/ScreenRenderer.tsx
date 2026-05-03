@@ -1,3 +1,5 @@
+'use client';
+
 /**
  * ScreenRenderer — renders any Screen from the content catalogue by
  * dispatching on its layout type (intro / centred / asymmetric) and its

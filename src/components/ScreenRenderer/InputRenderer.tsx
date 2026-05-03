@@ -1,3 +1,5 @@
+'use client';
+
 /**
  * InputRenderer — takes an `Input` spec from a Screen and renders the right
  * control. This is the single dispatch point for every control type in the

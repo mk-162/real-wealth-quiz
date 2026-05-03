@@ -1,3 +1,5 @@
+'use client';
+
 /**
  * LikertFive — a five-point scale with named endpoints.
  *
