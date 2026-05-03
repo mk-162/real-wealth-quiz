@@ -5,7 +5,7 @@
  *
  * Pattern lifted from the lifestyle_importance_sliders prototype screen.
  */
-'use client';
+
 
 import { useId, type ChangeEvent } from 'react';
 import styles from './PrioritySliders.module.css';

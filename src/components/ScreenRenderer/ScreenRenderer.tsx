@@ -14,10 +14,10 @@
  * flow (engine.ts:171); we render nothing rather than the old full-bleed
  * interstitial.
  */
-'use client';
 
-import type { ReactNode } from 'react';
-import type { Screen } from '../../../content/schema';
+
+import { useCallback, useRef, type ReactNode } from 'react';
+import type { Input, Screen } from '../../../content/schema';
 import { Button } from '@/components/Button';
 import { QuestionShell } from '@/components/QuestionShell';
 import { WhyAskToggle } from '@/components/WhyAskToggle';
@@ -94,6 +94,49 @@ function QuestionLayout(props: ScreenRendererProps) {
   const { screen, answers, onAnswer, aside } = props;
   const section = sectionMeta(screen.section as never);
 
+  /* Refs for each input slot + the action row. After the user picks an
+     answer for a discrete-pick control (card_select / radio / pair_picker
+     / likert_5) we smoothly scroll to the next visible slot — or to the
+     action row when this was the last. Multi-select and sliders/currency
+     are deliberately excluded: they don't have a single "I'm done" moment.
+
+     prefers-reduced-motion is respected via scroll-behavior CSS, but we
+     also skip the scroll entirely for users who set it. */
+  const slotRefs = useRef(new Map<string, HTMLDivElement | null>());
+  const actionsRef = useRef<HTMLDivElement | null>(null);
+
+  const isAutoAdvanceControl = (input: Input | undefined): boolean => {
+    if (!input) return false;
+    return (
+      input.control === 'card_select' ||
+      input.control === 'radio' ||
+      input.control === 'pair_picker' ||
+      input.control === 'likert_5'
+    );
+  };
+
+  const scrollNextInto = useCallback(
+    (answeredId: string, visibleIds: readonly string[]) => {
+      if (typeof window === 'undefined') return;
+      const reduce = window.matchMedia?.(
+        '(prefers-reduced-motion: reduce)',
+      ).matches;
+      if (reduce) return;
+      const idx = visibleIds.indexOf(answeredId);
+      if (idx === -1) return;
+      const nextId = visibleIds[idx + 1];
+      const target =
+        (nextId ? slotRefs.current.get(nextId) : null) ?? actionsRef.current;
+      if (!target) return;
+      /* Wait one frame so SlideSwap / conditional reveals have a chance
+         to mount before we measure their position. */
+      requestAnimationFrame(() => {
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+    },
+    [],
+  );
+
   const kicker = section?.kicker ?? `STEP ${screen.screen_number}`;
   /*
    * Pullquote resolution — three-level priority chain:
@@ -128,26 +171,47 @@ function QuestionLayout(props: ScreenRendererProps) {
 
       {(() => {
         const inputs = screen.inputs ?? [];
+        const visibleIds = inputs
+          .filter((i) => shouldShowInput(i, inputs, answers))
+          .map((i) => i.id);
+        const lastVisibleId = visibleIds[visibleIds.length - 1];
         return inputs.map((input) => {
           const visible = shouldShowInput(input, inputs, answers);
           const isConditional = isConditionalInput(input, inputs);
-          // Skip the wrapper entirely when a conditional input is hidden
-          // — otherwise the `.inputSlot + .inputSlot` divider rule draws a
-          // hairline + ~108px of margin/padding above an invisible slot,
-          // which reads as a "horizontal rule that does nothing" between
-          // the visible inputs and the action row. The SlideSwap exit
-          // animation is sacrificed; the entrance still runs when the
-          // conditional opens.
-          if (isConditional && !visible) return null;
+          const isLastVisible = input.id === lastVisibleId;
+          const handleChange = (v: unknown) => {
+            onAnswer(input.id, v);
+            /* Auto-scroll rules:
+               - Mid-screen on a discrete-pick control → next slot.
+               - On the LAST visible input, scroll the action row into
+                 view for any pick-style interaction (including
+                 multi_select) so Continue is reachable without manual
+                 scrolling. Sliders / currency / text are still excluded
+                 because their onChange fires continuously while the user
+                 is still entering a value. */
+            const isPickControl =
+              isAutoAdvanceControl(input) || input.control === 'multi_select';
+            if (isLastVisible && isPickControl) {
+              scrollNextInto(input.id, visibleIds);
+            } else if (isAutoAdvanceControl(input)) {
+              scrollNextInto(input.id, visibleIds);
+            }
+          };
           const rendered = visible ? (
             <InputRenderer
               input={input}
               value={answers[input.id]}
-              onChange={(v) => onAnswer(input.id, v)}
+              onChange={handleChange}
             />
           ) : null;
           return (
-            <div key={input.id} className={styles.inputSlot}>
+            <div
+              key={input.id}
+              className={styles.inputSlot}
+              ref={(el) => {
+                slotRefs.current.set(input.id, el);
+              }}
+            >
               {isConditional ? (
                 <SlideSwap swapKey={visible ? 'shown' : 'hidden'}>{rendered}</SlideSwap>
               ) : (
@@ -158,7 +222,9 @@ function QuestionLayout(props: ScreenRendererProps) {
         });
       })()}
 
-      <ActionRow {...props} />
+      <div ref={actionsRef}>
+        <ActionRow {...props} />
+      </div>
     </QuestionShell>
   );
 }

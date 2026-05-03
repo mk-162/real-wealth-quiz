@@ -12,7 +12,7 @@
  *  - SSR-safe: session read happens in useEffect so the component renders
  *    null on the server and hydrates to the real state on the client.
  */
-'use client';
+
 
 import { useCallback, useEffect, useState } from 'react';
 import { microcopy } from '@/lib/content';

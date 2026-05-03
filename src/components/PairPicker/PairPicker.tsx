@@ -5,7 +5,7 @@
  * Pattern lifted from the brief §4.D.1 trade-offs screen. Three pair-pickers
  * are stacked on that screen; each is independent.
  */
-'use client';
+
 
 import styles from './PairPicker.module.css';
 

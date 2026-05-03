@@ -111,6 +111,41 @@
   cursor: grabbing;
 }
 
+/* Subtle attention pulse on the thumb while the slider is in view and
+   the user hasn't yet interacted. The track flips data-pulse off the
+   moment the user drags or as soon as it leaves the viewport, so the
+   animation never competes with the user's own action. */
+.track[data-pulse='true'] .range::-webkit-slider-thumb {
+  animation: thumbPulse 2.4s var(--ease-default) infinite;
+}
+.track[data-pulse='true'] .range::-moz-range-thumb {
+  animation: thumbPulse 2.4s var(--ease-default) infinite;
+}
+
+@keyframes thumbPulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow:
+      0 2px 8px rgba(255, 104, 1, 0.4),
+      0 0 0 1px rgba(255, 104, 1, 0.4),
+      0 0 0 0 rgba(255, 104, 1, 0.45);
+  }
+  50% {
+    transform: scale(1.08);
+    box-shadow:
+      0 2px 8px rgba(255, 104, 1, 0.5),
+      0 0 0 1px rgba(255, 104, 1, 0.4),
+      0 0 0 10px rgba(255, 104, 1, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track[data-pulse='true'] .range::-webkit-slider-thumb,
+  .track[data-pulse='true'] .range::-moz-range-thumb {
+    animation: none;
+  }
+}
+
 .range::-moz-range-thumb {
   width: 28px;
   height: 28px;

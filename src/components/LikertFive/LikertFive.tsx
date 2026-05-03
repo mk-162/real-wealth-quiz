@@ -5,7 +5,7 @@
  * labelled in small sans (*"Not at all confident"* / *"Very confident"*).
  * Keyboard-accessible via arrow keys; full radiogroup ARIA.
  */
-'use client';
+
 
 import { useEffect, useRef, type KeyboardEvent } from 'react';
 import styles from './LikertFive.module.css';

@@ -6,7 +6,7 @@
  * Keeps logic here so ScreenRenderer stays focused on layout and engine stays
  * focused on state.
  */
-'use client';
+
 
 import { useEffect } from 'react';
 import type { Input, Option } from '../../../content/schema';
@@ -117,36 +117,17 @@ function renderControl({ input, value, onChange }: InputRendererProps) {
     case 'slider': {
       const range = input.range ?? { min: 0, max: 100, default: 50, step: 1 };
       const current = typeof value === 'number' ? value : range.default ?? range.min;
-      // Detect currency-like sliders (pension pots, salaries, savings, house
-      // values). Anything with a max above £1k is treated as money and gets
-      // the piecewise snapping scale + £ symbol. Age, percentages, NI years
-      // and other small-range sliders keep their literal step from the YAML
-      // because the source-of-truth granularity is the right one (1 year,
-      // 1% etc.).
-      const isCurrencyLike = range.max > 1_000;
       return (
         <CurrencySlider
           label={input.label ?? ''}
           min={range.min}
           max={range.max}
-          // Currency sliders use a piecewise scale (auto-picked by max), so
-          // the YAML's `step` is ignored — the scale handles granularity.
-          // Non-currency sliders keep the literal step + opt out of snapping.
-          step={isCurrencyLike ? undefined : range.step ?? 1}
-          scale={isCurrencyLike ? undefined : null}
+          step={range.step ?? 1}
           value={current}
           onChange={(n) => onChange(n)}
-          minLabel={
-            isCurrencyLike
-              ? `£${range.min.toLocaleString('en-GB')}`
-              : String(range.min)
-          }
-          maxLabel={
-            isCurrencyLike
-              ? `£${range.max.toLocaleString('en-GB')}`
-              : String(range.max)
-          }
-          symbol={isCurrencyLike ? '£' : ''}
+          minLabel={String(range.min)}
+          maxLabel={String(range.max)}
+          symbol=""
           readoutTone="teal"
         />
       );
@@ -160,10 +141,7 @@ function renderControl({ input, value, onChange }: InputRendererProps) {
           label={input.label ?? ''}
           min={range.min}
           max={range.max}
-          // Auto-picked piecewise scale (LUMP / MONTHLY) — see CurrencySlider.
-          // Pass undefined for `step` so the slider's internal default
-          // (a fine £100 nudge) drives the native input.
-          step={undefined}
+          step={range.step ?? 1_000}
           value={current}
           onChange={(n) => onChange(n)}
           minLabel={`£${range.min.toLocaleString('en-GB')}`}
