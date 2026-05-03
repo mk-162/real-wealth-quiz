@@ -46,9 +46,12 @@ export function AwarenessCheckPage({ check }: AwarenessCheckPageProps) {
   } = check;
 
   const [p1, p2, p3] = paragraphs;
-  const heroSrc = imageSlug
-    ? `/report-preview/assets/illustrations/${imageSlug}.svg`
-    : null;
+  // Hero illustration disabled for now (per Matt, 2026-05-02). Restore
+  // the conditional below when illustrations are ready to ship.
+  // const heroSrc = imageSlug
+  //   ? `/report-preview/assets/illustrations/${imageSlug}.svg`
+  //   : null;
+  const heroSrc: string | null = null;
 
   return (
     <>
