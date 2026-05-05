@@ -31,7 +31,7 @@ export const screens: Screen[] = [
     "logged_as": [],
     "inputs": [],
     "headline": "Let's talk about the life you're planning for.",
-    "sub": "Once you've answered all these questions, we will generate a wealth report for you. To ensure your complete privacy, this data does not leave your device. You must save this download or print report if you want to keep it.",
+    "sub": "A few honest questions. No right answers, no scorecard — a Wealth Report by the end. You can stop any time; we'll save what you've told us so far.",
     "body": "Eyebrow: BEFORE WE START.\nPrimary button: Begin →.\nNo back button on this screen."
   },
   {
@@ -112,7 +112,7 @@ export const screens: Screen[] = [
       }
     ],
     "headline": "What brought you here today?",
-    "sub": "No wrong answer — we ask so we can pitch the rest of the conversation properly."
+    "sub": "No wrong answer — your pick shapes what we ask next."
   },
   {
     "id": "screen.3.2.wealth_definition",
@@ -501,9 +501,21 @@ export const screens: Screen[] = [
     "image_family": "family_2_money_today",
     "image_direction": "A leather notebook, a fountain pen, a fresh coffee cup, a stack of unopened mail. The texture of an adult life.",
     "q_refs": [
+      "Q3.1",
       "Q4.5"
     ],
     "audience": {
+      "Q3.1": {
+        "S1": "shown",
+        "S2": "shown",
+        "S3": "shown",
+        "S4": "shown",
+        "S5": "shown",
+        "S6": "shown",
+        "S7": "shown",
+        "S8": "shown",
+        "S9": "shown"
+      },
       "Q4.5": {
         "S1": "shown",
         "S2": "shown",
@@ -517,9 +529,44 @@ export const screens: Screen[] = [
       }
     },
     "logged_as": [
-      "estate_band"
+      "income_band",
+      "estate_band",
+      "earners_one_or_two"
     ],
+    "conditional_logic": "if income >= £100k, reveal earners_one_or_two",
     "inputs": [
+      {
+        "id": "income_band",
+        "label": "Your household's annual income, before tax",
+        "control": "radio",
+        "options": [
+          {
+            "value": "lt50k",
+            "label": "Under £50,000"
+          },
+          {
+            "value": "50to100k",
+            "label": "£50,000 – £100,000"
+          },
+          {
+            "value": "100to125k",
+            "label": "£100,000 – £125,000"
+          },
+          {
+            "value": "125to200k",
+            "label": "£125,000 – £200,000"
+          },
+          {
+            "value": "gt200k",
+            "label": "£200,000 or more"
+          },
+          {
+            "value": "prefer_not",
+            "label": "I'd rather not say"
+          }
+        ],
+        "required": true
+      },
       {
         "id": "estate_band",
         "label": "If you added everything up — home, pensions, investments, business — where would you land?",
@@ -556,6 +603,23 @@ export const screens: Screen[] = [
           }
         ],
         "required": true
+      },
+      {
+        "id": "earners_one_or_two",
+        "label": "Is that across one earner or two?",
+        "control": "radio",
+        "options": [
+          {
+            "value": "one",
+            "label": "One"
+          },
+          {
+            "value": "two_or_more",
+            "label": "Two or more"
+          }
+        ],
+        "required": false,
+        "conditional_reveal": "only when income_band in [100to125k, 125to200k, gt200k]"
       }
     ],
     "headline": "A picture of where your money sits.",
@@ -610,7 +674,8 @@ export const screens: Screen[] = [
     "gate_critical": false,
     "tier_limit": [
       "A",
-      "B"
+      "B",
+      "C"
     ],
     "image_family": "family_2_money_today",
     "image_direction": "A still life of a household's Sunday — a kettle, a bowl of fruit, a diary left open.",
@@ -713,7 +778,7 @@ export const screens: Screen[] = [
       }
     ],
     "headline": "A feel for a typical month.",
-    "sub": "Bands are easier than exact numbers. No need to get the calculator out."
+    "sub": "Pick the band — no need for the calculator."
   },
   {
     "id": "screen.4.A.2.confidence_mindset",
@@ -800,7 +865,7 @@ export const screens: Screen[] = [
       }
     ],
     "headline": "How it sits with you.",
-    "sub": "Two questions about feeling rather than figures. They matter more than most people expect."
+    "sub": "About feeling, not figures."
   },
   {
     "id": "screen.4.A.3.assets",
@@ -888,7 +953,7 @@ export const screens: Screen[] = [
       {
         "id": "main_home_value",
         "label": "What's the home roughly worth today? (£)",
-        "label_helper": "Drag to the nearest round number. Zillow / Rightmove or your last valuation is fine.",
+        "label_helper": "A Rightmove or Zoopla estimate is fine — no need to be precise.",
         "control": "slider",
         "range": {
           "min": 100000,
@@ -1066,7 +1131,7 @@ export const screens: Screen[] = [
       {
         "id": "other_property_value",
         "label": "Combined value across other property (£)",
-        "label_helper": "Drag to the nearest round number. Combined market value of all properties other than your main home.",
+        "label_helper": "A rough total is fine.",
         "control": "slider",
         "range": {
           "min": 0,
@@ -1428,7 +1493,7 @@ export const screens: Screen[] = [
     "inputs": [
       {
         "id": "earnings_protection_scale",
-        "label": "If the main earner couldn't work for a year — injury, illness — how confident are you the family could maintain its lifestyle?",
+        "label": "If the main earner couldn't work for a year, how confident are you the family could maintain its lifestyle?",
         "control": "likert_5",
         "required": true
       },
@@ -1492,7 +1557,8 @@ export const screens: Screen[] = [
     "gate_critical": false,
     "tier_limit": [
       "A",
-      "B"
+      "B",
+      "C"
     ],
     "image_family": "family_5_retirement",
     "image_direction": "Walking shoes by a door, a wool coat on a peg, a waterproof. Conveys 'the day you don't have to go in.'",
@@ -1661,7 +1727,7 @@ export const screens: Screen[] = [
       {
         "id": "business_value_band",
         "label": "Roughly, what's the business worth today — if you had to sell it and walk away?",
-        "label_helper": "Rough orders of magnitude are fine. Nobody has this memorised.",
+        "label_helper": "A rough number is fine.",
         "control": "radio",
         "options": [
           {
@@ -1930,7 +1996,7 @@ export const screens: Screen[] = [
       }
     ],
     "headline": "If you had to choose…",
-    "sub": "Three pairs. Pick the side you lean towards. You can still want the other — just tell us which way your hand moves first."
+    "sub": "Three pairs. Pick the side you lean towards — you can still want the other."
   },
   {
     "id": "screen.4.D.2.one_thing",
@@ -2238,7 +2304,7 @@ export const screens: Screen[] = [
       {
         "id": "pension_total_value",
         "label": "Roughly, what would it all add up to today?",
-        "label_helper": "This is your defined-contribution (DC) pot — workplace pensions, SIPPs, personal pensions. Don't include any defined-benefit / final-salary pension here; we'll ask about that next.",
+        "label_helper": "Workplace pensions, SIPPs, personal pensions. Don't include final-salary pensions — those come next.",
         "control": "slider",
         "range": {
           "min": 0,
@@ -2300,7 +2366,7 @@ export const screens: Screen[] = [
       }
     ],
     "headline": "Your pension, roughly.",
-    "sub": "Drag to the nearest round number. Zero means you haven't started yet, or you'd rather not say — the report still runs, it just uses a typical-household default for this number."
+    "sub": "A rough number is fine. Set to 0 if you haven't started a pension, or to skip."
   },
   {
     "id": "screen.compass.02.liquid-wealth",
@@ -2399,7 +2465,7 @@ export const screens: Screen[] = [
       }
     ],
     "headline": "The money you can actually reach.",
-    "sub": "Liquid wealth — cash, ISAs, investments outside pensions. Leave at zero for anything you'd rather not share, or that genuinely doesn't apply."
+    "sub": "Cash, ISAs, investments outside pensions. Leave at 0 to skip."
   },
   {
     "id": "screen.compass.03.contributions",
@@ -2490,7 +2556,7 @@ export const screens: Screen[] = [
       {
         "id": "employer_pension_pct_band",
         "label": "Employer pension contribution — % of your salary",
-        "label_helper": "Set to 0 if self-employed, not employed, or your employer doesn't contribute.",
+        "label_helper": "Set to 0 if self-employed or your employer doesn't contribute.",
         "control": "slider",
         "range": {
           "min": 0,
@@ -2516,7 +2582,7 @@ export const screens: Screen[] = [
       {
         "id": "salary_sacrifice",
         "label": "Are your pension contributions made through salary sacrifice?",
-        "label_helper": "Salary sacrifice routes your contribution before tax and NI, saving an extra ~14%. If you're not sure, your payslip will say 'Sacrifice' or 'SMART pension'.",
+        "label_helper": "Your payslip will say 'Sacrifice' or 'SMART pension' if you're using it.",
         "control": "radio",
         "options": [
           {
@@ -2562,7 +2628,7 @@ export const screens: Screen[] = [
       }
     ],
     "headline": "What you add, and what you still owe.",
-    "sub": "How fast the pot grows — and whether the mortgage becomes freed-up saving capacity before or after retirement."
+    "sub": "How fast the pot grows, and when the mortgage clears."
   },
   {
     "id": "screen.compass.04.state-pension-ni",
@@ -2682,7 +2748,7 @@ export const screens: Screen[] = [
       }
     ],
     "headline": "State pension, and what retirement really costs you.",
-    "sub": "Your NI record sets what the state pays. The less/same/more card is the most important single input to the whole projection — it determines how long your money has to last."
+    "sub": "Your NI record sets what the state pays."
   },
   {
     "id": "screen.compass.05.risk-profile",
@@ -2707,7 +2773,7 @@ export const screens: Screen[] = [
       {
         "id": "risk_profile",
         "label": "Roughly, how are your pensions and investments held?",
-        "label_helper": "If you have a mix, pick the one closest to most of the money. We use this to set a long-run growth assumption — 4% cautious, 6% balanced, 8% adventurous, all real (after inflation).",
+        "label_helper": "If you have a mix, pick the one closest to most of the money.",
         "control": "radio",
         "options": [
           {
@@ -2731,7 +2797,7 @@ export const screens: Screen[] = [
       }
     ],
     "headline": "How is the money invested?",
-    "sub": "The mix between equities, bonds, and cash sets your long-run growth rate — and quietly does most of the work in the projection. We assume balanced if you'd rather skip this."
+    "sub": "We'll assume balanced if you'd rather skip this."
   }
 ];
 
@@ -2837,7 +2903,7 @@ export const awareness: AwarenessCheck[] = [
   {
     "id": "pitfall.emergency_fund_sizing",
     "core": false,
-    "trigger": "cash < 3 * essential_monthly_spend",
+    "trigger": "cash_savings_band in ['lt25k'] AND essential_monthly_spend in ['3_5to5k', '5to7_5k', '7_5to12k', 'gt12k']",
     "placement": "Tier A only, after Block A if triggered",
     "source": "FCA Financial Lives Survey 2024; Money and Pensions Service benchmarks",
     "rank": null,
@@ -3512,7 +3578,7 @@ export const provocations: Provocation[] = [
   },
   {
     "id": "prov.spending_ratio",
-    "trigger": "essential_monthly_spend > 0.5 * income_band_midpoint",
+    "trigger": "essential_monthly_spend in ['3_5to5k', '5to7_5k', '7_5to12k', 'gt12k'] AND income_band in ['lt50k', '50to100k']",
     "segments": [
       "all"
     ],
